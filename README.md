@@ -56,7 +56,7 @@ These instructions assume that you have a Web server like [Internet Information 
 
 Now let's configure the application to point to an Search Image Service and set the result fields to display.
 
-1. Open web\config\imagery\imageQueryConfiguration.json in a text editor
+1. Open `web\config\imagery\imageQueryConfiguration.json` in a text editor
 2. In the entry imageQueryLayers, set the URL to an ArcGIS Server Image Service endpoint.
 3. Set the label parameter for your ArcGIS ServerImage Service 
 4. In the entry imageQueryResultDisplayFields, set the result fields you would like to display in your result grid.
@@ -82,18 +82,18 @@ Now let's configure the application to point to an Search Image Service and set 
 
 You can personalize the Image Discovery Application by adding/removing widgets, setting operational layers, and customizing the map
 
-1. Open web\config\imagery\imageryConfig.json in a text editor
+1. Open `web\config\imagery\imageryConfig.json` in a text editor
 2. All widgets have a "create" entry. Set "create" to true to enable the widget in the Image Discovery Application.
 
-    The social media widget requires an API key to Flickr. You can set your API key in web/config/widgets/SocialMediaWidgetConfig.json by replacing "<YOUR_FLICKR_API_KEY_HERE>" with your Flickr API key.
+    The social media widget requires an API key to Flickr. You can set your API key in `web/config/widgets/SocialMediaWidgetConfig.json` by replacing "<YOUR_FLICKR_API_KEY_HERE>" with your Flickr API key.
 
-    The weather widget requires an API key to wunderground. You can set your API key in web/config/widgets/WeatherWidgetConfig.json by replacing "<YOUR_WUNDERGROUND_API_KEY>" with your Wunderground API key.
+    The weather widget requires an API key to wunderground. You can set your API key in `web/config/widgets/WeatherWidgetConfig.json` by replacing "<YOUR_WUNDERGROUND_API_KEY>" with your Wunderground API key.
 
 3. the "map" entry allows you to customize how the map is loaded. 
-   -- **initializationParameters**: This entry allows you to forward all the options supported by esri.Map to the map creation logic.
-   -- **useBasemapGallery**: when true the Image Discovery Application will use the ArcGIS Online Basemap Gallery. When false you can specify base maps in the "basemaps" configuration entry
-   -- **initialExtent**: The initial extent of the map on load
-   -- **operationalLayers**: An Array of layer objects that will be displayed in the applications table of contents
+   - **initializationParameters**: This entry allows you to forward all the options supported by esri.Map to the map creation logic.
+   - **useBasemapGallery**: when true the Image Discovery Application will use the ArcGIS Online Basemap Gallery. When false you can specify base maps in the "basemaps" configuration entry
+   - **initialExtent**: The initial extent of the map on load
+   - **operationalLayers**: An Array of layer objects that will be displayed in the applications table of contents
 4. the "header" entry allows you to customize the logo/text/help/contact header display in the viewer.
 5. the "bookmarks" entry allows you to point to a JSON file for preloaded bookmarks on application load. see web\config\bookmarks.json for the bookmark format
 
