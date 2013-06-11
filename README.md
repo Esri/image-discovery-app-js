@@ -67,12 +67,12 @@ Now let's configure the application to point to an Search Image Service and set 
     - **style**: object containing camel case CSS for how to style the field in the result grid
 
 5. If you deployed the fileToFeatures.gpk from step 5 in "Install the web application" set the URL of the GPServer in the "discoverGeometryUploadTask" configuration entry
-    - **uploadUrl**: URL to upload endpoint of the GPServer (http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/uploads/upload)
-    - **geoprocessingTaskUrl**: URL to the GPServer endpoint (https://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/FileToFeatures)
+    - **uploadUrl**: URL to upload endpoint of the GPServer http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/uploads/upload
+    - **geoprocessingTaskUrl**: URL to the GPServer endpoint http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/FileToFeatures
 
 
 6. If you deployed the reportGenerator.gpk from step 6 in "Install the web application" set the URL of the GPServer in the "footprints" configuration entry
-    - **url**: URL to the GPServer endpoint (https://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/reportGenerator)
+    - **url**: URL to the GPServer endpoint http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/reportGenerator
 
 
 
@@ -85,9 +85,9 @@ You can personalize the Image Discovery Application by adding/removing widgets, 
 1. Open `web\config\imagery\imageryConfig.json` in a text editor
 2. All widgets have a "create" entry. Set "create" to true to enable the widget in the Image Discovery Application.
 
-    The social media widget requires an API key to Flickr. You can set your API key in `web/config/widgets/SocialMediaWidgetConfig.json` by replacing "<YOUR_FLICKR_API_KEY_HERE>" with your Flickr API key.
+    The social media widget requires an API key to Flickr. You can set your API key in `web\config\widgets\SocialMediaWidgetConfig.json` by replacing "<YOUR_FLICKR_API_KEY_HERE>" with your Flickr API key.
 
-    The weather widget requires an API key to wunderground. You can set your API key in `web/config/widgets/WeatherWidgetConfig.json` by replacing "<YOUR_WUNDERGROUND_API_KEY>" with your Wunderground API key.
+    The weather widget requires an API key to wunderground. You can set your API key in `web\config\widgets\WeatherWidgetConfig.json` by replacing "<YOUR_WUNDERGROUND_API_KEY>" with your Wunderground API key.
 
 3. the "map" entry allows you to customize how the map is loaded. 
    - **initializationParameters**: This entry allows you to forward all the options supported by esri.Map to the map creation logic.
@@ -132,7 +132,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-A copy of the license is available in the repository's [license.txt](https://raw.github.com/Esri/text-and-legend-map-storytelling-template-js/master/license.txt) file.
+A copy of the license is available in the repository's [license.txt](https://raw.github.com/ArcGIS/image-discovery-app-js/master/license.txt) file.
 
 [](Esri Tags: Image Discovery)
 [](Esri Language: JavaScript)
