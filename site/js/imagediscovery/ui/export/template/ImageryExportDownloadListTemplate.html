@@ -1,0 +1,18 @@
+<div>
+    <div></div>
+    <div class="imageryDownloadListContainer">
+        <div data-bind="foreach: downloadItemsList">
+            <div class="downloadServiceEntry defaultBorder fivePixelBorderRadius">
+                <div data-bind="text: $data.name"></div>
+                <ul class="imageryDownloadLinkList" data-bind="foreach: $data.values">
+                    <li>
+                        <a class="" data-bind="attr:{href: $data.url},text: $data.label"></a>
+                <span class="exportDownloadListSizeValue">
+                    (<span data-bind="text:$data.size"></span>)
+                </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

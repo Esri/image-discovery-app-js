@@ -1,0 +1,222 @@
+{
+    "values": {
+        "portalConfiguration": {
+            "url": "http://diagram2.esri.com",
+            "itemsPath": "/sharing/rest/content/items"
+        },
+        "baseViewer": {
+            "geometryServiceUrl": "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
+            "locators": [
+                {
+                    "url": "http://tasks.arcgis.com/ArcGIS/rest/services/WorldLocator/GeocodeServer"
+                }
+            ],
+            "weatherWidget": {
+                "configurationUrl": "config/widgets/WeatherWidgetConfig.json"
+            },
+            "socialMediaWidget": {
+                "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
+            },
+            "printWidget": {
+                "printTaskUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+
+            }
+        },
+        "imageryViewer": {
+            "discoverGeometryUploadTask": {
+                "uploadUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
+                "geoprocessingTaskUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/FileToFeatures",
+                "uploadSHPFileParameterName": "uploadSHPFile",
+                "uploadKMLFileParameterName": "uploadKMLFile",
+                "uploadKMZFileParameterName": "uploadKMZFile",
+                "spatialReferenceWKIDParameterName": "env:outSR",
+                "outputFeaturesParameterName": "outFeatures",
+                "isAsync": true
+            },
+            "exportConfiguration": {
+                "image": {
+                    "height": 800,
+                    "width": 600
+                },
+                "footprints": {
+                    "task": {
+                        "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                        "featureInputParameter": "Input_JSON_String",
+                        "outputUrlParameter": "Report_URL",
+                        "isAsync": true
+                    }
+                }
+            },
+            "utmLookup": {
+                "url": "config/data/utm/UTMWKIDLookup.json"
+            },
+            "reporting": {
+                "html": {
+                    "templateURL": "templates/htmlReport.html"
+                }
+            },
+            "resultsFormatting": {
+                "displayFormats": {
+                    "date": "dd-MM-yyyy"
+                },
+                "floatPrecision": 1
+            }
+        }
+    },
+    "configurationSettings": [
+        {
+            "category": "Mapping Configuration",
+            "fields": [
+                {
+                    "type": "boolean",
+                    "fieldName": "showLegend",
+                    "tooltip": "Show/Hide the Legend",
+                    "label": "Legend",
+                    "value": false
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "overview",
+                    "tooltip": "Show/Hide the Overview Map",
+                    "label": "Overview Map",
+                    "value": false
+                }
+            ]
+        },
+        {
+            "category": "Header Settings",
+            "fields": [
+                {
+                    "type": "boolean",
+                    "fieldName": "showHeader",
+                    "tooltip": "Show Header",
+                    "label": "Show Header",
+                    "value": true
+                },
+                {
+                    "type": "string",
+                    "fieldName": "headerText",
+                    "tooltip": "Application Title",
+                    "label": "Application Title",
+                    "stringFieldOption": "textbox",
+                    "value": "Mapping Application"
+
+                } ,
+
+                {
+                    "type": "string",
+                    "fieldName": "helpUrl",
+                    "tooltip": "Help URL",
+                    "label": "Help URL",
+                    "stringFieldOption": "textbox",
+                    "value": "http://www.esri.com"
+                },
+                {
+                    "type": "string",
+                    "fieldName": "contactUsUrl",
+                    "tooltip": "Contact Us URL",
+                    "label": "Contact Us URL",
+                    "stringFieldOption": "textbox",
+                    "value": "http://www.esri.com"
+                }
+            ]
+        },
+        {
+            "category": "Widget Configuration",
+            "fields": [
+                {
+                    "type": "boolean",
+                    "fieldName": "zoomToUserLocationWidget",
+                    "tooltip": "Show/Hide the Zoom To User Location Widget",
+                    "label": "Zoom To User Location Widget",
+                    "value": true
+
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "portalSearchWidget",
+                    "tooltip": "Show/Hide the Portal Search Widget",
+                    "label": "Portal Search Widget",
+                    "value": true
+
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "reverseGeocodeWidget",
+                    "tooltip": "Show/Hide the Find Address Widget",
+                    "label": "Find Address Widget",
+                    "value": true
+
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "drawWidget",
+                    "tooltip": "Show/Hide the Draw Widget",
+                    "label": "Draw Widget:",
+                    "value": true
+
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "identifyWidget",
+                    "tooltip": "Show/Hide the Identify Widget",
+                    "label": "Identify Widget",
+                    "value": true
+
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "printWidget",
+                    "tooltip": "Show/Hide the Print",
+                    "label": "Print Widget",
+                    "value": true
+                } ,
+                {
+                    "type": "boolean",
+                    "fieldName": "measureWidget",
+                    "tooltip": "Show/Hide the Measure Widget",
+                    "label": "Measure Widget",
+                    "value": true
+                } ,
+                {
+                    "type": "boolean",
+                    "fieldName": "swipeWidget",
+                    "tooltip": "Show/Hide the Swipe Widget",
+                    "label": "Swipe Widget",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "category": "Imagery Configuration",
+            "fields": [
+                {
+                    "type": "string",
+                    "fieldName": "imageResultDisplayFields",
+                    "tooltip": "Image Result Display Fields",
+                    "label": "Display Fields (csv)",
+                    "stringFieldOption": "textbox",
+                    "value": "Name"
+                },
+                {
+                    "type": "number",
+                    "fieldName": "maxResults",
+                    "label": "Max Results:",
+                    "tooltip": "Max Results",
+                    "constraints": {
+                        "min": 0,
+                        "max": 1000
+                    }
+                },
+                {
+                    "type": "string",
+                    "fieldName": "whereClauseAppend",
+                    "tooltip": "Where Clause Append",
+                    "label": "Where Clause Append",
+                    "stringFieldOption": "textbox",
+                    "value": "Category = 1"
+                }
+            ]
+        }
+    ]
+}

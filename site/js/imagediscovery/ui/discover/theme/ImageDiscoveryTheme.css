@@ -1,0 +1,174 @@
+.discoveryStepIcon {
+    background: url(../assets/images/stepArrow.png);
+    height: 22px;
+    width: 22px;
+    vertical-align: bottom;
+    margin-top: 3px;
+    float:right;
+
+}
+.discoveryServiceSelect{
+    width: 85%;
+}
+.discoveryServiceSelectContainer{
+    width: 45%;
+}
+.discoveryLocateContainer{
+    width: 33%;
+
+}
+
+.discoveryToolsContainer{
+    width: 35%;
+
+}
+.imageDiscoverLocatorInputContainer{
+    margin-left: 10%;
+}
+
+
+.discoveryIcon {
+    cursor: pointer;
+    background: url(../assets/images/discoverSprite.png);
+    height: 32px;
+    width: 32px;
+    float: left;
+}
+
+.discoveryIcon.byExtentUnselected {
+    background-position: 0 0;
+}
+
+.discoveryIcon.byExtentSelected {
+    background-position: 0 -96px;
+}
+
+.discoveryIcon.byBoundsUnselected {
+    background-position: 0 -32px;
+}
+
+.discoveryIcon.byBoundsSelected {
+    background-position: 0 -128px;
+}
+
+.discoveryIcon.byUploadUnselected {
+    background-position: 0 -64px;
+}
+
+.discoveryIcon.byUploadSelected {
+    background-position: 0 -160px;
+}
+
+.discoveryIcon.byPointUnselected {
+    background-position: 0 -193px;
+}
+
+.discoveryIcon.byPointSelected {
+    background-position: 0 -224px;
+}
+
+.discoveryIcon.byRectangleUnselected {
+    background-position: 0 -257px;
+}
+
+.discoveryIcon.byRectangleSelected {
+    background-position: 0 -290px;
+}
+
+.imageDiscoverySelectActions div {
+    margin: 0 10px;
+}
+
+.imageDiscoverySelectActions {
+    margin-left: 5%;
+    height: 32px;
+}
+
+.imageDiscoveryContainer {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    height: auto !important;
+}
+
+.searchByBoundsHeaderLbl, .pointBufferHeaderLbl {
+    text-align: left;
+    margin: 5px 0 3px 10px;
+    font-size: 10pt;
+}
+
+.searchByBoundsInputLbl {
+    font-size: 9pt;
+    margin-left: 7px;
+    margin-right: 2px;
+}
+
+.searchByBoundsInputDMSLbl {
+    font-size: 9pt;
+}
+
+.searchByBoundsActionContainer {
+    float: right;
+    margin-right: 5%;
+    margin-top: 10px;
+}
+
+.imageDiscoverLocatorInputContainer {
+    margin-top: 10px;
+
+}
+
+.discoveryStepContainer {
+    margin: 10px 0 10px 0;
+    font-size: 10pt;
+}
+
+.imageDiscoveryActionContent {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.nsewWidgetInputContainer {
+    margin: 10px 0;
+}
+
+.searchByBoundsDescriptionLbl {
+    font-size: 9pt;
+    text-align: left;
+    margin-left: 10%;
+}
+
+.searchByUTMEntry {
+    margin: 5px 0 5px 20%;
+    text-align: left;
+}
+
+.searchByBoundsInputUTMLbl {
+    float: left;
+    width: 80px;
+    font-size: 9pt;
+}
+
+.searchByBoundsRadioLbl {
+    vertical-align: middle;
+}
+
+.searchByBoundsContentsContainer {
+    margin-top: 10px;
+}
+
+.discoveryDescriptionStepText {
+    color: blue;
+    font-size: 8pt;
+    text-align: left;
+    margin-bottom: 13px;
+    margin-left: 5px;
+    font-family: tahoma,sans-serif;
+}
+
+.searchByPointUnitsSelect {
+    margin: 10px 0;
+}
+.searchByPointDistanceContainer {
+    margin-top: 10px;
+}

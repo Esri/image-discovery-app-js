@@ -1,0 +1,11 @@
+.searchTransparencySliderLayerName {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.searchLayerTransparencyContent {
+    width: 300px;
+}
+
+.transparencyWidgetPopupCloseIcon {
+    float: right;
+}

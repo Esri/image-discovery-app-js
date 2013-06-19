@@ -1,0 +1,88 @@
+
+ .imageFilterCheckboxContainer {
+    text-align: center;
+}
+
+.filterCheckLbl {
+    margin-right: 5px;
+}
+.imageFilterSlideRuleContainer {
+    color: black;
+    font-size: 9pt;
+}
+.imageFilterDateRangeResetIcon {
+    margin-right: 5px;
+    float: left;
+    cursor: pointer;
+}
+
+.imageFilterDateInputLbl {
+    margin-left: 22px;
+}
+
+.imageFilterSlideRuleContainer .dijitRuleLabel {
+    font-weight: normal;
+    font-size: 9pt;
+}
+
+.imageFilterStringListEntryContainer .imageFilterStringListLbl {
+    cursor: pointer;
+}
+
+.imageFilterStringListEntryContainer .imageFilterStringListLblSelected {
+    color: blue;
+}
+
+.imageFilterStringListEntryContainer .imageFilterStringListLblUnselected {
+    text-decoration: line-through;
+}
+
+.imageFilterStringListContainer {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-left: 2.5%;
+    font-size: 9pt;
+}
+
+.imageFilterWidgetContentEntry {
+    margin: 10px 0 0;
+    padding-bottom: 5px;
+}
+.imageryFilterSliderContainer, .imageFilterSlideRuleContainer{
+    width: 90%;
+    margin-left: 5%;
+}
+.imageFilterDateRangeWidgetContents{
+    height: 50px;
+}
+.imageFilterDateSelectContent{
+    float: left;
+    width: 48%;
+}
+
+.imageryFilterSliderWidget{
+    width: 200px;
+}
+.imageryFilterSliderValueContainer{
+    margin-top: 5px;
+}
+.imageryFilterSliderValueUnitsContainer{
+    margin-left: 2px;
+}
+.imageFilterStringListWrapperContainer{
+    max-height: 125px;
+    min-width: 140px;
+    padding: 3px;
+    max-width: 200px;
+    overflow: auto;
+}
+.imageFilterSliderWidgetDirectionRadios{
+    margin-bottom: 7px;
+}
+.imageFilterStringListHideAll{
+    text-align:right;
+    color: #878787;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: -5px;
+}

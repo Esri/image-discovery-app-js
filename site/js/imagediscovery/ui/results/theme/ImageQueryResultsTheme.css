@@ -1,0 +1,192 @@
+.resultActionsContainer {
+    height: 30px;
+    width: 100%;
+    background: #F7F7F7;
+}
+.clearResultsIcon, .zoomToResultsIcon, .resetAllResultFiltersIcon, .expandResultsIcon, .downloadImageryIcon, .changeResultLayerTransparencyIcon {
+    margin-top: 5px;
+    float: right;
+    visibility: visible;
+}
+.expandResultsIcon {
+    margin-right: 3%;
+
+}
+.zoomToResultsIcon, .resetAllResultFiltersIcon, .clearResultsIcon, .downloadImageryIcon, .changeResultLayerTransparencyIcon {
+    margin-right: 2%;
+}
+.resultGridCartIcon {
+    margin-left: 6px !important;
+}
+.imageResultsInfoIcon, .imageResultsZoomToIcon {
+    margin-left: 3px;
+    margin-top: 6px;
+}
+.imageResultsZoomToIcon{
+    float: left;
+}
+.field-showInformation  {
+    width: 30px;
+    height: 16px;
+}
+.field-zoomToFootprint{
+    width: 45px;
+    height: 16px;
+}
+.field-addedToCart {
+    width: 57px;
+    height: 16px;
+}
+.field-showInformation img, .field-zoomToFootprint img {
+    cursor: pointer;
+}
+.field-showThumbNail, .field-showFootprint {
+    width: 48px;
+}
+.imageResultsGridThumbnailHeaderIcon, .imageResultsGridFootprintHeaderIcon {
+    vertical-align: middle;
+}
+.queryResultsTableLabel {
+    color: #606060;
+    float: left;
+    font-family: Cambria, Georgia, Palatino, Times New Roman, serif;
+    font-size: 11pt;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+.resultsToggleIcon {
+    background: url(../assets/images/resultsToggleIcon.png) 0 50px;
+    height: 25px;
+    width: 89px;
+    float: left;
+    margin-left: 15px;
+    margin-top: 2px;
+    cursor: pointer;
+}
+.resultsToggleIconResultsSelected {
+    background-position: 0 50px;
+}
+.resultsToggleIconCartSelected {
+    background-position: 0 25px;
+}
+.resultContent {
+    width: 100%;
+    float: right;
+}
+.imageQueryResultsContainer {
+    position: relative;
+    overflow: auto;
+}
+.imageryResultsGridContainer .dgrid {
+    border-left: 0;
+    border-bottom: 0;
+}
+.dgrid-row .field-showThumbNail .dijitCheckBox, .dgrid-row .field-showFootprint .dijitCheckBox {
+    margin-left: 30%;
+    margin-top: 20%;
+}
+.resultsGridFilterHeaderLabel, .resultsGridFilterHeaderIcon {
+    float: left;
+}
+.resultsGridFilterHeaderLabel {
+    margin-right: 3px;
+}
+.queryFilterPopupContentHeader {
+    height: 20px;
+
+}
+.filterWidgetRevertIcon {
+    float: left;
+}
+.filterWidgetPopupCloseIcon {
+    float: right;
+}
+.queryFilterIconWrapper {
+    width: 16px;
+    height: 16px;
+    float: left;
+}
+.queryResultShoppingCartButton .dijitButtonNode {
+    padding: 1px 3px !important;
+    margin-top: 1px;
+}
+.imageQueryFilterSliderRangeTypeLbl {
+    cursor: pointer;
+}
+.queryResultsCountContainer {
+    margin-left: 6px;
+    line-height: 28px;
+    float: left;
+}
+.cartCheckoutContainer {
+    color: white;
+    padding: 2px 10px;
+    cursor: pointer;
+    font-size: 11pt;
+    line-height: 28px;
+    margin-left: 4px;
+    background: #73B8FD;
+    font-family: tahoma, serif;
+}
+.cartCheckoutContainer:hover {
+    background: #50A6FC;
+    color: yellow;
+}
+.activeServicesContainer {
+    float: right;
+    margin-right: 20px;
+    line-height: 150%;
+    cursor: pointer;
+    margin-top: 2px;
+    padding: 2px 10px;
+    background: white;
+}
+.activeSourceServiceEntry {
+    float: left;
+    padding: 0 5px;
+    margin: 0 5px;
+}
+.activeSourceServiceEntry:hover {
+    color: blue;
+}
+.activeSourceServiceIcon {
+    margin-right: 3px;
+    margin-top: 2px;
+}
+.activeSourceServiceEntry * {
+    float: left;
+}
+.activeSourcesContainer {
+    float: right;
+}
+.resultServicesLbl {
+    float: left;
+}
+.resultGeometryActionsContainer{
+    float: left;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+.showImageByPointUnselectedIcon {
+    background: url(../../../ui/base/grid/assets/images/thumbnailCursorUnselected.png);
+    height: 18px;
+    width: 35px;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.showImageByPointSelectedIcon {
+    background: url(../../../ui/base/grid/assets/images/thumbnailCursorSelected.png);
+    height: 18px;
+    width: 35px;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+
+
+

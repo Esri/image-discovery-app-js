@@ -1,0 +1,71 @@
+<div class="portalPublisherOuterContainer">
+    <div class="portalPublisherContainer">
+        <div class="portalUploadFormContainer" data-bind="visible:publishInputsVisible">
+            <div class="portalPublisherActionsContent">
+                <div data-bind="text: portalPublishUrl" class="publishToPortalUrlLabel"></div>
+                <div class="portalLoginClickContent" data-bind="click:logPortalUserIn, visible: noUserLoggedIn">
+                    <div class="commonIcons16 lockGo portalAccountLockIcon">
+                    </div>
+                    <span>Log In</span>
+                </div>
+                <div class="portalLoginClickContent" data-bind="click:logPortalUserOut, visible: userLoggedIn">
+                    <div class="commonIcons16 lockGo portalAccountLockIcon">
+                    </div>
+                    <span>Log Out</span>
+                </div>
+            </div>
+            <div class="portalUploadFolderContainer portalUploadInputContainer">
+                <div class="portalPublisherLabel">Folder:</div>
+                <select class="portalUploadFolderSelect"
+                        data-bind="options: userFolders,value:selectedUserFolder,optionsText: 'title', optionsValue: 'id', optionsCaption: 'Root'"></select>
+            </div>
+            <div class="portalUploadNameContainer portalUploadInputContainer">
+                <div class="portalPublisherLabel">Name:</div>
+                <input class="portalWebMapPublishTextBox" type="text" data-bind="value:webMapName"/>
+            </div>
+            <div class="portalUploadTagsContainer portalUploadInputContainer">
+                <div class="portalPublisherLabel">Tags:</div>
+                <input class="portalWebMapPublishTextBox" type="text" data-bind="value:webMapTags"/>
+            </div>
+            <div class="portalUploadDescriptionContainer portalUploadInputContainer">
+                <div class="portalPublisherLabel">Description:</div>
+                <input class="portalWebMapPublishTextBox" type="text" data-bind="value:webMapDescription"/>
+            </div>
+            <div class="portalUploadButtonContainer">
+                <button data-bind="click:showSharingContent,enable:userLoggedIn" class="portalShowPreferencesButton">
+                    Next
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="portalPublishShareContainer" data-bind="visible:sharingContentVisible">
+        <div class="portalPublishShareWithLabel">Share with:</div>
+        <div class="portalPublishShareForm">
+            <div class="publicShareContainer">
+                <input type="checkbox" data-bind="checked:shareEveryoneChecked"/>
+
+                <span>Everyone (public)</span>
+            </div>
+            <div class="groupShareContainer">
+                <input type="checkbox" data-bind="checked:shareWithGroupsChecked"/>
+                <span>These Groups:</span>
+
+                <div class="portalPublishGroupShareListContainer">
+                    <ul class="portalGroupShareList" data-bind="foreach: userGroups">
+                        <li class="portalPublishGroupItem">
+                            <input type="checkbox" data-bind="click:$parent.handleGroupShareToggle"/>
+                            <span data-bind="text:$data.title"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div>These settings will replace your current settings.</div>
+        <div class="portalSubmitShareButtonContainer">
+            <button data-bind="click:showPublishInputs" class="portalBackButton">Back</button>
+            <button data-bind="click:publishWebMap" data-bind="enable:userLoggedIn" class="portalPublishButton">
+                Publish
+            </button>
+        </div>
+    </div>
+</div>

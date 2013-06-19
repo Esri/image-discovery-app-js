@@ -1,0 +1,8 @@
+<div class="imageManipulationWidgetEntryContainer">
+    <div class="rasterFunctionFunctionEntry">
+        <span data-bind="text: rasterFunctionSelectLabel"></span>
+        <select data-bind="options: rasterFunctions ,value:selectedRasterFunction, optionsText: 'label', optionsValue: $data.widget, optionsCaption: 'None'">
+        </select>
+    </div>
+    <div data-dojo-attach-point="rasterFunctionWidgetsContainer"></div>
+</div>

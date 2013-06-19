@@ -1,0 +1,58 @@
+.imageQueryFieldEntryLabel {
+    margin-left: 3px;
+    text-align: left;
+    margin-bottom: 3px;
+}
+
+.imageQueryFieldEntryContainer {
+    margin: 5px 7px;
+    height: 35px;
+}
+
+.imageDiscoveryExpanderIcon {
+    float: left;
+}
+
+.imageDiscoveryExpanderLabel {
+    float: left;
+    margin-left: 1px;
+    font-size: 9pt;
+    color: black;
+}
+
+.imageDiscoveryByQueryExpanderContainer {
+    height: 22px;
+    cursor: pointer;
+}
+
+.imageDiscoveryByQueryContainer {
+    margin-bottom: 5px;
+}
+
+.imageDiscoveryQueryAddFieldValueIcon {
+    float: left;
+    margin-right: 5px;
+}
+
+.imageDiscoveryQueryShowAddedValuesIcon {
+    float: left;
+    margin-left: 5px;
+}
+
+.addedDiscoveryFieldValuesList {
+    list-style-type: none;
+    margin: 5px 0;
+    padding: 0;
+}
+.addedDiscoveryFieldValueEntryRemoveIcon{
+    float:left;
+    margin-right: 3px;
+    margin-top: 2px;
+}
+.addedDiscoveryFieldValuesList li{
+    height: 20px;
+}
+.addedDiscoveryFieldValueEntryLabel{
+    font-size: 8pt;
+    color: blue;
+}

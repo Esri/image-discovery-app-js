@@ -1,0 +1,16 @@
+<div class="imageryInfoWidget">
+    <div class="defaultTabContainer">
+        <span data-bind="click:attributesClick, css: {selectedTab: attributes}">Show Attributes
+        </span>
+        <span data-bind="click:thumbnailClick, css: {selectedTab: thumbnail}">Show Thumbnail
+        </span>
+    </div>
+    <div data-bind="visible: attributes" class="defaultBoxShadow defaultBorder imageInfoContainer imageInfoAttributesContainer">
+        <div data-dojo-attach-point="imageInfoEntryList" class="imageInfoEntryList"></div>
+    </div>
+    <div data-dojo-attach-point="thumbnailContainer"
+         data-bind="visible: thumbnail"
+         class="defaultBoxShadow defaultBorder imageInfoContainer imageInfoThumbnailContainer"
+         style="display:none">
+    </div>
+</div>

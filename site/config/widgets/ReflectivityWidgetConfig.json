@@ -1,0 +1,6 @@
+{
+    "wmsServiceUrl": "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?",
+    "wmsVisibleLayers": [1],
+    "wmsImageFormat": "png"
+
+}

@@ -1,0 +1,19 @@
+<div>
+    <div class="userPersistsedLayersClearContainer" data-bind="visible: hasEntries">
+        <div class="userPersistsedLayersClearLbl" data-bind="click:clearEntries">Clear Entries</div>
+    </div>
+    <div class="addedUserPersistedLayersListContainer" data-dojo-attach-point="addedUserPersistedGraphicsListContainer">
+        <ul class="viewerList" data-bind="foreach: addedUserPersistedLayers">
+            <li class="graphicsListEntry">
+                <div title="Delete Layer" class="viewerListEntryRemoveIcon commonIcons16 remove"
+                     data-bind="click:$parent.removeUserPersistedLayer"></div>
+                <div title="Add Layer To Map" class="viewerListGenericIcon commonIcons16 layerShow"
+                     data-bind="click:$parent.addPersistedLayerToMap"></div>
+                <span class="graphicsListEntryLabel" data-bind="text: $data.name"></span>
+
+                <div class="userPersistedLayersInfoIcon commonIcons16 information"
+                     data-bind="attr:{title:$data.url}"></div>
+            </li>
+        </ul>
+    </div>
+</div>

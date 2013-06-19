@@ -1,0 +1,40 @@
+<div class="reverseGeocodeContainer">
+    <div class="reverseActionsContainerOuter">
+        <div class="reverseGeocodeActionsContainer">
+            <div class="commonIcons32 pointUnselected fivePixelBorderRadius"
+                 data-bind="click: toggleDrawActive, css:{pointSelected: drawActive}"></div>
+        </div>
+        <div class="reverseGeocodeDistanceContainer">
+            <div class="reverseGeocodeDistanceLabel defaultFont">Distance (m)</div>
+            <input class="reverseGeocodeDistanceInput" type="text" data-bind="value:reverseGeocodeDistance"/>
+        </div>
+    </div>
+
+    <div class="reverseGeocodeResultsContainer" data-bind="visible: resultVisible">
+        <div class="reverseGeocodeResultsHeader">Result</div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showStreetResult">
+            <span>Street:</span>
+            <span data-bind="text:reverseGeocodeStreet"></span>
+        </div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showCityResult">
+            <span>City:</span>
+            <span data-bind="text:reverseGeocodeCity"></span>
+        </div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showStateResult">
+            <span>State:</span>
+            <span data-bind="text:reverseGeocodeState"></span>
+        </div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showZipResult">
+            <span>Zip:</span>
+            <span data-bind="text:reverseGeocodeZip"></span>
+        </div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showCertaintyResult">
+            <span>Certainty:</span>
+            <span data-bind="text:reverseGeocodeCertainty"></span>
+            <span>%</span>
+        </div>
+    </div>
+    <div data-bind="visible: noResultsVisible">
+        No Address Found
+    </div>
+</div>

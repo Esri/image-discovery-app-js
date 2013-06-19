@@ -1,0 +1,19 @@
+<div>
+    <div class="defaultTabContainer">
+        <span data-dojo-attach-point="rendererTab" data-bind="click:showRaster, css: {selectedTab: raster}">Change Renderer</span>
+        <span data-dojo-attach-point="bandsTab" data-bind="click:showBands, css: {selectedTab: bands}">Bands</span>
+        <span data-dojo-attach-point="mensurationTab"
+              data-bind="click:showMensuration, css: {selectedTab: mensuration}">Mensuration</span>
+        <span data-dojo-attach-point="mosaicOperationsTab"
+              data-bind="click:showMiscOptions, css: {selectedTab: miscOptions}">Misc.</span>
+    </div>
+    <div class="manipulationWidgetsContainer">
+        <div data-dojo-attach-point="bandReorderWidgetContainer" data-bind="visible:bands"></div>
+        <div data-bind="visible:raster" data-dojo-attach-point="rasterFunctionWidgetContainer"></div>
+        <div data-bind="visible:miscOptions">
+            <div data-dojo-attach-point="mosaicOperationWidgetContainer"></div>
+        </div>
+        <div data-bind="visible:mensuration" class="imageManipulationMensurationContainer"
+             data-dojo-attach-point="mensurationWidgetContainer"></div>
+    </div>
+</div>

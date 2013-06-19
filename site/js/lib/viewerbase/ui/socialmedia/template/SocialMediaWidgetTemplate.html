@@ -1,0 +1,26 @@
+<div>
+    <div class="socialMediaTabContainer">
+
+        <span class="socialMediaTabWrapper" data-bind="click:youtubeClick, css: {selectedTab: youtubeSelected}">
+            <div class="socialIcons youtube socialMediaTabIcon"></div>
+            <span>YouTube</span>
+        </span>
+        <span class="socialMediaTabWrapper"  data-bind="click:flickrClick, css: {selectedTab: flickrSelected}">
+            <div class="socialIcons flickr socialMediaTabIcon"></div>
+                     <span>Flickr</span>
+        </span>
+        <span class="socialMediaTabWrapper"  data-bind="click:twitterClick, css: {selectedTab: twitterSelected}">
+            <div class="socialIcons twitter socialMediaTabIcon"></div>
+                               <span>Twitter</span>
+            </span>
+    </div>
+    <div class="socialMediaWidgetTabContent" data-dojo-attach-point="youtubeContainer"
+         data-bind="visible: youtubeSelected">
+    </div>
+    <div class="socialMediaWidgetTabContent" data-dojo-attach-point="flickrContainer"
+         data-bind="visible: flickrSelected">
+    </div>
+    <div class="socialMediaWidgetTabContent" data-dojo-attach-point="twitterContainer"
+         data-bind="visible: twitterSelected">
+    </div>
+</div>

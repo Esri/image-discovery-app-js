@@ -1,0 +1,6 @@
+{
+    "wundergroundAPIKey": "<YOUR_WUNDERGROUND_API_KEY>",
+    "wundergroundAPIUrl": "http://api.wunderground.com/api/",
+    "wundergroundConditionsQueryPart": "/q/",
+    "wundergroundResponseFeatures": ["conditions","webcams","forecast10day"]
+}

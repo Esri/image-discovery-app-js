@@ -1,0 +1,83 @@
+toolbar bookmark icon:
+
+Webdesigner Depot - http://www.webdesignerdepot.com
+
+toolbar tools wrench:
+ASP.NET icons - http://www.aspneticons.com/
+
+toolbar map icon - lightening icon:
+Yusuke Kamiyamane - http://p.yusukekamiyamane.com/
+
+draw menu pencil icon:
+You can do whatever you want with these icons (use on web or in desktop applications) as long as you don?t pass them off as your own and remove this readme file. A credit statement and a link back to
+http://led24.de/iconset/ or http://led24.de/ would be appreciated.
+
+Follow us on twitter http://twitter.com/gasyoun or email leds24@gmail.com
+512 icons 20/05/2009
+
+
+gear icon:
+Free for commercial use (Include link to authors website)
+Webdesigner Depot - http://www.webdesignerdepot.com
+
+
+time icon:
+Alexandre Moore - http://sa-ki.deviantart.com/
+LGPL
+
+
+binoculars:
+Everaldo Coelho - http://www.everaldo.com/
+
+
+upload.png in ui/base/assets/image
+Dat Nguyen - http://splashyfish.com/
+
+accordion move icon:
+http://visualidiot.com/go/strabo
+base/assets/images/move.png
+
+
+
+globe icon and cart icon for grid toggle
+Webdesigner Depot - http://www.webdesignerdepot.com
+
+
+clear all filters
+http://www.icons-land.com/
+Free for commercial use (Include link to authors website) | (Read me)
+
+info icon for messaging widget
+LGPL
+Free for commercial use (Include link to package)
+
+ Designer
+Liam McKay - http://wefunction.com/contact/
+
+small common icon slider:
+
+ Free for commercial use (Pass along with this Readme.txt) | (Read me)
+ http://www.iconfinder.com/data/icons/ledicons/readme.txt
+ Designer
+ Gasyoun - http://twitter.com/gasyoun
+
+ up icon in imagery footer
+
+ http://tango.freedesktop.org/The_People
+
+
+ 16x16 clock
+ You can do whatever you want with these icons (use on web or in desktop applications) as long as you don’t pass them off as your own and remove this readme file. A credit statement and a link back to
+ http://led24.de/iconset/ or http://led24.de/ would be appreciated.
+
+ Follow us on twitter http://twitter.com/gasyoun or email leds24@gmail.com
+ 512 icons 20/05/2009
+
+
+ refresh icon:
+ Free for all. It is allowed to adapt the icons. No agreement of author necessary, no link or name mention claimed.
+
+
+ binoculars:
+ LGPL
+  Everaldo Coelho - http://www.everaldo.com/

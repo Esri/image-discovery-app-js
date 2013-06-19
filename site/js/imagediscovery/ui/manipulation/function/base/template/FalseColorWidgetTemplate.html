@@ -1,0 +1,18 @@
+<div class="rasterFunctionWidgetEntryContainer">
+    <div class="rasterFunctionTextBoxEntry">
+        <div class="rasterFunctionTextBoxLabelEntry">NIR Band</div>
+        <span data-dojo-attach-point="nirBandSelectInput" data-dojo-attach-event="onChange: handleBandSelectChange"
+              data-dojo-type="dijit/form/Select" style="width:${selectWidgetWidth}"></span>
+    </div>
+    <div class="rasterFunctionTextBoxEntry">
+        <div class="rasterFunctionTextBoxLabelEntry">Red Band</div>
+        <span data-dojo-attach-point="redBandSelectInput" data-dojo-attach-event="onChange: handleBandSelectChange"
+              data-dojo-type="dijit/form/Select" style="width:${selectWidgetWidth}"></span>
+    </div>
+    <div class="rasterFunctionTextBoxEntry">
+        <div class="rasterFunctionTextBoxLabelEntry">Green Band</div>
+        <span data-dojo-attach-point="greenBandSelectInput" data-dojo-attach-event="onChange: handleBandSelectChange"
+              data-dojo-type="dijit/form/Select" style="width:${selectWidgetWidth}"></span>
+    </div>
+    <div data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:applyFunction">Apply</div>
+</div>

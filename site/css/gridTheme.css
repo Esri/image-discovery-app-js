@@ -1,0 +1,34 @@
+/*
+    syntax for a field is .field-{FieldLabel}
+
+    if the field label is "Label" the style for the cells would be .field-Label
+
+ */
+.field-Name {
+    width: 305px;
+
+}
+
+.field-SatAzimuth {
+    width: 150px;
+
+}
+
+.field-SunAzimuth {
+    width: 135px;
+
+}
+
+.field-SunElevation {
+    width: 135px;
+
+}
+
+.field-AcquisitionDate {
+    width: 120px;
+
+}
+
+.field-CloudCover {
+    width: 110px;
+}

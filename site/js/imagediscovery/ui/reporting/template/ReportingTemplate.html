@@ -1,0 +1,23 @@
+<div>
+    <div class="generateReportSelectContainer">
+        <span class="imageExportEntryLbl">Format:</span>
+        <select data-bind="options: reportFormat ,value:selectedReportFormat, optionsText: 'label', optionsValue: 'value'"></select>
+    </div>
+    <div class="exportImageEntry" style="height:32px">
+        <span class="imageExportEntryLbl" data-bind="text:extentLabel"></span>
+        <select data-bind="options: extractModes ,value:selectedExtractMode, optionsText: 'label', optionsValue: 'value'"></select>
+
+        <div class="reportingUserDrawIconContainer">
+            <div class="threePixelBorderRadius commonIcons32 rectangleUnselected imageExportUserDrawRectangleButton"
+                 title="Draw Rectangle"
+                 data-bind="click:toggleUserDraw, visible: isDrawMode ,css: {rectangleSelected: userDrawActive}">
+            </div>
+        </div>
+    </div>
+    <div class="reportWidgetActionsContainer">
+        <div data-dojo-type="dijit/form/Button"
+             data-dojo-attach-event="onClick:handleGenerateReport">
+            Generate
+        </div>
+    </div>
+</div>

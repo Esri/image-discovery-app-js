@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/ui/socialmedia/base/flickr/model/FlickrWidgetViewModel",["dojo/_base/declare","../../socialmediabase/model/BaseSocialMediaSearchWidgetViewModel"],function(_1,_2){return _1([_2],{});});

@@ -1,0 +1,77 @@
+@import url(../ui/base/theme/imagerySpriteTheme.css);
+@import url(../ui/filter/theme/ImageFilterWidgeTheme.css);
+@import url(../ui/discover/theme/ImageDiscoveryTheme.css);
+@import url(../ui/info/theme/ImageInfoTheme.css);
+@import url(../ui/query/theme/ImageQueryWidgetTheme.css);
+@import url(../ui/mensuration/theme/MensurationWidgetTheme.css);
+@import url(../ui/manipulation/theme/ImageManipulationTheme.css);
+@import url(../ui/manipulation/function/theme/RasterFunctionTheme.css);
+@import url(../ui/export/theme/ImageryExportTheme.css);
+@import url(../ui/manipulation/bands/theme/BandReorderTheme.css);
+@import url(../ui/discover/upload/theme/GeometryUploadTheme.css);
+@import url(../ui/results/theme/ImageQueryResultsTheme.css);
+@import url(../ui/download/theme/DownloadWidgetTheme.css);
+@import url(../ui/reporting/theme/ReportingTheme.css);
+@import url(../ui/swipe/theme/SwipeWidgetTheme.css);
+@import url(../ui/transparency/theme/TransparencySliderWidgetTheme.css);
+@import url(../ui/base/grid/theme/baseGridTheme.css);
+
+html, body {
+    overflow: hidden;
+}
+.locateToolbarContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.imageInfoWindow .windowContent {
+    height: 97%;
+}
+.navigationToolbar .navigationControl {
+    display: block;
+}
+.esriControlsBR {
+    bottom: 30px;
+}
+.mapScaleAndCoordsContainer {
+    bottom: 30px;
+}
+.activeMessagingWidget {
+    top: 10px;
+}
+.logoHeaderContainer {
+    height: 80px;
+}
+.headerMainText {
+    right: 5%;
+}
+.loadingImageServiceMessageContainer {
+    font-size: 2em;
+    height: 10%;
+    left: 35%;
+    margin: auto;
+    padding-top: 4%;
+    position: absolute;
+    text-align: center;
+    top: 38%;
+    width: 30%;
+}
+.loadingImageServiceText, .loadingImageServiceThrobber {
+    float: left;
+    margin-left: 20px;
+}
+.loadingImageServiceThrobber {
+    background: url(./assets/images/imageServiceLoadingThrobber.gif);
+    height: 32px;
+    width: 32px;
+}
+
+
+
+
+
+
+
+
+
+
+

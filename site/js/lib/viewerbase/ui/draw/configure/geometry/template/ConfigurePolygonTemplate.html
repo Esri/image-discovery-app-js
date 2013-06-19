@@ -1,0 +1,30 @@
+<div class="configureDrawGeometryContainer">
+    <div class="annotationOptionContainer">
+        <span class="annotationsOptionsLabel">Fill Style</span>
+        <select data-bind="options: fillStyles ,value:selectedFillStyle, optionsText: 'label', optionsValue: 'value'"></select>
+    </div>
+    <div class="annotationOptionContainer">
+        <span class="annotationsOptionsLabel">Outline Style</span>
+        <select data-bind="options: outlineStyles ,value:selectedOutlineStyle, optionsText: 'label', optionsValue: 'value'"></select>
+    </div>
+    <div class="annotationOptionContainer">
+        <span class="annotationsOptionsLabel">Outline Width</span>
+        <select data-bind="options: outlineWidths ,value:selectedOutlineWidth"></select>
+    </div>
+    <div class="annotationOptionContainer">
+        <span class="annotationsOptionsLabel">Angle</span>
+        <select data-bind="options: angles ,value:selectedAngle"></select>
+    </div>
+    <div data-dojo-attach-point="transparencySliderContainer"></div>
+
+    <div class="colorPickerTextContainer">
+        <span class="colorPickerText"
+              data-bind="click: setOutlineColorMode,css:{colorPickerTextSelected: outlineColorActive}"> Outline Color</span>
+        <span class="colorPickerText"
+              data-bind="click: setFillColorMode,css:{colorPickerTextSelected: fillColorActive}"> Fill Color</span>
+
+    </div>
+
+
+    <div class="configureDrawColorPickerContainer" data-dojo-attach-point="colorPickerContainer"></div>
+</div>

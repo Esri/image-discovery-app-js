@@ -1,0 +1,15 @@
+<div class="imageFilterWidgetContentEntry imageryFilterSliderWidget">
+    <div class="imageFilterSliderWidgetDirectionRadios">
+        <div style="float:left;margin-right:10px">
+            <input name="${queryField}_filterSlider" data-dojo-attach-point="lessThanRadioButton" data-dojo-type="dijit/form/RadioButton" data-dojo-attach-event="onChange: handleFilterDirectionChange" checked="true"></span>
+            <span class="imageQueryFilterSliderRangeTypeLbl" data-dojo-attach-event="onclick:enableLessThanFilter">Less Than</span>
+        </div>
+        <div>
+            <span name="${queryField}_filterSlider" data-dojo-attach-point="greaterThanRadioButton" data-dojo-type="dijit/form/RadioButton"  data-dojo-attach-event="onChange: handleFilterDirectionChange" ></span>
+            <span class="imageQueryFilterSliderRangeTypeLbl"data-dojo-attach-event="onclick:enableGreaterThanFilter">Greater Than</span>
+        </div>
+    </div>
+    <div data-dojo-attach-point="sliderRuleContainer" class="imageFilterSlideRuleContainer"></div>
+    <div data-dojo-attach-point="imageQueryWidgetContents" class="imageQueryWidgetContents">
+    </div>
+</div>

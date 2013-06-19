@@ -1,0 +1,41 @@
+<div>
+    <div class="searchByBoundsInputFormatContainer">
+        <input data-dojo-attach-point="searchByBoundsFormatDDRadio" data-dojo-type="dijit/form/RadioButton"
+               data-bind="click:decimalDegreeClick"
+               checked="true"
+               name="searchByBoundsInputFormat"/>
+        <span class="searchByBoundsRadioLbl">DD</span>
+        <input data-dojo-attach-point="searchByBoundsFormatDMSRadio" data-dojo-type="dijit/form/RadioButton"
+               data-bind="click:dmsClick"
+               name="searchByBoundsInputFormat"/>
+        <span class="searchByBoundsRadioLbl">DMS</span>
+
+        <input data-dojo-attach-point="searchByBoundsFormatUTMRadio" data-dojo-type="dijit/form/RadioButton"
+               data-bind="click:utmClick"
+               name="searchByBoundsInputFormat"/>
+        <span class="searchByBoundsRadioLbl">UTM</span>
+        <input data-dojo-attach-point="searchByBoundsFormatNSEWRadio" data-dojo-type="dijit/form/RadioButton"
+               data-bind="click:nsewClick"
+               name="searchByBoundsInputFormat"/>
+        <span class="searchByBoundsRadioLbl">NSEW</span>
+    </div>
+
+    <div class="searchByBoundsContentsContainer">
+
+        <div data-bind="visible: isCurrentView(views.decimalDegree)"
+             data-dojo-attach-point="decimalDegreesWidgetContainer"></div>
+
+        <div data-bind="visible: isCurrentView(views.degreeMinuteSeconds)"
+             data-dojo-attach-point="dmsWidgetContainer"></div>
+
+        <div data-bind="visible: isCurrentView(views.utm)" data-dojo-attach-point="utmWidgetContainer"></div>
+
+        <div data-bind="visible: isCurrentView(views.nsew)" data-dojo-attach-point="nsewWidgetContainer"></div>
+
+        <div class="searchByBoundsActionContainer">
+             <span data-dojo-type="dijit/form/Button" data-dojo-attach-point="searchByBoundsSubmitButton"
+                   data-dojo-attach-event="onClick: handleSearchByBounds">Search
+             </span>
+        </div>
+    </div>
+</div>

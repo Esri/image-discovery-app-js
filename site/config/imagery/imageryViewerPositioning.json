@@ -1,0 +1,70 @@
+{
+
+    "layerTransparency": {
+        "x": 745,
+        "y": 30
+    },
+    "draw": {
+        "x": 425,
+        "y": 30
+    },
+    "time": {
+        "x": 10,
+        "y": 50
+    },
+    "accordion": {
+        "x": 70,
+        "y": 75
+    },
+    "throbber": {
+        "x": 70,
+        "y": 45
+    },
+    "imageInfo": {
+        "x": 300,
+        "y": 100
+    },
+    "messaging": {
+        "x": 140,
+        "y": 33
+    },
+    "navigation": {
+        "y": 0
+    },
+    "download": {
+        "y": 400,
+        "x": 20
+    },
+    "downloadItems": {
+        "y": 200,
+        "x": 450
+    },
+    "imageryTime": {
+        "x": 745,
+        "y": 200
+    },
+    "featureEdit": {
+        "x": 610,
+        "y": 50
+    },
+    "measure": {
+        "x": 380,
+        "y": 125
+    },
+    "identify": {
+        "x": 425,
+        "y": 175
+    },
+    "reverseGeocode": {
+        "x": 600,
+        "y": 150
+    },
+    "analysis":{
+   		"x": 400,
+   		"y": 250
+   	}
+
+
+
+
+}

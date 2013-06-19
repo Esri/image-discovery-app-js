@@ -1,0 +1,46 @@
+<div>
+    <div class="configureViewerEntry fivePixelBorderRadius defaultBackground defaultBorder blueBoxShadow"
+         data-dojo-attach-point="addedUserPersistedBasemapsListContainer" data-bind="visible:showSavedBookmarks">
+        <div class="configurePersistedViewerEntryLabel">Basemaps</div>
+        <ul data-dojo-attach-point="addedBasemapsList" class="viewerList persistedConfigureViewerEntryList"
+            data-bind="foreach: addedBaseMaps">
+            <li class="graphicsListEntry">
+                <div title="Add Basemap" class="viewerListGenericIcon commonIcons16 add"
+                     data-bind="click:$parent.addBasemap"></div>
+                <div title="Remove Saved Basemap" class="viewerListEntryRemoveIcon commonIcons16 remove"
+                     data-bind="click:$parent.removeBasemap"></div>
+
+                <span class="graphicsListEntryLabel" data-bind="text: $data.label"></span>
+            </li>
+        </ul>
+    </div>
+    <div class="configureViewerEntry fivePixelBorderRadius defaultBackground defaultBorder blueBoxShadow"
+         data-dojo-attach-point="addedUserPersistedReferenceLayerListContainer">
+        <div class="configurePersistedViewerEntryLabel">Reference Layers</div>
+        <ul data-dojo-attach-point="addedReferenceLayerList" class="viewerList persistedConfigureViewerEntryList"
+            data-bind="foreach: addedReferenceLayers">
+            <li class="graphicsListEntry">
+                <div title="Add Reference Layer" class="viewerListGenericIcon commonIcons16 add"
+                     data-bind="click:$parent.addReferenceLayer"></div>
+                <div title="Remove Saved Reference Layer" class="viewerListEntryRemoveIcon commonIcons16 remove"
+                     data-bind="click:$parent.removeReferenceLayer"></div>
+
+                <span class="graphicsListEntryLabel" data-bind="text: $data.label"></span>
+            </li>
+        </ul>
+    </div>
+    <div class="configureViewerEntry fivePixelBorderRadius defaultBackground defaultBorder blueBoxShadow"
+         data-dojo-attach-point="addedUserPersistedBasemapsListContainer" data-bind="visible:showSavedLocators">
+        <div class="configurePersistedViewerEntryLabel">Locators</div>
+        <ul data-dojo-attach-point="addedLocatorsList" class="viewerList persistedConfigureViewerEntryList"
+            data-bind="foreach: addedLocators">
+            <li class="graphicsListEntry">
+                <div title="Add Locator" class="viewerListGenericIcon commonIcons16 add"
+                     data-bind="click:$parent.addLocator"></div>
+                <div title="Remove Saved Locator" class="viewerListEntryRemoveIcon commonIcons16 remove"
+                     data-bind="click:$parent.removeLocator"></div>
+                <span class="graphicsListEntryLabel" data-bind="text: $data.label"></span>
+            </li>
+        </ul>
+    </div>
+</div>

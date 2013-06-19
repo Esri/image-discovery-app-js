@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/ui/window/ContentLoaderWindowWidget",["dojo/_base/declare","dojo/_base/lang","../../base/DataLoaderSupport","./WindowWidget"],function(_1,_2,_3,_4){return _1([_4,_3],{postCreate:function(){this.inherited(arguments);this.loadContents();},loadContents:function(){if(this.contentUrl!=null){this.loadText(this.contentUrl,_2.hitch(this,this.handleLoadContentResponse));}},handleLoadContentResponse:function(_5){if(_5!=null){this.setContent(_5);}}});});

@@ -1,0 +1,34 @@
+.discoveryStepContainer {
+
+    float: left;
+    margin-top: -2px;
+}
+
+.discoveryDescriptionStepText {
+    clear: both;
+    width: 95%;
+    margin-top: -5px;
+}
+
+.imageDiscoveryContainer {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    left: -10px;
+    overflow-x: hidden;
+}
+.imageGridFootprintHeaderIcon, .imageGridThumbnailHeaderIcon{
+    margin-top: -16px;
+}
+.queryFilterPopupContent{
+    max-width: 300px;
+}
+.searchPortalContentContainer div .dijitTextBox{
+    vertical-align: 3px !important;
+    margin-right: 5px;
+}
+.toolbarDropdownContainer{
+    width: 244px !important;
+}
+
+

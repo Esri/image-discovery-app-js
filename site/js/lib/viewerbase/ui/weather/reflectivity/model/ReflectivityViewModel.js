@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/ui/weather/reflectivity/model/ReflectivityViewModel",["dojo/_base/declare"],function(_1){return _1([],{reflectivityUrl:"http://mesonet.agron.iastate.edu/GIS/radview.phtml",constructor:function(){},handleReflectivityInfoClick:function(){window.open(this.reflectivityUrl);}});});

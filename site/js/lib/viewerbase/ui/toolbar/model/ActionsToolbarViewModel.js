@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/ui/toolbar/model/ActionsToolbarViewModel",["dojo/_base/declare"],function(_1){return _1([],{constructor:function(){this.toolsButtonVisible=ko.observable(true);this.layersButtonVisible=ko.observable(true);}});});

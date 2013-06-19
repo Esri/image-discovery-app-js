@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/ui/portal/base/model/PortalResultsListViewModel",["dojo/_base/declare","dojo/Evented"],function(_1,_2){return _1([_2],{ADD_RESULT_TO_MAP:"addResultToMap",constructor:function(){var _3=this;this.results=ko.observableArray();this.addResultToMap=function(_4){if(_4==null){return;}_3.emit(_3.ADD_RESULT_TO_MAP,_4.resultItem);};},clearResults:function(){this.results.removeAll();}});});

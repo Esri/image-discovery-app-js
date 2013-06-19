@@ -1,0 +1,15 @@
+.imageryIcons {
+    background: url(../assets/images/imagerySprite.png);
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+.imageryIcons.analysis {
+    background-position: 0 0;
+}
+.imageryIcons.discover {
+    background-position: 0 -18px;
+}
+.imageryIcons.lockRaster{
+    background-position: 0 -39px;
+}

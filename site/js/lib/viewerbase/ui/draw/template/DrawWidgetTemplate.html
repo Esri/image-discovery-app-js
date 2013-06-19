@@ -1,0 +1,45 @@
+<div class="drawWindow">
+    <div class="defaultTabContainer">
+        <span  data-bind="click:showDraw, css: {selectedTab: drawVisible}">Create</span>
+        <span data-bind="click:showConfiguration, css: {selectedTab: configurationVisible}">Configure</span>
+        <span  data-bind="visible:showGraphicsListTab, click:showGraphicsList, css: {selectedTab: graphicsListVisible}">Added</span>
+        <span data-bind="visible:showSavedGraphicsTab, click:showUserPersistedGraphics, css: {selectedTab: userPersistedGraphicsVisible}">Saved</span>
+    </div>
+    <div class="drawWindowInputIconsContainer" data-dojo-attach-point="drawWindowInputIconsContainer"
+         data-bind="visible: drawVisible">
+        <div class="threePixelBorderRadius commonIcons32 pointUnselected"
+             data-bind="visible: showDrawPointIcon, css: {pointSelected: pointActive}"
+             title="Draw Point" data-dojo-attach-event="onclick:handlePointDrawClick"></div>
+        <div class="threePixelBorderRadius commonIcons32 lineUnselected"
+             data-bind="visible: showDrawLineIcon, css: {lineSelected: lineActive}"
+             title="Draw Line" data-dojo-attach-event="onclick:handleLineDrawClick"></div>
+        <div class="threePixelBorderRadius commonIcons32 polylineUnselected"
+                data-bind="visible: showDrawPolylineIcon, css: {polylineSelected: polylineActive}"
+                title="Draw Polyline" data-dojo-attach-event="onclick:handlePolylineDrawClick"></div>
+        <div data-bind="visible: showDrawPolygonIcon, css: {polygonSelected: polygonActive}"
+             class="threePixelBorderRadius commonIcons32 polygonUnselected"
+             title="Draw Polygon" data-dojo-attach-event="onclick:handlePolygonDrawClick"></div>
+        <div data-bind="visible: showDrawRectangleIcon,css: {rectangleSelected: rectangleActive}"
+             class="threePixelBorderRadius commonIcons32 rectangleUnselected"
+             title="Draw Rectangle" data-dojo-attach-event="onclick:handleRectangleDrawClick"></div>
+        <div class="threePixelBorderRadius commonIcons32 textUnselected"
+             data-bind="visible: showDrawTextIcon,css: {textSelected: textActive}"
+             title="Draw Text" data-dojo-attach-event="onclick:handleTextDrawClick"></div>
+    </div>
+    <div class="drawFreehandContainer"
+         data-bind="visible: freehandContainerVisible">
+        <span data-dojo-type="dijit/form/CheckBox" data-dojo-attach-event="onChange:handleFreehandToggled"
+              data-dojo-attach-point="freeHandDrawCheckbox"></span>
+        <span class="drawFreehandCheckboxLabel" data-dojo-attach-event="onclick:toggleFreehand">Freehand</span>
+    </div>
+    <div class="drawWindowConfigureContainer" data-bind="visible: configurationVisible"
+         data-dojo-attach-point="drawWindowConfigureContainer">
+    </div>
+    <div class="drawWindowGraphicsListContainer" data-dojo-attach-point="drawWindowGraphicsListContainer"
+         data-bind="visible: graphicsListVisible">
+    </div>
+    <div class="drawWindowUserPersistedGraphicsContainer"
+         data-dojo-attach-point="drawWindowUserPersistedGraphicsContainer"
+         data-bind="visible: userPersistedGraphicsVisible">
+    </div>
+</div>

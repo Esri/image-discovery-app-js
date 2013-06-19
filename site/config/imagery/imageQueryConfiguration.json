@@ -1,0 +1,146 @@
+{
+    "imageQueryLayers": [
+        {
+            "url": "http://ec2-54-215-5-19.us-west-1.compute.amazonaws.com:6080/arcgis/rest/services/DG_AA/AA_0531/ImageServer",
+            "label": "Catalog",
+            "queryWhereClauseAppend": "Category = 1"
+        },
+        {
+            "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",
+            "label": "TN Lidar",
+            "queryWhereClauseAppend": "Category = 1"
+        }
+    ],
+
+    "imageQueryResultDisplayFields": [
+        {
+            "field": "OBJECTID",
+            "label": "id",
+            "filter": {
+                "enable": false
+            },
+            "gridOptions": {
+                "hiddenOnDisplay": true
+            }
+        },
+        {
+            "field": "SensorName",
+            "label": "Sensor",
+            "filter": {
+                "enable": true
+            }
+        },
+
+        {
+            "field": "Name",
+            "label": "Name",
+            "filter": {
+                "enable": false
+            },
+            "style": {
+                "color": "red"
+            },
+            "gridOptions": {
+                "canHide": true
+            }
+        },
+        {
+            "field": "LowPS",
+            "label": "GSD",
+            "filter": {
+                "enable": true,
+                "unitsLabel": "m"
+            },
+            "style": {
+                "fontWeight": "bold",
+                "fontFace": "italic"
+            }
+        },
+        {
+            "field": "ProductName",
+            "label": "Product",
+            "filter": {
+                "enable": true
+            }
+        },
+        {
+            "field": "Tag",
+            "label": "Tag",
+            "filter": {
+                "enable": true
+            }
+        },
+        {
+            "field": "AcquisitionDate",
+            "label": "Acquisition",
+            "filter": {
+                "enable": true
+            }
+        }
+
+    ],
+    "resultsFormatting": {
+        "displayFormats": {
+            "date": "dd-MM-yyyy"
+        },
+        "floatPrecision": 1
+    },
+    "discoverGeometryUploadTask": {
+        "uploadUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
+        "geoprocessingTaskUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/FileToFeatures",
+        "uploadSHPFileParameterName": "uploadSHPFile",
+        "uploadKMLFileParameterName": "uploadKMLFile",
+        "uploadKMZFileParameterName": "uploadKMZFile",
+        "spatialReferenceWKIDParameterName": "env:outSR",
+        "outputFeaturesParameterName": "outFeatures",
+        "isAsync": true
+    },
+    "searchConfiguration": {
+        "maxQueryResults": 100,
+        "allowCheckAllSearchResultThumbnails": true
+    },
+    "exportConfiguration": {
+        "image": {
+            "height": 800,
+            "width": 600
+        },
+        "footprints": {
+            "task": {
+                "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                "featureInputParameter": "Input_JSON_String",
+                "outputUrlParameter": "Report_URL",
+                "isAsync": true
+
+            }
+        }
+    },
+    "utmLookup": {
+        "url": "config/data/utm/UTMWKIDLookup.json"
+    },
+    "reporting": {
+        "html": {
+            "templateURL": "templates/htmlReport.html"
+        }
+    },
+    "rasterFunctions": {
+        "allowDefaults": false,
+        "defaults": {
+            "stretch": {
+                "show": true
+            },
+            "hillshade": {
+                "show": true
+            },
+            "aspect": {
+                "show": true
+            },
+            "statistics": {
+                "show": true
+            },
+            "ndvi": {
+                "show": true
+            }
+
+        }
+    }
+}

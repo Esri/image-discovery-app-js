@@ -1,0 +1,26 @@
+<div>
+    <div data-dojo-attach-point="annotationOptionsButtons" class="annotationOptionButtons">
+        <div title="Set Point Symbol"
+             data-bind="click: showPointConfiguration, css:{pointSelected: pointConfigurationActive}"
+             class="annotationOptionButton pointUnselected"></div>
+        <div title="Set Line Symbol"
+             data-bind="click: showLineConfiguration, css:{polylineSelected: lineConfigurationActive}"
+                    class="annotationOptionButton polylineUnselected"></div>
+        <div title="Set Polygon Symbol"
+             data-bind="click: showPolygonConfiguration, css:{polygonSelected: polygonConfigurationActive}"
+             class="annotationOptionButton polygonUnselected"></div>
+        <div title="Set Rectangle Symbol"
+             data-bind="click: showRectangleConfiguration, css:{rectangleSelected: rectangleConfigurationActive}"
+             class="annotationOptionButton rectangleUnselected"></div>
+        <div title="Set Text Symbol"
+             data-bind="click: showTextConfiguration, css:{textSelected: textConfigurationActive}"
+             class="annotationOptionButton textUnselected"></div>
+    </div>
+    <div data-dojo-attach-point="configurePointWidgetContainer" data-bind="visible:pointConfigurationActive"></div>
+    <div data-dojo-attach-point="configureLineWidgetContainer" data-bind="visible:lineConfigurationActive"></div>
+    <div data-dojo-attach-point="configureRectangleWidgetContainer" data-bind="visible:rectangleConfigurationActive"></div>
+    <div data-dojo-attach-point="configurePolygonWidgetContainer" data-bind="visible:polygonConfigurationActive"></div>
+
+    <div data-dojo-attach-point="configureTextWidgetContainer" data-bind="visible:textConfigurationActive"></div>
+
+</div>

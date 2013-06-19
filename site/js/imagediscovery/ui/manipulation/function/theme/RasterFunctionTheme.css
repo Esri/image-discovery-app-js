@@ -1,0 +1,38 @@
+.rasterFunctionActiveFunctionContent {
+    font-size: 8pt;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.rasterFunctionConfEntry {
+    margin: 2px 0 7px;
+    text-align: right;;
+}
+
+.rasterFunctionFunctionEntry {
+    margin-bottom: 5px;
+}
+
+.rasterFunctionTextBoxEntry {
+    margin: 10px 0;
+}
+
+.rasterFunctionTextBoxEntry .rasterFunctionTextBoxLabelEntry {
+    width: 6em;
+    float: left;
+    margin-right: 10px;
+}
+
+.rasterFunctionWidgetEntryContainer {
+    margin-top: 20px;
+
+}
+
+.applyFunction {
+    margin-bottom: 20px;
+}
+
+.applyRasterFunctionButtonContainer {
+    text-align: right;
+    margin-bottom: 5px;
+}

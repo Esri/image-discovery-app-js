@@ -1,0 +1,25 @@
+<div class="measurementWidget">
+    <div class="measureIcon areaIcon"
+         title="Area"
+         data-bind="click:handleAreaButtonClick, css: {measurementIconSelected: areaActive}"></div>
+    <div class="measureIcon distanceIcon"
+         title="Distance"
+         data-bind="click:handleDistanceButtonClick, css: {measurementIconSelected: distanceActive}"></div>
+    <div class="measureIcon locationIcon"
+         title="Location"
+         data-bind="click:handleLocationButtonClick, css: {measurementIconSelected: locationActive}"></div>
+    <div class="measurementSpacer">|</div>
+    <select data-bind="visible: areaActive, options: areaMeasurementUnits ,value:selectedAreaUnits, optionsText: 'label', optionsValue: 'value'">
+    </select>
+    <select data-bind="visible: distanceActive, options: distanceMeasurementUnits ,value:selectedDistanceUnits, optionsText: 'label', optionsValue: 'value'">
+    </select>
+    <select data-bind="visible: locationActive, options: locationUnits ,value:selectedLocationUnits, optionsText: 'label', optionsValue: 'value'">
+    </select>
+
+
+    <div class="measurementResultsContainer">
+        <span data-bind="text: measureMethodText" class="measureMethodText"></span>
+        <span data-bind="text: resultsText" class="measureResultsText"></span>
+        <span data-bind="text: unitsText"  class="measureUnitsText"></span>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+{
+    "windowTitle": "Image Discovery Application",
+    "portal": {
+        "url": "http://diagram2.esri.com"
+    },
+    "map": {
+        "initializationParameters": {
+            "wrapAround180": true,
+            "force3DTransforms": false,
+            "navigationMode": "classic"
+        },
+        "useBasemapGallery": true,
+        "initialExtent": {
+            "xmin": 1041989.569,
+            "ymin": 714227.5922,
+            "xmax": 7269467.138,
+            "ymax": 4994701.176,
+            "spatialReference": {
+                "wkid": 102100
+            }
+        },
+        "basemaps": {
+            "topo": {
+                "label": "World Topographic",
+                "icon": "./images/thumbs/worldTopo.png",
+                "url": "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/"
+            },
+            "worldStreets": {
+                "label": "World Streets",
+                "icon": "./images/thumbs/worldStreet.png",
+                "url": "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
+            }
+        },
+        "operationalLayers": [
+
+
+        ],
+        "referenceLayers": [
+            {
+                "type": "dynamic",
+                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer"
+            }
+        ],
+        "legend": {
+            "create": false
+        },
+        "overview": {
+            "create": false
+        }
+    },
+    "geometryServiceUrl": "http://kacstags1.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+
+    "locators": [
+        {
+            "url": "http://tasks.arcgis.com/ArcGIS/rest/services/WorldLocator/GeocodeServer"
+        }
+    ],
+    "toolsAccordion": {
+        "create": true,
+        "showTabInNavigation": false
+    },
+    "header": {
+        "display": false,
+        "headerText": "Discovery Application",
+        "headerImage": "images/kacstLogo.png",
+        "contact": {
+            "label": "Contact Us",
+            "url": "http://www.kacst.edu.sa/en/contact/Pages/default.aspx"
+        },
+        "help": {
+            "label": "Help",
+            "url": "http://www.kacst.edu.sa/en/Pages/default.aspx"
+        }
+    },
+    "configureWidget": {
+        "create": false
+    },
+    "bookmarks": {
+        "url": "config/bookmarks.json"
+    },
+    "footerTogglerWidget": {
+        "create": true
+    },
+    "portalSearchWidget": {
+        "create": true
+    },
+    "reflectivityWidget": {
+        "create": false,
+        "configurationUrl": "config/widgets/ReflectivityWidgetConfig.json"
+    },
+    "weatherWidget": {
+        "create": false,
+        "configurationUrl": "config/widgets/WeatherWidgetConfig.json"
+    },
+    "socialMediaWidget": {
+        "create": false,
+        "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
+    },
+    "measureWidget": {
+        "create": true
+    },
+    "drawWidget": {
+        "create": true
+    },
+    "swipeWidget": {
+        "create": true
+    },
+    "layersWidget": {
+        "allowAddLayers": true,
+        "showWKIDInAddLayers": true
+    },
+    "toolsBar": {
+        "showToolsDropdown": true,
+        "showLayersButton": true,
+        "showConfigureLocatorsIcon": false,
+        "showBookmarksButton": true
+    },
+    "printWidget": {
+        "create": true,
+        "printTaskUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+    },
+    "reverseGeocodeWidget": {
+        "create": true
+    },
+    "identifyWidget": {
+        "create": true
+    },
+    "zoomToWidget": {
+        "create": true,
+        "stateJson": "config/data/coordinates/states_web_merc.json",
+        "countyJson": "config/data/coordinates/counties_web_merc.json"
+    },
+    "logging": {
+        "window": {
+            "create": false
+        }
+    }
+
+
+}

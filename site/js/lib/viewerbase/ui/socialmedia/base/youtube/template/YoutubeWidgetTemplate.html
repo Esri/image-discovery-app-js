@@ -1,0 +1,37 @@
+<div>
+    <div class="socialMediaDescriptionLabel">Search YouTube for videos</div>
+    <div class="socialMediaSearchEntry">
+        <div class="socialMediaSearchEntryLabel">Use this keyword:</div>
+        <input type="text" data-bind="value:searchTerm, valueUpdate: 'afterkeydown',  event:{keyup:checkForSearchEnter}"/>
+    </div>
+    <div class="socialMediaSearchEntry">
+        <div class="socialMediaSearchEntryLabel">At this location:</div>
+        <span class="socialMediaLocationDisplayContainer">
+            <span>
+                <span>lon:</span>
+                <span data-bind="text:searchLocationLon"></span>
+            </span>
+            <span>
+                <span>lat:</span>
+                <span data-bind="text:searchLocationLat"></span>
+            </span>
+        </span>
+
+    </div>
+    <div class="socialMediaSearchEntry socialMediaSearchDistanceEntryContainer">
+        <div class="socialMediaSearchEntryLabel">Within this distance:</div>
+        <div data-dojo-attach-point="distanceSliderContainer" class="socialMediaDistanceSliderContainer">
+
+        </div>
+        <span data-bind="text:searchDistance"></span>
+        <span>km</span>
+    </div>
+    <div class="socialMediaSearchEntry">
+        <div class="socialMediaSearchEntryLabel">From the past:</div>
+        <select data-bind="options: dateEntries ,value:selectedDateEntry, optionsText: 'label', optionsValue: 'value'"></select>
+    </div>
+    <div class="socialMediaSearchButtonsContainer">
+        <button class="dijitButtonNode" data-bind="click:handleClear">Clear</button>
+        <button class="dijitButtonNode" data-bind="click:handleSearch">Search</button>
+    </div>
+</div>

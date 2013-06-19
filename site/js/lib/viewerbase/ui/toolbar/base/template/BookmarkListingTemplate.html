@@ -1,0 +1,19 @@
+<div class="bookmarksToolbarDropdown toolbarDropdownContent" data-bind="visible:visible">
+    <div class="createBookmarkIcon commonIcons16 add" title="Create Bookmark"
+         data-bind="visible:showCreateBookmarkIcon, click:showCreateBookmark"></div>
+    <div class="bookmarksToolbarDropdownBookmarkEntries" data-bind="foreach:_bookmarks">
+        <div class="threePixelBorderRadius bookmarkToolbarEntry" data-bind="click: $parent.handleBookmarkClick">
+            <span class="bookmarkToolbarEntryText" data-bind="text: $data.label"></span>
+        </div>
+    </div>
+    <div class="bookmarksToolbarDropdownBookmarkRemovableEntries" data-bind="foreach:_removableBookmarks">
+        <div class="bookmarkToolbarEntryOuter">
+            <div title="Remove Bookmark" class="commonIcons16 bookmarkToolbarEntryRemoveIcon remove"
+                 data-bind="click: $parent.removeClick"></div>
+            <div class="threePixelBorderRadius bookmarkToolbarEntry" data-bind="click: $parent.handleBookmarkClick">
+                <span class="bookmarkToolbarEntryText" data-bind="text: $data.label"></span>
+            </div>
+        </div>
+
+    </div>
+</div>

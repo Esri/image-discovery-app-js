@@ -1,0 +1,24 @@
+<div>
+    <div class="exportImageEntry" style="height:32px">
+        <span class="imageExportEntryLbl" data-bind="text:extentLabel"></span>
+        <select data-bind="options: extractModes ,value:selectedExtractMode, optionsText: 'label', optionsValue: 'value'"></select>
+
+        <div class="imageryDownloadUserDrawIconContainer">
+            <div
+                    class="threePixelBorderRadius commonIcons32 rectangleUnselected imageExportUserDrawRectangleButton"
+                    title="Draw Rectangle"
+                    data-bind="click:toggleUserDraw, visible: isDrawMode ,css: {rectangleSelected: userDrawActive}">
+            </div>
+        </div>
+    </div>
+    <div class="downloadFootprintsSelectContainer">
+        <span class="imageExportEntryLbl" data-bind="text:formatLabel"></span>
+        <select data-bind="options: downloadFormats ,value:selectedDownloadFormat, optionsText: 'label', optionsValue: 'value'"></select>
+    </div>
+    <div class="resultsCartDownloadActionsContainer">
+        <div data-dojo-type="dijit/form/Button"
+             data-dojo-attach-event="onClick: handleFootprintsExportClick">
+            Generate
+        </div>
+    </div>
+</div>

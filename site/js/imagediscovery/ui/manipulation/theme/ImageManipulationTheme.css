@@ -1,0 +1,67 @@
+.imageManipulationTabContainer {
+    margin-bottom: 20px;
+    line-height: 26px;
+    font-weight: normal;
+}
+
+.imageManipulationTabContainer span {
+    border: 1px solid #DFDFDF;
+    border-top: 0;
+    cursor: pointer;
+    padding: 5px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    -webkit-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+
+.imageManipulationWidgetEntryContainer {
+    margin: auto;
+    text-align: center;
+    height: 100%;
+}
+
+.imageManipSliderLbl {
+    margin-bottom: 5px;
+    text-align: left;
+
+}
+
+.clearAllImageManipulationValues {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    color: gray;
+    text-decoration: underline;
+
+}
+.imageManipulationActionsContainer span {
+}
+
+.imageManipulationMensurationContainer {
+    margin-left: 15px;
+}
+
+.imageManipulationSelectSensorHeader {
+    margin: 15px 0;
+}
+
+.imageManipulationSelectContainer {
+    margin-bottom: 15px;
+}
+
+.imageManipulationTagAndSensorSelectContainer {
+    margin-top: 10px;
+}
+
+.imageManipulationContainer {
+    height: auto !important;
+    padding-top: 0;
+}
+
+.imageManipulationDisabledContainer {
+    padding: 20px 10px;
+}
+.imageManipulationWindowContent{
+    padding-top: 0 !important;
+}
