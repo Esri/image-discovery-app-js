@@ -87,7 +87,7 @@
     },
     "discoverGeometryUploadTask": {
         "uploadUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
-        "geoprocessingTaskUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/FileToFeatures",
+        "geoprocessingTaskUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/fileToFeatures",
         "uploadSHPFileParameterName": "uploadSHPFile",
         "uploadKMLFileParameterName": "uploadKMLFile",
         "uploadKMZFileParameterName": "uploadKMZFile",
