@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+
+/site/.idea/*
+/site/site.iml
