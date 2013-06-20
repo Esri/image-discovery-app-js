@@ -1,8 +1,8 @@
 {
     "values": {
         "portalConfiguration": {
-            "url": "http://diagram2.esri.com",
-            "itemsPath": "/sharing/rest/content/items"
+            "url": "//afmcomstaging.esri.com/arcgis",
+            "itemsPath": "sharing/rest/content/items"
         },
         "baseViewer": {
             "geometryServiceUrl": "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",

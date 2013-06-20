@@ -67,7 +67,9 @@
             //mgrsPrecision - precision for MGRS readout
             "mgrsPrecision": 6,
             //showLatLong - shows lat/long mouse readout
-            "showLatLong": true
+            "showLatLong": true,
+			 //showScaleBar - shows the scale bar
+            "showScaleBar": true
         },
         //max zoom level the application can zoom into for setting extent
         "maxClientZoom": 16
@@ -166,7 +168,9 @@
     },
     //identifyWidget  - "create" child, when true creates the identify widget. identify widget identifies on operational layers
     "identifyWidget": {
-        "create": true
+        "create": true,
+		//maxResults  - max results to display in identify, defaults to 50
+		"maxResults": 10
     },
     //timeSliderWidget  - "create" child, when true displays the time slider widget
     "timeSliderWidget": {

@@ -1,9 +1,8 @@
 <div class='viewerMainToolbar'>
-    <div class="mainToolbarContents">
+    <div class="mainToolbarContents" data-dojo-attach-point="mainToolbarContents">
         <div class="locateToolbarContainer locateToolbarContainerOnMap" data-dojo-attach-point="locateToolbarContainer">
             <input value="${locateDefaultInput}" type="text" class="locateTextBox defaultBorder"
                    data-dojo-attach-point="locateTextBox"/>
-
             <div data-dojo-attach-point="locateButton" title="Locate"
                  class="defaultBorder searchButton searchButtonIcon"></div>
             <div data-dojo-attach-point="configureLocateButton"
@@ -16,7 +15,6 @@
                   data-dojo-props="iconClass:'commonIcons16 wrench'">
                 <span>Tools</span>
             </span>
-
         <div data-dojo-attach-point="layersButton" class="actionsToolbarButton"
              data-bind="visible: layersButtonVisible">
             <div class="commonIcons16 list actionsToolbarIcon"></div>
