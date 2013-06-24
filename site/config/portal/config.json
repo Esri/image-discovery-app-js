@@ -140,10 +140,10 @@
         }
     ],
     "values": {
-        "geometryServiceUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+        "geometryServiceUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
         "locators": [
             {
-                "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
+                "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
             }
         ],
         "whereClauseAppend": "Category = 1",
@@ -164,8 +164,8 @@
         "drawWidget": true,
         "showHeader": false,
         "portalConfiguration": {
-            "url": "http://diagram2.esri.com",
-            "itemsPath": "sharing/rest/content/items"
+            "url": "https://afmcomstaging.esri.com",
+            "itemsPath": "arcgis/sharing/rest/content/items"
         },
         "baseViewer": {
             "weatherWidgetConfiguration": {

@@ -3,16 +3,15 @@
 <head>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
     <link rel="stylesheet" type="text/css"
-          href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css"/>
+          href="//afmcomstaging.esri.com/arcgis/jsapi/jsapi/js/esri/css/esri.css"/>
     <link rel="stylesheet" type="text/css"
-          href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/tundra/tundra.css"/>
+          href="//afmcomstaging.esri.com/arcgis/jsapi/jsapi/js/dojo/dijit/themes/tundra/tundra.css"/>
 
 
     <script type="text/javascript">
-        var isBuild = false;
         djConfig = {ioPublish: true, isDebug: false, debugAtAllCosts: true, parseOnLoad: true, locale: 'en', packages: [
-            {name: "imagediscovery", location: location.pathname.replace(/[^/]+$/, '') + "../js/" + (isBuild ? "build/" : "") + "imagediscovery"},
-            {name: "esri", location: "http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri"}
+            {name: "imagediscovery", location: location.pathname.replace(/[^/]+$/, '') + "../js/imagediscovery"},
+            {name: "esri", location: "//afmcomstaging.esri.com/arcgis/jsapi/jsapi/js/esri/"}
 
         ]};
     </script>
@@ -34,9 +33,9 @@
     </table>
 
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"></script>
+<script src="//afmcomstaging.esri.com/arcgis/jsapi/jsapi/"></script>
 <script type="text/javascript">
-    require(["dojo/domReady!", "esri/config", "imagediscovery/reporting/base/HtmlReport"], function (domReady, config, HtmlReport) {
+    require(["dojo/domReady!", "esri/config", "imagediscovery/ui/reporting/base/HtmlReport"], function (domReady, config, HtmlReport) {
         if (window.opener._reportingWidgetParameters == null) {
             return;
         }

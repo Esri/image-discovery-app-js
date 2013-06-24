@@ -1,7 +1,7 @@
 {
     "windowTitle": "Image Discovery Application",
     "portal": {
-        "url": "afmcomstaging.esri.com/arcgis"
+        "url": "https://afmcomstaging.esri.com/arcgis"
     },
     "map": {
         "initializationParameters": {
