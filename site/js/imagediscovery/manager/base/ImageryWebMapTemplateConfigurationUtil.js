@@ -1,19 +1,21 @@
 define([
     "dojo/_base/declare",
     "esriviewer/manager/base/WebMapTemplateConfigurationUtil",
-    "dojo/_base/lang",
-    "dojo/_base/array"
+    "dojo/_base/lang"
 ],
-    function (declare, WebMapTemplateConfigurationUtil, lang, array) {
+    function (declare, WebMapTemplateConfigurationUtil, lang) {
         return  declare(
             [WebMapTemplateConfigurationUtil],
             {
-                //  catalogServiceUrlParameter: "imageServiceUrl",
                 displayFieldsParameter: "imageResultDisplayFields",
                 maxResultsParameter: "maxResults",
                 whereClauseAppendParameter: "whereClauseAppend",
-                //  imageryParameters: ["imageServiceUrl", "imageResultDisplayFields", "maxResults", "whereClauseAppend"],
-                imageryParameters: [ "imageResultDisplayFields", "maxResults", "whereClauseAppend"],
+                imageryParameters: [ "imageResultDisplayFields", "maxResults", "whereClauseAppend", "imageryViewer"],
+
+                constructor: function () {
+                    //add the imagery viewer specific widgets
+                    this.appConfigToViewerWidgetConfigLookup.swipeWidget = "swipeWidget";
+                },
                 init: function () {
                     this.ignoreProcessingConfigurationEntries = this.ignoreProcessingConfigurationEntries.concat(this.imageryParameters);
                 },
@@ -25,20 +27,11 @@ define([
                     this.viewerConfiguration.footerTogglerWidget = {
                         create: true
                     };
-                    //      this.viewerConfiguration.header.display = false;
                     this.deferred.resolve({viewerConfig: this.viewerConfiguration, imageryConfig: this.imageryConfiguration});
                 },
                 _createImageryConfig: function () {
-                    var imageryDefaultConfiguration = {};
-                    var currentFieldValue;
-                    for (var key in this.templateResponse.values) {
-                        if (array.indexOf(this.imageryParameters, key) > -1) {
-                            currentFieldValue = this.templateResponse.values[key];
-                            imageryDefaultConfiguration[key] = currentFieldValue;
-                        }
-                    }
-                    this.imageryConfiguration = this._applicationConfigurationToImageryConfiguration(imageryDefaultConfiguration);
-                    this.imageryConfiguration = lang.mixin(this.imageryConfiguration, this.templateResponse.values.imageryViewer);
+                    this.imageryConfiguration = this._applicationConfigurationToImageryConfiguration(this.defaultConfiguration.values);
+                    //       this.imageryConfiguration = lang.mixin(this.imageryConfiguration, this.templateResponse.values.imageryViewer);
                     //add the webmap
                 },
                 handleWebMapItemLoaded: function (webMapItem) {
@@ -59,7 +52,7 @@ define([
                                         if (currServiceType === VIEWER_GLOBALS.SERVICE_TYPES.IMAGE_SERVER) {
                                             //this is the search image service
                                             this.webMapQueryLayerItems.push({label: currOpLayer.title, url: currOpLayer.url});
-                                            addedSearchServiceUrls[currentOpLayerUrlLower] =  currOpLayer.url;
+                                            addedSearchServiceUrls[currentOpLayerUrlLower] = currOpLayer.url;
                                         }
                                     }
                                 }
@@ -92,18 +85,20 @@ define([
                     };
                     for (var key in imageryDefaultConfiguration) {
                         if (key === this.whereClauseAppendParameter) {
+                            var whereClauseAppend = this.appConfig[this.whereClauseAppendParameter] != null ? this.appConfig[this.whereClauseAppendParameter] : imageryDefaultConfiguration[key];
                             for (i = 0; i < this.webMapQueryLayerItems.length; i++) {
-                                this.webMapQueryLayerItems[i].queryWhereClauseAppend = imageryDefaultConfiguration[key];
+                                this.webMapQueryLayerItems[i].queryWhereClauseAppend = whereClauseAppend;
                             }
                         }
                         else if (key === this.maxResultsParameter) {
-                            var maxResults = imageryDefaultConfiguration[key];
+                            var maxResults = this.appConfig[this.maxResultsParameter] != null ? this.appConfig[this.maxResultsParameter] : imageryDefaultConfiguration[key];
                             if (maxResults != null) {
                                 imageryConfiguration.searchConfiguration.maxQueryResults = parseInt(maxResults, 10);
                             }
                         }
                         else if (key === this.displayFieldsParameter) {
-                            var displayFieldsArray = imageryDefaultConfiguration[key].replace(/\s+/g, "").split(",");
+                            var displayFieldsString = this.appConfig[this.displayFieldsParameter] != null ? this.appConfig[this.displayFieldsParameter] : imageryDefaultConfiguration[key];
+                            var displayFieldsArray = displayFieldsString.replace(/\s+/g, "").split(",");
                             var currentFieldName;
                             for (i = 0; i < displayFieldsArray.length; i++) {
                                 currentFieldName = displayFieldsArray[i];
@@ -116,6 +111,9 @@ define([
                                 });
                             }
                         }
+                    }
+                    for (var key in imageryDefaultConfiguration.imageryViewer) {
+                        imageryConfiguration[key] = imageryDefaultConfiguration.imageryViewer[key];
                     }
                     return imageryConfiguration;
                 }

@@ -1,8 +1,24 @@
 <div>
-    <div class="defaultTabContainer">
+    <div class="searchPortalTabContainer">
         <span  data-bind="click:showSearch, css: {selectedTab: searchVisible}">Search</span>
         <span data-bind="click:showResults, css: {selectedTab: resultsVisible}">Results</span>
+
     </div>
+
+    <div class="searchPortalActionsContent">
+        <div data-bind="text: portalSearchUrl" class="searchPortalUrlLabel"></div>
+        <div class="portalSearchLoginClickContent" data-bind="click:logPortalUserIn, visible: noUserLoggedIn">
+            <div class="commonIcons16 lockGo searchPortalAccountLockIcon">
+            </div>
+            <span>Log In</span>
+        </div>
+        <div class="portalSearchLoginClickContent" data-bind="click:logPortalUserOut, visible: userLoggedIn">
+            <div class="commonIcons16 lockGo searchPortalAccountLockIcon">
+            </div>
+            <span>Log Out</span>
+        </div>
+    </div>
+
     <div class="searchPortalContentContainer">
         <div data-bind="visible:searchVisible">
             <div style="width: 45%;vertical-align: -3px" data-dojo-type="dijit/form/TextBox" data-dojo-attach-event="onKeyUp: onQueryStringKeyUp" data-dojo-attach-point="portalQueryString"></div>

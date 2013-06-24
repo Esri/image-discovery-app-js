@@ -52,7 +52,7 @@
 
     "locators": [
         {
-            "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
+            "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
         }
     ],
     "toolsAccordion": {
@@ -135,6 +135,4 @@
             "create": false
         }
     }
-
-
 }
