@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/loader/esrirequires/EsriRequires",["esri/arcgis/utils","esri/layers/FeatureLayer","esri/layers/KMLLayer","esri/layers/MapImageLayer","esri/layers/WMSLayer","esri/dijit/BasemapGallery","esri/dijit/OverviewMap","esri/arcgis/Portal"],function(_1){return _1([],{});});

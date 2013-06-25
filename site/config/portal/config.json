@@ -164,8 +164,8 @@
         "drawWidget": true,
         "showHeader": false,
         "portalConfiguration": {
-            "url": "https://afmcomstaging.esri.com",
-            "itemsPath": "arcgis/sharing/rest/content/items"
+            "url": "https://afmcomstaging.esri.com/arcgis",
+            "itemsPath": "sharing/rest/content/items"
         },
         "baseViewer": {
             "weatherWidgetConfiguration": {

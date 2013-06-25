@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/util/GeometryUtils",["dojo/_base/declare"],function(_1){return _1([],{polygonIntersectsPoint:function(pt,_2){var _3=_2.getExtent();return (pt.x>=_3.xmin&&pt.y>=_3.ymin&&pt.x<=_3.xmax&&pt.y<=_3.ymax);},ddToDMSString:function(_4){var _5;var _6=false;if(_4<0){_6=true;_4=Math.abs(_4);}_5=Math.floor(_4)+"°"+Math.floor((_4-Math.floor(_4))*60)+"'"+Math.floor(((_4-Math.floor(_4))*60-Math.floor((_4-Math.floor(_4))*60))*60)+"\"";if(_6){_5="-"+_5;}return _5;}});});
