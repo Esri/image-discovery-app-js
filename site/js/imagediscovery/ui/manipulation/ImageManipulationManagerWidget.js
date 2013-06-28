@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageManipulationManagerTemplate.html",
+    "xstyle/css!./theme/ImageManipulationTheme.css",
     "dojo/_base/lang",
     "dojo/topic",
     "dojo/on",
@@ -10,7 +11,7 @@ define([
     "./ImageManipulationContentWidget",
     "./model/ImageManipulationManagerViewModel"
 ],
-    function (declare, template, lang, topic, on, ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
+    function (declare, template, theme,lang, topic, on, ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {

@@ -3,6 +3,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/SearchLayersTransparencyWidget.html",
+    "xstyle/css!./theme/TransparencySliderWidgetTheme.css",
     "dojo/topic",
     "dojo/on",
     "dojo/_base/lang",
@@ -10,7 +11,7 @@ define([
     "dojo/dom-construct",
     "./SearchLayerSliderWidget"
 ],
-    function (declare, template, topic, on, lang, UITemplatedWidget, domConstruct, SearchLayerSliderWidget) {
+    function (declare, template,theme, topic, on, lang, UITemplatedWidget, domConstruct, SearchLayerSliderWidget) {
         return declare(
             [UITemplatedWidget],
             {

@@ -1,10 +1,11 @@
 define([
     "dojo/_base/declare",
+    "xstyle/css!./theme/ImageFilterWidgetTheme.css",
     "dojo/_base/lang",
     "dojo/topic",
     "dojo/_base/array"
 ],
-    function (declare, lang, topic, array) {
+    function (declare, theme,lang, topic, array) {
         return declare(
             [],
             {

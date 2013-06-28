@@ -1,21 +1,3 @@
-@import url(../ui/base/theme/imagerySpriteTheme.css);
-@import url(../ui/filter/theme/ImageFilterWidgeTheme.css);
-@import url(../ui/discover/theme/ImageDiscoveryTheme.css);
-@import url(../ui/info/theme/ImageInfoTheme.css);
-@import url(../ui/query/theme/ImageQueryWidgetTheme.css);
-@import url(../ui/mensuration/theme/MensurationWidgetTheme.css);
-@import url(../ui/manipulation/theme/ImageManipulationTheme.css);
-@import url(../ui/manipulation/function/theme/RasterFunctionTheme.css);
-@import url(../ui/export/theme/ImageryExportTheme.css);
-@import url(../ui/manipulation/bands/theme/BandReorderTheme.css);
-@import url(../ui/discover/upload/theme/GeometryUploadTheme.css);
-@import url(../ui/results/theme/ImageQueryResultsTheme.css);
-@import url(../ui/download/theme/DownloadWidgetTheme.css);
-@import url(../ui/reporting/theme/ReportingTheme.css);
-@import url(../ui/swipe/theme/SwipeWidgetTheme.css);
-@import url(../ui/transparency/theme/TransparencySliderWidgetTheme.css);
-@import url(../ui/base/grid/theme/baseGridTheme.css);
-
 html, body {
     overflow: hidden;
 }

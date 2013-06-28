@@ -1,14 +1,9 @@
 {
     "imageQueryLayers": [
         {
-            "url": "http://ec2-54-215-5-19.us-west-1.compute.amazonaws.com:6080/arcgis/rest/services/DG_AA/AA_0531/ImageServer",
+            "url": "http://kacstags1:6080/arcgis/rest/services/KACST/GlobalREF/ImageServer",
             "label": "Catalog",
-            "queryWhereClauseAppend": "Category = 1"
-        },
-        {
-            "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",
-            "label": "TN Lidar",
-            "queryWhereClauseAppend": "Category = 1"
+            "queryWhereClauseAppend": "Category = 5"
         }
     ],
 

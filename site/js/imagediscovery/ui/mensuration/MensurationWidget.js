@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/MensurationWidgetTemplate.html",
+    "xstyle/css!./theme/MensurationWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "esriviewer/ui/base/UITemplatedWidget",
@@ -19,7 +20,7 @@ define([
     "esri/graphic",
     "dojo/_base/array"
 ],
-    function (declare, template, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic,array) {
+    function (declare, template,theme, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic,array) {
         return declare(
             [UITemplatedWidget, DataLoaderSupport],
             {

@@ -3,6 +3,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/SwipeWidgetTemplate.html",
+    "xstyle/css!./theme/SwipeWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/sniff",
@@ -16,7 +17,7 @@ define([
     "dojo/dom-style",
     "dijit/form/Button"
 ],
-    function (declare, template, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
+    function (declare, template,theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {

@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageQueryResultTemplate.html",
+    "xstyle/css!./theme/ImageQueryResultsTheme.css",
     "dojo/topic",
     "dojo/_base/xhr",
     "dojo/query",
@@ -25,7 +26,7 @@ define([
     "esriviewer/ui/draw/base/MapDrawSupport",
     "dijit/TooltipDialog"
 ],
-    function (declare, template, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport,TooltipDialog) {
+    function (declare, template,theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport,TooltipDialog) {
         return declare(
             [ UITemplatedWidget, MapDrawSupport],
             {

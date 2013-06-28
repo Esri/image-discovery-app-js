@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageQueryWidgetTemplate.html",
+    "xstyle/css!./theme/ImageQueryWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/array",
     "dojo/on",
@@ -14,7 +15,7 @@ define([
     "./base/AddedFieldValuesTooltip",
     "esriviewer/map/base/LayerQueryParameters"
 ],
-    function (declare, template, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
+    function (declare, template, theme, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {
@@ -55,9 +56,9 @@ define([
                             returnGeometry: false,
                             outFields: this.queryFields,
                             callback: lang.hitch(this, this.handleQueryFieldValuesResponse, currentQueryLayerController),
-                            errback: lang.hitch(this,this.handleQueryFieldValuesError)
+                            errback: lang.hitch(this, this.handleQueryFieldValuesError)
                         });
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS,queryParamsForLayer );
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS, queryParamsForLayer);
                     }
                 },
                 loadViewerConfigurationData: function () {
@@ -70,7 +71,7 @@ define([
                         this.discoveryQueryFields = discoveryQueryFields;
                     }
                 },
-                handleQueryFieldValuesError: function(){
+                handleQueryFieldValuesError: function () {
                     this.onNoUniqueValuesReturned();
                 },
                 handleQueryFieldValuesResponse: function (queryLayerController, queryFieldValuesResponse) {
@@ -78,7 +79,7 @@ define([
                         var valuesLookup = {};
                         var usedValuesLookup = {};
                         var currentFeature;
-                        if(queryFieldValuesResponse.features.length == 0){
+                        if (queryFieldValuesResponse.features.length == 0) {
                             this.onNoUniqueValuesReturned();
                             return;
                         }
@@ -181,7 +182,7 @@ define([
                     var isStringField;
                     var idx = 0;
                     for (var key in this.addedFieldValuesTooltipLookup) {
-                        isStringField = array.indexOf(this.stringFieldNames,key) > -1;
+                        isStringField = array.indexOf(this.stringFieldNames, key) > -1;
                         currentTooltip = this.addedFieldValuesTooltipLookup[key];
                         if (currentTooltip.hasFieldValues()) {
                             currentFieldValues = currentTooltip.getFieldValues();
@@ -212,7 +213,7 @@ define([
                         this.addedFieldValuesTooltipLookup[key].hide();
                     }
                 },
-                onNoUniqueValuesReturned: function(){
+                onNoUniqueValuesReturned: function () {
 
                 }
             });

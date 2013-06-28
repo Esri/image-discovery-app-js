@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/GeometryUploadWidgetTemplate.html",
+    "xstyle/css!./theme/GeometryUploadTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/dom-attr",
@@ -11,7 +12,7 @@ define([
     "esri/tasks/DataFile",
     "esri/geometry/Extent"
 ],
-    function (declare, template, topic, lang, domAttr, UITemplatedWidget,Button,esriRequest,Geoprocessor,DataFile,Extent) {
+    function (declare, template,theme, topic, lang, domAttr, UITemplatedWidget,Button,esriRequest,Geoprocessor,DataFile,Extent) {
         return declare(
             [UITemplatedWidget],
             {

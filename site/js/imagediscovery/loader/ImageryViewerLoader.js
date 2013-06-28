@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "xstyle/css!../theme/ImageryViewerTheme.css",
+    "xstyle/css!../ui/base/theme/imagerySpriteTheme.css",
     "dojo/has",
     "dojo/sniff",
     "dojo/topic",
@@ -14,7 +15,7 @@ define([
     "../manager/ImageryViewerManagerWindow",
     "xstyle/css"
 ],
-    function (declare, cssTheme, has, sniff, topic, Deferred, ViewerLoader, ImageryViewerManager, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
+    function (declare, cssTheme, spriteTheme, has, sniff, topic, Deferred, ViewerLoader, ImageryViewerManager, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
         return declare(
             [ViewerLoader],
             {

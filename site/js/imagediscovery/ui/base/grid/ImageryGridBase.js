@@ -1,5 +1,6 @@
 define([
     "dojo/_base/declare",
+    "xstyle/css!./theme/baseGridTheme.css",
     "dgrid/OnDemandGrid",
     "dgrid/extensions/ColumnHider",
     "dojo/dom-class",
@@ -8,7 +9,7 @@ define([
     "dojo/query",
     "dijit/registry"
 ],
-    function (declare, OnDemandGrid, ColumnHider, domClass, domStyle, lang, query, registry) {
+    function (declare,theme, OnDemandGrid, ColumnHider, domClass, domStyle, lang, query, registry) {
         return declare(
             [OnDemandGrid, ColumnHider],
             {

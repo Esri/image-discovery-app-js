@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/BandReorderTemplate.html",
+    "xstyle/css!./theme/BandReorderTheme.css",
     "dojo/topic",
     "dojo/_base/array",
     "dojo/_base/lang",
@@ -9,7 +10,7 @@ define([
     "dijit/form/Select",
     "dijit/form/Button"
 ],
-    function (declare, template, topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
+    function (declare, template,theme, topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
         return declare(
             [ImageManipulationWidgetBase],
             {

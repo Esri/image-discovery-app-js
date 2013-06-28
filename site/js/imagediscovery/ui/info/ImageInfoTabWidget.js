@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageInfoTabContainerTemplate.html",
+    "xstyle/css!./theme/ImageInfoTheme.css",
     "dojo/topic",
     "dojo/date/locale",
     "dojo/_base/lang",
@@ -9,7 +10,7 @@ define([
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/ImageInfoViewModel"
 ],
-    function (declare, template, topic, locale, lang, domConstruct, domClass, UITemplatedWidget, ImageInfoViewModel) {
+    function (declare, template,theme, topic, locale, lang, domConstruct, domClass, UITemplatedWidget, ImageInfoViewModel) {
         return declare(
             [UITemplatedWidget],
             {
