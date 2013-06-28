@@ -168,7 +168,7 @@
     margin-top: 3px;
 }
 .showImageByPointUnselectedIcon {
-    background: url(../../../ui/base/grid/assets/images/thumbnailCursorUnselected.png);
+    background: url(../assets/images/thumbnailCursorUnselected.png);
     height: 18px;
     width: 35px;
     float: left;
@@ -178,7 +178,7 @@
 }
 
 .showImageByPointSelectedIcon {
-    background: url(../../../ui/base/grid/assets/images/thumbnailCursorSelected.png);
+    background: url(../assets/images/thumbnailCursorSelected.png);
     height: 18px;
     width: 35px;
     float: left;
