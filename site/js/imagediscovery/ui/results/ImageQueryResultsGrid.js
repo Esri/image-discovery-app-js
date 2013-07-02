@@ -41,6 +41,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, lang.hitch(this, this.highlightResultsFromPointIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, lang.hitch(this, this.highlightResultsFromRectangleIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromPointIntersect));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromRectangleIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
 
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ORDER_BY_LOCK_RASTER, lang.hitch(this, this.orderByLockRaster));
@@ -98,7 +99,7 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
-                                    console.dir(geom);
+                                    //console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }
@@ -158,6 +159,44 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
+                                    this.grid.scrollTo(geom);
+                                    scrolledIntoView = true;
+                                }
+                                currentVisibleItem.isHighlighted = true;
+
+                                currentVisibleItem.showThumbNail = true;
+                                //update the checkbox
+                                var showThumbnailInput = query("input[name=showThumbNail]", row.element);
+                                var currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
+                                if (currentCheckDijit) {
+                                    currentCheckDijit.set("checked", true);
+                                }
+                            }
+                        }
+                        else {
+                            if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
+                                this.grid.unhighlightYellowRow(row);
+                                currentVisibleItem.isHighlighted = false;
+                            }
+                        }
+                    }
+                },
+                showCorrespondingImageFromRectangleIntersect: function (envelope) {
+                    var scrolledIntoView = false;
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
+                    var currentVisibleItem;
+                    var currentGeometry;
+                    var row;
+                    for (var i = 0; i < unfilteredResults.length; i++) {
+                        currentVisibleItem = unfilteredResults[i];
+                        currentGeometry = currentVisibleItem.geometry;
+                        row = this.grid.row(currentVisibleItem);
+                        if (envelope.contains(currentGeometry.getExtent())) {
+                            if (row && row.element) {
+                                this.grid.highlightRowYellow(row);
+                                if (!scrolledIntoView) {
+                                    var geom = {y: row.element.offsetTop};
+                                    //console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }

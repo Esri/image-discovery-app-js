@@ -11,6 +11,7 @@ define([
                 ACTIVATE_POINT_SELECT: "activatePointSelect",
                 ACTIVATE_RECTANGLE_SELECT: "activateRectangleSelect",
                 ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT: "activateShowImageByPointSelect",
+                ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT: "activateShowImageByRectangleSelect",
                 SHRINK_GRID: "shrinkGrid",
                 EXPAND_GRID: "expandGrid",
                 cart: ko.observable(true),
@@ -21,6 +22,7 @@ define([
                 pointSelectionActive: ko.observable(false),
                 rectangleSelectionActive: ko.observable(false),
                 showImageByPointSelectionActive: ko.observable(false),
+                showImageByRectangleSelectionActive: ko.observable(false),
                 reportIcon: ko.observable(false),
                 filterIcon: ko.observable(false),
                 resultCount: ko.observable(0),
@@ -113,6 +115,15 @@ define([
                     }
                     this.showImageByPointSelectionActive(!stateBeforeClear);
                 },
+                showImageFromRectangleIntersect: function () {
+                    var stateBeforeClear = this.showImageByRectangleSelectionActive();
+                    this.emit(this.CLEAR_DRAW);
+                    if (!stateBeforeClear) {
+                        this.emit(this.ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT);
+                        this.drawActive(true);
+                    }
+                    this.showImageByRectangleSelectionActive(!stateBeforeClear);
+                },
                 clearPointDraw: function () {
                     this.pointSelectionActive(false);
                 },
@@ -122,10 +133,14 @@ define([
                 clearShowImagePointDraw: function() {
                     this.showImageByPointSelectionActive(false);
                 },
+                clearShowImageRectangleDraw: function() {
+                    this.showImageByRectangleSelectionActive(false);
+                },
                 clearAllDraw: function () {
                     this.clearPointDraw();
                     this.clearRectangleDraw();
                     this.clearShowImagePointDraw();
+                    this.clearShowImageRectangleDraw();
                     this.drawActive(false);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS);
 
