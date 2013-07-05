@@ -253,6 +253,7 @@ define([
                 reset: function () {
                     this.clearBandReorder();
                     this.clearRasterFunction();
+                    this.clearSelectedRenderer();
                 }
             });
     });
