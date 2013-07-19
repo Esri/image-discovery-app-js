@@ -15,6 +15,7 @@ define([
     "../base/grid/ImageryGrid",
     "dijit/TooltipDialog",
     "../filter/UserAppliedFiltersManager"
+
 ],
     function (declare, domGeometry, topic, on, registry, query, lang, domConstruct, domClass, domStyle, Observable, Memory, Button, ImageryGrid, TooltipDialog, UserAppliedFiltersManager) {
         return declare(
@@ -40,13 +41,20 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, lang.hitch(this, this.highlightResultsFromPointIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, lang.hitch(this, this.highlightResultsFromRectangleIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromPointIntersect));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromRectangleIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
+
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT, lang.hitch(this, this.handleGetVisibleGridResultCount));
+
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ORDER_BY_LOCK_RASTER, lang.hitch(this, this.orderByLockRaster));
+
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GRAY_OUT_RESULTS_BY_FUNCTION, lang.hitch(this, this.grayOutRowsByFunction));
+
                     //todo: this needs to be in a manager that keeps count of how many disable requests there are
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.DISABLE_THUMBNAIL_CHECKBOXES, lang.hitch(this, this.disableThumbnailToggle));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ENABLE_THUMBNAIL_CHECKBOXES, lang.hitch(this, this.enableThumbnailToggle));
+
+
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_GRAYED_OUT_RESULTS, lang.hitch(this, this.clearGrayedOutRows));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.handleFooterCollapsed));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADDED, lang.hitch(this, this.handleFilterAdded));
@@ -54,7 +62,8 @@ define([
                     this.setFilterResultsHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SET, lang.hitch(this, this.handleApplyFilter));
                     this.itemRemovedFromCartHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
                 },
-                orderByLockRaster: function () {
+                orderByLockRaster: function(){
+
                 },
                 handleGetVisibleGridResultCount: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
@@ -66,6 +75,9 @@ define([
                     this.inherited(arguments);
                     if (!checked) {
                         var row = this.grid.row(object);
+                      //  if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
+                     //       domClass.remove(row.element, "yellowGridRow");
+                      //  }
                     }
                 },
                 clearHighlightedResults: function () {
@@ -73,6 +85,7 @@ define([
                     var highlightedItems = this.store.query({isHighlighted: true});
                     for (var i = 0; i < highlightedItems.length; i++) {
                         row = this.grid.row(highlightedItems[i]);
+                        console.dir(row);
                         if (row && row.element) {
                             this.grid.unhighlightYellowRow(row);
                             highlightedItems[i].isHighlighted = false;
@@ -81,7 +94,7 @@ define([
                 },
                 highlightResultsFromRectangleIntersect: function (envelope) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -94,6 +107,7 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
+                                    //console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }
@@ -110,7 +124,7 @@ define([
                 },
                 highlightResultsFromPointIntersect: function (pt) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -123,6 +137,7 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
+                                    console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }
@@ -139,7 +154,7 @@ define([
                 },
                 showCorrespondingImageFromPointIntersect: function (pt) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -152,6 +167,44 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
+                                    this.grid.scrollTo(geom);
+                                    scrolledIntoView = true;
+                                }
+                                currentVisibleItem.isHighlighted = true;
+
+                                currentVisibleItem.showThumbNail = true;
+                                //update the checkbox
+                                var showThumbnailInput = query("input[name=showThumbNail]", row.element);
+                                var currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
+                                if (currentCheckDijit) {
+                                    currentCheckDijit.set("checked", true);
+                                }
+                            }
+                        }
+                        else {
+                            if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
+                                this.grid.unhighlightYellowRow(row);
+                                currentVisibleItem.isHighlighted = false;
+                            }
+                        }
+                    }
+                },
+                showCorrespondingImageFromRectangleIntersect: function (envelope) {
+                    var scrolledIntoView = false;
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
+                    var currentVisibleItem;
+                    var currentGeometry;
+                    var row;
+                    for (var i = 0; i < unfilteredResults.length; i++) {
+                        currentVisibleItem = unfilteredResults[i];
+                        currentGeometry = currentVisibleItem.geometry;
+                        row = this.grid.row(currentVisibleItem);
+                        if (envelope.contains(currentGeometry.getExtent())) {
+                            if (row && row.element) {
+                                this.grid.highlightRowYellow(row);
+                                if (!scrolledIntoView) {
+                                    var geom = {y: row.element.offsetTop};
+                                    //console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }
@@ -191,8 +244,6 @@ define([
                 },
                 grayOutRowsByFunction: function (isDisabledFunction) {
                     this.inherited(arguments);
-
-
                     //need to hide the filters
                     var currentFilterIcon;
                     for (var key in this.filterIconLookup) {
@@ -203,7 +254,6 @@ define([
                         }
                     }
                     this.onHideFilterResetIcon();
-
                 },
                 clearGrayedOutRows: function () {
                     this.inherited(arguments);
@@ -254,6 +304,7 @@ define([
                     }
                     this.hideVisibleFilterPopup();
                     //get to the attributes of the results
+                    var newItem;
                     var currentAttributes;
                     for (var i = 0; i < results.features.length; i++) {
                         var newItemMixin = {
@@ -276,12 +327,13 @@ define([
                                 currentAttributes[this.resultFields[j].field] = "";
                             }
                         }
-                        var newItem = lang.mixin(currentAttributes, newItemMixin);
+                        newItem = lang.mixin(currentAttributes, newItemMixin);
                         this.store.add(newItem);
                     }
                     this.responseFeatures = this.responseFeatures.concat(results.features);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.RESULT_GRID_POPULATED, results.features.length);
                 },
+
                 generateManipulationColumns: function () {
                     var parentColumns = this.inherited(arguments);
                     var columns = [
@@ -313,6 +365,7 @@ define([
                             filteredColumns[currentResultField.field] = currentResultField.filter;
                         }
                     }
+
                     //set the header renderer for the filter fields
                     var currentColumn;
                     for (i = 0; i < layerColumns.length; i++) {
@@ -330,6 +383,7 @@ define([
                     cartButton.on("click", lang.hitch(this, this.handleToggleCartItem, object, cartButton));
                     domClass.add(cartButton.domNode, "queryResultShoppingCartButton");
                     domConstruct.place(cartButton.domNode, node);
+
                 },
                 handleToggleCartItem: function (entry, cartButton, e) {
                     if (domClass.contains(cartButton.iconNode, "shoppingCartEmpty")) {
@@ -348,6 +402,7 @@ define([
                     clonedCartItem.showThumbNail = true;
                     clonedCartItem.showFootprint = false;
                     clonedCartItem.isFiltered = false;
+
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, clonedCartItem);
                 },
                 removeCartItem: function (entry, cartButton, fireRemoveEvent) {
@@ -359,6 +414,7 @@ define([
                         this._removeAddedToCartIcon(cartButton);
                     }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, entry[this.storeIdField]);
+
                 },
                 _removeAddedToCartIcon: function (cartButton) {
                     domClass.add(cartButton.iconNode, "shoppingCartEmpty");
@@ -397,6 +453,8 @@ define([
                         this.itemRemovedFromCartHandle.remove();
                         this.itemRemovedFromCartHandle = null;
                     }
+
+
                     this.inherited(arguments);
                 },
                 renderFilterHeaderColumn: function (currentColumn, node) {
@@ -409,6 +467,7 @@ define([
                     domConstruct.place(fitlerIconWrapper, node);
                     this.filterIconLookup[currentColumn.field] = filterIcon;
                     this.handleHideFilterIcon(currentColumn.field);
+
                 },
                 handleFilterHeaderPopupToggle: function (fieldName, filterIcon, e) {
                     //don't want to sort
@@ -438,9 +497,11 @@ define([
                         //create the filter tooltip
                         var filterWidget = this.filterWidgetLookup[fieldName];
                         var filterPopupContentWrapper = domConstruct.create("div", {className: "queryFilterPopupContent"});
+
                         var filterPopupHeaderContent = domConstruct.create("div", {className: "queryFilterPopupContentHeader"});
                         var closeButton = domConstruct.create("div", {title: "Close", className: "filterWidgetPopupCloseIcon windowAction close"});
                         var resetButton = domConstruct.create("div", {title: "Reset Filter", className: "filterWidgetRevertIcon commonIcons16 revertGray"});
+
                         domConstruct.place(resetButton, filterPopupHeaderContent);
                         domConstruct.place(closeButton, filterPopupHeaderContent);
                         domConstruct.place(filterPopupHeaderContent, filterPopupContentWrapper);
@@ -506,8 +567,10 @@ define([
                     this.userAppliedFiltersManager.resetFilters();
                 },
                 onHideFilterResetIcon: function () {
+
                 },
                 onShowFilterResetIcon: function () {
+
                 }
             });
     });

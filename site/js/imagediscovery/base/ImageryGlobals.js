@@ -27,6 +27,7 @@ define([
                             HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT: "imgQuery:highlightResultsFromPointIntersect",
                             HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT: "imgQuery:highlightResultsFromRectangleIntersect",
                             SHOW_IMAGE_FROM_POINT_INTERSECT: "imgQuery:showImageFromPointIntersect",
+                            SHOW_IMAGE_FROM_RECTANGLE_INTERSECT: "imgQuery:showImageFromRectangleIntersect",
                             CLEAR_HIGHLIGHTED_RESULTS: "imgQuery:clearHighlightedResults",
                             ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster",
                             GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",

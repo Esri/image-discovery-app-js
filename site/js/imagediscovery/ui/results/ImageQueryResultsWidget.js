@@ -69,6 +69,7 @@ define([
                     this.viewModel.on(this.viewModel.ACTIVATE_POINT_SELECT, lang.hitch(this, this.handleActivatePointSelect));
                     this.viewModel.on(this.viewModel.ACTIVATE_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateRectangleSelect));
                     this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT, lang.hitch(this, this.handleActivateShowImageByPointSelect));
+                    this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateShowImageByRectangleSelect));
                     this.viewModel.on(this.viewModel.CLEAR_DRAW, lang.hitch(this, this.clearDraw));
                     this.viewModel.setFilterIconHidden();
                     this.applyBindings();
@@ -99,6 +100,10 @@ define([
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
                 },
+                handleActivateShowImageByRectangleSelect: function () {
+                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
+                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
+                },
                 geometryAdded: function (geometry) {
                     if (geometry instanceof Point) {
                         if (this.viewModel.pointSelectionActive()) {
@@ -109,7 +114,12 @@ define([
                         }
                     }
                     else if (geometry instanceof Extent) {
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, geometry);
+                        if (this.viewModel.rectangleSelectionActive()) {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, geometry);
+                        }
+                        else {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, geometry);
+                        }
                     }
                     this.setDraw(this.currentDrawType);
                 },
