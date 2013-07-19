@@ -84,7 +84,6 @@ define([
                     }
                 },
                 handleQueryLayerControllersLoaded: function (queryLayerControllers) {
-                    console.log("handleQueryLayerControllersLoaded");
                     var currentQueryLayerController;
                     var currentQueryLayer;
                     this.queryLayerControllers = queryLayerControllers;

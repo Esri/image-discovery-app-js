@@ -85,7 +85,6 @@ define([
                     var highlightedItems = this.store.query({isHighlighted: true});
                     for (var i = 0; i < highlightedItems.length; i++) {
                         row = this.grid.row(highlightedItems[i]);
-                        console.dir(row);
                         if (row && row.element) {
                             this.grid.unhighlightYellowRow(row);
                             highlightedItems[i].isHighlighted = false;
@@ -107,7 +106,6 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
-                                    //console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }
@@ -137,7 +135,6 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
-                                    console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }
@@ -204,7 +201,6 @@ define([
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
                                     var geom = {y: row.element.offsetTop};
-                                    //console.dir(geom);
                                     this.grid.scrollTo(geom);
                                     scrolledIntoView = true;
                                 }

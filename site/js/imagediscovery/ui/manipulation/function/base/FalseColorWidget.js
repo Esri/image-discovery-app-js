@@ -173,9 +173,7 @@ define([
                     this.handleBandChanged();
                 },
                 handleBandChanged: function () {
-                    console.log("handleBandChanged");
                     if (!this.blockOnChange) {
-                        console.log("OnChange");
                         this.onChange();
                     }
                 },

@@ -55,10 +55,8 @@ define([
                     this.addRasterFunction(this.falseColorViewItem);
                 },
                 handleFalseColorWidgetChange: function(){
-                    console.log("handleFalseColorWidgetChange");
                     var selectedRasterFunctionObject = this.viewModel.selectedRasterFunction();
                     if(selectedRasterFunctionObject && selectedRasterFunctionObject.widget == this.falseColorViewItem.widget){
-                        console.log("handleFalseColorWidgetChange APPLY");
                         this.applyFunction();
                     }
                 },
