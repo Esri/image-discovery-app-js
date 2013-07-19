@@ -26,10 +26,11 @@ define([
     "esriviewer/ui/draw/base/MapDrawSupport",
     "dijit/TooltipDialog"
 ],
-    function (declare, template,theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport,TooltipDialog) {
+    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog) {
         return declare(
-            [ UITemplatedWidget, MapDrawSupport],
+            [UITemplatedWidget, MapDrawSupport],
             {
+                bindingsApplied: false,
                 generateCSVEndpoint: "generateCSV",
                 title: "Results",
                 templateString: template,
@@ -40,7 +41,6 @@ define([
                     }
                     this.envelopeOptions = {showTooltips: false};
                     this.pointOptions = {showTooltips: false};
-
                 },
                 initListeners: function () {
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_UNIQUE_VISIBLE_RASTER_ATTRIBUTES, lang.hitch(this, this.handleGetVisibleRasterAttributes));
@@ -50,6 +50,11 @@ define([
                     this.firstFooterExpandListener = topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.EXPANDED, lang.hitch(this, this.handleFooterFirstExpand));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.clearDraw));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, lang.hitch(this, this.handleIsShoppingCartVisible));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.HIDE_RESET_ICON, lang.hitch(this, this.hideFilterResultIcon));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SHOW_RESET_ICON, lang.hitch(this, this.showFilterResetIcon));
+
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.HIDE_ICON, lang.hitch(this, this.hideTimeSliderIcon));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.SHOW_ICON, lang.hitch(this, this.showTimeSliderIcon));
 
                 },
                 postCreate: function () {
@@ -66,10 +71,18 @@ define([
                     this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT, lang.hitch(this, this.handleActivateShowImageByPointSelect));
                     this.viewModel.on(this.viewModel.CLEAR_DRAW, lang.hitch(this, this.clearDraw));
                     this.viewModel.setFilterIconHidden();
-                    ko.applyBindings(this.viewModel, this.domNode);
+                    this.applyBindings();
                     this._createResultGrid();
                     this._createShoppingCartGrid();
-
+                    this.createActiveSourcesWidget();
+                },
+                applyBindings: function () {
+                    if (!this.bindingsApplied) {
+                        ko.applyBindings(this.viewModel, this.domNode);
+                        this.bindingsApplied = true;
+                    }
+                },
+                createActiveSourcesWidget: function () {
                     //create active sources widget
                     this.activeSourcesWidget = new ActiveSourcesWidget();
                     this.activeSourcesWidget.placeAt(this.activeServicesContainer);
@@ -87,7 +100,6 @@ define([
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
                 },
                 geometryAdded: function (geometry) {
-                    console.dir(geometry);
                     if (geometry instanceof Point) {
                         if (this.viewModel.pointSelectionActive()) {
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, geometry);
@@ -107,7 +119,6 @@ define([
                     topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
                     this.viewModel.clearAllDraw();
                 },
-
                 loadViewerConfigurationData: function () {
                     var displayFieldsConfig;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
@@ -129,12 +140,10 @@ define([
                             this.floatPrecision = parseInt(resultsFormattingConfig.floatPrecision, 10);
                         }
                     }
-
                     var exportConfiguration = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "exportConfiguration", function (exportConf) {
                         exportConfiguration = exportConf;
                     });
-
                     if (exportConfiguration != null && lang.isObject(exportConfiguration)) {
                         if (exportConfiguration.image && lang.isObject(exportConfiguration.image)) {
                             this.exportImageParameters = exportConfiguration.image;
@@ -142,18 +151,24 @@ define([
                     }
                 },
                 _createShoppingCartGrid: function () {
-                    this.shoppingCartGridWidget = new ShoppingCartGrid({layer: this.layer});
+                    this.shoppingCartGridWidget = new ShoppingCartGrid(this.getCartGridParameters());
                     domConstruct.place(this.shoppingCartGridWidget.domNode, this.shoppingCartGridContainer);
                     this.shoppingCartGridWidget.startup();
                 },
                 _createResultGrid: function () {
                     if (this.resultsGridWidget == null) {
-                        this.resultsGridWidget = new ImageQueryResultsGrid({layer: this.layer});
+                        this.resultsGridWidget = new ImageQueryResultsGrid(this.getResultGridParameters());
                         domConstruct.place(this.resultsGridWidget.domNode, this.resultGridContainer);
                         this.resultsGridWidget.on("hideFilterResetIcon", lang.hitch(this.viewModel, this.viewModel.setFilterIconHidden));
                         this.resultsGridWidget.on("showFilterResetIcon", lang.hitch(this.viewModel, this.viewModel.setFilterIconVisible));
                         this.resultsGridWidget.startup();
                     }
+                },
+                getCartGridParameters: function () {
+                    return {};
+                },
+                getResultGridParameters: function () {
+                    return {};
                 },
                 handleFooterFirstExpand: function () {
                     //hide the cart on first expand. the grid will not render properly if it's not in view when created
@@ -257,7 +272,6 @@ define([
                 },
                 handleClearQueryResults: function () {
                     //see if the cart is visible. if it is we need to refresh since clear results
-
                     if (this.viewModel.cart()) {
                         this.shoppingCartGridWidget.setSelectedThumbnails();
                     }
@@ -291,6 +305,19 @@ define([
                         this.showResetFiltersTooltip();
                     }
                 },
+                hideTimeSliderIcon: function () {
+                    this.viewModel.timeSlider(false);
+                },
+                showTimeSliderIcon: function () {
+                    this.viewModel.timeSlider(true);
+                },
+                hideFilterResultIcon: function () {
+                    this.viewModel.setFilterIconHidden();
+                },
+                showFilterResetIcon: function () {
+                    //only displays if the results grid is visible
+                    this.viewModel.setFilterIconVisible();
+                },
                 hideFilterResetTooltip: function () {
                     if (this.resetAllFiltersTooltip && this.resetAllFiltersTooltip.visible) {
                         this.resetAllFiltersTooltip.hide();
@@ -302,7 +329,6 @@ define([
                     }
                     if (this.resetAllFiltersTooltip) {
                         this.resetAllFiltersTooltip.show();
-
                     }
                 },
                 createResetAllFiltersTooltip: function () {
@@ -324,7 +350,9 @@ define([
                     this.viewModel.resultCount(this.viewModel.resultCount() + results.features.length);
 
                     if (results.features.length > 0) {
-                        this.activeSourcesWidget.addQueryLayerControllerEntry(queryLayerController);
+                        if (this.activeSourcesWidget != null) {
+                            this.activeSourcesWidget.addQueryLayerControllerEntry(queryLayerController);
+                        }
                     }
                 },
                 startup: function () {
@@ -347,7 +375,6 @@ define([
                         this.imageryTimeSliderWindow = new ImageryTimeSliderWindowWidget();
                     }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.TIME.WINDOW.SHOW);
-
                 },
                 handleCheckoutCartClick: function () {
                     if (this.shoppingCartCheckoutHandler == null) {
@@ -355,23 +382,20 @@ define([
                     }
                     this.shoppingCartCheckoutHandler.checkout();
                 },
-                toggleResultLayerTransparencyPopup: function() {
+                toggleResultLayerTransparencyPopup: function () {
                     if (this.layerTransparencyTooltip == null) {
                         require(["imagediscovery/ui/transparency/SearchLayersTransparencyWidget"],
                             lang.hitch(this, function (TransparencyWidget) {
                                 var transparencyWidget = new TransparencyWidget();
                                 this.layerTransparencyTooltip = new TooltipDialog({
                                     content: transparencyWidget.domNode
-                                    });
-
-
+                                });
                             })
                         );
                         this.layerTransparencyTooltipVisible = false;
                         topic.subscribe(IMAGERY_GLOBALS.EVENTS.TRANSPARENCY.POPUP.HIDE,
                             dojo.hitch(this, this.hideResultLayerTransparencyPopup));
                     }
-
                     var params = {
                         popup: this.layerTransparencyTooltip //content of popup is the TootipDialog
                     };
@@ -386,7 +410,7 @@ define([
                         this.layerTransparencyTooltipVisible = true;
                     }
                 },
-                hideResultLayerTransparencyPopup: function() {
+                hideResultLayerTransparencyPopup: function () {
                     if (this.layerTransparencyTooltipVisible) {
                         dijit.popup.close(this.layerTransparencyTooltip);
                         this.layerTransparencyTooltipVisible = false;

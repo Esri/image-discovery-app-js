@@ -8,8 +8,6 @@ define([
     "./base/HillshadeWidget",
     "./base/FalseColorWidget",
     "./base/AspectWidget"
-
-
 ],
     function (declare, lang, RasterFunctionWidget, StretchWidget, StatisticsWidget, NdviWidget, HillshadeWidget, FalseColorWidget, AspectWidget) {
         return declare(
@@ -52,8 +50,17 @@ define([
                 },
                 initFalseColorWidget: function () {
                     var falseColorWidget = new FalseColorWidget().placeAt(this.rasterFunctionWidgetsContainer);
-                    this.falseColorViewItem = {label: "False Color", widget: falseColorWidget};
+                    falseColorWidget.on("change",lang.hitch(this,this.handleFalseColorWidgetChange));
+                    this.falseColorViewItem = {label: "False Color", widget: falseColorWidget, bandReorder: true};
                     this.addRasterFunction(this.falseColorViewItem);
+                },
+                handleFalseColorWidgetChange: function(){
+                    console.log("handleFalseColorWidgetChange");
+                    var selectedRasterFunctionObject = this.viewModel.selectedRasterFunction();
+                    if(selectedRasterFunctionObject && selectedRasterFunctionObject.widget == this.falseColorViewItem.widget){
+                        console.log("handleFalseColorWidgetChange APPLY");
+                        this.applyFunction();
+                    }
                 },
                 initNDVIWidget: function () {
                     var ndviWidget = new NdviWidget().placeAt(this.rasterFunctionWidgetsContainer);
@@ -78,7 +85,6 @@ define([
                 initStatisticsWidget: function () {
                     var statisticsWidget = new StatisticsWidget().placeAt(this.rasterFunctionWidgetsContainer);
                     this.statisticsViewItem = {label: "Statistics", widget: statisticsWidget};
-                    this.addRasterFunction(currentRasterFunctionInfo.name, functionWidget);
                     this.addRasterFunction(this.statisticsViewItem);
                 },
                 disableNDVIWidget: function () {

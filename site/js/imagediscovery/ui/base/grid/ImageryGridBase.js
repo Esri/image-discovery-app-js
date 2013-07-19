@@ -9,7 +9,7 @@ define([
     "dojo/query",
     "dijit/registry"
 ],
-    function (declare,theme, OnDemandGrid, ColumnHider, domClass, domStyle, lang, query, registry) {
+    function (declare, theme, OnDemandGrid, ColumnHider, domClass, domStyle, lang, query, registry) {
         return declare(
             [OnDemandGrid, ColumnHider],
             {
@@ -71,9 +71,13 @@ define([
                                 currentCheckDijit.set("disabled", true);
                             }
                         }
-                        var zoomToIcon = query(".imageResultsZoomToIcon", row.element);
+                        var zoomToIcon = query(".globeGoTo", row.element);
                         if (zoomToIcon.length > 0) {
                             domStyle.set(zoomToIcon[0], "visibility", "hidden");
+                        }
+                        var magnifyIcon = query(".magnifyingGlass", row.element);
+                        if (magnifyIcon.length > 0) {
+                            domStyle.set(magnifyIcon[0], "visibility", "hidden");
                         }
                     }
                 },
@@ -105,9 +109,14 @@ define([
                                 currentCheckDijit.set("disabled", false);
                             }
                         }
-                        var zoomToIcon = query(".imageResultsZoomToIcon", currentRow.element);
+                        var zoomToIcon = query(".globeGoTo", currentRow.element);
                         if (zoomToIcon.length > 0) {
                             domStyle.set(zoomToIcon[0], "visibility", "visible");
+                        }
+
+                        var magnifyIcon = query(".magnifyingGlass", currentRow.element);
+                        if (magnifyIcon.length > 0) {
+                            domStyle.set(magnifyIcon[0], "visibility", "visible");
                         }
                         currentRow.data.isGrayedOut = false;
                     }

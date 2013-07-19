@@ -28,8 +28,8 @@ define([
                     this.currentDownloadResponses = [];
                     this.hasDownloadItems = false;
                 },
-                envelopeSymbol: new SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_NULL,
-                    new SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                envelopeSymbol: new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL,
+                    new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                         new Color([0, 128, 0]), 1),
                     new Color([255, 0, 0, .5])),
                 postCreate: function () {

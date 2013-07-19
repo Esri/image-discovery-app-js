@@ -46,6 +46,16 @@ define([
                     if (currentQueryLayerController == null || currentQueryLayerController.layer == null) {
                         return;
                     }
+                    this.stringFieldNames = [];
+                    //set the string values
+                    var currentField;
+                    for (var i = 0; i < currentQueryLayerController.layer.fields.length; i++) {
+                        currentField = currentQueryLayerController.layer.fields[i];
+                        if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.STRING) {
+                            this.stringFieldNames.push(currentField.name);
+                        }
+                    }
+
                     this.clearQueryFieldEntries();
                     if (this.queryFieldResponseCache[currentQueryLayerController.id]) {
                         this.createQueryFieldEntryElements(this.queryFieldResponseCache[currentQueryLayerController.id]);
@@ -154,7 +164,6 @@ define([
                     addedFieldValuesTooltip.on("itemAdded", function () {
                         domStyle.set(infoIcon, "visibility", "visible");
                     });
-
                     this.addedFieldValuesTooltipLookup[fieldName] = addedFieldValuesTooltip;
                     on(infoIcon, "click", lang.hitch(addedFieldValuesTooltip, addedFieldValuesTooltip.toggle));
                     domConstruct.place(queryFilterLabel, queryFilterEntryContainer);
@@ -162,7 +171,6 @@ define([
                     domConstruct.place(filteringSelect.domNode, queryFilterEntryContainer);
                     domConstruct.place(infoIcon, queryFilterEntryContainer);
                     domConstruct.place(queryFilterEntryContainer, this.queryFieldEntries);
-
                 },
                 addFieldValueToQueryList: function (fieldName) {
                     if (this.addedFieldValuesTooltipLookup[fieldName]) {
@@ -173,7 +181,6 @@ define([
                     }
                 },
                 showAddedFieldValues: function (fieldName) {
-
                 },
                 getQuery: function () {
                     var queryString = "";

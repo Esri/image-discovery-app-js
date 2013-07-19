@@ -31,10 +31,13 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
-                    this.imageManipulationManagerWidget = new ImageManipulationManagerWidget();
+                    this.imageManipulationManagerWidget = this.createManipulationManager();
                     this.setContent(this.imageManipulationManagerWidget.domNode);
                     domClass.add(this.windowContent, "imageManipulationWindowContent");
 
+                },
+                createManipulationManager: function(){
+                   return new ImageManipulationManagerWidget();
                 },
                 show: function () {
                     this.inherited(arguments);

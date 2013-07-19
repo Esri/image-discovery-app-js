@@ -39,7 +39,7 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
-                    this.searchByGeometryGeometryQueryErrorback = lang.hitch(this.handleSearchByGeometryGeometryQueryError);
+                    this.searchByGeometryGeometryQueryErrorback = lang.hitch(this,this.handleSearchByGeometryGeometryQueryError);
                     this.performSearchCallback = lang.hitch(this, this.performSearch);
                     this.viewModel = new ImageDiscoveryViewModel();
                     this.viewModel.on("firstBoundsDisplay", lang.hitch(this, this.createBoundsView));
@@ -84,6 +84,7 @@ define([
                     }
                 },
                 handleQueryLayerControllersLoaded: function (queryLayerControllers) {
+                    console.log("handleQueryLayerControllersLoaded");
                     var currentQueryLayerController;
                     var currentQueryLayer;
                     this.queryLayerControllers = queryLayerControllers;
@@ -91,6 +92,7 @@ define([
                         this.viewModel.selectSearchServiceVisible(false);
                         if (this.createQueryFieldsDiscoveryContent) {
                             this.viewModel.discoverByFieldsHeaderVisible(true);
+                           this.handleSearchServiceChanged(queryLayerControllers[0]);
                         }
                     }
                     else {
@@ -208,7 +210,7 @@ define([
                         returnGeometry: true
                     });
                     var searchGraphic;
-                    if (searchObject instanceof esri.Graphic) {
+                    if (searchObject instanceof Graphic) {
                         searchGraphic = searchObject;
                         this.currentAddedGraphics.push(searchObject);
                     }

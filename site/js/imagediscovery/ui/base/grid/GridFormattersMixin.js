@@ -57,7 +57,7 @@ define([
                     return value;
                 },
                 doubleFormatter: function (value) {
-                    if (value != null) {
+                    if (value != null && !(typeof value == "string")) {
                         return value.toFixed(this.floatPrecision);
                     }
                     return null;

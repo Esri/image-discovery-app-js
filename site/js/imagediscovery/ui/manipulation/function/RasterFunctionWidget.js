@@ -11,7 +11,7 @@ define([
     "./model/RasterFunctionViewModel"
 
 ],
-    function (declare, template, theme,topic, lang, array, ImageManipulationWidgetBase, BaseBandReorderWidget, BaseRasterFunctionWidget, RasterFunctionViewModel) {
+    function (declare, template, theme, topic, lang, array, ImageManipulationWidgetBase, BaseBandReorderWidget, BaseRasterFunctionWidget, RasterFunctionViewModel) {
         return declare(
             [ImageManipulationWidgetBase],
             {
@@ -174,10 +174,10 @@ define([
                                     require([this._rasterFunctionBaseMID + "AspectWidget"], defaultRasterFunctionLoadHandler);
                                 }
                                 /*
-                                else if (key === this.DEFAULT_RASTER_FUNCTION_LABELS.FALSE_COLOR) {
-                                    require([this._rasterFunctionBaseMID + "FalseColorWidget"], defaultRasterFunctionLoadHandler);
-                                }
-                                */
+                                 else if (key === this.DEFAULT_RASTER_FUNCTION_LABELS.FALSE_COLOR) {
+                                 require([this._rasterFunctionBaseMID + "FalseColorWidget"], defaultRasterFunctionLoadHandler);
+                                 }
+                                 */
                                 else if (key === this.DEFAULT_RASTER_FUNCTION_LABELS.HILLSHADE) {
                                     require([this._rasterFunctionBaseMID + "HillshadeWidget"], defaultRasterFunctionLoadHandler);
                                 }
@@ -189,7 +189,6 @@ define([
                                 }
                                 else if (key === this.DEFAULT_RASTER_FUNCTION_LABELS.STRETCH) {
                                     require([this._rasterFunctionBaseMID + "StretchWidget"], defaultRasterFunctionLoadHandler);
-
                                 }
                             }
                         }
@@ -227,7 +226,9 @@ define([
                     }
                     this.viewModel.addRasterFunction(functionItem);
                     //listen for on change
-                    functionItem.widget.on("applyFunction", lang.hitch(this, this.handleRasterFunctionChange, functionItem.widget));
+                    if (functionItem.bandReorder == null || functionItem.bandReorder == false) {
+                        functionItem.widget.on("applyFunction", lang.hitch(this, this.handleRasterFunctionChange, functionItem.widget));
+                    }
                 },
                 handleCheckForNoParameterRasterFunction: function () {
                     var selectedRasterFunctionObject = this.viewModel.selectedRasterFunction();
@@ -236,7 +237,7 @@ define([
                     }
                     else {
                         var rasterFunctionWidget = selectedRasterFunctionObject.widget;
-                        if (!rasterFunctionWidget.hasParameters) {
+                        if (!rasterFunctionWidget.hasParameters || rasterFunctionWidget instanceof BaseBandReorderWidget) {
                             this.applyFunction();
                         }
                     }

@@ -19,6 +19,7 @@ define([
         return declare(
             [UIWidget, GridFormattersMixin, RowActionsMixin],
             {
+                addSourceColumn: true,
                 allowCheckAllThumbnails: true,
                 thumbnailToggleDisabled: false,
                 internalFieldsLookup: {
@@ -218,12 +219,14 @@ define([
                         }
                     }
                     //add the source column
-                    var sourceColumn = {
-                        field: "__serviceLabel",
-                        label: "Source",
-                        sortable: true
-                    };
-                    layerColumns.push(sourceColumn);
+                    if (this.addSourceColumn) {
+                        var sourceColumn = {
+                            field: "__serviceLabel",
+                            label: "Source",
+                            sortable: true
+                        };
+                        layerColumns.push(sourceColumn);
+                    }
                     var gridOptions;
                     if (this.resultFields != null && lang.isArray(this.resultFields)) {
                         for (i = 0; i < this.resultFields.length; i++) {

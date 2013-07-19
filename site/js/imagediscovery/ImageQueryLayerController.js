@@ -55,7 +55,6 @@ define([
                 },
                 reorderBands: function (bandsArray) {
                     //check to see if the band ordering has changed
-
                     if (bandsArray == null || !lang.isArray(bandsArray)) {
                         bandsArray = [];
                     }
@@ -78,7 +77,6 @@ define([
                         }
                     }
                     VIEWER_UTILS.debug("Updated Mosaic Rule");
-
                 },
                 applyRasterFunction: function (objectWithCreateRasterFunction) {
                     if (objectWithCreateRasterFunction == null || objectWithCreateRasterFunction.createRasterFunction == null || !lang.isFunction(objectWithCreateRasterFunction.createRasterFunction)) {
@@ -93,7 +91,7 @@ define([
                 clearRasterFunction: function () {
                     if (this.layer && this.layer.renderingRule != null) {
                         VIEWER_UTILS.debug("Cleared Raster Function");
-                        this.layer.setRenderingRule(new esri.layers.RasterFunction());
+                        this.layer.setRenderingRule(new RasterFunction());
                     }
                 },
                 //clears all footprints on the map
@@ -102,7 +100,6 @@ define([
                     this.footprintGraphicsCache = {};
                     this.visibleFootprintCount = 0;
                     VIEWER_UTILS.debug("Cleared Query Layer Footprints");
-
                 },
                 deleteFootprint: function (resultEntry) {
                     if (this.footprintGraphicsCache[resultEntry.id]) {
@@ -144,19 +141,11 @@ define([
                         if (!this.footprintGraphics.visible) {
                             this.footprintGraphics.show();
                         }
-                        var graphiEntry = this.footprintGraphicsCache[resultEntry.id];
-                        if (graphiEntry) {
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH, graphiEntry);
+                        var graphicEntry = this.footprintGraphicsCache[resultEntry.id];
+                        if (graphicEntry) {
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH, graphicEntry);
 
                         }
-                        /*
-                        else if (resultEntry.geometry != null) {
-                            var graphic = new Graphic(resultEntry.geometry, this.footprintPolygonSymbol);
-                            this.footprintGraphics.add(graphic);
-                            this.footprintGraphicsCache[resultEntry.id] = graphic;
-                            this.visibleFootprintCount++;
-                        }
-                        */
                     }
                 },
                 //hides the passed footprint
@@ -173,12 +162,6 @@ define([
                     var i;
                     for (i = 0; i < entries.length; i++) {
                         this.currentLockRasterIds.push(entries[i][this.layer.objectIdField]);
-                        /*
-                         if (i > 30) {
-                         //max out at 30 results
-                         break;
-                         }
-                         */
                     }
                     this.updateMosaicRule();
                     this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);

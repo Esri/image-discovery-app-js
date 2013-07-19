@@ -6,7 +6,6 @@
             "queryWhereClauseAppend": "Category = 5"
         }
     ],
-
     "imageQueryResultDisplayFields": [
         {
             "field": "OBJECTID",
@@ -72,7 +71,6 @@
                 "enable": true
             }
         }
-
     ],
     "resultsFormatting": {
         "displayFormats": {

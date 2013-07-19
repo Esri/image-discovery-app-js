@@ -159,6 +159,12 @@ define([
                 showMensurationTab: function () {
                     domStyle.set(this.mensurationTab, "display", "inline");
                 },
+                showMiscTab: function () {
+                    domStyle.set(this.mosaicOperationsTab, "display", "inline");
+                },
+                hideMiscTab: function () {
+                    domStyle.set(this.mosaicOperationsTab, "display", "none");
+                },
                 hideBandReorderTab: function () {
                     domStyle.set(this.bandsTab, "display", "none");
                     this.selectNextVisibleTab();

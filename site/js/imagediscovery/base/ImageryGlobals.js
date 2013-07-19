@@ -28,7 +28,9 @@ define([
                             HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT: "imgQuery:highlightResultsFromRectangleIntersect",
                             SHOW_IMAGE_FROM_POINT_INTERSECT: "imgQuery:showImageFromPointIntersect",
                             CLEAR_HIGHLIGHTED_RESULTS: "imgQuery:clearHighlightedResults",
-                            ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster"
+                            ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster",
+                            GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",
+                            RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated"
                         },
                         SEARCH: {
                             //search image service by geometry
@@ -49,9 +51,16 @@ define([
                             ADD_USER_LOCK: "filter:addLock",
                             REMOVE_USER_LOCK: "filter:removeLock",
                             ADD_FILTER_FUNCTION: "filter:addFunction",
-                            REMOVE_FILTER_FUNCTION: "filter:addFunction",
-                            RELOAD_FILTER_FUNCTION: "filter:reloadFilterFunction"
+                            REMOVE_FILTER_FUNCTION: "filter:removeFunction",
+                            RELOAD_FILTER_FUNCTION: "filter:reloadFilterFunction",
+                            APPLIED: "filter:applied",
+                            HIDE_RESET_ICON: "filter:hidereset",
+                            SHOW_RESET_ICON: "filter:showreset"
                         }
+                    },
+                    TIME_SLIDER: {
+                        HIDE_ICON: "timeSlider:hideIcon",
+                        SHOW_ICON: "timeSlider:showIcon"
                     },
                     CART: {
                         REMOVED_FROM_CART: "cart:resRmFromCt",

@@ -6,7 +6,7 @@ define([
     "dijit/form/Select",
     "dijit/form/Button"
 ],
-    function (declare, template, lang, BaseBandReorderWidget,Select,Button) {
+    function (declare, template, lang, BaseBandReorderWidget, Select, Button) {
         return declare(
             [BaseBandReorderWidget],
             {
@@ -164,7 +164,6 @@ define([
                                         currentBandSelect.set("value", currentBandOptionValue);
                                         this.blockOnChange = false;
                                         return;
-
                                     }
                                 }
                             }
@@ -174,12 +173,14 @@ define([
                     this.handleBandChanged();
                 },
                 handleBandChanged: function () {
+                    console.log("handleBandChanged");
                     if (!this.blockOnChange) {
+                        console.log("OnChange");
                         this.onChange();
                     }
                 },
                 clearOptions: function () {
-                    for(var i = 0; i < this.bandSelects.length;i++){
+                    for (var i = 0; i < this.bandSelects.length; i++) {
                         this.bandSelects[i].removeOption(this.bandSelects[i].getOptions());
                     }
                 },
@@ -190,5 +191,4 @@ define([
                     return [nir, red, green];
                 }
             });
-
     });

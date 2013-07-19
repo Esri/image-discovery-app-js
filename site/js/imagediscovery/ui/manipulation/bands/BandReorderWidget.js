@@ -10,7 +10,7 @@ define([
     "dijit/form/Select",
     "dijit/form/Button"
 ],
-    function (declare, template,theme, topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
+    function (declare, template, theme, topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
         return declare(
             [ImageManipulationWidgetBase],
             {
@@ -33,6 +33,9 @@ define([
                     }
                     this.setBandProperties(this.layer.bands);
 
+                },
+                clearBandSelectOptions: function () {
+                    domConstruct.empty(this.bandReorderSelectContainer);
                 },
                 setBandProperties: function (bandPropertiesArray) {
                     this.bandSelects = [];

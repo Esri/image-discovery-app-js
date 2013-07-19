@@ -25,33 +25,37 @@ define([
                 filterIcon: ko.observable(false),
                 resultCount: ko.observable(0),
                 drawActive: ko.observable(false),
-
+                forceSourceFilterHide: ko.observable(false),
                 constructor: function () {
                     var self = this;
-
                     var showTrashIconAnon = function () {
                         return  self.results() && self.resultCount() > 0;
                     };
                     this.showTrashIcon = ko.computed(showTrashIconAnon);
-
                     var showTimeSliderAnon = function () {
                         return self.results() && self.timeSlider() && self.resultCount() > 0;
                     };
                     this.showTimeSlider = ko.computed(showTimeSliderAnon);
 
+                    var showSourcesIconAnon = function () {
+                        return  self.results() && !self.forceSourceFilterHide();
+                    };
+                    this.showSourcesIcon = ko.computed(showSourcesIconAnon);
 
+
+                    var showFilterResetIconAnon = function () {
+                        return  self.filterIcon() && self.results();
+                    };
+                    this.showFilterResetIcon = ko.computed(showFilterResetIconAnon);
                     var resultsVisibleAndHasResults = function () {
-                        return self.filterIcon() && self.results() && self.resultCount() > 0;
+                        return self.results() && self.resultCount() > 0;
                     };
                     this.resultsVisibleAndHasResults = ko.computed(resultsVisibleAndHasResults);
-
-
                     var resultLblAnon = function () {
                         return self.resultCount() != 1 ? "s" : "";
                     };
                     this.resultAppend = ko.computed(resultLblAnon);
                 },
-
                 toggleGrid: function () {
                     if (this.cart()) {
                         this.results(true);
@@ -65,7 +69,6 @@ define([
                 gridLabel: function () {
                     return this.results() ? "Results" : "";
                 },
-
                 cartClick: function () {
                     this.cart(true);
                     this.results(false);
@@ -119,7 +122,7 @@ define([
                 clearRectangleDraw: function () {
                     this.rectangleSelectionActive(false);
                 },
-                clearShowImagePointDraw: function() {
+                clearShowImagePointDraw: function () {
                     this.showImageByPointSelectionActive(false);
                 },
                 clearAllDraw: function () {

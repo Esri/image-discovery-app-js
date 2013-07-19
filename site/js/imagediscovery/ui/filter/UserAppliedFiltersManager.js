@@ -212,6 +212,11 @@ define([
                     for (i = 0; i < this.sliderWidgets.length; i++) {
                         currentWidget = this.sliderWidgets[i];
                         currentRangeLookupArray = rangeLookupAsArray[currentWidget.queryField];
+                        //check for empty string
+                        var emptyStrIdx = array.indexOf(currentRangeLookupArray, "");
+                        if(emptyStrIdx > -1){
+                            currentRangeLookupArray.splice(emptyStrIdx, 1);
+                        }
                         if (currentRangeLookupArray && currentRangeLookupArray.length > 1) {
                             currentWidget.show();
                             max = Math.ceil(Math.max.apply(Math, currentRangeLookupArray)) + 1;

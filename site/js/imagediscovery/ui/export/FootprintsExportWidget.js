@@ -185,12 +185,12 @@ define([
                     for (var i = 0; i < downloadLayerControllerObjectIdsArray.length; i++) {
                         currentQueryLayerController = downloadLayerControllerObjectIdsArray[i].queryController;
                         currentQueryLayer = currentQueryLayerController.layer;
-                        var queryTask = new esri.tasks.QueryTask(currentQueryLayer.url);
-                        var query = new esri.tasks.Query();
+                        var queryTask = new QueryTask(currentQueryLayer.url);
+                        var query = new Query();
                         query.objectIds = downloadLayerControllerObjectIdsArray[i].objectIds;
                         if (extent != null) {
                             query.geometry = extent;
-                            query.spatialRelationship = esri.tasks.Query.SPATIAL_REL_CONTAINS;
+                            query.spatialRelationship = Query.SPATIAL_REL_CONTAINS;
                         }
                         query.returnGeometry = true;
                         //get the out fields
@@ -286,7 +286,7 @@ define([
                     var gpParams = {};
                     gpParams[this.footprintsExportTaskConfiguration.featureInputParameter] = json.toJson(footprintInfoObject);
                     if (this.footprintsExportTask == null) {
-                        this.footprintsExportTask = new esri.tasks.Geoprocessor(this.footprintsExportTaskConfiguration.url);
+                        this.footprintsExportTask = new Geoprocessor(this.footprintsExportTaskConfiguration.url);
                     }
                     if (this.footprintsExportTaskConfiguration.isAsync == null || this.footprintsExportTaskConfiguration.isAsync) {
                         this.footprintsExportTask.submitJob(gpParams, this.handleExportTaskResponseCallback, null,

@@ -11,7 +11,6 @@ define([
         return declare(
             [BaseRasterFunctionWidget],
             {
-
                 hasParameters:true,
                 label: "NDVI",
                 redRegexp: new RegExp(/red/i),
