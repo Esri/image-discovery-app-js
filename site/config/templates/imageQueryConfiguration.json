@@ -2,7 +2,7 @@
     "imageQueryLayers": [
         {
             //url: string to catalog image service
-            "url": "http://arcgis-idmcloudsite-1166400923.us-west-1.elb.amazonaws.com/arcgis/rest/services/LiDARManagement/Lidar_Web4C/ImageServer",
+            "url": "http://myserver/arcgis/rest/services/LiDARManagement/Lidar_Web4C/ImageServer",
             //label: name of the catalog. this is not currently used
             "label": "Catalog",
             //queryWhereClauseAppend: string to append to all where clauses to the server. ie: dont retrieve overviews in a query
@@ -12,7 +12,9 @@
     //imageDiscoveryQueryFields: array of json objects that describe fields in the catalog layer that can be queried on in discovery
     "imageDiscoveryQueryFields": [
         {
+            //field: field name on the service to query on
             "field": "FieldName",
+            //label: label for the field to display to the user
             "label": "DisplayLabel"
         }
     ],
@@ -23,7 +25,7 @@
             "field": "Name",
             //label: the label to display in the result grid header for this field
             "label": "Name",
-            //filter: json object with "enabled" member. when enabled is true the field is filter-able
+            //filter: json object with "enabled" member. when enabled is true the field is filterable
             //NOTE: for slider filters you can also specify "unitsLabel". this is a string that will be displayed next to the sliders current value
             "filter": {
                 "enable": true
@@ -62,9 +64,9 @@
     //discoverGeometryUploadTask: object describing the Geoprocessing service that allows the user to upload their own KMZ/SHP files for discovery
     "discoverGeometryUploadTask": {
         //uploadUrl: string to the 10.1+ upload capability of the geoprocessing service. ie: htttp://myserver/MyTools/MyService/uploads/upload
-        "uploadUrl": "http://kacstags1.esri.com/arcgis/rest/services/KACST/UploadGeometries/GPServer/uploads/upload",
+        "uploadUrl": "http://myserver/arcgis/rest/services/KACST/UploadGeometries/GPServer/uploads/upload",
         //geoprocessingTaskUrl: string to the  upload geoprocessing service. ie: htttp://myserver/MyTools/MyService/
-        "geoprocessingTaskUrl": "http://kacstags1.esri.com/arcgis/rest/services/KACST/UploadGeometries/GPServer/fileToFeatures",
+        "geoprocessingTaskUrl": "http://myserver/arcgis/rest/services/KACST/UploadGeometries/GPServer/fileToFeatures",
         //uploadSHPFileParameterName: name for the shp file input parameter of the geoprocessing service
         "uploadSHPFileParameterName": "uploadSHPFile",
         //uploadKMLFileParameterName: name for the kml file input parameter of the geoprocessing service
@@ -92,7 +94,7 @@
         "footprints": {
             "task": {
                 //url - URL to the reporting tool
-                "url": "http://kacstags1.esri.com/arcgis/rest/services/KACST/reportGenerator/GPServer/Report%20Generator",
+                "url": "http://myserver/arcgis/rest/services/KACST/reportGenerator/GPServer/Report%20Generator",
                 //featureInputParameter - input parameter for the generator tool
                 "featureInputParameter": "Input_JSON_String",
                 //outputUrlParameter - output parameter containing the response

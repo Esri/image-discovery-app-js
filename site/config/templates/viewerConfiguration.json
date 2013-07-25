@@ -1,6 +1,11 @@
 {
     //title to display in the browser tab
     "windowTitle": "Image Discovery Application",
+    //portal: configuration for which portal to access in the viewer
+    "portal": {
+        //url: URL to portal instance
+        "url": "https://www.esri.com"
+    },
     "map": {
         //initializationParameters  - this object is passed to the map constructor. any parameters that esri.Map takes in as options are valid
         "initializationParameters": {
@@ -39,11 +44,24 @@
             }
         },
         "operationalLayers": [
-            //type: "feature" , "dynamic", "tiled","image"
+            //type: "feature" , "dynamic", "tiled","image", "kml"
             //url: url to the ArcGIS Service
+            //visibleLayerIds: optional array of layerIds to display on load of a dynamic map service layer
+            //visible: optional. When false the layer is hidden on load
             {
                 "type": "feature",
-                "url": "http://arcgis-idmcloudsite-1166400923.us-west-1.elb.amazonaws.com/arcgis/rest/services/LiDARManagement/Anno/FeatureServer/0"
+                "url": "http://myserver/arcgis/rest/services/LiDARManagement/Anno/FeatureServer/0",
+                "visibleLayerIds": [0, 1, 2],
+                "visible": true
+            }
+        ],
+        //referenceLayers: layers that toggle on/off when the user clicks the "labels" button in the toolbar
+        "referenceLayers": [
+            {
+                //type: "feature" , "dynamic", "tiled","image", "kml"
+                "type": "dynamic",
+                //url: url to the ArcGIS Service
+                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer"
             }
         ],
         "legend": {
@@ -58,6 +76,16 @@
             //create: true displays the zoom slider
             "create": true
         },
+        //initialExtent: json object representing the initial extent of the map
+        "initialExtent": {
+            "xmin": 1041989.569,
+            "ymin": 714227.5922,
+            "xmax": 7269467.138,
+            "ymax": 4994701.176,
+            "spatialReference": {
+                "wkid": 102100
+            }
+        },
         //display  - contains parameters about the map coordinate readout at the bottom of the map
         "display": {
             //showScale - shows map scale when true
@@ -68,14 +96,14 @@
             "mgrsPrecision": 6,
             //showLatLong - shows lat/long mouse readout
             "showLatLong": true,
-			 //showScaleBar - shows the scale bar
+            //showScaleBar - shows the scale bar
             "showScaleBar": true
         },
         //max zoom level the application can zoom into for setting extent
         "maxClientZoom": 16
     },
     //geometryServiceUrl: string to a geometry service. not required, but a good idea
-    "geometryServiceUrl": "http://kacstags1.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+    "geometryServiceUrl": "http://myserver/arcgis/rest/services/Utilities/Geometry/GeometryServer",
 
     //locators that can be searched on
     //takes in a JSON object with a url to a geocode server ie:
@@ -91,24 +119,26 @@
         "create": true
     },
     "header": {
-        //displays: true displays the header widget
+        //display: true displays the header widget
         "display": false,
+        //small: true displays the header smaller than the default header size
+        "small": true,
         //headerText: String that displays as the larger text in the header
         "headerText": "Discovery Application",
         //headerImage: url to an image that displays in the header widget
-        "headerImage": "images/kacstLogo.png",
+        "headerImage": "images/esriLogo.png",
 
         "contact": {
             //label: string for the contact text
             "label": "Contact Us",
             //url: url that will be navigated to on label click
-            "url": "http://www.kacst.edu.sa/en/contact/Pages/default.aspx"
+            "url": "http://www.esri.com"
         },
         "help": {
             //label: string for the help text
             "label": "Help",
             //url: url that will be navigated to on label click
-            "url": "http://www.kacst.edu.sa/en/Pages/default.aspx"
+            "url": "http://www.esri.com"
         }
     },
     "configureWidget": {
@@ -132,7 +162,7 @@
         //service:  json object with a "url"  parameter to a feature server
         "service": {
             //url: string URL to a feature server. currently does not support multiple feature layers of the same geometry type
-            "url": "http://arcgis-idmcloudsite-1166400923.us-west-1.elb.amazonaws.com/arcgis/rest/services/LiDARManagement/Anno/FeatureServer"
+            "url": "http://myserver/arcgis/rest/services/LiDARManagement/Anno/FeatureServer"
         }
     },
     "layersTransparencyWidget": {
@@ -148,7 +178,9 @@
         //showLayersButton - when true, displays the gear allowing you to select from multiple locator services
         "showConfigureLocatorsIcon": false,
         //showLocator - when true, displays the textbox where users can search for a location
-        "showLocator": true
+        "showLocator": true,
+        //showLocator - when true, displays the bookmarks button
+        "showBookmarksButton": true
     },
     //logging  - configures the logging widget
     "logging": {
@@ -169,8 +201,8 @@
     //identifyWidget  - "create" child, when true creates the identify widget. identify widget identifies on operational layers
     "identifyWidget": {
         "create": true,
-		//maxResults  - max results to display in identify, defaults to 50
-		"maxResults": 10
+        //maxResults  - max results to display in identify, defaults to 50
+        "maxResults": 10
     },
     //timeSliderWidget  - "create" child, when true displays the time slider widget
     "timeSliderWidget": {
@@ -197,9 +229,37 @@
     "zoomToWidget": {
         "create": true
     },
-	    //portalSearchWidget - when "create" child is true, the portal search widget is created
+    //portalSearchWidget - when "create" child is true, the portal search widget is created
     "portalSearchWidget": {
         "create": true
+    },
+    //printWidget - when "create" child is true, print support is enabled.
+    "printWidget": {
+        "create": true,
+        //printTaskUrl: REST endpoint to an ArcGIS Service Export Web Map task
+        "printTaskUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+    },
+    //swipeWidget - when "create" child is true, swipe widget for imagery search results is created
+    "swipeWidget": {
+        "create": true
+    },
+    //weatherWidget - when "create" child is true, the weather widget is created
+    "weatherWidget": {
+        "create": false,
+        //configurationUrl: URL to configuration file for weather widget. NOTE - wunderground API key must be set in this file
+        "configurationUrl": "config/widgets/WeatherWidgetConfig.json"
+    },
+    //socialMediaWidget - when "create" child is true, the social media widget is created
+    "socialMediaWidget": {
+        "create": false,
+        //configurationUrl: URL to configuration file for social media widget. NOTE - flickr API key must be set in this file
+        "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
+    },
+    //reflectivityWidget - when "create" child is true, the reflectivity widget is created
+    "reflectivityWidget": {
+        "create": false,
+        //configurationUrl: URL to configuration file for reflectivity widget
+        "configurationUrl": "config/widgets/ReflectivityWidgetConfig.json"
     }
 
 }
