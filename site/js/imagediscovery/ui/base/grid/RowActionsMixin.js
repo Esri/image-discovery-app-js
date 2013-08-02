@@ -8,11 +8,14 @@ define([
         return declare(
             [],
             {
+                //handles zoom to result request
                 handleZoomToResult: function (entry, e) {
                     if (entry.geometry && lang.isFunction(entry.geometry.getExtent)) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.SET_EXTENT, entry.geometry.getExtent());
                     }
                 },
+                //handles pan and flash footprint request
+                /*
                 handlePanAndFlash: function (entry, e) {
                     var entryScoped = entry;
                     if (entryScoped && entryScoped.queryControllerId != null) {
@@ -27,9 +30,12 @@ define([
                         });
                     }
                 },
+                */
+                //handles show information window for a result
                 handleShowInformation: function (entry, e) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SHOW, entry, this.layer);
                 },
+                //footprint checkbox toggle listener
                 handleShowFootprintToggle: function (item, checked) {
                     item.showFootprint = checked;
                     var queryController = IMAGERY_UTILS.getQueryLayerControllerFromItem(item);
@@ -42,10 +48,12 @@ define([
                         }
                     }
                 },
+                //forces the show of thumbnail
                 handleShowThumbNailToggle: function (item, checked) {
                     item.showThumbNail = checked;
                     this.setSelectedThumbnails();
                 },
+                //given a query controller id it will show footprints that are checked in the grid
                 showVisibleFootprintsByQueryControllerId: function (queryControllerId) {
                     var items = this.store.query({showFootprint: true, isFiltered: false, isGrayedOut: false, queryControllerId: queryControllerId});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
@@ -59,6 +67,7 @@ define([
                         }
                     }
                 },
+                 //given a query controller id it will hide footprints that are not checked in the grid
                 hideVisibleFootprintsByQueryControllerId: function (queryControllerId) {
                     var items = this.store.query({showFootprint: true, isFiltered: false, isGrayedOut: false, queryControllerId: queryControllerId});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
@@ -72,6 +81,7 @@ define([
                         }
                     }
                 },
+                //displays all footprints checked in the result grid
                 showVisibleFootprints: function () {
                     var queryControllers;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (queryConts) {
@@ -126,6 +136,7 @@ define([
                     var sort = this.grid.get("sort");
                     this.setSelectedThumbnailsSorted(sort);
                 },
+                //zooms to extent of all visible rasters
                 zoomToVisibleRasters: function () {
                     var xmin;
                     var ymin;
@@ -169,11 +180,14 @@ define([
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.SET_EXTENT, extent);
                     }
                 },
+                /*
                 handleToggleAllFootprints: function (checked) {
                     this.grid.toggleAllFootprints(checked);
                 },
+                */
                 handleToggleAllThumbnails: function (checked) {
                     this.grid.toggleAllThumbnails(checked);
                 }
+
             });
     });

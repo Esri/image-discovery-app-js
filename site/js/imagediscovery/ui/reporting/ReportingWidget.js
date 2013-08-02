@@ -68,6 +68,7 @@ define([
                     }
 
                     var resultsFormattingConfig = null;
+                    //get formatting configuration so we can display the report html properly
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "resultsFormatting", function (resultsFormattingConf) {
                         resultsFormattingConfig = resultsFormattingConf;
                     });
@@ -152,8 +153,6 @@ define([
                     else {
                         //  this._generateServerSideReport();
                     }
-
-
                     VIEWER_UTILS.log("Generating Report", VIEWER_GLOBALS.LOG_TYPE.INFO);
                 },
                 _getRequestedExtentGeometry: function () {
@@ -232,12 +231,10 @@ define([
                         VIEWER_UTILS.log("Could not generate HTML report. reporting.html.templateURL Configuration entry missing.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                         return;
                     }
-
                     var extent = this._getRequestedExtentGeometry();
                     if (extent == null) {
                         return;
                     }
-
                     var queryLayerControllers;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (qLCtrls) {
                         queryLayerControllers = qLCtrls;

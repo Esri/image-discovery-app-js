@@ -1,20 +1,13 @@
-<div class='viewerMainToolbar'>
+<div class='viewerMainToolbar headerFooterBg'>
     <div class="mainToolbarContents" data-dojo-attach-point="mainToolbarContents">
-        <div class="locateToolbarContainer locateToolbarContainerOnMap" data-dojo-attach-point="locateToolbarContainer">
-            <input value="${locateDefaultInput}" type="text" class="locateTextBox defaultBorder"
-                   data-dojo-attach-point="locateTextBox"/>
-            <div data-dojo-attach-point="locateButton" title="Locate"
-                 class="defaultBorder searchButton searchButtonIcon"></div>
-            <div data-dojo-attach-point="configureLocateButton"
-                 data-dojo-attach-event="onclick:toggleConfigureLocatorTooltip" title="Configure Locate"
-                 class="defaultBorder configureLocate configureButtonIcon"></div>
-        </div>
+
             <span data-bind="visible: toolsButtonVisible"
                   data-dojo-type="dijit/form/DropDownButton"
                   data-dojo-attach-point="toolsDropDownButton"
                   data-dojo-props="iconClass:'commonIcons16 wrench'">
                 <span>Tools</span>
             </span>
+
         <div data-dojo-attach-point="layersButton" class="actionsToolbarButton"
              data-bind="visible: layersButtonVisible">
             <div class="commonIcons16 list actionsToolbarIcon"></div>
@@ -34,5 +27,17 @@
         <span data-dojo-type="dijit/form/ToggleButton"
               data-dojo-attach-point="labelsButton"
               data-dojo-props="iconClass:'dijitCheckBoxIcon'">Labels</span>
+
+        <div data-dojo-attach-point="addOnContentContainer"></div>
+        <div class="locateToolbarContainer locateToolbarContainerOnMap" data-dojo-attach-point="locateToolbarContainer">
+            <input value="${locateDefaultInput}" type="text" class="locateTextBox defaultBorder"
+                   data-dojo-attach-point="locateTextBox"/>
+
+            <div data-dojo-attach-point="locateButton" title="Locate"
+                 class="defaultBorder searchButton searchButtonIcon"></div>
+            <div data-dojo-attach-point="configureLocateButton"
+                 data-dojo-attach-event="onclick:toggleConfigureLocatorTooltip" title="Configure Locate"
+                 class="defaultBorder configureLocate configureButtonIcon"></div>
+        </div>
     </div>
 </div>

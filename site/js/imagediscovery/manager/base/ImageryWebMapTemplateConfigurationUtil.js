@@ -10,6 +10,7 @@ define([
                 displayFieldsParameter: "imageResultDisplayFields",
                 maxResultsParameter: "maxResults",
                 whereClauseAppendParameter: "whereClauseAppend",
+                //portal configuration entries that are specifically for the discovery viewer
                 imageryParameters: [ "imageResultDisplayFields", "maxResults", "whereClauseAppend", "imageryViewer"],
 
                 constructor: function () {
@@ -35,6 +36,8 @@ define([
                     //add the webmap
                 },
                 handleWebMapItemLoaded: function (webMapItem) {
+                    //make sure the web map item exists, read the operational laeyers off of the web map item
+                    //image services will be registered as searchable catalog services in the viewer
                     if (webMapItem != null && lang.isObject(webMapItem)) {
                         if (webMapItem.itemData != null && lang.isObject(webMapItem.itemData)) {
                             var itemData = webMapItem.itemData;
@@ -63,6 +66,7 @@ define([
                     this.inherited(arguments);
                 },
                 _applicationConfigurationToImageryConfiguration: function (imageryDefaultConfiguration) {
+                    //this takes the portal config.json file and converts it into the json configuration format the discovery application expects
                     var hasWebMapQueryLayer = false;
                     var i;
                     var queryLayerItems;

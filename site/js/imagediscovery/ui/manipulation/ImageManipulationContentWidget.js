@@ -27,6 +27,7 @@ define([
                     this.viewModel.raster.subscribe(lang.hitch(this.mensurationWidget, this.mensurationWidget.cancelMensuration));
                     this.viewModel.bands.subscribe(lang.hitch(this.mensurationWidget, this.mensurationWidget.cancelMensuration));
                 },
+
                 applyBindings: function () {
                     if (!this.bindingsApplied) {
                         ko.applyBindings(this.viewModel, this.domNode);
@@ -131,7 +132,6 @@ define([
                         if (this.mensurationWidget) {
                             this.mensurationWidget.setQueryLayerController(this.queryLayerController);
                         }
-
                     }
                     else {
                         this.hideMensurationTab();
@@ -143,7 +143,6 @@ define([
                         this.rasterFunctionWidget.setQueryLayerController(this.queryLayerController);
                     }
                     this.selectNextVisibleTab();
-
                 },
                 hideRendererTab: function () {
                     domStyle.set(this.rendererTab, "display", "none");

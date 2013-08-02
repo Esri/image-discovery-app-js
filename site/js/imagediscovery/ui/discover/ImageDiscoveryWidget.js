@@ -44,6 +44,7 @@ define([
                     this.viewModel = new ImageDiscoveryViewModel();
                     this.viewModel.on("firstBoundsDisplay", lang.hitch(this, this.createBoundsView));
                     this.viewModel.on("viewChange", lang.hitch(this, this.handleViewChanged));
+                    this.viewModel.discoverByFieldsExpanded.subscribe(lang.hitch(this,this.handleDiscoveryByFieldsToggle));
                     this.initSymbology();
                     if (this.createQueryFieldsDiscoveryContent) {
                         this.viewModel.selectedDiscoveryService.subscribe(lang.hitch(this, this.handleSearchServiceChanged));
@@ -61,18 +62,23 @@ define([
                     }
                 },
                 handleDiscoveryByFieldsToggle: function (expanded) {
+                    //toggle the view for searching by field value in the discovery widget
                     if (!expanded && this.imageQueryWidget) {
                         this.imageQueryWidget.closePopups();
                     }
                 },
                 initListeners: function () {
+                    //listen for when the accordion has been hiden
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.HIDE_COMPLETE, lang.hitch(this, this.handleAccordionHidden));
+                    //listen for when all query layer controllers have been loaded
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, lang.hitch(this, this.handleQueryLayerControllersLoaded));
                     this.on("annotationCreated", lang.hitch(this, this.handleAnnotationAddedFromUser));
                     this.on("show", lang.hitch(this, this.handleOnShow));
+                    //listen for clear results
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleResultsCleared));
                 },
                 handleSearchServiceChanged: function (queryController) {
+                    //when search service changed the unique values need to be reloaded
                     if (this.imageQueryWidget) {
                         if (queryController == null) {
                             this.hideUniqueValuesContent();
@@ -106,10 +112,12 @@ define([
                     }
                 },
                 hideUniqueValuesContent: function () {
+                    //hide unique values view
                     this.viewModel.discoverByFieldsExpanded(false);
                     this.viewModel.discoverByFieldsHeaderVisible(false);
                 },
                 createQueryView: function () {
+                    //create the view which shows unique values for the active service
                     this.imageQueryWidget = new ImageQueryWidget();
                     this.imageQueryWidget.on("noUniqueValuesReturned", lang.hitch(this, this.hideUniqueValuesContent));
                     this.imageQueryWidget.placeAt(this.imageDiscoveryByQueryContainer);
@@ -135,6 +143,7 @@ define([
                     this.clearDraw();
                 },
                 initSymbology: function () {
+                    //init the discovery widget symbology
                     this.polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                             new Color([0, 0, 255]), 1), new Color([0, 0, 255, 0]));
@@ -156,12 +165,15 @@ define([
                     }
                 },
                 handleOnShow: function () {
+                    //fire event telling other widgets the discovery widget has come into view
                     topic.publish(IMAGERY_GLOBALS.EVENTS.DISCOVERY.ON_SHOW);
                 },
                 handleResultsCleared: function () {
+                    //when results are cleared remove and geometries left over from the initial search
                     this.clearVisibileGraphics();
                 },
                 clearVisibileGraphics: function () {
+                    //clears any graphics on the map created from the discovery widget
                     if (this.currentAddedGraphics) {
                         for (var i = 0; i < this.currentAddedGraphics.length; i++) {
                             topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.REMOVE, this.currentAddedGraphics[i]);
@@ -171,6 +183,7 @@ define([
                     this.currentAddedGraphics = [];
                 },
                 activateSearchByExtent: function () {
+                    //searches by map extent
                     var mapExtent = null;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_EXTENT, function (ext) {
                         mapExtent = ext;
@@ -181,7 +194,7 @@ define([
                     this.performSearch(mapExtent, false);
                 },
                 performSearch: function (searchObject, zoomToArea) {
-
+                   //figure out what type of search is being performed and perform the search
                     if (searchObject == null) {
                         return;
                     }
@@ -209,6 +222,7 @@ define([
                         returnGeometry: true
                     });
                     var searchGraphic;
+                    //figure out if the search object is already a graphic or if it is a geometry that needs to be turned into a graphic
                     if (searchObject instanceof Graphic) {
                         searchGraphic = searchObject;
                         this.currentAddedGraphics.push(searchObject);
@@ -226,6 +240,7 @@ define([
                         }
                         if (graphic) {
                             this.currentAddedGraphics.push(graphic);
+                            //add the graphic to the map
                             topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.ADD, graphic);
                             searchGraphic = graphic;
                         }
@@ -236,6 +251,7 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, imageQueryParameters);
                 },
                 handleViewChanged: function (oldView, newView) {
+                    //figure out what view we are in and publish draw events accordingly
                     if (oldView == newView && newView != this.viewModel.views.extent) {
                         return;
                     }
@@ -260,10 +276,7 @@ define([
                 },
                 handleAnnotationAddedFromUser: function (annoObj) {
                     //{ id:uuid, type:type, graphic:graphic }
-                    //clear the draw
-
                     var isPointBuffer = false;
-
                     if (this.viewModel.currentView() == this.viewModel.views.point) {
                         //perform a buffer if it exists. the buffer will be the displayed graphic
                         var bufferValue = this.pointDrawBufferValue.get("value");
@@ -278,6 +291,7 @@ define([
                     }
                     this.viewModel.currentView(this.viewModel.views.none);
                     if (!isPointBuffer) {
+                        //perform the search right away since we don't have to send another server request for buffering a point
                         this.performSearch(annoObj.graphic);
                     }
                 },

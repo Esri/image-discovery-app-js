@@ -20,7 +20,8 @@ define([
     "esri/graphic",
     "dojo/_base/array"
 ],
-    function (declare, template,theme, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic,array) {
+    //this widget is contained in the analysis window content
+    function (declare, template, theme, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
         return declare(
             [UITemplatedWidget, DataLoaderSupport],
             {
@@ -34,7 +35,7 @@ define([
                 mensurationOperationParamName: "measureOperation",
                 fromGeometryParamName: "fromGeometry",
                 toGeometryParamName: "toGeometry",
-                noMensurationCapabilitesStrings: ["None","None,Basic"],
+                noMensurationCapabilitesStrings: ["None", "None,Basic"],
                 templateString: template,
                 mensurationLineSymbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 255]), 3),
                 mensurationPointSymbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 1,
@@ -79,6 +80,7 @@ define([
                     this.initSubmitMensuration();
                 },
                 handleMensurationDrawComplete: function (geometry) {
+                    //create a graphic from the completed mensuration draw and add it to the map
                     this.toolChangeConnect.remove();
                     this.clearLastGraphic();
                     var symbol;
@@ -107,7 +109,6 @@ define([
                         //todo alert error
                         return;
                     }
-
                     var drawType = this.getDrawEventTypeForMensurationOption(selectedMensurationOption);
 
                     if (drawType == null) {
@@ -138,6 +139,7 @@ define([
                     this.startUserGraphicDraw();
                 },
                 cancelMensuration: function () {
+                    //stop all mensuration operations
                     var mensurationEnabled = this.startMensurationButton.get("disabled");
                     if (mensurationEnabled) {
                         this.startMensurationButton.set("disabled", false);
@@ -225,7 +227,7 @@ define([
                     this.loadJsonP(measureLayerUrl, requestParams, this.mensurationCompleteCallback, this.mensurationErrorCallback)
                 },
                 layerSupportsMensuration: function (layer) {
-                    var menCapExcludeIdx  = array.indexOf(this.noMensurationCapabilitesStrings,layer.mensurationCapabilities);
+                    var menCapExcludeIdx = array.indexOf(this.noMensurationCapabilitesStrings, layer.mensurationCapabilities);
                     return !(layer == null || layer.mensurationCapabilities == null || menCapExcludeIdx > -1);
                 },
                 setQueryLayerController: function (queryLayerController) {
@@ -236,7 +238,7 @@ define([
                     this.layer = this.queryLayerController.layer;
                     //kill all the mensuration options
                     this.viewModel.mensurationOptions.removeAll();
-                    if (this.layer == null || array.indexOf(this.noMensurationCapabilitesStrings,this.layer.mensurationCapabilities) > -1) {
+                    if (this.layer == null || array.indexOf(this.noMensurationCapabilitesStrings, this.layer.mensurationCapabilities) > -1) {
                         this.viewModel.setMensurationNotSupported();
                     }
                     else {
@@ -266,6 +268,7 @@ define([
                 },
 
                 handleMensurationComplete: function (mensurationResponse) {
+                    //figure out which type of mensuration was performed and populate the view model with the results
                     if (mensurationResponse) {
                         if (mensurationResponse.error) {
                             this.handleMensurationError(mensurationResponse.error);
@@ -385,6 +388,7 @@ define([
                     }
                 },
                 clearDisplayValues: function () {
+                    //clears everything in the view model for mensuration
                     this.viewModel.distanceOrHeightValue("");
                     this.viewModel.azimuthValue("");
                     this.viewModel.uncertaintyValue("");

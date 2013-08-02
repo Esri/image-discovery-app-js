@@ -43,6 +43,7 @@ define([
                     }
                 },
                 setCurrentQueryLayerController: function (currentQueryLayerController) {
+                    //for unique values there has to be a single active query layer controller. this widget is not active when searching all services
                     if (currentQueryLayerController == null || currentQueryLayerController.layer == null) {
                         return;
                     }
@@ -85,6 +86,7 @@ define([
                     this.onNoUniqueValuesReturned();
                 },
                 handleQueryFieldValuesResponse: function (queryLayerController, queryFieldValuesResponse) {
+                    //populate the unique values in the users view
                     if (queryFieldValuesResponse && lang.isObject(queryFieldValuesResponse) && queryFieldValuesResponse.features) {
                         var valuesLookup = {};
                         var usedValuesLookup = {};
@@ -152,8 +154,7 @@ define([
                     });
                     this.filterSelectCacheByFieldName[fieldName] = filteringSelect;
 
-                    var addIcon = domConstruct.create("div", {title: "Add Value", className: "commonIcons16 add imageDiscoveryQueryAddFieldValueIcon"});
-                    on(addIcon, "click", lang.hitch(this, this.addFieldValueToQueryList, fieldName));
+
                     var infoIcon = domConstruct.create("div", {className: "commonIcons16 list imageDiscoveryQueryShowAddedValuesIcon", style: {visibility: "hidden"}});
                     var addedFieldValuesTooltip = new AddedFieldValuesTooltip({
                         aroundNode: infoIcon
@@ -166,23 +167,31 @@ define([
                     });
                     this.addedFieldValuesTooltipLookup[fieldName] = addedFieldValuesTooltip;
                     on(infoIcon, "click", lang.hitch(addedFieldValuesTooltip, addedFieldValuesTooltip.toggle));
+
+
+                    var addIcon = domConstruct.create("div", {title: "Add Value", className: "commonIcons16 add imageDiscoveryQueryAddFieldValueIcon"});
+                    on(addIcon, "click", lang.hitch(this, this.addFieldValueToQueryList, fieldName));
+
+
                     domConstruct.place(queryFilterLabel, queryFilterEntryContainer);
                     domConstruct.place(addIcon, queryFilterEntryContainer);
                     domConstruct.place(filteringSelect.domNode, queryFilterEntryContainer);
                     domConstruct.place(infoIcon, queryFilterEntryContainer);
                     domConstruct.place(queryFilterEntryContainer, this.queryFieldEntries);
                 },
-                addFieldValueToQueryList: function (fieldName) {
+                addFieldValueToQueryList: function (fieldName, addedFieldValuesTooltip) {
                     if (this.addedFieldValuesTooltipLookup[fieldName]) {
                         var value = this.filterSelectCacheByFieldName[fieldName].get("value");
                         if (value != null && value != "") {
                             this.addedFieldValuesTooltipLookup[fieldName].addFieldValue(value);
                         }
                     }
+
                 },
                 showAddedFieldValues: function (fieldName) {
                 },
                 getQuery: function () {
+                    //joins all of the unique values to be queried on into a single SQL string
                     var queryString = "";
                     var currentTooltip;
                     var currentFieldValues;

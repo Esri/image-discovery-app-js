@@ -18,14 +18,9 @@ define([
             [Evented],
             {
                 LOCK_RASTERS_CHANGED: "lockRastersChanged",
-                visibleFootprintCount: 0,
-                footprintPolygonSymbol: new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
-                    new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                        new Color([255, 0, 0]), 1), new Color([255, 0, 0, 0])),
                 constructor: function (params) {
                     lang.mixin(this, params || {});
                     this.currentLockRasterIds = [];
-                    this.footprintGraphicsCache = {};
                     this.id = VIEWER_UTILS.generateUUID();
                     this.currentMosaicOperation = MosaicRule.OPERATION_FIRST;
 
@@ -38,6 +33,10 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL, lang.hitch(this, this.clearLockIds));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.TRANSPARENCY.SET, lang.hitch(this, this.handleSetTransparency));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP, lang.hitch(this, this.handleClearLayerManipulations));
+                    //we dont want to show imagery when the cluster layer is visible
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.showLayer));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.hideLayer));
+
                 },
                 handleClearLayerManipulations: function () {
                     if (this.layer) {
@@ -94,67 +93,14 @@ define([
                         this.layer.setRenderingRule(new RasterFunction());
                     }
                 },
-                //clears all footprints on the map
-                clearFootprints: function () {
-                    this.footprintGraphics.clear();
-                    this.footprintGraphicsCache = {};
-                    this.visibleFootprintCount = 0;
-                    VIEWER_UTILS.debug("Cleared Query Layer Footprints");
-                },
-                deleteFootprint: function (resultEntry) {
-                    if (this.footprintGraphicsCache[resultEntry.id]) {
-                        this.footprintGraphics.remove(this.footprintGraphicsCache[resultEntry.id]);
-                        VIEWER_UTILS.debug("Deleted Footprint");
-                        delete this.footprintGraphicsCache[resultEntry.id];
-                        --this.visibleFootprintCount;
-                    }
-                },
-                //shows footprints in the passed array
-                showFootprints: function (resultEntries) {
-                    for (var i = 0; i < resultEntries.length; i++) {
-                        this.showFootprint(resultEntries[i]);
-                    }
-                },
-                hideFootprints: function () {
-                    VIEWER_UTILS.debug("Hiding All Query Layer Footprints");
-                    this.footprintGraphics.hide();
-                },
+
                 //shows a single footprint
                 showFootprint: function (resultEntry) {
-                    if (resultEntry != null) {
-                        if (!this.footprintGraphics.visible) {
-                            this.footprintGraphics.show();
-                        }
-                        if (this.footprintGraphicsCache[resultEntry.id]) {
-                            this.footprintGraphicsCache[resultEntry.id].show();
-                        }
-                        else if (resultEntry.geometry != null) {
-                            var graphic = new Graphic(resultEntry.geometry, this.footprintPolygonSymbol);
-                            this.footprintGraphics.add(graphic);
-                            this.footprintGraphicsCache[resultEntry.id] = graphic;
-                            this.visibleFootprintCount++;
-                        }
-                    }
-                },
-                centerAndFlashFootprint: function (resultEntry) {
-                    if (resultEntry != null) {
-                        if (!this.footprintGraphics.visible) {
-                            this.footprintGraphics.show();
-                        }
-                        var graphicEntry = this.footprintGraphicsCache[resultEntry.id];
-                        if (graphicEntry) {
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH, graphicEntry);
-
-                        }
-                    }
+                    this.emit("showFootprint", resultEntry);
                 },
                 //hides the passed footprint
                 hideFootprint: function (resultEntry) {
-                    if (resultEntry != null && resultEntry.id != null) {
-                        if (this.footprintGraphicsCache[resultEntry.id]) {
-                            this.footprintGraphicsCache[resultEntry.id].hide();
-                        }
-                    }
+                    this.emit("hideFootprint", resultEntry);
                 },
                 //sets the lock rasters from the entries array
                 setLockIds: function (entries) {
@@ -211,6 +157,14 @@ define([
                 },
                 hasMosaicRule: function () {
                     return this.currentLockRasterIds != null && this.currentLockRasterIds.length > 0;
+                },
+                hideLayer: function () {
+                    this.layer.hide();
+                },
+                showLayer: function () {
+                    if (this.hasLockRasters()) {
+                        this.layer.show();
+                    }
                 }
             });
     });

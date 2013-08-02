@@ -149,13 +149,20 @@ define([
                 showClearAllFiltersIcon: function () {
                 },
                 handleClearQueryResult: function () {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.BEFORE_CLEAR);
                     //hide all the filter widgets
                     for (var i = 0; i < this.queryWidgets.length; i++) {
+                        try{
                         this.queryWidgets[i].hide();
+                        }
+                        catch(err){
+                        }
                     }
+
                     this.lastFilterStateBeforeDisable = [];
                     this.hideClearAllFiltersIcon();
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_FILTER_FUNCTION, this.processQueryFilterCallback);
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.CLEARED);
 
 
                 },

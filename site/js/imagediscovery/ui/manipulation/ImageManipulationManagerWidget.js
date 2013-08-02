@@ -11,7 +11,7 @@ define([
     "./ImageManipulationContentWidget",
     "./model/ImageManipulationManagerViewModel"
 ],
-    function (declare, template, theme,lang, topic, on, ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
+    function (declare, template, theme, lang, topic, on, ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {
@@ -22,15 +22,36 @@ define([
                 },
                 initListeners: function () {
                     this.inherited(arguments);
+
+                    //listen for manipulation stop
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP, lang.hitch(this, this.handleStopManipulation));
+                    //listen for results being cleared
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleResultsCleared));
 
+                    //listen for when the cart has been displayed
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED, lang.hitch(this, this.handleCartViewDisplayed));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.HIDDEN, lang.hitch(this, this.handleCartViewHidden));
-
+                    //listen for when the cart has been hidden
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.HIDDEN, lang.hitch(this, this.checkForAnalysisEnabled));
+                    //listen for when no sources are locked on
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.NO_SOURCES_LOCKED, lang.hitch(this, this.handleNoSourcesLocked));
+                    //listen for when multiple sources are locked
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.MULTIPLE_SOURCES_LOCKED, lang.hitch(this, this.handleMultipleSourcesLocked));
+                    //listen for when a single source is locked on
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.SINGLE_SOURCE_LOCKED, lang.hitch(this, this.handleSingleSourceLocked));
+
+                    //listen for when the footprints layer is displayed. at footprint zoom level the imagery is visible
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersVisible));
+                    //imagery is hidden when the cluster layer is visible
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersHidden));
+
+                },
+
+                handleImageryLayersHidden: function () {
+                    this.hideManipulationContent("Zoom into imagery view for manipulation");
+                    this.cancelMensuration();
+                },
+                handleImageryLayersVisible: function () {
+                     this.checkForAnalysisEnabled();
                 },
                 postCreate: function () {
                     this.inherited(arguments);
@@ -39,9 +60,11 @@ define([
                 },
                 createViewModel: function () {
                     this.viewModel = new ImageManipulationManagerViewModel();
+                    //show the disabled view on creation of the manipulation view
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.MANIPULATION.SHOW_DISABLED_VIEW, lang.hitch(this.viewModel, this.viewModel.disabledContainer, true));
                 },
                 handleSingleSourceLocked: function (lockRasterObject) {
+                    //if a single source is locked we show the analysis content
                     var cartVisible = false;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
                         cartVisible = vis;
@@ -59,6 +82,7 @@ define([
                     }
                 },
                 handleNoSourcesLocked: function () {
+                    //no sources locked so hide the analysis content
                     var cartVisible = false;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
                         cartVisible = vis;
@@ -71,6 +95,7 @@ define([
                     this.hideManipulationContent("There is no imagery to analyze.");
                 },
                 handleMultipleSourcesLocked: function () {
+                    //hide the analysis content for multiple sources. can only analyze a single source
                     var cartVisible = false;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
                         cartVisible = vis;
@@ -83,18 +108,26 @@ define([
                 },
                 handleCartViewDisplayed: function () {
                     //show disabled text for the exploitation
-
                     this.hideManipulationContent("Analysis disabled for shopping cart.");
                 },
-                handleCartViewHidden: function () {
+                checkForAnalysisEnabled: function () {
                     var hasSingleSourceLocked = false;
                     var hasNoSourcesLocked = false;
                     var queryLayerControllerObject;
+                    var isFootprintsLayerVisible;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, function (fprintLayerVis) {
+                        isFootprintsLayerVisible = fprintLayerVis;
+                    });
+                    if (!isFootprintsLayerVisible) {
+
+                        this.hideManipulationContent("Zoom into imagery view for manipulation");
+                        return;
+                    }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_NO_SOURCES_LOCKED, function (noSourcesLocked) {
                         hasNoSourcesLocked = noSourcesLocked;
                     });
                     if (hasNoSourcesLocked) {
-                        this.hideManipulationContent("Cannot perform analysis");
+                        this.hideManipulationContent("There is no imagery visible");
                         return;
                     }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_SINGLE_SOURCE_LOCKED, function (sglSrc, queryConObj) {
@@ -109,6 +142,7 @@ define([
                         var queryLayerController = queryLayerControllerObject.queryController;
                         this.showManipulationContent(queryLayerController);
                     }
+
                 },
                 handleResultsCleared: function () {
                     this.handleClearAllManipulations();

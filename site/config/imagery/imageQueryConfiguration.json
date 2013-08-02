@@ -1,9 +1,20 @@
 {
     "imageQueryLayers": [
         {
-            "url": "http://kacstags1:6080/arcgis/rest/services/KACST/GlobalREF/ImageServer",
+            "url": "http://kacstags1:6080/arcgis/rest/services/Cam/GLOBAL_REF/ImageServer",
             "label": "Catalog",
-            "queryWhereClauseAppend": "Category = 5"
+            "queryWhereClauseAppend": "Category = 1"
+        } ,
+        {
+            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
+            "label": "Catalog 2",
+            "queryWhereClauseAppend": "Category = 1"
+        }
+    ],
+    "imageDiscoveryQueryFields": [
+        {
+            "field": "ProductName",
+            "label": "Product"
         }
     ],
     "imageQueryResultDisplayFields": [
@@ -89,8 +100,9 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        "maxQueryResults": 100,
-        "allowCheckAllSearchResultThumbnails": true
+        "maxQueryResults": 400,
+        "allowCheckAllSearchResultThumbnails": true,
+        "footprintZoomLevelStart": 6
     },
     "exportConfiguration": {
         "image": {
@@ -103,7 +115,6 @@
                 "featureInputParameter": "Input_JSON_String",
                 "outputUrlParameter": "Report_URL",
                 "isAsync": true
-
             }
         }
     },

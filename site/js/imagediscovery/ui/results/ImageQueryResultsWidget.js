@@ -24,12 +24,15 @@ define([
     "../cart/checkout/ShoppingCartCheckoutHandler",
     "./base/ActiveSourcesWidget",
     "esriviewer/ui/draw/base/MapDrawSupport",
-    "dijit/TooltipDialog"
+    "dijit/TooltipDialog",
+    "./ResultsClusterManager",
+    "./ResultsFootprintManager"
 ],
-    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog) {
+    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsFootprintManager) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
+                footprintZoomLevelStart: 12,
                 bindingsApplied: false,
                 generateCSVEndpoint: "generateCSV",
                 title: "Results",
@@ -56,9 +59,20 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.HIDE_ICON, lang.hitch(this, this.hideTimeSliderIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.SHOW_ICON, lang.hitch(this, this.showTimeSliderIcon));
 
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.checkForToolsActive));
+
+
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleFilterApplied));
+
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED, lang.hitch(this, this.handleZoomLevelChange));
+
                 },
                 postCreate: function () {
                     this.inherited(arguments);
+                    this.createClusterManager();
+                    this.createFootprintManager();
+
+
                     //this is the manager that will listen for applied filters
                     this.filterFunctionManager = new FilterFunctionManager();
                     this.viewModel = new ImageQueryResultsViewModel();
@@ -76,6 +90,65 @@ define([
                     this._createResultGrid();
                     this._createShoppingCartGrid();
                     this.createActiveSourcesWidget();
+
+
+                },
+                checkForToolsActive: function (level) {
+                    if (level == null) {
+                        var zoomLevel;
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, lang.hitch(this, function (mapLevel) {
+                            zoomLevel = mapLevel;
+                        }));
+                        level = zoomLevel;
+                    }
+                    if (level < this.footprintZoomLevelStart) {
+                        this.viewModel.toolsActive(false);
+                    }
+                    else {
+                        this.viewModel.toolsActive(true);
+                    }
+                },
+
+                handleZoomLevelChange: function (extent, factor, anchor, level) {
+                    if (this.viewModel.cart()) {
+                        return;
+                    }
+                    //hide the select tools if we are in clustering
+                    this.checkForToolsActive();
+                    //check to see if we dsiplay/hide the footprints layer
+                    if (this.resultsFootprintManager) {
+                        if (level < this.footprintZoomLevelStart) {
+                            if (this.resultsFootprintManager.isVisible()) {
+                                this.resultsFootprintManager.hideLayer();
+                            }
+                        }
+                        else {
+                            if (!this.resultsFootprintManager.isVisible()) {
+                                this.resultsFootprintManager.showLayer();
+                            }
+                        }
+                    }
+                    //check to see if we display/hide the cluster layer
+                    if (this.resultsClusterManager && this.resultsClusterManager.layerExists()) {
+                        if (level >= this.footprintZoomLevelStart) {
+                            if (this.resultsClusterManager.isVisible()) {
+                                this.resultsClusterManager.hideLayer();
+                            }
+                        }
+                        else {
+                            if (!this.resultsClusterManager.isVisible()) {
+                                this.resultsClusterManager.showLayer();
+                            }
+                        }
+                    }
+
+                },
+                handleFilterApplied: function () {
+                    //update the result count
+                    if (this.resultsGridWidget) {
+                        var count = this.resultsGridWidget.getVisibleItemCount();
+                        this.viewModel.resultCount(count);
+                    }
                 },
                 applyBindings: function () {
                     if (!this.bindingsApplied) {
@@ -130,6 +203,14 @@ define([
                     this.viewModel.clearAllDraw();
                 },
                 loadViewerConfigurationData: function () {
+                    var searchConfiguration = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
+                        searchConfiguration = searchConf;
+                    });
+                    if (searchConfiguration != null && lang.isObject(searchConfiguration) && searchConfiguration.footprintZoomLevelStart != null) {
+                        this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
+                    }
+
                     var displayFieldsConfig;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
                         displayFieldsConfig = displayFieldsConf;
@@ -232,6 +313,9 @@ define([
                         this.resultsGridWidget.restoreVisibleFootprints();
                         //hide the time slider if it is open
                         topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.TIME.WINDOW.HIDE);
+
+                        this.checkForClusterLayerVisibility();
+                        this.checkForFootprintLayerVisibility();
                     }
                 },
                 handleCartVisibilityChange: function (visible) {
@@ -245,6 +329,16 @@ define([
                         topic.publish(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED);
                         //can only select features in the results table
                         this.clearDraw();
+
+                        //hide the feature and cluster layers
+                        if (this.resultsFootprintManager && this.resultsFootprintManager.isVisible()) {
+                            this.resultsFootprintManager.hideLayer();
+
+                        }
+                        if (this.resultsClusterManager && this.resultsClusterManager.layerExists() && this.resultsClusterManager.isVisible()) {
+                            this.resultsClusterManager.hideLayer();
+                        }
+
                     }
                     else {
                         topic.publish(IMAGERY_GLOBALS.EVENTS.CART.HIDDEN);
@@ -288,6 +382,7 @@ define([
                     this.viewModel.resultCount(0);
                     this.clearDraw();
                     VIEWER_UTILS.debug("Cleared Results");
+
                 },
                 clearResults: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR);
@@ -352,6 +447,9 @@ define([
                     this.resultsGridWidget.resetAllFilters();
                 },
                 addQueryResults: function (results, queryLayerController) {
+
+                    this.resultsClusterManager.addResults(results, queryLayerController);
+                    this.resultsFootprintManager.addResults(results, queryLayerController);
                     VIEWER_UTILS.log("Populating Query Results Grid", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     if (this.viewModel.cart()) {
                         this.viewModel.toggleGrid();
@@ -362,6 +460,50 @@ define([
                     if (results.features.length > 0) {
                         if (this.activeSourcesWidget != null) {
                             this.activeSourcesWidget.addQueryLayerControllerEntry(queryLayerController);
+                        }
+                    }
+                },
+                createClusterManager: function () {
+                    this.resultsClusterManager = new ResultsClusterManager();
+                    //see if the layer should be hidden/displayed on creation
+                    this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));
+                    this.resultsClusterManager.startup();
+                },
+                checkForClusterLayerVisibility: function () {
+                    var zoomLevel;
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, function (mapLevel) {
+                        zoomLevel = mapLevel;
+                    });
+                    if (zoomLevel >= this.footprintZoomLevelStart) {
+                        if (this.resultsClusterManager.isVisible()) {
+                            this.resultsClusterManager.hideLayer();
+                        }
+                    }
+                    else {
+                        if (!this.resultsClusterManager.isVisible()) {
+                            this.resultsClusterManager.showLayer();
+                        }
+                    }
+                },
+                createFootprintManager: function () {
+                    this.resultsFootprintManager = new ResultsFootprintManager();
+                    //see if the layer should be hidden/displayed on creation
+                    this.resultsFootprintManager.on("footprintsLayerCreated", lang.hitch(this, this.checkForFootprintLayerVisibility));
+                    this.resultsFootprintManager.startup();
+                },
+                checkForFootprintLayerVisibility: function () {
+                    var zoomLevel;
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, function (mapLevel) {
+                        zoomLevel = mapLevel;
+                    });
+                    if (zoomLevel < this.footprintZoomLevelStart) {
+                        if (this.resultsFootprintManager.isVisible()) {
+                            this.resultsFootprintManager.hideLayer();
+                        }
+                    }
+                    else {
+                        if (!this.resultsFootprintManager.isVisible()) {
+                            this.resultsFootprintManager.showLayer();
                         }
                     }
                 },

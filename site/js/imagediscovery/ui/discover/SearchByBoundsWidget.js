@@ -14,6 +14,7 @@ define([
     "dijit/form/RadioButton",
     "dijit/form/Button"
 ],
+    //this widget is contained in the discovery widget. allows the user to search by coordinates in the discovery widget
     function (declare, template, topic, lang, domStyle, UITemplatedWidget, MapDrawSupport, SearchByDecimalDegreesWidget, SearchByDMSWidget, SearchByUTMWidget, SearchByNSEWWidget, SearchByBoundsViewModel,RadioButton,Button) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
@@ -31,6 +32,7 @@ define([
                     ko.applyBindings(this.viewModel, this.domNode);
                     this.createSearchByWidgets();
                 },
+                //figure out the view and set the current visible widget
                 handleViewChanged: function (view) {
                     if (view == this.viewModel.views.decimalDegree) {
                         this.currentVisibleWidget = this.searchByBoundsDecimalDegreeWidget;
@@ -76,6 +78,7 @@ define([
                     return false;
                 },
                 handleCheckValidBoundsInput: function (valid) {
+                    //sets the submit button to enabled/disabled based on valid inputs
                     this.searchByBoundsSubmitButton.set("disabled", !valid);
                 },
                 checkSubmitButtonEnabled: function () {
@@ -93,6 +96,7 @@ define([
                     this.searchByBoundsSubmitButton.set("disabled", true);
                 },
                 handleSearchByBounds: function () {
+                    //get the geometry based on which search by bounds widget is in the current view
                     var searchGeometry;
                     if (this.searchByBoundsFormatDMSRadio.get("checked")) {
                         searchGeometry = this.searchByBoundsDMSWidget.getGeometry();

@@ -34,11 +34,24 @@ define([
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.SWIPE.WINDOW.SHOW, lang.hitch(this, this.show)));
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.SWIPE.WINDOW.HIDE, lang.hitch(this, this.hide)));
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.SWIPE.WINDOW.TOGGLE, lang.hitch(this, this.toggle)));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersVisible));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersHidden));
+
                 },
-                hide: function(){
+                hide: function () {
                     this.inherited(arguments);
-                    if(this.swipeWidget){
+                    if (this.swipeWidget) {
                         this.swipeWidget.stopSwipe();
+                    }
+                },
+                handleImageryLayersVisible: function () {
+                    if (this.swipeWidget) {
+                        this.swipeWidget.handleImageryLayersVisible();
+                    }
+                },
+                handleImageryLayersHidden: function () {
+                    if (this.swipeWidget) {
+                        this.swipeWidget.handleImageryLayersHidden();
                     }
                 }
             });

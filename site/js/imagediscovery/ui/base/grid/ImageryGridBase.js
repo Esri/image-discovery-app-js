@@ -9,10 +9,12 @@ define([
     "dojo/query",
     "dijit/registry"
 ],
+    //base class for imagery grid. The grid is extended quite a bit so it was broken into two classes for size.
     function (declare, theme, OnDemandGrid, ColumnHider, domClass, domStyle, lang, query, registry) {
         return declare(
             [OnDemandGrid, ColumnHider],
             {
+                thumnailToggleDisabled: false,
                 gridHeight: "160px",
                 expandedGridHeight: "350px",
                 renderRow: function (row, items) {
@@ -50,13 +52,15 @@ define([
                             row.data.isGrayedOut = true;
                         }
                         var currentCheckDijit;
-                        var showFootPrintInput = query("input[name=showFootprint]", row.element);
-                        if (showFootPrintInput.length > 0) {
-                            currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
-                            if (currentCheckDijit) {
-                                currentCheckDijit.set("disabled", true);
-                            }
-                        }
+                        /*
+                         var showFootPrintInput = query("input[name=showFootprint]", row.element);
+                         if (showFootPrintInput.length > 0) {
+                         currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
+                         if (currentCheckDijit) {
+                         currentCheckDijit.set("disabled", true);
+                         }
+                         }
+                         */
                         var showThumbnailInput = query("input[name=showThumbNail]", row.element);
                         if (showThumbnailInput.length > 0) {
                             currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
@@ -88,13 +92,15 @@ define([
                         currentRow = this.row(grayedOutEntries[i]);
                         domClass.remove(currentRow.element, "grayedOutGridRow");
                         var currentCheckDijit;
-                        var showFootPrintInput = query("input[name=showFootprint]", currentRow.element);
-                        if (showFootPrintInput.length > 0) {
-                            currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
-                            if (currentCheckDijit) {
-                                currentCheckDijit.set("disabled", false);
-                            }
-                        }
+                        /*
+                         var showFootPrintInput = query("input[name=showFootprint]", currentRow.element);
+                         if (showFootPrintInput.length > 0) {
+                         currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
+                         if (currentCheckDijit) {
+                         currentCheckDijit.set("disabled", false);
+                         }
+                         }
+                         */
                         var showThumbnailInput = query("input[name=showThumbNail]", currentRow.element);
                         if (showThumbnailInput.length > 0) {
                             currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
@@ -132,50 +138,60 @@ define([
                     }
                 },
                 disableThumbnailToggle: function () {
-                    var showFootPrintInputs = query("input[name=showThumbNail]", this.domNode);
-                    for (var i = 0; i < showFootPrintInputs.length; i++) {
-                        var currentCheckDijit = registry.getEnclosingWidget(showFootPrintInputs[i]);
-                        if (currentCheckDijit) {
-                            currentCheckDijit.set("disabled", true);
+                    if (!this.thumnailToggleDisabled) {
+                        var showFootPrintInputs = query("input[name=showThumbNail]", this.domNode);
+                        for (var i = 0; i < showFootPrintInputs.length; i++) {
+                            var currentCheckDijit = registry.getEnclosingWidget(showFootPrintInputs[i]);
+                            if (currentCheckDijit) {
+                                currentCheckDijit.set("disabled", true);
+                            }
                         }
+                        this.thumnailToggleDisabled = true;
                     }
                 },
                 enableThumbnailToggle: function () {
-                    var showFootPrintInputs = query("input[name=showThumbNail]", this.domNode);
-                    for (var i = 0; i < showFootPrintInputs.length; i++) {
-                        var currentCheckDijit = registry.getEnclosingWidget(showFootPrintInputs[i]);
-                        if (currentCheckDijit) {
-                            currentCheckDijit.set("disabled", false);
-                        }
-                    }
-                },
-                toggleAllFootprints: function (checked) {
-                    var currentCheckDijit;
-                    var items = this.store.query({ isFiltered: false});
-                    var i;
-                    for (i = 0; i < items.length; i++) {
-                        items[i].showFootprint = checked;
-                        var row = this.row(items[i]);
-                        var showFootPrintInput = query("input[name=showFootprint]", row.element);
-                        if (showFootPrintInput.length > 0) {
-                            currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
+                    if (this.thumnailToggleDisabled) {
+                        var showFootPrintInputs = query("input[name=showThumbNail]", this.domNode);
+                        for (var i = 0; i < showFootPrintInputs.length; i++) {
+                            var currentCheckDijit = registry.getEnclosingWidget(showFootPrintInputs[i]);
                             if (currentCheckDijit) {
-                                currentCheckDijit.set("checked", checked);
+                                currentCheckDijit.set("disabled", false);
                             }
                         }
-                    }
-                    var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
-                    var currentQueryLayerController;
-                    for (i = 0; i < queryLayerControllerItemsArray.length; i++) {
-                        currentQueryLayerController = queryLayerControllerItemsArray[i].queryController;
-                        if (checked) {
-                            currentQueryLayerController.showFootprints(queryLayerControllerItemsArray[i].items);
-                        }
-                        else {
-                            currentQueryLayerController.hideFootprints();
-                        }
+                        this.thumnailToggleDisabled = false;
                     }
                 },
+                /*
+                 toggleAllFootprints: function (checked) {
+                 var currentCheckDijit;
+                 var items = this.store.query({ isFiltered: false});
+                 var i;
+                 for (i = 0; i < items.length; i++) {
+                 // items[i].showFootprint = checked;
+                 var row = this.row(items[i]);
+
+                 var showFootPrintInput = query("input[name=showFootprint]", row.element);
+                 if (showFootPrintInput.length > 0) {
+                 currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
+                 if (currentCheckDijit) {
+                 currentCheckDijit.set("checked", checked);
+                 }
+                 }
+
+                 }
+                 var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
+                 var currentQueryLayerController;
+                 for (i = 0; i < queryLayerControllerItemsArray.length; i++) {
+                 currentQueryLayerController = queryLayerControllerItemsArray[i].queryController;
+                 if (checked) {
+                 currentQueryLayerController.showFootprints(queryLayerControllerItemsArray[i].items);
+                 }
+                 else {
+                 currentQueryLayerController.hideFootprints();
+                 }
+                 }
+                 },
+                 */
                 toggleAllThumbnails: function (checked) {
                     var currentCheckDijit;
                     var items = this.store.query({ isFiltered: false});

@@ -43,26 +43,27 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromPointIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromRectangleIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT, lang.hitch(this, this.handleGetVisibleGridResultCount));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ORDER_BY_LOCK_RASTER, lang.hitch(this, this.orderByLockRaster));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GRAY_OUT_RESULTS_BY_FUNCTION, lang.hitch(this, this.grayOutRowsByFunction));
-
                     //todo: this needs to be in a manager that keeps count of how many disable requests there are
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.DISABLE_THUMBNAIL_CHECKBOXES, lang.hitch(this, this.disableThumbnailToggle));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ENABLE_THUMBNAIL_CHECKBOXES, lang.hitch(this, this.enableThumbnailToggle));
-
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_GRAYED_OUT_RESULTS, lang.hitch(this, this.clearGrayedOutRows));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.handleFooterCollapsed));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADDED, lang.hitch(this, this.handleFilterAdded));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, lang.hitch(this, this.handleGetVisibleFootprintGeometries));
+
+
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.enableThumbnailToggle));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.disableThumbnailToggle));
+
                     this.clearQueryResultsHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.clearGrid));
                     this.setFilterResultsHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SET, lang.hitch(this, this.handleApplyFilter));
                     this.itemRemovedFromCartHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
+
                 },
-                orderByLockRaster: function(){
+                orderByLockRaster: function () {
 
                 },
                 handleGetVisibleGridResultCount: function (callback) {
@@ -75,9 +76,9 @@ define([
                     this.inherited(arguments);
                     if (!checked) {
                         var row = this.grid.row(object);
-                      //  if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                     //       domClass.remove(row.element, "yellowGridRow");
-                      //  }
+                        //  if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
+                        //       domClass.remove(row.element, "yellowGridRow");
+                        //  }
                     }
                 },
                 clearHighlightedResults: function () {
@@ -93,7 +94,8 @@ define([
                 },
                 highlightResultsFromRectangleIntersect: function (envelope) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
+                  //  var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -122,7 +124,8 @@ define([
                 },
                 highlightResultsFromPointIntersect: function (pt) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
+                  //  var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -149,9 +152,21 @@ define([
                         }
                     }
                 },
+                handleGetVisibleFootprintGeometries: function (callback) {
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
+                    var geometries = [];
+                    for (var i = 0; i < unfilteredResults.length; i++) {
+                        geometries.push(unfilteredResults[i].geometry);
+                    }
+                    callback(geometries);
+
+                },
+
+
                 showCorrespondingImageFromPointIntersect: function (pt) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
+                 //   var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -188,7 +203,7 @@ define([
                 },
                 showCorrespondingImageFromRectangleIntersect: function (envelope) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false,showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -264,6 +279,7 @@ define([
                     this.onShowFilterResetIcon();
                 },
                 handleApplyFilter: function (filterFunction) {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.BEFORE_APPLY);
                     var filterFunctionInner = function (item) {
                         var match = filterFunction(item);
                         var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(item);
@@ -271,15 +287,15 @@ define([
                             return;
                         }
                         if (match) {
-                            if (item.isFiltered && item.showFootprint) {
-                                queryLayerController.showFootprint(item);
-                            }
+                            //   if (item.isFiltered && item.showFootprint) {
+                            queryLayerController.showFootprint(item);
+                            //  }
                             item.isFiltered = false;
                         }
                         else {
-                            if (item.showFootprint) {
-                                queryLayerController.hideFootprint(item);
-                            }
+                            //   if (item.showFootprint) {
+                            queryLayerController.hideFootprint(item);
+                            //   }
                             item.isFiltered = true;
                         }
                         return match;
@@ -292,6 +308,17 @@ define([
                     //send the results to the user applied filter manager
                     this.userAppliedFiltersManager.setFeatures(this.responseFeatures);
                     this.onShowFilterResetIcon();
+
+                    //check to see if the footprints layer is visible. if it's not disable thumnbail toggle
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (visible) {
+                        if (visible) {
+                            this.enableThumbnailToggle();
+                        }
+                        else {
+                            this.disableThumbnailToggle();
+                        }
+                    }));
+
                 },
                 //handle new results
                 populateQueryResults: function (results, queryLayerController) {
@@ -396,7 +423,7 @@ define([
                     var clonedCartItem = lang.clone(entry);
                     //show the thumbnail by default
                     clonedCartItem.showThumbNail = true;
-                    clonedCartItem.showFootprint = false;
+                //    clonedCartItem.showFootprint = false;
                     clonedCartItem.isFiltered = false;
 
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, clonedCartItem);
@@ -554,6 +581,10 @@ define([
                     if (this.currentVisibleFilterTooltipObject != null && lang.isObject(this.currentVisibleFilterTooltipObject)) {
                         this.hideFilterPopup(this.currentVisibleFilterTooltipObject.tooltip, this.currentVisibleFilterTooltipObject.filterIcon);
                     }
+                },
+                getVisibleItemCount: function () {
+                    var items = this.store.query({isFiltered: false});
+                    return items.length;
                 },
                 //passing this a query object will return the result of the query store
                 queryResultSet: function (queryParams) {

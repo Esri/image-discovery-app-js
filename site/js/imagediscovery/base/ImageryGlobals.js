@@ -31,7 +31,8 @@ define([
                             CLEAR_HIGHLIGHTED_RESULTS: "imgQuery:clearHighlightedResults",
                             ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster",
                             GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",
-                            RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated"
+                            RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated",
+                            GET_VISIBLE_FOOTPRINT_GEOMETRIES: "imgQuery:getVsFtPtGeoms"
                         },
                         SEARCH: {
                             //search image service by geometry
@@ -45,6 +46,8 @@ define([
                             HIDE: "imgQWindow:hide"
                         },
                         FILTER: {
+                            BEFORE_CLEAR: "fitler:beforeClear",
+                            CLEARED: "filter:cleared",
                             SET: "filter:set",
                             USER_ENABLE: "filter:usrEnable",
                             USER_DISABLE: "filter:usrDisable",
@@ -56,7 +59,8 @@ define([
                             RELOAD_FILTER_FUNCTION: "filter:reloadFilterFunction",
                             APPLIED: "filter:applied",
                             HIDE_RESET_ICON: "filter:hidereset",
-                            SHOW_RESET_ICON: "filter:showreset"
+                            SHOW_RESET_ICON: "filter:showreset",
+                            BEFORE_APPLY: "filter:beforeApply"
                         }
                     },
                     TIME_SLIDER: {
@@ -84,7 +88,12 @@ define([
                                 HIDE: "imageryTime:hide",
                                 TOGGLE: "imageryTime:toggle"
                             }
-                        }
+                        },
+                        FOOTPRINTS_LAYER_DISPLAYED: "lyr:ftPrintsLyrDisplayed",
+                        CLUSTER_LAYER_DISPLAYED: "lyr:clstrLyrDisplayed",
+                        FOOTPRINTS_LAYER_VISIBLE: "lyr:ftPrintsLyrVisible",
+                        SET_FOOTPRINTS_LAYER_TRANSPARENT: "lys:ftPrintsLyrTrans",
+                        SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq"
                     },
                     LOCK_RASTER: {
                         CLEAR_ALL: "lRaster:clearIds",

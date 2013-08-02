@@ -9,6 +9,7 @@ define([
     "dojo/date/locale",
     "dijit/form/CheckBox"
 ],
+    //this class returns formatted elements for fields in the grid
     function (declare, lang, domConstruct, domAttr, domStyle, on, topic, locale, CheckBox) {
         return declare(
             [],
@@ -20,24 +21,32 @@ define([
                 displayFormats: {
                     date: "MM/dd/yyyy"
                 },
+                //zoom to icon
+
                 zoomToIconFormatter: function (object, value, node, option) {
-                    var panAndFlashIcon = domConstruct.create("div", {title: "Pan And Flash", className: "imageResultsZoomToIcon commonIcons16 globeGoTo"});
-                    on(panAndFlashIcon, "click", lang.hitch(this, this.handlePanAndFlash, object));
-                    domConstruct.place(panAndFlashIcon, node);
+                 //   var panAndFlashIcon = domConstruct.create("div", {title: "Pan And Flash", className: "imageResultsZoomToIcon commonIcons16 globeGoTo"});
+                 //   on(panAndFlashIcon, "click", lang.hitch(this, this.handlePanAndFlash, object));
+                //    domConstruct.place(panAndFlashIcon, node);
                     var zoomIcon = domConstruct.create("div", {title: "Zoom To", className: "imageResultsZoomToIcon commonIcons16 magnifyingGlass"});
                     on(zoomIcon, "click", lang.hitch(this, this.handleZoomToResult, object));
                     domConstruct.place(zoomIcon, node);
                 },
+
+                //thumbnail checkbox
                 thumbnailCheckboxFormatter: function (object, value, node, option) {
                     var checkbox = new CheckBox({name: "showThumbNail", checked: object.showThumbNail, title: "Toggle Thumbnail", disabled: this.thumbnailToggleDisabled});
                     checkbox.on("change", lang.hitch(this, this.handleShowThumbNailToggle, object));
                     domConstruct.place(checkbox.domNode, node);
                 },
+                //footprint checkbox
+                /*
                 footprintCheckboxFormatter: function (object, value, node, option) {
                     var checkbox = new CheckBox({name: "showFootprint", checked: object.showFootprint, title: "Toggle Footprint"});
                     checkbox.on("change", lang.hitch(this, this.handleShowFootprintToggle, object));
                     domConstruct.place(checkbox.domNode, node);
                 },
+                */
+                //info icon
                 infoIconFormatter: function (object, value, node, option) {
                     var source;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, object.queryControllerId, function (cont) {
@@ -56,12 +65,14 @@ define([
                     }
                     return value;
                 },
+                //format doubles. float precision is read from json configuration
                 doubleFormatter: function (value) {
                     if (value != null && !(typeof value == "string")) {
                         return value.toFixed(this.floatPrecision);
                     }
                     return null;
                 },
+                //format dates. date format is read from json configuration
                 dateFormatter: function (value) {
                     try {
                         var date = new Date(value);

@@ -66,6 +66,7 @@ define([
                 },
                 loadViewerConfigurationData: function () {
                     var displayFieldsConfig;
+                    //get the display fields so we know what fields to export
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
                         displayFieldsConfig = displayFieldsConf;
                     });
@@ -73,6 +74,7 @@ define([
                         this.resultFields = displayFieldsConfig;
                     }
 
+                    //get the formatters so the gp tool can format accordingly
                     var resultsFormattingConfig = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "resultsFormatting", function (resultsFormattingConf) {
                         resultsFormattingConfig = resultsFormattingConf;
@@ -85,6 +87,7 @@ define([
                             this.floatPrecision = parseInt(resultsFormattingConfig.floatPrecision, 10);
                         }
                     }
+                    //get the export map configuration entries
                     var exportConfiguration = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "exportConfiguration", function (exportConf) {
                         exportConfiguration = exportConf;
@@ -182,6 +185,7 @@ define([
                     this.serviceQueryResponseFeatures = [];
                     var currentQueryLayerController;
                     var currentQueryLayer;
+                    //loop through the query layer controller and performa query on them to get the items we want to extract
                     for (var i = 0; i < downloadLayerControllerObjectIdsArray.length; i++) {
                         currentQueryLayerController = downloadLayerControllerObjectIdsArray[i].queryController;
                         currentQueryLayer = currentQueryLayerController.layer;
@@ -344,6 +348,7 @@ define([
                     return (fieldName.replace(/\W/g, '')).replace(/[0-9_]/, '');
                 },
                 mergeResults: function (results) {
+                    //merges all of the query results into a single result
                     if (results.length == 1) {
                         return results[0].response;
                     }

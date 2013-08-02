@@ -15,7 +15,7 @@ define([
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol"
 ],
-    function (declare, template,theme, topic, json, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+    function (declare, template, theme, topic, json, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
         return declare(
             [ UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
             {
@@ -59,7 +59,6 @@ define([
                     //get zoom back for shift key
                     topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
                 },
-
                 handleExportTypeSelectChange: function (value) {
                     if (value != this.viewModel.draw) {
                         this.clearDraw();
@@ -80,6 +79,7 @@ define([
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
                 },
                 handleExport: function () {
+                    //function handles the bulk of the imagery export
                     var selectedObjectIds = this.getDownloadObjectIds();
                     if (selectedObjectIds == null || !lang.isArray(selectedObjectIds) || selectedObjectIds.length == 0) {
                         return;
@@ -146,6 +146,7 @@ define([
                         this.hasDownloadItems = false;
                         this.currentDownloadResponses = [];
                         this.pendingDownloadRequests = downloadRequests.length;
+                        //loop through the download requests and send the download request as jsonp
                         for (i = 0; i < downloadRequests.length; i++) {
                             currentDownloadRequest = downloadRequests[i];
                             downloadUrl = VIEWER_UTILS.joinUrl(currentDownloadRequest.layer.url, "download");
@@ -194,6 +195,7 @@ define([
                     var filesAddedCounter = 1;
                     var currentDownloadResponseObject;
                     var currentResponse;
+                    //loop through download repsonses and format all download URLs and finally add to the download items array
                     for (var i = 0; i < this.currentDownloadResponses.length; i++) {
                         currentDownloadResponseObject = this.currentDownloadResponses[i];
                         if (currentDownloadResponseObject.layer == null || currentDownloadResponseObject.response == null) {

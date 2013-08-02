@@ -49,6 +49,7 @@ define([
                 },
                 toggleDiscoverByFields: function () {
                     this.discoverByFieldsExpanded(!this.discoverByFieldsExpanded());
+
                 },
                 toggleDiscoverByGeometry: function () {
                     this.discoverByGeometryExpanded(!this.discoverByGeometryExpanded());

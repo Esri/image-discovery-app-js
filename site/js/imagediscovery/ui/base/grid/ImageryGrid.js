@@ -15,6 +15,7 @@ define([
     "./GridFormattersMixin",
     "./RowActionsMixin"
 ],
+    //this is the class to extend if you need an image discovery grid
     function (declare, topic, registry, query, domStyle, lang, domConstruct, Observable, UIWidget, on, Memory, CheckBox, Grid, GridFormattersMixin, RowActionsMixin) {
         return declare(
             [UIWidget, GridFormattersMixin, RowActionsMixin],
@@ -26,7 +27,7 @@ define([
                     addedToCart: "addedToCart",
                     isFiltered: "isFiltered",
                     showThumbNail: "showThumbNail",
-                    showFootprint: "showFootprint",
+                    //  showFootprint: "showFootprint",
                     _storeId: "_storeId"
                 },
                 //default formatters
@@ -53,6 +54,7 @@ define([
                     this.createGrid();
                 },
                 loadViewerConfigurationData: function () {
+                    //get the fields to display from configuration
                     var displayFieldsConfig;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
                         displayFieldsConfig = displayFieldsConf;
@@ -89,22 +91,26 @@ define([
                     this.grid.shrink();
                 },
                 clearGrid: function () {
+
+                    //clears the grid. removes all items from the grid and removes imagery/footprints from the map
                     if (this.thumbnailHeaderCheckbox) {
                         this.thumbnailHeaderCheckbox.set("checked", false);
                     }
-                    this.footprintHeaderCheckbox.set("checked", false);
+                    // this.footprintHeaderCheckbox.set("checked", false);
                     //hide all the visible footprints
-                    var items = this.store.query({showFootprint: true});
-                    var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
-                    var currentQueryLayerController;
-                    var currentQueryLayerControllerItems;
-                    for (var i = 0; i < queryLayerControllerItemsArray.length; i++) {
-                        currentQueryLayerController = queryLayerControllerItemsArray[i].queryController;
-                        currentQueryLayerControllerItems = queryLayerControllerItemsArray[i].items;
-                        for (var j = 0; j < currentQueryLayerControllerItems.length; j++) {
-                            currentQueryLayerController.deleteFootprint(currentQueryLayerControllerItems[j]);
-                        }
-                    }
+                    /*
+                     var items = this.store.query({showFootprint: true});
+                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
+                     var currentQueryLayerController;
+                     var currentQueryLayerControllerItems;
+                     for (var i = 0; i < queryLayerControllerItemsArray.length; i++) {
+                     currentQueryLayerController = queryLayerControllerItemsArray[i].queryController;
+                     currentQueryLayerControllerItems = queryLayerControllerItemsArray[i].items;
+                     for (var j = 0; j < currentQueryLayerControllerItems.length; j++) {
+                     currentQueryLayerController.deleteFootprint(currentQueryLayerControllerItems[j]);
+                     }
+                     }
+                     */
                     this.createNewStore();
                     this.setSelectedThumbnails();
                 },
@@ -113,6 +119,7 @@ define([
                     this.grid.set("store", this.store);
                 },
                 disableThumbnailToggle: function () {
+                    //disable the from toggling the thumbnail checkbox
                     this.thumbnailToggleDisabled = true;
                     if (this.thumbnailHeaderCheckbox) {
                         this.thumbnailHeaderCheckbox.set("disabled", true);
@@ -122,6 +129,7 @@ define([
                     }
                 },
                 enableThumbnailToggle: function () {
+                    //allow the user to toggle the thumbnail checkbox
                     this.thumbnailToggleDisabled = false;
                     if (this.thumbnailHeaderCheckbox) {
                         this.thumbnailHeaderCheckbox.set("disabled", false);
@@ -143,7 +151,9 @@ define([
                     }
                 },
                 generateManipulationColumns: function () {
+                    //add-on fields for the discovery grid. these are appended to the fields from the configuration file
                     return [
+
                         {
                             field: "zoomToFootprint",
                             label: " ",
@@ -151,6 +161,7 @@ define([
                             renderCell: lang.hitch(this, this.zoomToIconFormatter),
                             unhidable: true
                         },
+
                         {
                             field: "showThumbNail",
                             label: " ",
@@ -159,14 +170,16 @@ define([
                             renderHeaderCell: lang.hitch(this, this.thumbnailRenderHeaderCell),
                             unhidable: true
                         },
-                        {
-                            field: "showFootprint",
-                            label: " ",
-                            sortable: false,
-                            renderCell: lang.hitch(this, this.footprintCheckboxFormatter),
-                            renderHeaderCell: lang.hitch(this, this.footprintRenderHeaderCell),
-                            unhidable: true
-                        },
+                        /*
+                         {
+                         field: "showFootprint",
+                         label: " ",
+                         sortable: false,
+                         renderCell: lang.hitch(this, this.footprintCheckboxFormatter),
+                         renderHeaderCell: lang.hitch(this, this.footprintRenderHeaderCell),
+                         unhidable: true
+                         },
+                         */
                         {
                             field: "showInformation",
                             label: " ",
@@ -263,6 +276,7 @@ define([
                         columns: columns,
                         store: this.store
                     });
+                    //listen for sort. lock raster is based on the ordering of the grid
                     this.grid.on("dgrid-sort", lang.hitch(this, this.handleGridSort));
                     domConstruct.place(this.grid.domNode, this.domNode);
                 },
@@ -272,13 +286,15 @@ define([
                     }
                 },
                 /* Header Renderers */
-                footprintRenderHeaderCell: function (node) {
-                    var infoIcon = domConstruct.create("div", { title: "Toggle Footprints", className: "imageGridFootprintHeaderIcon"});
-                    this.footprintHeaderCheckbox = new CheckBox();
-                    this.footprintHeaderCheckbox.on("change", lang.hitch(this, this.handleToggleAllFootprints));
-                    domConstruct.place(this.footprintHeaderCheckbox.domNode, node);
-                    domConstruct.place(infoIcon, node);
-                },
+                /*
+                 footprintRenderHeaderCell: function (node) {
+                 var infoIcon = domConstruct.create("div", { title: "Toggle Footprints", className: "imageGridFootprintHeaderIcon"});
+                 this.footprintHeaderCheckbox = new CheckBox();
+                 this.footprintHeaderCheckbox.on("change", lang.hitch(this, this.handleToggleAllFootprints));
+                 domConstruct.place(this.footprintHeaderCheckbox.domNode, node);
+                 domConstruct.place(infoIcon, node);
+                 },
+                 */
                 thumbnailRenderHeaderCell: function (node) {
                     var infoIcon = domConstruct.create("div", { title: "Toggle Thumbnails", className: "imageGridThumbnailHeaderIcon"});
                     if (this.allowCheckAllThumbnails) {
@@ -367,6 +383,10 @@ define([
                         }
                     }
                     return fieldsObj;
+                },
+                getVisibleItemCount: function () {
+                    var items = this.store.query();
+                    return items.length;
                 },
                 /* End Handle Result click/select */
                 startup: function () {

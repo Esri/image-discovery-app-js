@@ -17,9 +17,10 @@ define([
     "../../ImageQueryLayerController",
     "../../ui/info/ImageInfoWindow",
     "esri/layers/ArcGISImageServiceLayer",
-    "./ImageryWebMapTemplateConfigurationUtil"
+    "./ImageryWebMapTemplateConfigurationUtil",
+    "dijit/form/ToggleButton"
 ],
-    function (declare, has, domStyle, topic, on, window, con, lang, domConstruct, domClass, ActionsToolbarWidget, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ImageInfoWindow, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil) {
+    function (declare, has, domStyle, topic, on, window, con, lang, domConstruct, domClass, ActionsToolbarWidget, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ImageInfoWindow, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton) {
         return declare(
             [ViewerManager],
             {
@@ -33,12 +34,15 @@ define([
                 constructor: function () {
                     this.on(this.FINALIZE_UI_LOAD_COMPLETE, lang.hitch(this.handleFinalizeUILoadComplete));
                     this.catalogLayers = [];
+                    //query layer controllers array
                     this.catalogQueryControllers = [];
+                    //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
                     this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
                     this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber"});
                     domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
                     domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
+                    //add to the dom
                     domConstruct.place(this.serviceLoadingContainer, window.body());
                 },
                 processConfig: function () {
@@ -57,11 +61,17 @@ define([
                 },
                 _initListeners: function () {
                     this.inherited(arguments);
+                    //add search result to the application
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
+                    //get service infos for catalog services
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_QUERY_SERVICES_INFO, lang.hitch(this, this.handleGetQueryServicesInfo));
+                    //get all of the search catalog layers
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, lang.hitch(this, this.handleGetCatalogLayers));
+                    //get configuration object
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET, lang.hitch(this, this.handleGetImageryConfiguration));
+                    //get a configuration entry by key
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, lang.hitch(this, this.handleGetImageryConfigurationKey));
+                    //get the layer controllers. layer controllers contain layer reference and metadata associated with layer
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, lang.hitch(this, this.handleGetQueryLayerControllers));
                 },
                 handleGetQueryLayerControllers: function (callback) {
@@ -105,8 +115,11 @@ define([
                 },
                 loadControllers: function () {
                     this.createImageManipulationWidget();
+                    //image info widget displays a results thumbnail and attributes
                     this.createImageInfoWidget();
+                    //image discovery widget allows the user to locate and discover imagery
                     this.createImageDiscoveryWidget();
+                    //query controller handles all requests to query catalog services.
                     this.createImageQueryController();
                     this.inherited(arguments);
                 },
@@ -169,17 +182,19 @@ define([
                     this.viewerAccordion.show();
                 },
                 handleImageQueryResultsResponse: function (response, queryLayerController) {
+                    //expand the footer to show the results grid
                     topic.publish(VIEWER_GLOBALS.EVENTS.FOOTER.EXPAND);
                     //create the query results widget if it doesn't exist
                     if (this.imageryQueryResultsWidget == null) {
                         this.createImageQueryResultsWidget();
                     }
-                    //set the results
+                    //set the results on the grid
                     this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
                 },
                 handleBaseConfigurationsLoaded: function () {
                     //load query config
                     if (this.queryConfig == null) {
+                        //base configuration has been loaded so now load the imagery configuration json
                         if (this.useProxyForImageryQueryConfig) {
                             this.loadProxiedJson(this.imageQueryConfigUrl, lang.hitch(this, this.handleQueryWidgetConfigurationLoaded), lang.hitch(this, this.handleQueryConfigLoadFailed));
                         }
@@ -192,10 +207,13 @@ define([
                     }
                 },
                 handleQueryWidgetConfigurationLoaded: function (queryConfig) {
+                    //set the query config on the class instance
                     this.queryConfig = queryConfig;
+                    //finally, start up the viewer
                     this.startupViewer();
                 },
                 handleQueryConfigLoadFailed: function () {
+                    //show error since query json configuration load failed
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not load query configuration. Application is not functional", 100000);
                 },
                 createImageQueryResultsWidget: function () {
@@ -213,6 +231,7 @@ define([
                     }
                 },
                 handleShowDiscovery: function () {
+                    //toggles the discovery widget
                     if (!this.viewerAccordion.visible) {
                         this.viewerAccordion.show();
                         this.viewerAccordion.selectChild(this.imageDiscoveryWidget);
@@ -269,6 +288,32 @@ define([
                             domStyle.set(this.messagingWidget.domNode, "left", "45%");
                         }
                     }
+                },
+                _createViewerMainToolbar: function () {
+                    this.inherited(arguments);
+                    var toggleFootprintsButton = new ToggleButton({
+                        showLabel: true,
+                        checked: true,
+                        label: "Footprints",
+                        iconClass: "dijitCheckBoxIcon"
+                    });
+
+                    domClass.add(toggleFootprintsButton.domNode, "defaultTextColor");
+
+                    domStyle.set(toggleFootprintsButton.domNode.firstChild, "background", "none");
+                    domStyle.set(toggleFootprintsButton.domNode.firstChild, "border", "none");
+
+                    on(toggleFootprintsButton, "change", function (checked) {
+                        if (checked) {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_OPAQUE);
+                        }
+                        else {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_TRANSPARENT);
+                        }
+                    });
+                    domConstruct.place(toggleFootprintsButton.domNode, this.mainToolbar.addOnContentContainer);
+
+                    domStyle.set(this.mainToolbar.addOnContentContainer, "float", "right");
                 }
             }
         )

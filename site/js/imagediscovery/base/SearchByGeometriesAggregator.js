@@ -2,7 +2,7 @@ define([
     "dojo/_base/declare",
     "dojo/topic"
 ],
-    function (declare,topic) {
+    function (declare, topic) {
         return declare(
             [],
             {
@@ -36,6 +36,7 @@ define([
                     return (this.errors.length + this.responses.length) === this.count;
                 },
                 _joinResponses: function () {
+                    //joins all of the query responses into a single response with a features array
                     var objectIdField;
                     var catalogLayer;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYER, function (lyr) {

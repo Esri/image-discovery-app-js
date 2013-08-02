@@ -27,12 +27,14 @@ define([
 
                 },
                 setDownloadList: function (downloadItems) {
+                    //clear the previous list
                     this.clearDownloadList();
                     if (downloadItems == null) {
                         return;
                     }
                     var currentDownloadService;
                     var currentDownloadItem;
+                    //loop through download items object and add them to the view model
                     for (var key in downloadItems) {
                         currentDownloadService = downloadItems[key];
                         for (var i = 0; i < currentDownloadService.length; i++) {
@@ -43,10 +45,12 @@ define([
                                 }
                             }
                         }
+                        //add to the view model
                         this.viewModel.downloadItemsList.push({name: key, values: currentDownloadService});
                     }
 
                     if (!this.bindingsApplied) {
+                        //quirk of knockout. need to apply bindings AFTER items have been added to the download list the first time
                         this.applyBindings();
                     }
                 }

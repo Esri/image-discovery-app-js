@@ -3,22 +3,6 @@
         <div class="resultActionsContainer">
             <div data-bind="click:toggleGrid, css: {resultsToggleIconResultsSelected: results, resultsToggleIconCartSelected: cart}"
                  class="resultsToggleIcon"></div>
-            <div class="resultGeometryActionsContainer" data-bind="visible:resultsVisibleAndHasResults">
-                <div class="showImageByPointUnselectedIcon"
-                     data-bind="click: showImageFromPointIntersect,css:{showImageByPointSelectedIcon: showImageByPointSelectionActive}"
-                     title="Show images by point"></div>
-                <div class="showImageByRectangleUnselectedIcon"
-                     data-bind="click: showImageFromRectangleIntersect,css:{showImageByRectangleSelectedIcon: showImageByRectangleSelectionActive}"
-                     title="Show images by rectangle"></div>
-                <div class="annotationOptionButton pointUnselected"
-                     data-bind="click: togglePointResultsSelection,css:{pointSelected: pointSelectionActive}"
-                     title="Highlight footprints by point"></div>
-                <div class="annotationOptionButton rectangleUnselected"
-                     data-bind="click: toggleRectangleResultsSelection, css:{rectangleSelected: rectangleSelectionActive}"
-                     title="Highlight footprints by rectangle"></div>
-                <div class="annotationOptionButton clear" data-bind="visible: drawActive, click: clearHighlights"
-                     title="Clear highlights"></div>
-            </div>
             <div data-bind="text: gridLabel()"
                  title="Toggle Display" class="queryResultsTableLabel">
             </div>
@@ -51,6 +35,24 @@
                  data-bind="visible:resultsVisibleAndHasResults"
                  data-dojo-attach-point="changeResultLayerTransparencyElement"
                  data-dojo-attach-event="onclick:toggleResultLayerTransparencyPopup">
+            </div>
+            <div data-bind="visible:toolsActive" class="toolsActiveContainer">
+                <div class="resultGeometryActionsContainer" data-bind="visible:resultsVisibleAndHasResults">
+                    <div class="showImageByPointUnselectedIcon"
+                         data-bind="click: showImageFromPointIntersect,css:{showImageByPointSelectedIcon: showImageByPointSelectionActive}"
+                         title="Show images by point"></div>
+                    <div class="showImageByRectangleUnselectedIcon"
+                         data-bind="click: showImageFromRectangleIntersect,css:{showImageByRectangleSelectedIcon: showImageByRectangleSelectionActive}"
+                         title="Show images by rectangle"></div>
+                    <div class="annotationOptionButton pointUnselected"
+                         data-bind="click: togglePointResultsSelection,css:{pointSelected: pointSelectionActive}"
+                         title="Highlight footprints by point"></div>
+                    <div class="annotationOptionButton rectangleUnselected"
+                         data-bind="click: toggleRectangleResultsSelection, css:{rectangleSelected: rectangleSelectionActive}"
+                         title="Highlight footprints by rectangle"></div>
+                    <div class="annotationOptionButton clear" data-bind="visible: drawActive, click: clearHighlights"
+                         title="Clear highlights"></div>
+                </div>
             </div>
             <div data-bind="visible:showSourcesIcon" data-dojo-attach-point="activeServicesContainer"
                  class="activeServicesContainer fivePixelBorderRadius defaultBorder"></div>

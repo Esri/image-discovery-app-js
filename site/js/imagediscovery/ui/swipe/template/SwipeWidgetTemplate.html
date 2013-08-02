@@ -1,17 +1,26 @@
-<div xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-    <div>
-        <input type="checkbox" data-bind="checked: useRefLayer" />Use reference layer
-        <p>
-        Swipe layer:
-        <select style="width: 100%" data-bind="options: swipeLayers ,value:selectedSwipeLayerId, optionsText: 'label', optionsValue: 'id'"></select>
-        </p>
-        <p>
+<div>
+    <div data-bind="visible:swipeEnbled">
+        <div>
+            <input type="checkbox" data-bind="checked: useRefLayer"/>Use reference layer
+            <p>
+                Swipe layer:
+                <select style="width: 100%"
+                        data-bind="options: swipeLayers ,value:selectedSwipeLayerId, optionsText: 'label', optionsValue: 'id'"></select>
+            </p>
+
+            <p>
+
             <div data-bind="visible: useRefLayer">
                 Reference layer:
-                <select style="width: 100%" data-bind="options: swipeLayers, value:selectedRefLayerId, optionsText: 'label', optionsValue: 'id'"></select>
+                <select style="width: 100%"
+                        data-bind="options: swipeLayers, value:selectedRefLayerId, optionsText: 'label', optionsValue: 'id'"></select>
             </div>
-        </p>
+            </p>
+        </div>
+        <div data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick: startSwipe">Start Swipe</div>
+        <div data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick: stopSwipe">Stop Swipe</div>
     </div>
-    <div data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick: startSwipe">Start Swipe</div>
-    <div data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick: stopSwipe">Stop Swipe</div>
+    <div data-bind="visible:swipeDisabled">
+        <div data-bind="text:swipeDisabledMessage"></div>
+    </div>
 </div>

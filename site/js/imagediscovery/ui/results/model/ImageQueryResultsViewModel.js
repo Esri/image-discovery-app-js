@@ -25,6 +25,7 @@ define([
                 showImageByRectangleSelectionActive: ko.observable(false),
                 reportIcon: ko.observable(false),
                 filterIcon: ko.observable(false),
+                toolsActive: ko.observable(false),
                 resultCount: ko.observable(0),
                 drawActive: ko.observable(false),
                 forceSourceFilterHide: ko.observable(false),
@@ -136,7 +137,7 @@ define([
                 clearShowImagePointDraw: function () {
                     this.showImageByPointSelectionActive(false);
                 },
-                clearShowImageRectangleDraw: function() {
+                clearShowImageRectangleDraw: function () {
                     this.showImageByRectangleSelectionActive(false);
                 },
                 clearAllDraw: function () {

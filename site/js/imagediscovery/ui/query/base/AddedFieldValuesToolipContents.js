@@ -45,6 +45,7 @@ define([
                 show: function () {
                     if (!this.bindingsApplied) {
                         this.applyBindings();
+                        this.bindingsApplied = true;
                     }
                 }
             });

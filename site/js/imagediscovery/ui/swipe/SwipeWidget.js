@@ -17,7 +17,7 @@ define([
     "dojo/dom-style",
     "dijit/form/Button"
 ],
-    function (declare, template,theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
+    function (declare, template, theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
@@ -340,6 +340,14 @@ define([
                             this.viewModel.swipeLayers.push(item);
                         }
                     }));
+
+                },
+                handleImageryLayersVisible: function () {
+                    this.viewModel.setSwipeEnabled();
+                },
+                handleImageryLayersHidden: function () {
+                    this.stopSwipe();
+                    this.viewModel.setSwipeDisabled("Cannot swipe at current zoom level");
 
                 }
             });

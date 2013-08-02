@@ -43,6 +43,8 @@ define([
                     }
                 },
                 setImageInfo: function (imageInfo, layer) {
+                    //takes in an image info object and a layer.
+                    //populates all attributes from image info and retrieves the thumbnail for the row from the layer
                     var fieldTypeLookup = this.getFieldTypeLookup(layer);
                     domConstruct.empty(this.imageInfoEntryList);
                     for (var key in imageInfo) {
@@ -58,6 +60,7 @@ define([
                             isEmptyDisplayValue = true;
                         }
                         else {
+                            //check if we need to format an attribute entry
                             if (fieldTypeLookup.dateLookup[key] != null) {
                                 displayValue = this.getFormattedDate(imageInfo[key]);
 
@@ -84,9 +87,11 @@ define([
                         domConstruct.place(displayValueSpanOuter, liItem);
                         domConstruct.place(liItem, this.imageInfoEntryList);
                     }
+                    //finally, set the thumbnail
                     this.setThumbnail(imageInfo);
                 },
                 setThumbnail: function (imageInfo) {
+                    //using the query controller, get the image thumbnail
                     var queryController;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, imageInfo.queryControllerId, function (qCon) {
                         queryController = qCon;

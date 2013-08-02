@@ -53,6 +53,7 @@ define([
                         }
                         this.viewModel.showWebMapCreationTab(this.showWebMapCreationTab);
                         ko.applyBindings(this.viewModel, this.domNode);
+                        //create all of the contained widgets
                         this.createExportWidget();
                         this.createFootprintDownloadWidget();
                         this.createReportingWidget();
@@ -62,6 +63,7 @@ define([
                 loadViewerConfigurationData: function () {
                     this.inherited(arguments);
                     var portalConfig = null;
+                    //get the portal configuration to check if we display the web map tab
                     topic.publish(VIEWER_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "portal", function (portalConf) {
                         portalConfig = portalConf;
                     });
@@ -98,12 +100,15 @@ define([
                     }
                 },
                 createReportingWidget: function () {
+                    //create the reporting widget and add it to the DOM
                     this.reportingWidget = new ReportingWidget().placeAt(this.reportingContainer);
                 },
                 createWebMapPublishingWidget: function () {
+                    //create the web map publishing widget and add it to the DOM
                     this.webMapWidget = new PortalWebMapReportWidget().placeAt(this.webMapCreationContainer);
                 },
                 createExportWidget: function () {
+                    //create the web imagery export widget and add it to the DOM
                     this.imageryExportWidget = new ImageryExportWidget().placeAt(this.imageExportContainer);
                 },
                 createFootprintDownloadWidget: function () {

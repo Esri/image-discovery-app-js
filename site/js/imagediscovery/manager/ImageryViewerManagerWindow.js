@@ -14,17 +14,21 @@ define([
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
+
                 placeDiscoveryWidget: function (discoveryWidget) {
+                    //fire event telling the loader to place the discovery widget
                     topic.publish(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.ADD_ITEM, discoveryWidget);
                 },
                 createImageManipulationWidget: function () {
+                    //create the image manipulation widget.
                     this.imageManipulationWidget = new ImageManipulationWindowWidget();
                 },
                 createSwipeWidget: function () {
+                    //create the swipe widget
                     this.swipeWindowWidget = new SwipeWindowWidget();
                 },
                 processNavigationToolbarAddons: function () {
-                    //create the discovery icon text
+                    //create the discovery icon text. these buttons are added to the top left of the UI for discovery and analysis.
                     var accordToggleButtonWrapper = domConstruct.create("div", {className: "navigationTextWrapperHorizontal"});
                     var accordToggleButtonWrapperInner = domConstruct.create("span", {className: "navigationTextWrapperHorizontalInner"});
                     domConstruct.place(accordToggleButtonWrapperInner, accordToggleButtonWrapper);
@@ -50,6 +54,7 @@ define([
                     domConstruct.place(analysisToggleButtonWrapper, accordToggleButtonWrapper, "after");
                 },
                 createAddonTools: function () {
+                    //only add on tool for the discovery viewer is the swip widget
                     this.inherited(arguments);
                     if (this.viewerConfig.swipeWidget != null && lang.isObject(this.viewerConfig.swipeWidget) && this.viewerConfig.swipeWidget.create) {
                         var menuItem = new MenuItem({
@@ -59,6 +64,7 @@ define([
                                 topic.publish(IMAGERY_GLOBALS.EVENTS.SWIPE.WINDOW.SHOW);
                             }
                         });
+                        //fire event to add the swipe item to the tools dropdown
                         topic.publish(VIEWER_GLOBALS.EVENTS.TOOLS.MENU.ADD_TOOL, menuItem);
                     }
                 }
