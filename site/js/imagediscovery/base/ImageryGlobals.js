@@ -32,7 +32,8 @@ define([
                             ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster",
                             GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",
                             RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated",
-                            GET_VISIBLE_FOOTPRINT_GEOMETRIES: "imgQuery:getVsFtPtGeoms"
+                            GET_VISIBLE_FOOTPRINT_GEOMETRIES: "imgQuery:getVsFtPtGeoms",
+                            GET_VISIBLE_FOOTPRINT_FEATURES: "imgQuery:getVsFtPtFeatures"
                         },
                         SEARCH: {
                             //search image service by geometry
@@ -93,7 +94,9 @@ define([
                         CLUSTER_LAYER_DISPLAYED: "lyr:clstrLyrDisplayed",
                         FOOTPRINTS_LAYER_VISIBLE: "lyr:ftPrintsLyrVisible",
                         SET_FOOTPRINTS_LAYER_TRANSPARENT: "lys:ftPrintsLyrTrans",
-                        SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq"
+                        SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq",
+                        HIGHLIGHT_FOOTPRINT: "lyr:highlightFtPrint",
+                        UNHIGHLIGHT_FOOTPRINT:"lyr:unhighlightFtPrint"
                     },
                     LOCK_RASTER: {
                         CLEAR_ALL: "lRaster:clearIds",

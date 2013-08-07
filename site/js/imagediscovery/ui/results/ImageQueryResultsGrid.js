@@ -53,7 +53,7 @@ define([
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.handleFooterCollapsed));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADDED, lang.hitch(this, this.handleFilterAdded));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, lang.hitch(this, this.handleGetVisibleFootprintGeometries));
-
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, lang.hitch(this, this.handleGetVisibleFootprintFeatures));
 
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.enableThumbnailToggle));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.disableThumbnailToggle));
@@ -89,6 +89,9 @@ define([
                         if (row && row.element) {
                             this.grid.unhighlightYellowRow(row);
                             highlightedItems[i].isHighlighted = false;
+
+                            //remove highlight of footprint
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, highlightedItems[i].OBJECTID);
                         }
                     }
                 },
@@ -112,12 +115,18 @@ define([
                                     scrolledIntoView = true;
                                 }
                                 currentVisibleItem.isHighlighted = true;
+
+                                //highlight footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                         else {
                             if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
                                 this.grid.unhighlightYellowRow(row);
                                 currentVisibleItem.isHighlighted = false;
+
+                                //remove highlight on footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                     }
@@ -142,12 +151,18 @@ define([
                                     scrolledIntoView = true;
                                 }
                                 currentVisibleItem.isHighlighted = true;
+
+                                //highlight footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                         else {
                             if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
                                 this.grid.unhighlightYellowRow(row);
                                 currentVisibleItem.isHighlighted = false;
+
+                                //remove highlight on footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                     }
@@ -161,8 +176,14 @@ define([
                     callback(geometries);
 
                 },
-
-
+                handleGetVisibleFootprintFeatures: function (callback) {
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
+                    var features = [];
+                    for (var i = 0; i < unfilteredResults.length; i++) {
+                        features.push(unfilteredResults[i]);
+                    }
+                    callback(features);
+                },
                 showCorrespondingImageFromPointIntersect: function (pt) {
                     var scrolledIntoView = false;
                  //   var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
@@ -191,19 +212,25 @@ define([
                                 if (currentCheckDijit) {
                                     currentCheckDijit.set("checked", true);
                                 }
+
+                                //highlight footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                         else {
                             if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
                                 this.grid.unhighlightYellowRow(row);
                                 currentVisibleItem.isHighlighted = false;
+
+                                //remove highlight on footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                     }
                 },
                 showCorrespondingImageFromRectangleIntersect: function (envelope) {
                     var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
@@ -228,12 +255,17 @@ define([
                                 if (currentCheckDijit) {
                                     currentCheckDijit.set("checked", true);
                                 }
+                                //highlight footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                         else {
                             if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
                                 this.grid.unhighlightYellowRow(row);
                                 currentVisibleItem.isHighlighted = false;
+
+                                //remove highlight on footprint
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
                             }
                         }
                     }
@@ -309,7 +341,7 @@ define([
                     this.userAppliedFiltersManager.setFeatures(this.responseFeatures);
                     this.onShowFilterResetIcon();
 
-                    //check to see if the footprints layer is visible. if it's not disable thumnbail toggle
+                    //check to see if the footprints layer is visible. if it's not disable thumbnail toggle
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (visible) {
                         if (visible) {
                             this.enableThumbnailToggle();
