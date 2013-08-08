@@ -2,7 +2,6 @@
 
 define([
     "dojo/_base/declare",
-    "dojo/_base/connect",
     "esri/map",
     "dojo/dom-construct",
     "dojo/_base/lang",
@@ -14,7 +13,7 @@ define([
     "esri/geometry/Extent",
     "dojo/_base/array"
 ],
-    function (declare, con, Map, domConstruct, lang, dom, ArcGISTiledMapServiceLayer, MosaicRule, ArcGISImageServiceLayer, RasterFunction, Extent, array) {
+    function (declare,  Map, domConstruct, lang, dom, ArcGISTiledMapServiceLayer, MosaicRule, ArcGISImageServiceLayer, RasterFunction, Extent, array) {
         return declare(
             [],
             {
@@ -119,7 +118,19 @@ define([
                         }
                         map.addLayer(catalogLayer);
                         if (i == 0) {
-                            con.connect(map, "onLoad", function (map) {
+                            //3.6
+                            /*
+                             con.connect(map, "onLoad", function (map) {
+                             //disable everything on the map
+                             map.disableMapNavigation();
+                             map.disablePan();
+                             });
+                             */
+                            map.on("load", function (evt) {
+                                if (evt == null || evt.map == null) {
+                                    return;
+                                }
+                                var map = evt.map;
                                 //disable everything on the map
                                 map.disableMapNavigation();
                                 map.disablePan();

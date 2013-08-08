@@ -260,6 +260,12 @@
         "create": false,
         //configurationUrl: URL to configuration file for reflectivity widget
         "configurationUrl": "config/widgets/ReflectivityWidgetConfig.json"
+    },
+	    //portalSearchWidget - when "create" child is true, the point plotting widget is created
+    "plottingWidget": {
+        "create": true,
+        //symbolUrl: url to the picture symbol to use for plotted points
+        "symbolUrl": "images/symbols/BluePin1LargeB.png"
     }
 
 }

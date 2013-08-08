@@ -81,3 +81,8 @@ small common icon slider:
  binoculars:
  LGPL
   Everaldo Coelho - http://www.everaldo.com/
+
+
+pushpin for plotting
+https://www.iconfinder.com/iconsets/IconsLandVistaMapMarkersIconsDemo#readme
+images/symbols/plotPin.png

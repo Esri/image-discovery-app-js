@@ -12,12 +12,11 @@ define([
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/SwipeViewModel",
     "dojo/dnd/move",
-    "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dijit/form/Button"
 ],
-    function (declare, template, theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
+    function (declare, template, theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, domConstruct, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
@@ -91,24 +90,35 @@ define([
                     this.swipe(domStyle.get(this.sliderDiv, "left"));
                     //Make the slider visible
                     domStyle.set(this.sliderDiv, "display", "");
-                    this.swipeConnect = con.connect(this.swipeSlider, 'onMove', lang.hitch(this, function (args) {
+                    //3.6
+                    /*
+                     this.swipeConnect = con.connect(this.swipeSlider, 'onMove', lang.hitch(this, function (args) {
+                     domStyle.set(this.swipeSlider.node, "top", "0");
+                     var left = parseInt(domStyle.get(this.swipeSlider.node, "left"), 10);
+                     if (left <= 0 || left >= (this.map.width)) return;
+                     this.clipValue = domStyle.get(this.swipeSlider.node, "left");
+                     this.swipe(this.clipValue);
+                     }));
+                     this.panEndConnect = con.connect(this.map, 'onPanEnd', lang.hitch(this, function (args) {
+                     this.swipe(this.clipValue);
+                     }));
+                     */
+                    this.swipeConnect = this.swipeSlider.on("move", lang.hitch(this, function () {
                         domStyle.set(this.swipeSlider.node, "top", "0");
                         var left = parseInt(domStyle.get(this.swipeSlider.node, "left"), 10);
                         if (left <= 0 || left >= (this.map.width)) return;
                         this.clipValue = domStyle.get(this.swipeSlider.node, "left");
                         this.swipe(this.clipValue);
                     }));
-                    this.panEndConnect = con.connect(this.map, 'onPanEnd', lang.hitch(this, function (args) {
+                    this.panEndConnect = this.map.on("pan-end", lang.hitch(this, function () {
                         this.swipe(this.clipValue);
                     }));
-
                     if (this.map.navigationMode === "css-transforms") {
-                        this.panConnect = con.connect(this.map, 'onPan', lang.hitch(this, function (args) {
+                        this.panConnect = this.map.on("pan", lang.hitch(this, function () {
                             this.swipe(this.clipValue);
                         }));
                     }
                 },
-
                 clearClip: function () {
                     if (this.swipeDiv != null) {
                         this.swipeDiv.style.clip = sniff("ie") ? "rect(auto auto auto auto)" : "";
@@ -200,12 +210,18 @@ define([
                     this.map.showZoomSlider();
                     this.swipeSlider = null;
                     domStyle.set(this.sliderDiv, "display", "none");
-                    if (this.swipeConnect)
-                        con.disconnect(this.swipeConnect);
-                    if (this.panEndConnect)
-                        con.disconnect(this.panEndConnect);
-                    if (this.panConnect)
-                        con.disconnect(this.panConnect);
+                    if (this.swipeConnect) {
+                        this.swipeConnect.remove();
+                        this.swipeConnect = null;
+                    }
+                    if (this.panEndConnect) {
+                        this.panEndConnect.remove();
+                        this.panEndConnect = null;
+                    }
+                    if (this.panConnect) {
+                        this.panConnect.remove();
+                        this.panConnect = null;
+                    }
                     if (this.swipeDiv != null) {
                         this.swipeDiv.style.clip = sniff("ie") ? "rect(auto auto auto auto)" : "";
                         this.swipeDiv = null;
@@ -229,11 +245,10 @@ define([
                     }
                 },
                 turnOffOperationalLayers: function (opLayers) {
-                    var operationalLayers = opLayers;
-                    for (var i = 0; i < operationalLayers.length; i++) {
-                        if (operationalLayers[i].visible) {
-                            this.currentlyVisibleOperLayers.push(operationalLayers[i]);
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MAKE_INVISIBLE, operationalLayers[i]);
+                    for (var i = 0; i < opLayers.length; i++) {
+                        if (opLayers[i].visible) {
+                            this.currentlyVisibleOperLayers.push(opLayers[i]);
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MAKE_INVISIBLE, opLayers[i]);
                         }
                     }
                 },
@@ -340,7 +355,6 @@ define([
                             this.viewModel.swipeLayers.push(item);
                         }
                     }));
-
                 },
                 handleImageryLayersVisible: function () {
                     this.viewModel.setSwipeEnabled();

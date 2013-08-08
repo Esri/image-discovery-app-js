@@ -1,0 +1,28 @@
+<div>
+    <div class="defaultTabContainer plottingTabContainer" data-dojo-attach-point="layersTabContainer">
+        <span data-bind="click:showPlotDD, css: {selectedTab: plotDDVisible}">DD</span>
+        <span data-bind="click:showPlotDMS, css: {selectedTab: plotDMSVisible}">DMS</span>
+        <span data-bind="click:showPlotUTM, css: {selectedTab: plotUTMVisible}">UTM</span>
+        <span data-bind="click:showPlotMGRS, css: {selectedTab: plotMGRSVisible}">MGRS</span>
+    </div>
+    <div data-bind="visible:plotDDVisible" data-dojo-attach-point="plotDDContainer">
+    </div>
+    <div data-bind="visible:plotDMSVisible" data-dojo-attach-point="plotDMSContainer">
+    </div>
+    <div data-bind="visible:plotUTMVisible" data-dojo-attach-point="plotUTMContainer">
+    </div>
+    <div data-bind="visible:plotMGRSVisible" data-dojo-attach-point="plotMGRSContainer">
+    </div>
+
+    <div class=" plotPointsActionContainer">
+        <span class="plotPointZoomLevelContainer">
+                <span class="plotPointZoomLevelLabel">Zoom Level:</span>
+                <select data-bind="options: zoomLevels ,value:selectedZoomLevel"></select>
+            </span>
+        <span data-dojo-type="dijit/form/Button" data-dojo-attach-point="clearButtonButton"
+              data-dojo-attach-event="onClick:clearGraphic">Clear</span>
+        <span data-dojo-type="dijit/form/Button" data-dojo-attach-point="plottingButton"
+              data-dojo-attach-event="onClick:plotPoint">Plot</span>
+
+    </div>
+</div>

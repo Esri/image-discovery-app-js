@@ -11,14 +11,14 @@
         },
         "useBasemapGallery": true,
         "initialExtent": {
-                  "xmin": 1041989.569,
-                  "ymin": 714227.5922,
-                  "xmax": 7269467.138,
-                  "ymax": 4994701.176,
-                  "spatialReference": {
-                      "wkid": 102100
-                  }
-              },
+            "xmin": 1041989.569,
+            "ymin": 714227.5922,
+            "xmax": 7269467.138,
+            "ymax": 4994701.176,
+            "spatialReference": {
+                "wkid": 102100
+            }
+        },
         "basemaps": {
             "topo": {
                 "label": "World Topographic",
@@ -52,7 +52,7 @@
 
     "locators": [
         {
-            "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
+            "url": "//tasks.arcgis.com/ArcGIS/rest/services/WorldLocator/GeocodeServer"
         }
     ],
     "toolsAccordion": {
@@ -134,5 +134,9 @@
         "window": {
             "create": false
         }
+    },
+    "plottingWidget": {
+        "create": true,
+        "symbolUrl": "images/symbols/plotPin.png"
     }
 }

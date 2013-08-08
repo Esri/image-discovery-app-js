@@ -1,0 +1,15 @@
+<div>
+    <div  class="plottingHeader">Plot by Decimal Degrees</div>
+    <span class="searchByBoundsInputLbl">x:</span>
+              <span data-dojo-attach-point="boundsXInput"
+                    data-dojo-attach-event="onKeyUp: handleValueChange"
+                    data-dojo-type="dijit/form/NumberTextBox"
+                    style="width:${boundsNumberBoxWidth}"
+                    data-dojo-props="constraints:{pattern:'##0.#####'}"></span>
+    <span class="searchByBoundsInputLbl">y:</span>
+              <span data-dojo-attach-point="boundsYInput"
+                    data-dojo-attach-event="onKeyUp: handleValueChange"
+                    data-dojo-type="dijit/form/NumberTextBox"
+                    style="width:${boundsNumberBoxWidth}"
+                    data-dojo-props="constraints:{pattern:'##0.#####'}"></span>
+</div>

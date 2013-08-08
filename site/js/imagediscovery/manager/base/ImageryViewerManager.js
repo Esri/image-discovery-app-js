@@ -162,7 +162,11 @@ define([
                         this.finalizeQueryLayerLoad();
                     }
                 },
-                handleImageServiceLoaded: function (layer) {
+                handleImageServiceLoaded: function (evt) {
+                    if(evt == null || evt.layer == null){
+                        return;
+                    }
+                    var layer = evt.layer;
                     //load the key properties
                     this.catalogQueryControllers.push(new ImageQueryLayerController({layer: layer, label: layer.searchServiceLabel}));
                     VIEWER_UTILS.log("Loaded Catalog Service", VIEWER_GLOBALS.LOG_TYPE.INFO);

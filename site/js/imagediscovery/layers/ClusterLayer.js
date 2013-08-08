@@ -241,6 +241,7 @@ define([
                 // create a new cluster for it
                 _clusterCreate: function (p) {
                     var clusterId = this._clusters.length + 1;
+                    // console.log("cluster create, id is: ", clusterId);
                     // p.attributes might be undefined
                     if (!p.attributes) {
                         p.attributes = {};
@@ -330,6 +331,7 @@ define([
                             g.attributes.clusterId == c.attributes.clusterId;
                     });
                     if (label.length == 1) {
+                        // console.log("update label...found: ", label);
                         this.remove(label[0]);
                         var newLabel = new TextSymbol(c.attributes.clusterCount)
                             .setColor(new Color(this._clusterLabelColor))
@@ -341,6 +343,7 @@ define([
                                 c.attributes
                             )
                         );
+                        // console.log("updated the label");
                     } else {
                     }
                 },

@@ -45,7 +45,6 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, lang.hitch(this, this.handleSetQueryLayerControllers));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS, lang.hitch(this, this.handleQueryValuesForFields));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, lang.hitch(this, this.handleQueryByGeometry));
-                    // con.connect(this.map, "onClick", lang.hitch(this, this.handleMapClick));
                 },
                 handleQueryValuesForFields: function (layerQueryParameters) {
                     layerQueryParameters.whereClause = layerQueryParameters.layer.queryWhereClauseAppend ? layerQueryParameters.layer.queryWhereClauseAppend : "1 = 1";

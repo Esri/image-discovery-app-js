@@ -69,10 +69,11 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
+                    console.log("create cluster manager");
                     this.createClusterManager();
+                    console.log("created cluster manager");
                     this.createFootprintManager();
-
-
+                    console.log("created footprint manager");
                     //this is the manager that will listen for applied filters
                     this.filterFunctionManager = new FilterFunctionManager();
                     this.viewModel = new ImageQueryResultsViewModel();
@@ -88,10 +89,12 @@ define([
                     this.viewModel.setFilterIconHidden();
                     this.applyBindings();
                     this._createResultGrid();
+                    console.log("results grid");
                     this._createShoppingCartGrid();
+                    console.log("shopping grid");
                     this.createActiveSourcesWidget();
-
-
+                    console.log("post create complete");
+                    console.dir(this.viewModel);
                 },
                 checkForToolsActive: function (level) {
                     if (level == null) {
@@ -110,6 +113,7 @@ define([
                 },
 
                 handleZoomLevelChange: function (extent, factor, anchor, level) {
+                    console.log("handleZoomLevelChange");
                     if (this.viewModel.cart()) {
                         return;
                     }
@@ -465,9 +469,11 @@ define([
                 },
                 createClusterManager: function () {
                     this.resultsClusterManager = new ResultsClusterManager();
+                    console.log("created");
                     //see if the layer should be hidden/displayed on creation
                     this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));
                     this.resultsClusterManager.startup();
+                    console.log("started up");
                 },
                 checkForClusterLayerVisibility: function () {
                     var zoomLevel;
