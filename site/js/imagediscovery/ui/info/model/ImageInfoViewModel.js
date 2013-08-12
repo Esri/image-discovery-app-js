@@ -1,33 +1,83 @@
 define([
     "dojo/_base/declare",
-    "dojo/_base/lang"
+    "dojo/_base/lang",
+    "dojo/topic",
+    "dojo/Evented",
+    "dojo/_base/array"
 ],
-    function (declare,lang) {
+    function (declare,lang, topic, Evented, array) {
         return declare(
-            [],
+            [Evented],
             {
-                attributes: ko.observable(true),
-                thumbnail: ko.observable(false),
-                attributesClick: function () {
-                    this.attributes(true);
-                },
-                thumbnailClick: function () {
-                    this.thumbnail(true);
-                },
+                TOGGLE_SHOW_IMAGE_ON_MAP: "showImage",
+                SHOW_THUMBNAIL: "showThumbnail",
+                TOGGLE_ADD_IMG_TO_SHOPPING_CART: "toggleAddImageToShoppingCart",
+
+                imageInfoArray: ko.observableArray(),
 
                 constructor: function () {
-                    this.attributes.subscribe(lang.hitch(this,function (selected) {
-                        if (selected) {
-                            this.thumbnail(false);
-                        }
-                    }));
-                    this.thumbnail.subscribe(lang.hitch(this,function (selected) {
-                        if (selected) {
-                            this.attributes(false);
-                        }
-                    }));
-                }
+                    var self = this;
 
+                    this.showThumbnailView = function(imageInfoItem) {
+                        imageInfoItem.showAttrs(false);
+                        if (imageInfoItem.thumbnailURL() == "") {
+                            self.emit(self.SHOW_THUMBNAIL, imageInfoItem);
+                        }
+                        return true; //must have this statement to let the default click action proceed
+                    };
+
+                    this.toggleShowImage = function(imageInfoItem) {
+                        self.emit(self.TOGGLE_SHOW_IMAGE_ON_MAP, imageInfoItem.imageInfoAndLayer.imageInfo);
+                    };
+
+                    this.showAttrsView = function(imageInfoItem) {
+                        imageInfoItem.showAttrs(true);
+                        return true;    //must have this statement to let the default click action proceed
+                    };
+                    this.toggleAddImgToShoppingCart = function(imageInfoItem) {
+                        var inShoppingCartBool = imageInfoItem.inShoppingCart();
+                        imageInfoItem.inShoppingCart(!inShoppingCartBool);
+                        self.emit(self.TOGGLE_ADD_IMG_TO_SHOPPING_CART, imageInfoItem.imageInfoAndLayer.imageInfo);
+                    }
+
+                },
+                addImageInfoItem: function (imageInfoItem) {
+                    imageInfoItem["showAttrs"] = ko.observable(true);
+                    imageInfoItem["thumbnailURL"] = ko.observable("");
+                    imageInfoItem["currentView"] = ko.observable("attrsView");
+                    imageInfoItem["inShoppingCart"] = ko.observable(false);
+
+                    imageInfoItem["radioName"] = ko.observable('showView' + this.imageInfoArray().length);
+                    this.imageInfoArray.push(imageInfoItem);
+                },
+                clearImageInfos: function() {
+                    this.imageInfoArray.removeAll();
+                },
+                findImageInfoItem: function(imageInfo) {
+                    var filteredArray = array.filter(this.imageInfoArray(), function(item){
+                        var imgInfo = item.imageInfoAndLayer.imageInfo;
+                        if (imgInfo.queryControllerId == imageInfo.queryControllerId &&
+                            imgInfo.OBJECTID == imageInfo.OBJECTID)  {
+                            return true;
+                        }
+                        return false;
+                    });
+                    if (filteredArray && filteredArray.length > 0) {
+                        return filteredArray[0];
+                    }
+                },
+                removeImageInfoFromShoppingCart: function(imageInfo) {
+                    var imageInfoItemFound = this.findImageInfoItem(imageInfo);
+                    if (imageInfoItemFound) {
+                        imageInfoItemFound.inShoppingCart(false);
+                    }
+                },
+                addImageInfoToShoppingCart: function(imageInfo) {
+                    var imageInfoItemFound = this.findImageInfoItem(imageInfo);
+                    if (imageInfoItemFound) {
+                        imageInfoItemFound.inShoppingCart(true);
+                    }
+                }
             });
 
     })

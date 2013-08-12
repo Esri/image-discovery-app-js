@@ -24,10 +24,10 @@ define([
                             CLEAR_GRAYED_OUT_RESULTS: "imgQuery:clearGrayedOutResults",
                             DISABLE_THUMBNAIL_CHECKBOXES: "imgQuery:disableFootprintCheckboxes",
                             ENABLE_THUMBNAIL_CHECKBOXES: "imgQuery:enableFootprintCheckboxes",
-                            HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT: "imgQuery:highlightResultsFromPointIntersect",
+                            //HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT: "imgQuery:highlightResultsFromPointIntersect",
                             HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT: "imgQuery:highlightResultsFromRectangleIntersect",
-                            SHOW_IMAGE_FROM_POINT_INTERSECT: "imgQuery:showImageFromPointIntersect",
-                            SHOW_IMAGE_FROM_RECTANGLE_INTERSECT: "imgQuery:showImageFromRectangleIntersect",
+                            //SHOW_IMAGE_FROM_POINT_INTERSECT: "imgQuery:showImageFromPointIntersect",
+                            //SHOW_IMAGE_FROM_RECTANGLE_INTERSECT: "imgQuery:showImageFromRectangleIntersect",
                             CLEAR_HIGHLIGHTED_RESULTS: "imgQuery:clearHighlightedResults",
                             ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster",
                             GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",
@@ -112,7 +112,14 @@ define([
                             //shows the image info window
                             SHOW: "imgInfo:show",
                             //hides the image info window
-                            HIDE: "imgInfo:hide"
+                            HIDE: "imgInfo:hide",
+
+                            //turns on/off the image
+                            TOGGLE_SHOW_IMAGE: "imgInfo:showImage",
+                            //add/remove item from shopping cart
+                            TOGGLE_ADD_IMAGE_TO_SHOPPING_CART: "imgInfo:toggleAddImageToShoppingCart",
+
+                            SET_CONTENT_AND_SHOW: "imgInfo:setContentAndShow"
                         }
                     },
                     SWIPE: {

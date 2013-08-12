@@ -47,6 +47,7 @@ define([
                 },
                 */
                 //info icon
+                /*
                 infoIconFormatter: function (object, value, node, option) {
                     var source;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, object.queryControllerId, function (cont) {
@@ -55,7 +56,7 @@ define([
                     var infoIcon = domConstruct.create("div", {className: "imageResultsInfoIcon commonIcons16 information", title: source });
                     on(infoIcon, "click", lang.hitch(this, this.handleShowInformation, object));
                     domConstruct.place(infoIcon, node);
-                },
+                },*/
                 //can convert to hash
                 domainFormatter: function (codedValues, value) {
                     for (var i = 0; i < codedValues.length; i++) {

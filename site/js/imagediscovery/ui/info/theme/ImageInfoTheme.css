@@ -1,29 +1,44 @@
 .imageInfoContainer {
-    /*margin-top: 10px;*/
-    height: 85%;
+    margin-top: 10px;
+    height: 95%;
     overflow: auto;
     background: white;
 }
 
 .imageInfoThumbnail {
-    margin-left: 25%;
-    margin-top: 20%;
+    margin-left: 0;
+    margin-top: 0;
 }
 
 .imageryInfoWidget {
     height: 95%;
 }
-
-.imageInfoEntryList {
-    /*list-style-type: none;*/
-    /*padding-top: 30px;*/
-    margin-left: 20px;
-    margin-top: 15px;
-
-}
-
+/*
 .imageInfoEntryList div {
    margin: 5px 0;
+} */
+
+.imageInfoEntryList {
+    list-style-type: none;
+    margin: 5px 10px;
+    padding: 0;
+}
+.imageInfoItem {
+    margin: 10px 0;
+    padding: 10px;
+    width: 90%;
+}
+
+.imageInfoItemHeader {
+    border-bottom: 1px solid #666666;
+    padding-left: 3px;
+    margin-left: -5px;
+    color: #666666;
+    margin-bottom: 5px;
+}
+.imageInfoItemContent {
+    list-style-type: none;
+    padding: 0;
 }
 
 .imageInfoAttributeEntryLbl {
@@ -61,4 +76,18 @@
 }
 .imageInfoContent{
     padding-top: 0 !important;
+}
+
+.showImageHeaderIcon {
+    background: url(../../base/grid/assets/images/thumbnail.png);
+    height: 18px;
+    width: 18px;
+    float: right;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.shoppingCartHeaderIcon {
+    float: right;
+    margin-bottom: 5px;
 }

@@ -1,7 +1,8 @@
 {
     "windowTitle": "Image Discovery Application",
     "portal": {
-        "url": "https://afmcomstaging.esri.com/arcgis"
+        //"url": "https://afmcomstaging.esri.com/arcgis"
+        "url": "http://www.arcgis.com"
     },
     "map": {
         "initializationParameters": {
@@ -11,10 +12,15 @@
         },
         "useBasemapGallery": true,
         "initialExtent": {
-            "xmin": 1041989.569,
-            "ymin": 714227.5922,
-            "xmax": 7269467.138,
-            "ymax": 4994701.176,
+            //"xmin": 1041989.569,
+            //"ymin": 714227.5922,
+            //"xmax": 7269467.138,
+            //"ymax": 4994701.176,
+
+            "xmin": -8847249.936968341,
+            "ymin": 3933736.784368135,
+            "xmax": -8651571.144558214,
+            "ymax": 4070100.442828942,
             "spatialReference": {
                 "wkid": 102100
             }

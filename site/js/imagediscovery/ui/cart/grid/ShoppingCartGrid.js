@@ -30,7 +30,7 @@ define([
                     //add the item to the cart store
                     this.store.add(item);
                 },
-                removeItemFromCart: function (resultId) {
+                removeItemFromCart: function (resultId, item) {
                     this.store.remove(resultId);
                 },
                 generateManipulationColumns: function () {
@@ -65,7 +65,7 @@ define([
                     var itemId = item[this.storeIdField];
                     this.removeItemFromCart(itemId);
                     //fire event alerting other classes that an item has been removed from the cart
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, itemId);
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, itemId, item);
                     this.setSelectedThumbnails();
                 },
                 getAddedCartItemIds: function (callback) {
