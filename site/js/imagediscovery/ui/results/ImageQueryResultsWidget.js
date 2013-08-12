@@ -26,14 +26,16 @@ define([
     "esriviewer/ui/draw/base/MapDrawSupport",
     "dijit/TooltipDialog",
     "./ResultsClusterManager",
+    "./ResultsHeatmapManager",
     "./ResultsFootprintManager"
 ],
-    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsFootprintManager) {
+    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
                 footprintZoomLevelStart: 12,
                 bindingsApplied: false,
+                useHeatmap: false,
                 generateCSVEndpoint: "generateCSV",
                 title: "Results",
                 templateString: template,
@@ -166,44 +168,44 @@ define([
                     this.activeSourcesWidget.placeAt(this.activeServicesContainer);
                 },
                 /*
-                handleActivatePointSelect: function () {
-                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
-                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
-                }, */
+                 handleActivatePointSelect: function () {
+                 this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
+                 this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
+                 }, */
                 handleActivateRectangleSelect: function () {
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
                 },
                 /*
-                handleActivateShowImageByPointSelect: function () {
-                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
-                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
-                },
-                handleActivateShowImageByRectangleSelect: function () {
-                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
-                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
-                },
-                */
+                 handleActivateShowImageByPointSelect: function () {
+                 this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
+                 this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
+                 },
+                 handleActivateShowImageByRectangleSelect: function () {
+                 this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
+                 this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
+                 },
+                 */
                 geometryAdded: function (geometry) {
                     /*
-                    if (geometry instanceof Point) {
-                        if (this.viewModel.pointSelectionActive()) {
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, geometry);
-                        }
-                        else {
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, geometry);
-                        }
-                    }
+                     if (geometry instanceof Point) {
+                     if (this.viewModel.pointSelectionActive()) {
+                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, geometry);
+                     }
+                     else {
+                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, geometry);
+                     }
+                     }
 
-                    else */
+                     else */
                     if (geometry instanceof Extent) {
                         if (this.viewModel.rectangleSelectionActive()) {
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, geometry);
                         }
                         /*
-                        else {
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, geometry);
-                        }*/
+                         else {
+                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, geometry);
+                         }*/
                     }
                     this.setDraw(this.currentDrawType);
                 },
@@ -218,9 +220,15 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
                         searchConfiguration = searchConf;
                     });
-                    if (searchConfiguration != null && lang.isObject(searchConfiguration) && searchConfiguration.footprintZoomLevelStart != null) {
-                        this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
+                    if (searchConfiguration != null && lang.isObject(searchConfiguration)) {
+                        if (searchConfiguration.footprintZoomLevelStart != null) {
+                            this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
+                        }
+                        if (searchConfiguration.useHeatmap != null) {
+                            this.useHeatmap = searchConfiguration.useHeatmap;
+                        }
                     }
+
 
                     var displayFieldsConfig;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
@@ -475,7 +483,12 @@ define([
                     }
                 },
                 createClusterManager: function () {
-                    this.resultsClusterManager = new ResultsClusterManager();
+                    if (this.useHeatmap) {
+                        this.resultsClusterManager = new ResultsHeatmapManager();
+                    }
+                    else {
+                        this.resultsClusterManager = new ResultsClusterManager();
+                    }
                     //console.log("created");
                     //see if the layer should be hidden/displayed on creation
                     this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));
