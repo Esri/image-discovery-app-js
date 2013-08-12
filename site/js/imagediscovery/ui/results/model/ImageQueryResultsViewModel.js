@@ -8,10 +8,10 @@ define([
             [Evented],
             {
                 CLEAR_DRAW: "clearDraw",
-                ACTIVATE_POINT_SELECT: "activatePointSelect",
+                //ACTIVATE_POINT_SELECT: "activatePointSelect",
                 ACTIVATE_RECTANGLE_SELECT: "activateRectangleSelect",
-                ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT: "activateShowImageByPointSelect",
-                ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT: "activateShowImageByRectangleSelect",
+                //ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT: "activateShowImageByPointSelect",
+                //ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT: "activateShowImageByRectangleSelect",
                 SHRINK_GRID: "shrinkGrid",
                 EXPAND_GRID: "expandGrid",
                 cart: ko.observable(true),
@@ -19,10 +19,10 @@ define([
                 expanded: ko.observable(false),
                 zoomToSelected: ko.observable(false),
                 timeSlider: ko.observable(true),
-                pointSelectionActive: ko.observable(false),
+                //pointSelectionActive: ko.observable(false),
                 rectangleSelectionActive: ko.observable(false),
-                showImageByPointSelectionActive: ko.observable(false),
-                showImageByRectangleSelectionActive: ko.observable(false),
+                //showImageByPointSelectionActive: ko.observable(false),
+                //showImageByRectangleSelectionActive: ko.observable(false),
                 reportIcon: ko.observable(false),
                 filterIcon: ko.observable(false),
                 toolsActive: ko.observable(false),
@@ -92,6 +92,7 @@ define([
                 orderByLockRaster: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ORDER_BY_LOCK_RASTER);
                 },
+                /*
                 togglePointResultsSelection: function () {
                     var stateBeforeClear = this.pointSelectionActive();
                     this.emit(this.CLEAR_DRAW);
@@ -100,7 +101,7 @@ define([
                         this.drawActive(true);
                     }
                     this.pointSelectionActive(!stateBeforeClear);
-                },
+                },*/
                 toggleRectangleResultsSelection: function () {
                     var stateBeforeClear = this.rectangleSelectionActive();
                     this.emit(this.CLEAR_DRAW);
@@ -110,6 +111,7 @@ define([
                     }
                     this.rectangleSelectionActive(!stateBeforeClear);
                 },
+                /*
                 showImageFromPointIntersect: function () {
                     var stateBeforeClear = this.showImageByPointSelectionActive();
                     this.emit(this.CLEAR_DRAW);
@@ -128,23 +130,28 @@ define([
                     }
                     this.showImageByRectangleSelectionActive(!stateBeforeClear);
                 },
+                */
+                /*
                 clearPointDraw: function () {
                     this.pointSelectionActive(false);
                 },
+                */
                 clearRectangleDraw: function () {
                     this.rectangleSelectionActive(false);
                 },
+                /*
                 clearShowImagePointDraw: function () {
                     this.showImageByPointSelectionActive(false);
                 },
                 clearShowImageRectangleDraw: function () {
                     this.showImageByRectangleSelectionActive(false);
                 },
+                */
                 clearAllDraw: function () {
-                    this.clearPointDraw();
+                    //this.clearPointDraw();
                     this.clearRectangleDraw();
-                    this.clearShowImagePointDraw();
-                    this.clearShowImageRectangleDraw();
+                    //this.clearShowImagePointDraw();
+                    //this.clearShowImageRectangleDraw();
                     this.drawActive(false);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS);
 

@@ -32,9 +32,10 @@ define([
                 },
                 */
                 //handles show information window for a result
+                /*
                 handleShowInformation: function (entry, e) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SHOW, entry, this.layer);
-                },
+                }, */
                 //footprint checkbox toggle listener
                 handleShowFootprintToggle: function (item, checked) {
                     item.showFootprint = checked;

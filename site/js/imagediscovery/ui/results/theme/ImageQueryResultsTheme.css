@@ -249,7 +249,8 @@
 
 .toolsActiveContainer {
     float: right;
-    width: 200px;
+    width: 80px;  /* now only one tool */
+    /*width: 200px; */   /* 4 tools */
 }
 
 

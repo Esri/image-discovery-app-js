@@ -179,14 +179,14 @@ define([
                          renderHeaderCell: lang.hitch(this, this.footprintRenderHeaderCell),
                          unhidable: true
                          },
-                         */
+
                         {
                             field: "showInformation",
                             label: " ",
                             sortable: false,
                             renderCell: lang.hitch(this, this.infoIconFormatter),
                             unhidable: true
-                        }
+                        }  */
                     ];
                 },
                 generateLayerColumns: function () {

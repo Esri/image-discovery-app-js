@@ -25,17 +25,15 @@ define([
     "./base/ActiveSourcesWidget",
     "esriviewer/ui/draw/base/MapDrawSupport",
     "dijit/TooltipDialog",
-    "./ResultsHeatmapManager",
     "./ResultsClusterManager",
     "./ResultsFootprintManager"
 ],
-    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsHeatmapManager, ResultsClusterManager, ResultsFootprintManager) {
+    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsFootprintManager) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
                 footprintZoomLevelStart: 12,
                 bindingsApplied: false,
-                useHeatmap: false,
                 generateCSVEndpoint: "generateCSV",
                 title: "Results",
                 templateString: template,
@@ -71,11 +69,11 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
-                    console.log("create cluster manager");
+                    //console.log("create cluster manager");
                     this.createClusterManager();
-                    console.log("created cluster manager");
+                    //console.log("created cluster manager");
                     this.createFootprintManager();
-                    console.log("created footprint manager");
+                    //console.log("created footprint manager");
                     //this is the manager that will listen for applied filters
                     this.filterFunctionManager = new FilterFunctionManager();
                     this.viewModel = new ImageQueryResultsViewModel();
@@ -83,20 +81,20 @@ define([
                     this.viewModel.cart.subscribe(lang.hitch(this, this.handleCartVisibilityChange));
                     this.viewModel.results.subscribe(lang.hitch(this, this.handleResultsVisibilityChange));
                     this.viewModel.resultsVisibleAndHasResults.subscribe(lang.hitch(this, this.handleFilterIconStateChange));
-                    this.viewModel.on(this.viewModel.ACTIVATE_POINT_SELECT, lang.hitch(this, this.handleActivatePointSelect));
+                    //this.viewModel.on(this.viewModel.ACTIVATE_POINT_SELECT, lang.hitch(this, this.handleActivatePointSelect));
                     this.viewModel.on(this.viewModel.ACTIVATE_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateRectangleSelect));
-                    this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT, lang.hitch(this, this.handleActivateShowImageByPointSelect));
-                    this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateShowImageByRectangleSelect));
+                    //this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT, lang.hitch(this, this.handleActivateShowImageByPointSelect));
+                    //this.viewModel.on(this.viewModel.ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateShowImageByRectangleSelect));
                     this.viewModel.on(this.viewModel.CLEAR_DRAW, lang.hitch(this, this.clearDraw));
                     this.viewModel.setFilterIconHidden();
                     this.applyBindings();
                     this._createResultGrid();
-                    console.log("results grid");
+                    //console.log("results grid");
                     this._createShoppingCartGrid();
-                    console.log("shopping grid");
+                    //console.log("shopping grid");
                     this.createActiveSourcesWidget();
-                    console.log("post create complete");
-                    console.dir(this.viewModel);
+                    //console.log("post create complete");
+                    //console.dir(this.viewModel);
                 },
                 checkForToolsActive: function (level) {
                     if (level == null) {
@@ -167,14 +165,16 @@ define([
                     this.activeSourcesWidget = new ActiveSourcesWidget();
                     this.activeSourcesWidget.placeAt(this.activeServicesContainer);
                 },
+                /*
                 handleActivatePointSelect: function () {
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
-                },
+                }, */
                 handleActivateRectangleSelect: function () {
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
                 },
+                /*
                 handleActivateShowImageByPointSelect: function () {
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_POINT);
@@ -183,7 +183,9 @@ define([
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
                 },
+                */
                 geometryAdded: function (geometry) {
+                    /*
                     if (geometry instanceof Point) {
                         if (this.viewModel.pointSelectionActive()) {
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, geometry);
@@ -192,13 +194,16 @@ define([
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, geometry);
                         }
                     }
-                    else if (geometry instanceof Extent) {
+
+                    else */
+                    if (geometry instanceof Extent) {
                         if (this.viewModel.rectangleSelectionActive()) {
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, geometry);
                         }
+                        /*
                         else {
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, geometry);
-                        }
+                        }*/
                     }
                     this.setDraw(this.currentDrawType);
                 },
@@ -213,13 +218,8 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
                         searchConfiguration = searchConf;
                     });
-                    if (searchConfiguration != null && lang.isObject(searchConfiguration)) {
-                        if (searchConfiguration.footprintZoomLevelStart != null) {
-                            this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
-                        }
-                        if (searchConfiguration.useHeatmap != null) {
-                            this.useHeatmap = searchConfiguration.useHeatmap;
-                        }
+                    if (searchConfiguration != null && lang.isObject(searchConfiguration) && searchConfiguration.footprintZoomLevelStart != null) {
+                        this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
                     }
 
                     var displayFieldsConfig;
@@ -458,6 +458,7 @@ define([
                     this.resultsGridWidget.resetAllFilters();
                 },
                 addQueryResults: function (results, queryLayerController) {
+
                     this.resultsClusterManager.addResults(results, queryLayerController);
                     this.resultsFootprintManager.addResults(results, queryLayerController);
                     VIEWER_UTILS.log("Populating Query Results Grid", VIEWER_GLOBALS.LOG_TYPE.INFO);
@@ -474,17 +475,12 @@ define([
                     }
                 },
                 createClusterManager: function () {
-                    if (this.useHeatmap) {
-                        this.resultsClusterManager = new ResultsHeatmapManager();
-                    }
-                    else {
-                        this.resultsClusterManager = new ResultsClusterManager();
-                    }
-                    console.log("created");
+                    this.resultsClusterManager = new ResultsClusterManager();
+                    //console.log("created");
                     //see if the layer should be hidden/displayed on creation
                     this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));
                     this.resultsClusterManager.startup();
-                    console.log("started up");
+                    //console.log("started up");
                 },
                 checkForClusterLayerVisibility: function () {
                     var zoomLevel;

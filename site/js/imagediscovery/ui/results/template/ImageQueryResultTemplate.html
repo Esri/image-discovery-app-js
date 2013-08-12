@@ -38,6 +38,7 @@
             </div>
             <div data-bind="visible:toolsActive" class="toolsActiveContainer">
                 <div class="resultGeometryActionsContainer" data-bind="visible:resultsVisibleAndHasResults">
+                    <!--
                     <div class="showImageByPointUnselectedIcon"
                          data-bind="click: showImageFromPointIntersect,css:{showImageByPointSelectedIcon: showImageByPointSelectionActive}"
                          title="Show images by point"></div>
@@ -49,9 +50,12 @@
                          title="Highlight footprints by point"></div>
                     <div class="annotationOptionButton rectangleUnselected"
                          data-bind="click: toggleRectangleResultsSelection, css:{rectangleSelected: rectangleSelectionActive}"
-                         title="Highlight footprints by rectangle"></div>
+                         title="Highlight footprints by rectangle"></div>  -->
+                    <div class="annotationOptionButton rectangleUnselected"
+                         data-bind="click: toggleRectangleResultsSelection, css:{rectangleSelected: rectangleSelectionActive}"
+                         title="Identify Images"></div>
                     <div class="annotationOptionButton clear" data-bind="visible: drawActive, click: clearHighlights"
-                         title="Clear highlights"></div>
+                         title="Clear Identify Result Highlights"></div>
                 </div>
             </div>
             <div data-bind="visible:showSourcesIcon" data-dojo-attach-point="activeServicesContainer"

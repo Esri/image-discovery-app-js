@@ -1,13 +1,13 @@
 {
     "imageQueryLayers": [
-        {
+        /*{
             "url": "http://kacstags1:6080/arcgis/rest/services/Cam/GLOBAL_REF/ImageServer",
             "label": "Catalog",
             "queryWhereClauseAppend": "Category = 1"
-        } ,
+        }*/
         {
-            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
-            "label": "Catalog 2",
+            "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",
+            "label": "TN Lidar",
             "queryWhereClauseAppend": "Category = 1"
         }
     ],
@@ -100,10 +100,9 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        "maxQueryResults": 600,
+        "maxQueryResults": 50,
         "allowCheckAllSearchResultThumbnails": true,
-        "footprintZoomLevelStart": 7,
-        "useHeatmap": falseadded
+        "footprintZoomLevelStart": 6
     },
     "exportConfiguration": {
         "image": {
