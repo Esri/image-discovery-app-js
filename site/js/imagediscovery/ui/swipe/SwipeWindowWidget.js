@@ -18,7 +18,7 @@ define([
                 windowHeaderText: "Swipe",
                 windowIconAltText: "Swipe",
                 windowIconClass: "commonIcons16 slider",
-                positioningParamName: "paramName",
+                positioningParamName: "swipe",
                 constructor: function () {
                     this.firstShowListener = this.on("firstWindowShow", lang.hitch(this, this.handleFirstWindowShow));
                 },

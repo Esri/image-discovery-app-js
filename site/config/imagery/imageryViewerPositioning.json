@@ -59,12 +59,64 @@
         "x": 600,
         "y": 150
     },
-    "analysis":{
-   		"x": 400,
-   		"y": 250
-   	}
-
-
-
-
+    "analysis": {
+        "x": 400,
+        "y": 250
+    },
+    "swipe": {
+        "x": 120,
+        "y": 550
+    },
+    "layers": {
+        "x": 300,
+        "y": 150
+    },
+    "legend": {
+        "x": 965,
+        "y": 125
+    },
+    "logging": {
+        "x": 10,
+        "y": 350
+    },
+    "plotting": {
+        "x": 500,
+        "y": 75
+    },
+    "portalSearch": {
+        "x": 600,
+        "y": 75
+    },
+    "portalPublisher": {
+        "x": 600,
+        "y": 300
+    },
+    "print": {
+        "x": 375,
+        "y": 100
+    },
+    "queryBuilder": {
+        "x": 500,
+        "y": 250
+    },
+    "socialMedia": {
+        "x": 450,
+        "y": 250
+    },
+    "zoomToUserLocation": {
+        "x": 20,
+        "y": 500
+    },
+    "weather": {
+        "x": 450,
+        "y": 450
+    },
+    "reflectance": {
+        "x": 450,
+        "y": 650
+    },
+    "zoomTo": {
+        "x": 650,
+        "y": 650
+    }
 }

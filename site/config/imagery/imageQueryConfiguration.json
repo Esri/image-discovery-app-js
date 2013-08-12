@@ -4,6 +4,11 @@
             "url": "http://kacstags1:6080/arcgis/rest/services/Cam/GLOBAL_REF/ImageServer",
             "label": "Catalog",
             "queryWhereClauseAppend": "Category = 1"
+        } ,
+        {
+            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
+            "label": "Catalog 2",
+            "queryWhereClauseAppend": "Category = 1"
         }
     ],
     "imageDiscoveryQueryFields": [
@@ -95,9 +100,10 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        "maxQueryResults": 400,
+        "maxQueryResults": 600,
         "allowCheckAllSearchResultThumbnails": true,
-        "footprintZoomLevelStart": 6
+        "footprintZoomLevelStart": 7,
+        "useHeatmap": falseadded
     },
     "exportConfiguration": {
         "image": {

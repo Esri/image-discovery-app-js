@@ -25,15 +25,17 @@ define([
     "./base/ActiveSourcesWidget",
     "esriviewer/ui/draw/base/MapDrawSupport",
     "dijit/TooltipDialog",
+    "./ResultsHeatmapManager",
     "./ResultsClusterManager",
     "./ResultsFootprintManager"
 ],
-    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsFootprintManager) {
+    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsHeatmapManager, ResultsClusterManager, ResultsFootprintManager) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
                 footprintZoomLevelStart: 12,
                 bindingsApplied: false,
+                useHeatmap: false,
                 generateCSVEndpoint: "generateCSV",
                 title: "Results",
                 templateString: template,
@@ -211,8 +213,13 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
                         searchConfiguration = searchConf;
                     });
-                    if (searchConfiguration != null && lang.isObject(searchConfiguration) && searchConfiguration.footprintZoomLevelStart != null) {
-                        this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
+                    if (searchConfiguration != null && lang.isObject(searchConfiguration)) {
+                        if (searchConfiguration.footprintZoomLevelStart != null) {
+                            this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
+                        }
+                        if (searchConfiguration.useHeatmap != null) {
+                            this.useHeatmap = searchConfiguration.useHeatmap;
+                        }
                     }
 
                     var displayFieldsConfig;
@@ -451,7 +458,6 @@ define([
                     this.resultsGridWidget.resetAllFilters();
                 },
                 addQueryResults: function (results, queryLayerController) {
-
                     this.resultsClusterManager.addResults(results, queryLayerController);
                     this.resultsFootprintManager.addResults(results, queryLayerController);
                     VIEWER_UTILS.log("Populating Query Results Grid", VIEWER_GLOBALS.LOG_TYPE.INFO);
@@ -468,7 +474,12 @@ define([
                     }
                 },
                 createClusterManager: function () {
-                    this.resultsClusterManager = new ResultsClusterManager();
+                    if (this.useHeatmap) {
+                        this.resultsClusterManager = new ResultsHeatmapManager();
+                    }
+                    else {
+                        this.resultsClusterManager = new ResultsClusterManager();
+                    }
                     console.log("created");
                     //see if the layer should be hidden/displayed on creation
                     this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));

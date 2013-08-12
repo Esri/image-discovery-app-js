@@ -202,7 +202,7 @@ define([
                         if (!maxResultsHit) {
                             topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, resultsString);
                         }
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE);
+                       topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE);
                         topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.RELEASE_HIDE_BLOCK);
 
                     }

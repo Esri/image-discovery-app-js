@@ -68,12 +68,12 @@
         "x": 380,
         "y": 125
     },
-    //measure: position of the identify widget
+    //identify: position of the identify widget
     "identify": {
         "x": 425,
         "y": 175
     },
-    //measure: position of the reverse geocode widget
+    //reverseGeocode: position of the reverse geocode widget
     "reverseGeocode": {
         "x": 600,
         "y": 150
@@ -82,5 +82,45 @@
     "zoomToUserLocation": {
         "x": 20,
         "y": 205
+    },
+    //print: position of zoom to print window widget
+    "print": {
+        "x": 350,
+        "y": 100
+    },
+    //socialMedia: position of zoom to social media window widget
+    "socialMedia": {
+        "x": 450,
+        "y": 250
+    },
+    //weather: position of zoom to weather window widget
+    "weather": {
+        "x": 450,
+        "y": 450
+    },
+    //reflectance: position of zoom to reflectance window widget
+    "reflectance": {
+        "x": 450,
+        "y": 650
+    },
+    //zoomTo: position of zoom to zoom to window widget
+    "zoomTo": {
+        "x": 650,
+        "y": 650
+    },
+    //portalPublisher: position of zoom to publish to portal window widget
+    "portalPublisher": {
+        "x": 600,
+        "y": 300
+    },
+    //plotting: position of zoom to plotting coordinates window widget
+    "plotting": {
+        "x": 500,
+        "y": 75
+    },
+    //logging: position of logging window widget
+    "logging": {
+        "x": 10,
+        "y": 350
     }
 }
