@@ -56,7 +56,7 @@ define([
 
 
                 // ************  OLD setImageInfo function
-
+                /*
                 setImageInfo: function (imageInfo, layer) {
                     //takes in an image info object and a layer.
                     //populates all attributes from image info and retrieves the thumbnail for the row from the layer
@@ -126,6 +126,7 @@ define([
                         domConstruct.place(img, this.thumbnailContainer);
                     }
                 },
+                */
                 getFieldTypeLookup: function (layer) {
                     var fieldTypeLookup = {
                         dateLookup: {},
