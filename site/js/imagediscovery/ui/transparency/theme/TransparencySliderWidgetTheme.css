@@ -1,5 +1,4 @@
 .searchTransparencySliderLayerName {
-    padding-top: 10px;
     padding-bottom: 10px;
 }
 .searchLayerTransparencyContent {
@@ -8,4 +7,10 @@
 
 .transparencyWidgetPopupCloseIcon {
     float: right;
+}
+
+.layerTransparencySliderEntry {
+    height: 40px;
+    margin: 10px 0;
+    padding: 5px;
 }
