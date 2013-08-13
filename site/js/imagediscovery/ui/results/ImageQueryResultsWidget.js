@@ -108,6 +108,8 @@ define([
                     }
                     if (level < this.footprintZoomLevelStart) {
                         this.viewModel.toolsActive(false);
+                        this.clearDraw();
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
                     }
                     else {
                         this.viewModel.toolsActive(true);
