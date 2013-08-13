@@ -79,7 +79,7 @@
 }
 
 .showImageHeaderIcon {
-    background: url(../../base/grid/assets/images/thumbnail.png);
+    background: url(../assets/images/thumbnail.png);
     height: 18px;
     width: 18px;
     float: right;
