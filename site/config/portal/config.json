@@ -106,6 +106,12 @@
                     "fieldName": "swipeWidget",
                     "tooltip": "Show/Hide the Swipe Widget",
                     "label": "Swipe Widget"
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "plottingWidget",
+                    "tooltip": "Show/Hide the Plot Coordinates Widget",
+                    "label": "Plot Coordinates Widget"
                 }
             ]
         },
@@ -140,10 +146,10 @@
         }
     ],
     "values": {
-        "geometryServiceUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+        "geometryServiceUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
         "locators": [
             {
-                "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
+                "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
             }
         ],
         "whereClauseAppend": "Category = 1",
@@ -154,6 +160,7 @@
         "portalSearchWidget": false,
         "printWidget": true,
         "measureWidget": false,
+        "plottingWidget": true,
         "identifyWidget": false,
         "reverseGeocodeWidget": false,
         "showOverview": false,
@@ -164,7 +171,7 @@
         "drawWidget": true,
         "showHeader": false,
         "portalConfiguration": {
-            "url": "https://afmcomstaging.esri.com/arcgis",
+            "url": "//afmcomstaging.esri.com/arcgis",
             "itemsPath": "sharing/rest/content/items"
         },
         "baseViewer": {
@@ -175,7 +182,7 @@
                 "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
             },
             "printWidgetConfiguration": {
-                "printTaskUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+                "printTaskUrl": "//sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
 
             },
             "zoomToWidgetConfiguration": {
@@ -185,7 +192,7 @@
         },
         "imageryViewer": {
             "discoverGeometryUploadTask": {
-                "uploadUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
+                "uploadUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
                 "geoprocessingTaskUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/FileToFeatures",
                 "uploadSHPFileParameterName": "uploadSHPFile",
                 "uploadKMLFileParameterName": "uploadKMLFile",
@@ -201,7 +208,7 @@
                 },
                 "footprints": {
                     "task": {
-                        "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                        "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
                         "featureInputParameter": "Input_JSON_String",
                         "outputUrlParameter": "Report_URL",
                         "isAsync": true
