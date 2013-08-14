@@ -37,6 +37,7 @@ define([
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.TIME.WINDOW.TOGGLE, lang.hitch(this, this.toggle)));
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.hide)));
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED, lang.hitch(this, this.hide)));
+                    this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.hide)));
                 },
                 postCreate: function () {
                     var windowBox = window.getBox();
@@ -58,12 +59,16 @@ define([
                         topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_NO_SOURCES_LOCKED, function (noSourcesLk) {
                             noSourcesLocked = noSourcesLk;
                         });
+                        if (!noSourcesLocked) {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (footprintsVis) {
+                                noSourcesLocked = !footprintsVis;
+                            }));
+                        }
                         if (noSourcesLocked) {
                             topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "There are no visible thumbnails");
                             this.hide();
                         }
                         else {
-
                             this.imageryTimeSlider.show();
                             this.imageryTimeSlider.enable();
                         }
