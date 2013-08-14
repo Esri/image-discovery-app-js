@@ -3,11 +3,8 @@ define([
     "xstyle/css!../theme/ImageryViewerTheme.css",
     "xstyle/css!../ui/base/theme/imagerySpriteTheme.css",
     "dojo/has",
-    "dojo/sniff",
     "dojo/topic",
-    "dojo/Deferred",
     "esriviewer/loader/ViewerLoader",
-    "../manager/base/ImageryViewerManager",
     "../base/ImageryGlobals",
     "../utils/ImageryUtils",
     "dojo/_base/lang",
@@ -15,7 +12,7 @@ define([
     "../manager/ImageryViewerManagerWindow",
     "xstyle/css"
 ],
-    function (declare, cssTheme, spriteTheme, has, sniff, topic, Deferred, ViewerLoader, ImageryViewerManager, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
+    function (declare, cssTheme, spriteTheme, has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
         return declare(
             [ViewerLoader],
             {
@@ -26,36 +23,16 @@ define([
                     }
                     window.IMAGERY_UTILS = new ImageryUtils();
                 },
-                //create imagery globals so the viewer placement code can leverage them
-                initViewerPlacement: function () {
+                //the main viewer UI. Widgets are displayed in floating windows
+                createViewerPlacementWindow: function () {
+                    //viewer placement is the first entry point that uses globals
                     if (window.IMAGERY_GLOBALS == null) {
                         window.IMAGERY_GLOBALS = this.createImageryGlobals();
                     }
-                    return this.inherited(arguments);
-                },
-                _handleViewModePlacementRequireLoaded: function () {
-                    this.inherited(arguments);
-                },
-                createViewerPlacementSidebar: function () {
-                    //sidebar mode isn't fully implement in image discovery application
-                    return this.createViewerPlacementWindow();
-                },
-                //the main viewer UI. Widgets are displayed in floating windows
-                createViewerPlacementWindow: function () {
-                    var deferred = new Deferred();
-                    //require on demand. this class is no packaged in the discovery viewer built layer
-                    require(["imagediscovery/loader/base/ImageryViewerPlacementWindow"], lang.hitch(this, function (ImageryViewerPlacementWindow) {
-                        this._handleViewModePlacementRequireLoaded(ImageryViewerPlacementWindow);
-                        deferred.resolve("success");
-                    }));
-                    return deferred.promise;
+                    this.viewPlacement = new ImageryViewerPlacementWindow();
                 },
                 createImageryGlobals: function () {
                     return new ImageryGlobals();
-                },
-                createViewerManagerSidebar: function () {
-                    //sidebar mode isn't fully implement in image discovery application
-                    this.createViewerManagerWindow(this.viewerConfigurationParameters);
                 },
                 createViewerManagerWindow: function () {
                     return new ImageryViewerManagerWindow(this.viewerConfigurationParameters);

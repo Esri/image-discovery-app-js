@@ -36,9 +36,16 @@ define([
                     };
                     this.showTrashIcon = ko.computed(showTrashIconAnon);
                     var showTimeSliderAnon = function () {
-                        return self.results() && self.timeSlider() && self.resultCount() > 0;
+                        return self.results() && self.timeSlider() && self.resultCount() > 0 && self.toolsActive();
                     };
                     this.showTimeSlider = ko.computed(showTimeSliderAnon);
+
+
+                    var showLayerTransparencyAnon = function () {
+                        return self.results() && self.resultCount() > 0 && self.toolsActive();
+                    };
+                    this.showLayerTransparency = ko.computed(showLayerTransparencyAnon);
+
 
                     var showSourcesIconAnon = function () {
                         return  self.results() && !self.forceSourceFilterHide();
@@ -93,15 +100,15 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ORDER_BY_LOCK_RASTER);
                 },
                 /*
-                togglePointResultsSelection: function () {
-                    var stateBeforeClear = this.pointSelectionActive();
-                    this.emit(this.CLEAR_DRAW);
-                    if (!stateBeforeClear) {
-                        this.emit(this.ACTIVATE_POINT_SELECT);
-                        this.drawActive(true);
-                    }
-                    this.pointSelectionActive(!stateBeforeClear);
-                },*/
+                 togglePointResultsSelection: function () {
+                 var stateBeforeClear = this.pointSelectionActive();
+                 this.emit(this.CLEAR_DRAW);
+                 if (!stateBeforeClear) {
+                 this.emit(this.ACTIVATE_POINT_SELECT);
+                 this.drawActive(true);
+                 }
+                 this.pointSelectionActive(!stateBeforeClear);
+                 },*/
                 toggleRectangleResultsSelection: function () {
                     var stateBeforeClear = this.rectangleSelectionActive();
                     this.emit(this.CLEAR_DRAW);
@@ -112,41 +119,41 @@ define([
                     this.rectangleSelectionActive(!stateBeforeClear);
                 },
                 /*
-                showImageFromPointIntersect: function () {
-                    var stateBeforeClear = this.showImageByPointSelectionActive();
-                    this.emit(this.CLEAR_DRAW);
-                    if (!stateBeforeClear) {
-                        this.emit(this.ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT);
-                        this.drawActive(true);
-                    }
-                    this.showImageByPointSelectionActive(!stateBeforeClear);
-                },
-                showImageFromRectangleIntersect: function () {
-                    var stateBeforeClear = this.showImageByRectangleSelectionActive();
-                    this.emit(this.CLEAR_DRAW);
-                    if (!stateBeforeClear) {
-                        this.emit(this.ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT);
-                        this.drawActive(true);
-                    }
-                    this.showImageByRectangleSelectionActive(!stateBeforeClear);
-                },
-                */
+                 showImageFromPointIntersect: function () {
+                 var stateBeforeClear = this.showImageByPointSelectionActive();
+                 this.emit(this.CLEAR_DRAW);
+                 if (!stateBeforeClear) {
+                 this.emit(this.ACTIVATE_SHOW_IMAGE_BY_POINT_SELECT);
+                 this.drawActive(true);
+                 }
+                 this.showImageByPointSelectionActive(!stateBeforeClear);
+                 },
+                 showImageFromRectangleIntersect: function () {
+                 var stateBeforeClear = this.showImageByRectangleSelectionActive();
+                 this.emit(this.CLEAR_DRAW);
+                 if (!stateBeforeClear) {
+                 this.emit(this.ACTIVATE_SHOW_IMAGE_BY_RECTANGLE_SELECT);
+                 this.drawActive(true);
+                 }
+                 this.showImageByRectangleSelectionActive(!stateBeforeClear);
+                 },
+                 */
                 /*
-                clearPointDraw: function () {
-                    this.pointSelectionActive(false);
-                },
-                */
+                 clearPointDraw: function () {
+                 this.pointSelectionActive(false);
+                 },
+                 */
                 clearRectangleDraw: function () {
                     this.rectangleSelectionActive(false);
                 },
                 /*
-                clearShowImagePointDraw: function () {
-                    this.showImageByPointSelectionActive(false);
-                },
-                clearShowImageRectangleDraw: function () {
-                    this.showImageByRectangleSelectionActive(false);
-                },
-                */
+                 clearShowImagePointDraw: function () {
+                 this.showImageByPointSelectionActive(false);
+                 },
+                 clearShowImageRectangleDraw: function () {
+                 this.showImageByRectangleSelectionActive(false);
+                 },
+                 */
                 clearAllDraw: function () {
                     //this.clearPointDraw();
                     this.clearRectangleDraw();

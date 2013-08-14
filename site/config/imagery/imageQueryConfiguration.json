@@ -4,7 +4,12 @@
             "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",
             "label": "TN Lidar",
             "queryWhereClauseAppend": "Category = 1"
-        }
+        },
+        {
+               "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
+               "label": "Catalog 2",
+               "queryWhereClauseAppend": "Category = 1"
+           }
     ],
     "imageDiscoveryQueryFields": [
         {
@@ -27,7 +32,7 @@
             "field": "SensorName",
             "label": "Sensor",
             "filter": {
-                "enable": true
+                "enable": false
             }
         },
 
@@ -60,14 +65,14 @@
             "field": "ProductName",
             "label": "Product",
             "filter": {
-                "enable": true
+                "enable": false
             }
         },
         {
             "field": "Tag",
             "label": "Tag",
             "filter": {
-                "enable": true
+                "enable": false
             }
         },
         {
@@ -97,7 +102,7 @@
     "searchConfiguration": {
         "maxQueryResults": 600,
         "allowCheckAllSearchResultThumbnails": true,
-        "footprintZoomLevelStart": 11,
+        "footprintZoomLevelStart": 9,
         "useHeatmap": false
 
     },
@@ -121,27 +126,6 @@
     "reporting": {
         "html": {
             "templateURL": "templates/htmlReport.html"
-        }
-    },
-    "rasterFunctions": {
-        "allowDefaults": false,
-        "defaults": {
-            "stretch": {
-                "show": true
-            },
-            "hillshade": {
-                "show": true
-            },
-            "aspect": {
-                "show": true
-            },
-            "statistics": {
-                "show": true
-            },
-            "ndvi": {
-                "show": true
-            }
-
         }
     }
 }
