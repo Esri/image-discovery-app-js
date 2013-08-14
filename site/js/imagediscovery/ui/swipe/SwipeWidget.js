@@ -29,7 +29,7 @@ define([
                     this.createSwipeDiv();
                     //get a map reference
 
-                    var mapRef;
+                    var mapRef = null;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GET, function (responseMap) {
                         mapRef = responseMap;
                     });
@@ -39,9 +39,25 @@ define([
                     this.currentlySelectedBasemapURL = null;
                     this.viewModel = new SwipeViewModel();
                     this.populateLayerList();
+                    this.checkForSwipeEnabled();
+
                     ko.applyBindings(this.viewModel, this.domNode);
                 },
-
+                checkForSwipeEnabled: function(){
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this,function(footprintsVis){
+                        if(footprintsVis){
+                            this.handleImageryLayersVisible();
+                        }
+                        else{
+                           this.handleImageryLayersHidden();
+                        }
+                    }));
+                },
+                initListeners: function () {
+                    this.inherited(arguments);
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersVisible));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersHidden));
+                },
                 createSwipeDiv: function () {
                     this.sliderDiv = domConstruct.create("div", {className: "swipeSlider", title: "Move the slider left or right"});
                     var mapDiv;
@@ -49,9 +65,6 @@ define([
                         mapDiv = mD;
                     });
                     domConstruct.place(this.sliderDiv, mapDiv);
-                },
-                loadViewerConfigurationData: function () {
-
                 },
                 validateLayerChoices: function () {
                     if (this.viewModel.useRefLayer() &&
@@ -85,24 +98,11 @@ define([
                     }
                     this.clipLayer(this.swipeLayerId);
                 },
-                clipLayer: function (layerid) {
+                clipLayer: function () {
                     //Initial swipe slider location
                     this.swipe(domStyle.get(this.sliderDiv, "left"));
                     //Make the slider visible
                     domStyle.set(this.sliderDiv, "display", "");
-                    //3.6
-                    /*
-                     this.swipeConnect = con.connect(this.swipeSlider, 'onMove', lang.hitch(this, function (args) {
-                     domStyle.set(this.swipeSlider.node, "top", "0");
-                     var left = parseInt(domStyle.get(this.swipeSlider.node, "left"), 10);
-                     if (left <= 0 || left >= (this.map.width)) return;
-                     this.clipValue = domStyle.get(this.swipeSlider.node, "left");
-                     this.swipe(this.clipValue);
-                     }));
-                     this.panEndConnect = con.connect(this.map, 'onPanEnd', lang.hitch(this, function (args) {
-                     this.swipe(this.clipValue);
-                     }));
-                     */
                     this.swipeConnect = this.swipeSlider.on("move", lang.hitch(this, function () {
                         domStyle.set(this.swipeSlider.node, "top", "0");
                         var left = parseInt(domStyle.get(this.swipeSlider.node, "left"), 10);
@@ -128,10 +128,7 @@ define([
                     if (this.swipeDiv != null) {
                         var offset_left = parseFloat(this.swipeDiv.style.left);
                         var offset_top = parseFloat(this.swipeDiv.style.top);
-
-
                         var rightval, leftval, topval, bottomval;
-
                         if (offset_left > 0) {
                             rightval = parseFloat(val) - Math.abs(offset_left);
                             leftval = -(offset_left);
@@ -197,14 +194,10 @@ define([
                                 bottomval -= ty;
                             }
                         }
-
                         //Syntax for clip "rect(top,right,bottom,left)"
-                        //var clipstring = "rect(0px " + val + "px " + this.map.height + "px " + " 0px)";
-                        var clipstring = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
-                        this.swipeDiv.style.clip = clipstring;
+                        this.swipeDiv.style.clip = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
                     }
                 },
-
                 //This is called when "Stop Swipe" button is clicked
                 stopSwipe: function () {
                     this.map.showZoomSlider();
