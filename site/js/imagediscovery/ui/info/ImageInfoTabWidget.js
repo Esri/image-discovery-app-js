@@ -37,6 +37,7 @@ define([
                     this.viewModel.on(this.viewModel.TOGGLE_SHOW_IMAGE_ON_MAP, lang.hitch(this, this.handleToggleShowImage));
                     this.viewModel.on(this.viewModel.SHOW_THUMBNAIL, lang.hitch(this, this.showThumbNail));
                     this.viewModel.on(this.viewModel.TOGGLE_ADD_IMG_TO_SHOPPING_CART, lang.hitch(this, this.handleToggleAddImageToShoppingCart));
+                    this.viewModel.on(this.viewModel.CENTER_AND_FLASH_FOOTPRINT, lang.hitch(this, this.handleCenterAndFlashFootprint));
                     ko.applyBindings(this.viewModel, this.domNode);
                 },
                 loadViewerConfigurationData: function () {
@@ -245,6 +246,9 @@ define([
                 },
                 handleAddItemToCart: function (imageInfo) {
                     this.viewModel.addImageInfoToShoppingCart(imageInfo);
+                },
+                handleCenterAndFlashFootprint: function(imageInfo) {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, imageInfo);
                 }
             })
     });

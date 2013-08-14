@@ -34,6 +34,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_OPAQUE, lang.hitch(this, this.handleSetLayerOpaque));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, lang.hitch(this, this.highlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, lang.hitch(this, this.unhighlightFootprint));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, lang.hitch(this, this.centerAndFlashFootprint));
                 },
                 startup: function () {
                     this.createFootprintsLayer();
@@ -145,8 +146,14 @@ define([
                         delete this.highlightedFootprintsCache[featureObjID];
                         this.footprintsLayer.redraw();
                     }
+                },
+                centerAndFlashFootprint: function (resultEntry) {
+                    if (resultEntry != null) {
+                        var graphic = this.footprintGraphicsCache[resultEntry.OBJECTID];
+                        if (graphic) {
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH, graphic);
+                        }
+                    }
                 }
             });
-
     })
-;

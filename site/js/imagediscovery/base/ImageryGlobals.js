@@ -96,7 +96,8 @@ define([
                         SET_FOOTPRINTS_LAYER_TRANSPARENT: "lys:ftPrintsLyrTrans",
                         SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq",
                         HIGHLIGHT_FOOTPRINT: "lyr:highlightFtPrint",
-                        UNHIGHLIGHT_FOOTPRINT:"lyr:unhighlightFtPrint"
+                        UNHIGHLIGHT_FOOTPRINT:"lyr:unhighlightFtPrint",
+                        CENTER_AND_FLASH_FOOTPRINT: "lyr:centerAndFlashFtPrint"
                     },
                     LOCK_RASTER: {
                         CLEAR_ALL: "lRaster:clearIds",

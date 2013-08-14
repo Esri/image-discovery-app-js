@@ -12,6 +12,7 @@ define([
                 TOGGLE_SHOW_IMAGE_ON_MAP: "showImage",
                 SHOW_THUMBNAIL: "showThumbnail",
                 TOGGLE_ADD_IMG_TO_SHOPPING_CART: "toggleAddImageToShoppingCart",
+                CENTER_AND_FLASH_FOOTPRINT: "panAndFlashFootprint",
 
                 imageInfoArray: ko.observableArray(),
 
@@ -38,6 +39,9 @@ define([
                         var inShoppingCartBool = imageInfoItem.inShoppingCart();
                         imageInfoItem.inShoppingCart(!inShoppingCartBool);
                         self.emit(self.TOGGLE_ADD_IMG_TO_SHOPPING_CART, imageInfoItem.imageInfoAndLayer.imageInfo);
+                    };
+                    this.centerAndFlashFootprint = function(imageInfoItem) {
+                        self.emit(self.CENTER_AND_FLASH_FOOTPRINT, imageInfoItem.imageInfoAndLayer.imageInfo);
                     }
 
                 },
