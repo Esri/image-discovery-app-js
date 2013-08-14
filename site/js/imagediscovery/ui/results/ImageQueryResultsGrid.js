@@ -114,7 +114,7 @@ define([
                         currentGeometry = currentVisibleItem.geometry;
                         row = this.grid.row(currentVisibleItem);
                         //if (envelope.contains(currentGeometry.getExtent())) {
-                        if (envelope.intersects(currentGeometry.getExtent())) {
+                        if (envelope.intersects(currentGeometry)) {
                             if (row && row.element) {
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {
