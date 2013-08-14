@@ -17,13 +17,13 @@ define([
                 },
                 resizable: true,
                 positioningParamName: "imageInfo",
-                windowWidth: "35%",
+                windowWidth: "25%",
                 windowHeight: "57%",
                 windowHeaderText: "Image Information",
                 windowIconAltText: "Draw",
                 windowIconClass: "commonIcons16 layer",
                 minHeight: 350,
-                minWidth: 350,
+                minWidth: 370,
                 initListeners: function () {
                     this.inherited(arguments);
                     //topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SHOW, lang.hitch(this, this.show));
@@ -47,6 +47,18 @@ define([
                 show: function(imageInfoAndLayerArray) {
                     this.inherited(arguments);
                     this.imageInfoTabContainer.setImageInfos(imageInfoAndLayerArray);
+                },
+                toggleContent: function () {
+                    this.inherited(arguments);
+
+                    //show/hide resize handle
+                    var currStyle = domStyle.get(this.windowContentOuter, "display");
+                    if (currStyle == "none") {
+                        this.handle.resizeHandle.style.display = "none";
+                    }
+                    else {
+                        this.handle.resizeHandle.style.display = "block";
+                    }
                 }
             });
     });
