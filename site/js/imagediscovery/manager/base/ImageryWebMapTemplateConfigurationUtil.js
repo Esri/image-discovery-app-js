@@ -9,9 +9,10 @@ define([
             {
                 displayFieldsParameter: "imageResultDisplayFields",
                 maxResultsParameter: "maxResults",
+                footprintsVisibilityParameter: "footprintVisibilityLevel",
                 whereClauseAppendParameter: "whereClauseAppend",
                 //portal configuration entries that are specifically for the discovery viewer
-                imageryParameters: [ "imageResultDisplayFields", "maxResults", "whereClauseAppend", "imageryViewer"],
+                imageryParameters: [ "imageResultDisplayFields", "maxResults", "whereClauseAppend", "imageryViewer","footprintVisibilityLevel"],
 
                 constructor: function () {
                     //add the imagery viewer specific widgets
@@ -32,8 +33,6 @@ define([
                 },
                 _createImageryConfig: function () {
                     this.imageryConfiguration = this._applicationConfigurationToImageryConfiguration(this.defaultConfiguration.values);
-                    //       this.imageryConfiguration = lang.mixin(this.imageryConfiguration, this.templateResponse.values.imageryViewer);
-                    //add the webmap
                 },
                 handleWebMapItemLoaded: function (webMapItem) {
                     //make sure the web map item exists, read the operational laeyers off of the web map item
@@ -67,24 +66,14 @@ define([
                 },
                 _applicationConfigurationToImageryConfiguration: function (imageryDefaultConfiguration) {
                     //this takes the portal config.json file and converts it into the json configuration format the discovery application expects
-                    var hasWebMapQueryLayer = false;
                     var i;
-                    var queryLayerItems;
-                    if (this.webMapQueryLayerItems != null && lang.isArray(this.webMapQueryLayerItems) && this.webMapQueryLayerItems.length > 0) {
-                        queryLayerItem = this.webMapQueryLayerItems;
-                        hasWebMapQueryLayer = true;
-                    }
-                    else {
-                        queryLayerItem = [
-                            {label: "Catalog"}
-                        ];
-                    }
                     var imageryConfiguration = {
                         imageQueryLayers: this.webMapQueryLayerItems,
                         imageQueryResultDisplayFields: [],
                         searchConfiguration: {
                             "maxQueryResults": 100,
-                            "allowCheckAllSearchResultThumbnails": false
+                            "allowCheckAllSearchResultThumbnails": false,
+                            "footprintZoomLevelStart": 13
                         }
                     };
                     for (var key in imageryDefaultConfiguration) {
@@ -98,6 +87,12 @@ define([
                             var maxResults = this.appConfig[this.maxResultsParameter] != null ? this.appConfig[this.maxResultsParameter] : imageryDefaultConfiguration[key];
                             if (maxResults != null) {
                                 imageryConfiguration.searchConfiguration.maxQueryResults = parseInt(maxResults, 10);
+                            }
+                        }
+                        else if (key === this.footprintsVisibilityParameter) {
+                            var footprintZoomLevelStart = this.appConfig[this.footprintsVisibilityParameter] != null ? this.appConfig[this.footprintsVisibilityParameter] : imageryDefaultConfiguration[key];
+                            if (footprintZoomLevelStart != null) {
+                                imageryConfiguration.searchConfiguration.footprintZoomLevelStart = parseInt(footprintZoomLevelStart, 10);
                             }
                         }
                         else if (key === this.displayFieldsParameter) {

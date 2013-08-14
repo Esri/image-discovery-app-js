@@ -127,21 +127,11 @@
                 },
                 {
                     "type": "number",
-                    "fieldName": "footprintVisibilityLevel",
-                    "label": "Visible Footprint Zoom Level:",
-                    "tooltip": "Zoom level to display footprints/imagery on the map",
-                    "constraints": {
-                        "min": 1,
-                        "max": 20
-                    }
-                },
-                {
-                    "type": "number",
                     "fieldName": "maxResults",
                     "label": "Max Results:",
                     "tooltip": "Max Results",
                     "constraints": {
-                        "min": 1,
+                        "min": 0,
                         "max": 1000
                     }
                 },
@@ -156,15 +146,14 @@
         }
     ],
     "values": {
-        "geometryServiceUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+        "geometryServiceUrl": "//kacstags1.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
         "locators": [
             {
-                "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
+                "url": "//kacstags1.esri.com/arcgis/rest/services/worldplaces/GeocodeServer"
             }
         ],
         "whereClauseAppend": "Category = 1",
         "maxResults": 100,
-        "footprintVisibilityLevel": 13,
         "imageResultDisplayFields": "Name,Sensor",
         "swipeWidget": true,
         "zoomToWidget": false,
@@ -182,7 +171,7 @@
         "drawWidget": true,
         "showHeader": false,
         "portalConfiguration": {
-            "url": "//afmcomstaging.esri.com/arcgis",
+            "url": "//diagram2.esri.com/arcgis",
             "itemsPath": "sharing/rest/content/items"
         },
         "baseViewer": {
@@ -203,8 +192,8 @@
         },
         "imageryViewer": {
             "discoverGeometryUploadTask": {
-                "uploadUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
-                "geoprocessingTaskUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/FileToFeatures",
+                "uploadUrl": "//kacstags1.esri.com/arcgis/rest/services/KACST/UploadGeometries/GPServer/uploads/upload",
+                "geoprocessingTaskUrl": "//kacstags1.esri.com/arcgis/rest/services/KACST/UploadGeometries/GPServer/fileToFeatures",
                 "uploadSHPFileParameterName": "uploadSHPFile",
                 "uploadKMLFileParameterName": "uploadKMLFile",
                 "uploadKMZFileParameterName": "uploadKMZFile",
@@ -219,7 +208,7 @@
                 },
                 "footprints": {
                     "task": {
-                        "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                        "url": "//kacstags1.esri.com/arcgis/rest/services/KACST/reportGenerator/GPServer/Report%20Generator",
                         "featureInputParameter": "Input_JSON_String",
                         "outputUrlParameter": "Report_URL",
                         "isAsync": true

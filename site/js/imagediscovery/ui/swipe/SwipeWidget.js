@@ -12,11 +12,12 @@ define([
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/SwipeViewModel",
     "dojo/dnd/move",
+    "dojo/_base/connect",
     "dojo/dom-construct",
     "dojo/dom-style",
     "dijit/form/Button"
 ],
-    function (declare, template, theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, domConstruct, domStyle, Button) {
+    function (declare, template, theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
@@ -29,7 +30,7 @@ define([
                     this.createSwipeDiv();
                     //get a map reference
 
-                    var mapRef = null;
+                    var mapRef;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GET, function (responseMap) {
                         mapRef = responseMap;
                     });
@@ -40,19 +41,18 @@ define([
                     this.viewModel = new SwipeViewModel();
                     this.populateLayerList();
                     this.checkForSwipeEnabled();
-
                     ko.applyBindings(this.viewModel, this.domNode);
                 },
-                checkForSwipeEnabled: function(){
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this,function(footprintsVis){
-                        if(footprintsVis){
-                            this.handleImageryLayersVisible();
-                        }
-                        else{
-                           this.handleImageryLayersHidden();
-                        }
-                    }));
-                },
+                checkForSwipeEnabled: function () {
+                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (footprintsVis) {
+                         if (footprintsVis) {
+                             this.handleImageryLayersVisible();
+                         }
+                         else {
+                             this.handleImageryLayersHidden();
+                         }
+                     }));
+                 },
                 initListeners: function () {
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersVisible));
@@ -65,6 +65,9 @@ define([
                         mapDiv = mD;
                     });
                     domConstruct.place(this.sliderDiv, mapDiv);
+                },
+                loadViewerConfigurationData: function () {
+
                 },
                 validateLayerChoices: function () {
                     if (this.viewModel.useRefLayer() &&
@@ -98,27 +101,29 @@ define([
                     }
                     this.clipLayer(this.swipeLayerId);
                 },
-                clipLayer: function () {
+                clipLayer: function (layerid) {
                     //Initial swipe slider location
                     this.swipe(domStyle.get(this.sliderDiv, "left"));
                     //Make the slider visible
                     domStyle.set(this.sliderDiv, "display", "");
-                    this.swipeConnect = this.swipeSlider.on("move", lang.hitch(this, function () {
+                    this.swipeConnect = con.connect(this.swipeSlider, 'onMove', lang.hitch(this, function (args) {
                         domStyle.set(this.swipeSlider.node, "top", "0");
                         var left = parseInt(domStyle.get(this.swipeSlider.node, "left"), 10);
                         if (left <= 0 || left >= (this.map.width)) return;
                         this.clipValue = domStyle.get(this.swipeSlider.node, "left");
                         this.swipe(this.clipValue);
                     }));
-                    this.panEndConnect = this.map.on("pan-end", lang.hitch(this, function () {
+                    this.panEndConnect = con.connect(this.map, 'onPanEnd', lang.hitch(this, function (args) {
                         this.swipe(this.clipValue);
                     }));
+
                     if (this.map.navigationMode === "css-transforms") {
-                        this.panConnect = this.map.on("pan", lang.hitch(this, function () {
+                        this.panConnect = con.connect(this.map, 'onPan', lang.hitch(this, function (args) {
                             this.swipe(this.clipValue);
                         }));
                     }
                 },
+
                 clearClip: function () {
                     if (this.swipeDiv != null) {
                         this.swipeDiv.style.clip = sniff("ie") ? "rect(auto auto auto auto)" : "";
@@ -128,7 +133,10 @@ define([
                     if (this.swipeDiv != null) {
                         var offset_left = parseFloat(this.swipeDiv.style.left);
                         var offset_top = parseFloat(this.swipeDiv.style.top);
+
+
                         var rightval, leftval, topval, bottomval;
+
                         if (offset_left > 0) {
                             rightval = parseFloat(val) - Math.abs(offset_left);
                             leftval = -(offset_left);
@@ -194,27 +202,25 @@ define([
                                 bottomval -= ty;
                             }
                         }
+
                         //Syntax for clip "rect(top,right,bottom,left)"
-                        this.swipeDiv.style.clip = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
+                        //var clipstring = "rect(0px " + val + "px " + this.map.height + "px " + " 0px)";
+                        var clipstring = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
+                        this.swipeDiv.style.clip = clipstring;
                     }
                 },
+
                 //This is called when "Stop Swipe" button is clicked
                 stopSwipe: function () {
                     this.map.showZoomSlider();
                     this.swipeSlider = null;
                     domStyle.set(this.sliderDiv, "display", "none");
-                    if (this.swipeConnect) {
-                        this.swipeConnect.remove();
-                        this.swipeConnect = null;
-                    }
-                    if (this.panEndConnect) {
-                        this.panEndConnect.remove();
-                        this.panEndConnect = null;
-                    }
-                    if (this.panConnect) {
-                        this.panConnect.remove();
-                        this.panConnect = null;
-                    }
+                    if (this.swipeConnect)
+                        con.disconnect(this.swipeConnect);
+                    if (this.panEndConnect)
+                        con.disconnect(this.panEndConnect);
+                    if (this.panConnect)
+                        con.disconnect(this.panConnect);
                     if (this.swipeDiv != null) {
                         this.swipeDiv.style.clip = sniff("ie") ? "rect(auto auto auto auto)" : "";
                         this.swipeDiv = null;
@@ -238,10 +244,11 @@ define([
                     }
                 },
                 turnOffOperationalLayers: function (opLayers) {
-                    for (var i = 0; i < opLayers.length; i++) {
-                        if (opLayers[i].visible) {
-                            this.currentlyVisibleOperLayers.push(opLayers[i]);
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MAKE_INVISIBLE, opLayers[i]);
+                    var operationalLayers = opLayers;
+                    for (var i = 0; i < operationalLayers.length; i++) {
+                        if (operationalLayers[i].visible) {
+                            this.currentlyVisibleOperLayers.push(operationalLayers[i]);
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MAKE_INVISIBLE, operationalLayers[i]);
                         }
                     }
                 },
@@ -348,14 +355,18 @@ define([
                             this.viewModel.swipeLayers.push(item);
                         }
                     }));
+
                 },
                 handleImageryLayersVisible: function () {
-                    this.viewModel.setSwipeEnabled();
+                    this.viewModel.swipeEnbled(true);
+                    this.viewModel.swipeDisabledMessage("");
                 },
                 handleImageryLayersHidden: function () {
                     this.stopSwipe();
-                    this.viewModel.setSwipeDisabled("Cannot swipe at current zoom level");
+                    this.viewModel.swipeEnbled(false);
+                    this.viewModel.swipeDisabledMessage("Cannot swipe. Imagery is not visible")
 
                 }
+
             });
     });
