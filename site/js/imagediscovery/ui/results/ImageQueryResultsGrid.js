@@ -99,7 +99,7 @@ define([
                         }
                     }
                 },
-                highlightResultsFromRectangleIntersect: function (envelope) {
+                highlightResultsFromRectangleIntersect: function (envelope, containsFlag) {
                     var scrolledIntoView = false;
                   //  var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
@@ -113,8 +113,14 @@ define([
                         currentVisibleItem = unfilteredResults[i];
                         currentGeometry = currentVisibleItem.geometry;
                         row = this.grid.row(currentVisibleItem);
-                        //if (envelope.contains(currentGeometry.getExtent())) {
-                        if (envelope.intersects(currentGeometry)) {
+                        var match;
+                        if (containsFlag) {
+                            match = envelope.contains(currentGeometry.getExtent());
+                        }
+                        else {
+                            match = envelope.intersects(currentGeometry);
+                        }
+                        if (match) {
                             if (row && row.element) {
                                 this.grid.highlightRowYellow(row);
                                 if (!scrolledIntoView) {

@@ -248,9 +248,12 @@
 }
 
 .toolsActiveContainer {
-    float: right;
-    width: 80px;  /* now only one tool */
-    /*width: 200px; */   /* 4 tools */
+    float: left;
+    width: 240px;
+}
+
+.identifyOptionsContainer {
+    float: left;
 }
 
 
