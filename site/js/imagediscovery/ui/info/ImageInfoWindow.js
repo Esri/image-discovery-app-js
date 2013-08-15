@@ -17,7 +17,7 @@ define([
                 },
                 resizable: true,
                 positioningParamName: "imageInfo",
-                windowWidth: "25%",
+                windowWidth: "30%",
                 windowHeight: "57%",
                 windowHeaderText: "Image Information",
                 windowIconAltText: "Draw",
