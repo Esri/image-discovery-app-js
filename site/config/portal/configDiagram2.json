@@ -127,6 +127,16 @@
                 },
                 {
                     "type": "number",
+                    "fieldName": "footprintVisibilityLevel",
+                    "label": "Visible Footprint Zoom Level:",
+                    "tooltip": "Zoom level to display footprints/imagery on the map",
+                    "constraints": {
+                        "min": 1,
+                        "max": 20
+                    }
+                },
+                {
+                    "type": "number",
                     "fieldName": "maxResults",
                     "label": "Max Results:",
                     "tooltip": "Max Results",
@@ -156,6 +166,7 @@
         "maxResults": 100,
         "imageResultDisplayFields": "Name,Sensor",
         "swipeWidget": true,
+        "footprintVisibilityLevel": 10,
         "zoomToWidget": false,
         "portalSearchWidget": false,
         "printWidget": true,

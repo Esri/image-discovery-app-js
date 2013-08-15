@@ -12,7 +12,7 @@ define([
     "esri/tasks/DataFile",
     "esri/geometry/Extent"
 ],
-    function (declare, template,theme, topic, lang, domAttr, UITemplatedWidget,Button,esriRequest,Geoprocessor,DataFile,Extent) {
+    function (declare, template, theme, topic, lang, domAttr, UITemplatedWidget, Button, esriRequest, Geoprocessor, DataFile, Extent) {
         return declare(
             [UITemplatedWidget],
             {
@@ -89,7 +89,7 @@ define([
                         this.geometryUploaderGeoprocessingTask = new Geoprocessor(this.geometryUploadTaskConfiguration.geoprocessingTaskUrl);
                     }
                     var requestParameters = {};
-
+                    var fileParam;
                     var fileExtensionLower = VIEWER_UTILS.getFileExtensionLower(uploadItem.itemName);
                     if (fileExtensionLower === this.KML) {
                         fileParam = this.geometryUploadTaskConfiguration.uploadKMLFileParameterName;
@@ -97,7 +97,7 @@ define([
                     else if (fileExtensionLower === this.ZIP) {
                         fileParam = this.geometryUploadTaskConfiguration.uploadSHPFileParameterName;
                     }
-                    else if(fileExtensionLower === this.KMZ){
+                    else if (fileExtensionLower === this.KMZ) {
                         fileParam = this.geometryUploadTaskConfiguration.uploadKMZFileParameterName;
                     }
                     else {
@@ -200,7 +200,7 @@ define([
                         this.geometryUploadButton.set("disabled", true);
                     }
                     var fileExtensionLower = VIEWER_UTILS.getFileExtensionLower(uploadFilePath);
-                    if (!(fileExtensionLower === this.KML || fileExtensionLower === this.ZIP ||fileExtensionLower === this.KMZ)) {
+                    if (!(fileExtensionLower === this.KML || fileExtensionLower === this.ZIP || fileExtensionLower === this.KMZ)) {
                         this.geometryUploadButton.set("disabled", true);
                     }
                     else {

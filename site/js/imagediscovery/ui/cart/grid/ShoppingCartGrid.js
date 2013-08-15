@@ -71,6 +71,7 @@ define([
                 getAddedCartItemIds: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.getVisibleContentObjectIdArray());
+                        return null;
 
                     }
                     else{

@@ -165,7 +165,14 @@ define([
                 geometryAdded: function (geometry) {
                     if (geometry instanceof Extent) {
                         if (this.viewModel.rectangleSelectionActive()) {
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, geometry);
+                            if (this.identifyContainsRadioBtn.checked) {
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
+                                    geometry, true);
+                            }
+                            else {
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
+                                    geometry, false);
+                            }
                         }
                     }
                     this.setDraw(this.currentDrawType);

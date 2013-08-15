@@ -13,6 +13,7 @@
 .imageryInfoWidget {
     height: 95%;
 }
+
 /*
 .imageInfoEntryList div {
    margin: 5px 0;
@@ -23,6 +24,7 @@
     margin: 5px 10px;
     padding: 0;
 }
+
 .imageInfoItem {
     margin: 10px 0;
     padding: 10px;
@@ -36,6 +38,7 @@
     color: #666666;
     margin-bottom: 5px;
 }
+
 .imageInfoItemContent {
     list-style-type: none;
     padding: 0;
@@ -44,20 +47,21 @@
 .imageInfoAttributeEntryLbl {
     color: black;
 }
-.imageInfoAttributeEntryValue{
+
+.imageInfoAttributeEntryValue {
     color: blue;
 }
-.imageInfoAttributeEntryValue .emptyImageInfoValueEntry{
+
+.imageInfoAttributeEntryValue .emptyImageInfoValueEntry {
     color: gray;
 }
 
 .imageInfoActionsContainer {
-    height: 40px;
-    position:absolute;
-    top:20px;
-    left: 30px;
+    height: 20px;
 }
-
+.imageInfoActionsContainer div{
+    margin: 0 5px;
+}
 .imageInfoActionsContainerHeader {
     float: left;
     border: 1px solid #DFDFDF;
@@ -71,11 +75,14 @@
     -webkit-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
 }
-.imageInfoWindow{
+
+.imageInfoWindow {
     z-index: 150;
 }
-.imageInfoContent{
+
+.imageInfoContent {
     padding-top: 0 !important;
+    font-size: 8pt;
 }
 
 .showImageHeaderIcon {

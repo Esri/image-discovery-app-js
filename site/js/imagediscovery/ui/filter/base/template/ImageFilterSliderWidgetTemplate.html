@@ -5,8 +5,8 @@
             <span class="imageQueryFilterSliderRangeTypeLbl" data-dojo-attach-event="onclick:enableLessThanFilter">Less Than</span>
         </div>
         <div>
-            <span name="${queryField}_filterSlider" data-dojo-attach-point="greaterThanRadioButton" data-dojo-type="dijit/form/RadioButton"  data-dojo-attach-event="onChange: handleFilterDirectionChange" ></span>
-            <span class="imageQueryFilterSliderRangeTypeLbl"data-dojo-attach-event="onclick:enableGreaterThanFilter">Greater Than</span>
+            <input name="${queryField}_filterSlider" data-dojo-attach-point="greaterThanRadioButton" data-dojo-type="dijit/form/RadioButton"  data-dojo-attach-event="onChange: handleFilterDirectionChange" />
+            <span class="imageQueryFilterSliderRangeTypeLbl" data-dojo-attach-event="onclick:enableGreaterThanFilter">Greater Than</span>
         </div>
     </div>
     <div data-dojo-attach-point="sliderRuleContainer" class="imageFilterSlideRuleContainer"></div>

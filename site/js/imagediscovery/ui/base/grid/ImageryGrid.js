@@ -169,7 +169,7 @@ define([
                             renderCell: lang.hitch(this, this.thumbnailCheckboxFormatter),
                             renderHeaderCell: lang.hitch(this, this.thumbnailRenderHeaderCell),
                             unhidable: true
-                        },
+                        }
                         /*
                          {
                          field: "showFootprint",

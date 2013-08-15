@@ -164,7 +164,7 @@
         ],
         "whereClauseAppend": "Category = 1",
         "maxResults": 100,
-        "footprintVisibilityLevel": 13,
+        "footprintVisibilityLevel": 10,
         "imageResultDisplayFields": "Name,Sensor",
         "swipeWidget": true,
         "zoomToWidget": false,

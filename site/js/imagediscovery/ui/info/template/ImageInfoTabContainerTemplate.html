@@ -1,6 +1,6 @@
 <div class="imageryInfoWidget">
     <div class="imageInfoContainer">
-        <span  class="imageInfoAttributeEntryLbl"data-bind="text:imageInfoArray().length"></span>
+        <span  class="imageInfoAttributeEntryLbl" data-bind="text:imageInfoArray().length"></span>
         <span class="imageInfoAttributeEntryLbl"> images selected</span>
         <ul class="imageInfoEntryList" data-bind="foreach: imageInfoArray">
             <li>
@@ -16,6 +16,10 @@
                                data-bind="attr:{name: radioName}, click: $parent.showThumbnailView, checked: currentView">
                         <span>Thumbnail</span>
 
+
+                    </div>
+
+                    <div class="imageInfoActionsContainer">
                         <div class="showImageHeaderIcon" title="Toggle Image" data-bind="click: $parent.toggleShowImage"></div>
 
                         <div class="commonIcons16 shoppingCartEmpty shoppingCartHeaderIcon"

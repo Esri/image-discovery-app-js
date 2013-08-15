@@ -78,6 +78,7 @@ define([
                         polygonGeometry.addRing([westPt, northPt, eastPt, southPt, westPt]);
                         return polygonGeometry;
                     }
+                    return null;
                 }
 
             });

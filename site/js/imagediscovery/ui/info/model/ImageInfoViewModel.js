@@ -69,6 +69,7 @@ define([
                     if (filteredArray && filteredArray.length > 0) {
                         return filteredArray[0];
                     }
+                    return null;
                 },
                 removeImageInfoFromShoppingCart: function(imageInfo) {
                     var imageInfoItemFound = this.findImageInfoItem(imageInfo);

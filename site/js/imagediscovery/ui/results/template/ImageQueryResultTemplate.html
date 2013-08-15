@@ -36,6 +36,8 @@
                  data-dojo-attach-point="changeResultLayerTransparencyElement"
                  data-dojo-attach-event="onclick:toggleResultLayerTransparencyPopup">
             </div>
+            <div data-bind="visible:showSourcesIcon" data-dojo-attach-point="activeServicesContainer"
+                 class="activeServicesContainer fivePixelBorderRadius defaultBorder"></div>
             <div data-bind="visible:toolsActive" class="toolsActiveContainer">
                 <div class="resultGeometryActionsContainer" data-bind="visible:resultsVisibleAndHasResults">
                     <!--
@@ -54,12 +56,20 @@
                     <div class="annotationOptionButton rectangleUnselected"
                          data-bind="click: toggleRectangleResultsSelection, css:{rectangleSelected: rectangleSelectionActive}"
                          title="Identify Images"></div>
-                    <div class="annotationOptionButton clear" data-bind="visible: drawActive, click: clearHighlights"
-                         title="Clear Identify Result Highlights"></div>
+                    <div class="identifyOptionsContainer" data-bind="visible: drawActive">
+                        <input type="radio" title="Contains" value="identifyContains" name="identifyRadioBtns" checked
+                               data-dojo-attach-point="identifyContainsRadioBtn">
+                        <span>Contains</span>
+                        <input type="radio" title="Intersects" value="identifyIntersects" name="identifyRadioBtns"
+                               data-dojo-attach-point="identifyIntersectsRadioBtn">
+                        <span>Intersects</span>
+                    </div>
+
+                    <!--<div class="annotationOptionButton clear" data-bind="visible: drawActive, click: clearHighlights"
+                title="Clear Identify Result Highlights"></div> -->
                 </div>
             </div>
-            <div data-bind="visible:showSourcesIcon" data-dojo-attach-point="activeServicesContainer"
-                 class="activeServicesContainer fivePixelBorderRadius defaultBorder"></div>
+
         </div>
         <div>
             <div data-dojo-attach-point="shoppingCartGridContainer" data-bind="visible:cart"
