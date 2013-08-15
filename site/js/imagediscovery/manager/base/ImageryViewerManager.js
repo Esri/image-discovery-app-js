@@ -257,6 +257,8 @@ define([
                     this.inherited(arguments);
                     this.loadImageryUIAddons();
                     this.placeImageDiscoveryWidget();
+                    domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
+                    /*
                     this.mainToolbar.locateToolbarContainer.parentNode.removeChild(this.mainToolbar.locateToolbarContainer);
                     domConstruct.place(this.mainToolbar.locateToolbarContainer, this.imageDiscoveryWidget.imageDiscoverLocatorInputContainer);
                     domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
@@ -267,6 +269,7 @@ define([
                     }
                     //remove the on map class from the locator
                     domClass.remove(this.mainToolbar.locateToolbarContainer, "locateToolbarContainerOnMap");
+                    */
                 },
                 loadImageryUIAddons: function () {
                     this._createSwipeWidget();

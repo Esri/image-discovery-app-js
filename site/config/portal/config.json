@@ -219,7 +219,7 @@
                 },
                 "footprints": {
                     "task": {
-                        "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                        "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
                         "featureInputParameter": "Input_JSON_String",
                         "outputUrlParameter": "Report_URL",
                         "isAsync": true

@@ -1,10 +1,12 @@
 html, body {
     overflow: hidden;
 }
+/*
 .locateToolbarContainer {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+*/
 .imageInfoWindow .windowContent {
     height: 97%;
 }

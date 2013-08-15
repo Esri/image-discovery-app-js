@@ -22,10 +22,11 @@
     width: 35%;
 
 }
+/*
 .imageDiscoverLocatorInputContainer{
     margin-left: 10%;
 }
-
+   */
 
 .discoveryIcon {
     cursor: pointer;
@@ -112,11 +113,12 @@
     margin-right: 5%;
     margin-top: 10px;
 }
-
+   /*
 .imageDiscoverLocatorInputContainer {
     margin-top: 10px;
 
 }
+*/
 
 .discoveryStepContainer {
     margin: 10px 0 10px 0;

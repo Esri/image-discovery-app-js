@@ -58,8 +58,9 @@
 
     "locators": [
         {
-            "url": "//tasks.arcgis.com/ArcGIS/rest/services/WorldLocator/GeocodeServer"
+            "url": "http://tasks.arcgis.com/ArcGIS/rest/services/WorldLocator/GeocodeServer"
         }
+
     ],
     "toolsAccordion": {
         "create": true,
