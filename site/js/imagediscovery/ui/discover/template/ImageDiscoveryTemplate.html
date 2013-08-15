@@ -1,5 +1,5 @@
 <div class="imageDiscoveryContainer">
-    <div data-bind="visible: selectSearchServiceVisible">
+    <div data-bind="visible: selectSearchServiceVisible" class="discoveryServiceSelectOuterContainer">
         <div class="discoveryStepContainer discoveryServiceSelectContainer">
             Search Service
             <div class="discoveryStepIcon"></div>
@@ -10,10 +10,7 @@
         </div>
     </div>
 
-    <div class="discoveryStepContainer discoveryToolsContainer">
-        Discover
-        <div class="discoveryStepIcon"></div>
-    </div>
+
     <div class="imageDiscoveryByQueryExpanderContainer"
          data-bind="click:toggleDiscoverByFields, visible: discoverByFieldsHeaderVisible">
         <div class="commonIcons16 up imageDiscoveryExpanderIcon"
