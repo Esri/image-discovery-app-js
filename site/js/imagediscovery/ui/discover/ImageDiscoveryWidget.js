@@ -26,7 +26,7 @@ define([
     "esri/geometry/Extent",
     "../../base/ImageQueryLayerControllerQueryParameters"
 ],
-    function (declare, template,theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget, MapDrawSupport],
             {
@@ -39,12 +39,12 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
-                    this.searchByGeometryGeometryQueryErrorback = lang.hitch(this,this.handleSearchByGeometryGeometryQueryError);
+                    this.searchByGeometryGeometryQueryErrorback = lang.hitch(this, this.handleSearchByGeometryGeometryQueryError);
                     this.performSearchCallback = lang.hitch(this, this.performSearch);
                     this.viewModel = new ImageDiscoveryViewModel();
                     this.viewModel.on("firstBoundsDisplay", lang.hitch(this, this.createBoundsView));
                     this.viewModel.on("viewChange", lang.hitch(this, this.handleViewChanged));
-                    this.viewModel.discoverByFieldsExpanded.subscribe(lang.hitch(this,this.handleDiscoveryByFieldsToggle));
+                    this.viewModel.discoverByFieldsExpanded.subscribe(lang.hitch(this, this.handleDiscoveryByFieldsToggle));
                     this.initSymbology();
                     if (this.createQueryFieldsDiscoveryContent) {
                         this.viewModel.selectedDiscoveryService.subscribe(lang.hitch(this, this.handleSearchServiceChanged));
@@ -97,7 +97,7 @@ define([
                         this.viewModel.selectSearchServiceVisible(false);
                         if (this.createQueryFieldsDiscoveryContent) {
                             this.viewModel.discoverByFieldsHeaderVisible(true);
-                           this.handleSearchServiceChanged(queryLayerControllers[0]);
+                            this.handleSearchServiceChanged(queryLayerControllers[0]);
                         }
                     }
                     else {
@@ -194,7 +194,7 @@ define([
                     this.performSearch(mapExtent, false);
                 },
                 performSearch: function (searchObject, zoomToArea) {
-                   //figure out what type of search is being performed and perform the search
+                    //figure out what type of search is being performed and perform the search
                     if (searchObject == null) {
                         return;
                     }
@@ -222,6 +222,10 @@ define([
                         returnGeometry: true
                     });
                     var searchGraphic;
+                    if (lang.isArray(searchObject) && searchObject.length > 0) {
+                        //just take the first entry, should be a multipart polygon
+                        searchObject = searchObject[0];
+                    }
                     //figure out if the search object is already a graphic or if it is a geometry that needs to be turned into a graphic
                     if (searchObject instanceof Graphic) {
                         searchGraphic = searchObject;
