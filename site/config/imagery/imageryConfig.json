@@ -1,7 +1,6 @@
 {
     "windowTitle": "Image Discovery Application",
     "portal": {
-        //"url": "https://afmcomstaging.esri.com/arcgis"
         "url": "http://www.arcgis.com"
     },
     "map": {
@@ -12,11 +11,6 @@
         },
         "useBasemapGallery": true,
         "initialExtent": {
-            //"xmin": 1041989.569,
-            //"ymin": 714227.5922,
-            //"xmax": 7269467.138,
-            //"ymax": 4994701.176,
-
             "xmin": -8847249.936968341,
             "ymin": 3933736.784368135,
             "xmax": -8651571.144558214,
@@ -44,7 +38,7 @@
         "referenceLayers": [
             {
                 "type": "dynamic",
-                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer"
+                "url": "//server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer"
             }
         ],
         "legend": {
@@ -54,7 +48,7 @@
             "create": false
         }
     },
-    "geometryServiceUrl": "http://kacstags1.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+    "geometryServiceUrl": "//utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
 
     "locators": [
         {
@@ -124,7 +118,7 @@
     },
     "printWidget": {
         "create": true,
-        "printTaskUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+        "printTaskUrl": "http://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
     },
     "reverseGeocodeWidget": {
         "create": true

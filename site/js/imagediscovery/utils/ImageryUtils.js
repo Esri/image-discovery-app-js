@@ -21,17 +21,27 @@ define([
                         callback(layer);
                     }, layer);
 
-                    this.loadProxiedJson(layer.url + "/keyProperties?f=json", wrappedCallback, wrappedErrback);
+                    var requestQuery = "?f=json";
+                    if (layer.credential && layer.credential.token != null) {
+                        requestQuery += "&token=" + layer.credential.token;
+                    }
+                    this.loadProxiedJson(layer.url + "/keyProperties" + requestQuery, wrappedCallback, wrappedErrback);
+
                 },
-                getKeyPropertiesForRaster: function (serviceUrl, id, callback, errback) {
-                    var rasterInfoUrl = VIEWER_UTILS.joinUrl(serviceUrl, id + "/info/keyProperties?f=json");
+                getKeyPropertiesForRaster: function (layer, id, callback, errback) {
+                    var requestQuery = "?f=json";
+                    if (layer.credential && layer.credential.token != null) {
+                        requestQuery += "&token=" + layer.credential.token;
+                    }
+                    var rasterInfoUrl = VIEWER_UTILS.joinUrl(layer.url, id + "/info/keyProperties" + requestQuery);
                     this.loadProxiedJson(rasterInfoUrl, callback, errback);
                 },
+                /*
                 getRasterInfo: function (serviceUrl, id, callback, errback) {
                     var rasterInfoUrl = VIEWER_UTILS.joinUrl(serviceUrl, id + "/info");
                     this.loadJsonP(rasterInfoUrl, {f: "json"}, callback, errback);
-
                 },
+                */
                 sortItemsIntoQueryControllerArray: function (items) {
                     var queryControllerArray = [];
                     var controllerIdToItemLookup = [];
