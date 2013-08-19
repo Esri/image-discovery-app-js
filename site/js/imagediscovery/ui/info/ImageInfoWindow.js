@@ -47,18 +47,6 @@ define([
                 show: function(imageInfoAndLayerArray) {
                     this.inherited(arguments);
                     this.imageInfoTabContainer.setImageInfos(imageInfoAndLayerArray);
-                },
-                toggleContent: function () {
-                    this.inherited(arguments);
-
-                    //show/hide resize handle
-                    var currStyle = domStyle.get(this.windowContentOuter, "display");
-                    if (currStyle == "none") {
-                        this.handle.resizeHandle.style.display = "none";
-                    }
-                    else {
-                        this.handle.resizeHandle.style.display = "block";
-                    }
                 }
             });
     });
