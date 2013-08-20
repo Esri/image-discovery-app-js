@@ -4,7 +4,7 @@
         <div class="weatherSearchContentInput">
             <input type="text"
                    data-bind="value: weatherSearchTerm, valueUpdate: 'afterkeydown',  event:{keyup:checkForSearchEnter}"/>
-            <button class="dijitButtonNode weatherSearchButton" data-bind="click:queryWeather">Search</button>
+            <button class="weatherSearchButton" data-bind="click:queryWeather">Search</button>
             <div title="Select Location"
                  class="weatherLocationByPointIcon annotationOptionButton pointUnselected fivePixelBorderRadius"
                  data-bind="click: toggleDrawActive, css:{pointSelected: drawActive}"></div>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="weatherForecastContent" data-bind="foreach: forecastResponses">
-            <div class="weatherForecastContentEntry fivePixelBorderRadius defaultBorder">
+            <span class="weatherForecastContentEntry fivePixelBorderRadius defaultBorder">
                 <div class="weatherForecastDayLbl" data-bind="text:$data.date.weekday">
                 </div>
                 <div>
@@ -61,13 +61,13 @@
                 <div>
                     <img data-bind="attr:{title:$data.conditions,src:$data.icon_url}"/>
                 </div>
-            </div>
+            </span>
         </div>
         <div class="weatherCameraContent" data-bind="foreach: weatherCamResponses">
-            <div class="weatherCameraContentEntry">
+            <span class="weatherCameraContentEntry">
                 <img class="fivePixelBorderRadius"
                      data-bind="click: $parent.handleCamClick, attr:{src: $data.WIDGETCURRENTIMAGEURL, title: $data.linktext}">
-            </div>
+            </span>
         </div>
     </div>
     <div class="weatherResultsErrorContent" data-bind="text:errorString, visible: hasError">

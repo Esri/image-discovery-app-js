@@ -8,9 +8,10 @@ define([
     "esriviewer/manager/ViewerManagerWindow",
     "../ui/manipulation/ImageManipulationWindowWidget",
     "../ui/swipe/SwipeWindowWidget",
-    "dijit/MenuItem"
+    "dijit/MenuItem",
+    "esriviewer/ui/toolbar/base/button/Button"
 ],
-    function (declare, lang, topic, on, domConstruct, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem) {
+    function (declare, lang, topic, on, domConstruct, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem, ToolbarButton) {
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
@@ -28,30 +29,46 @@ define([
                     this.swipeWindowWidget = new SwipeWindowWidget();
                 },
                 processNavigationToolbarAddons: function () {
-                    //create the discovery icon text. these buttons are added to the top left of the UI for discovery and analysis.
-                    var accordToggleButtonWrapper = domConstruct.create("div", {className: "navigationTextWrapperHorizontal"});
-                    var accordToggleButtonWrapperInner = domConstruct.create("span", {className: "navigationTextWrapperHorizontalInner"});
-                    domConstruct.place(accordToggleButtonWrapperInner, accordToggleButtonWrapper);
-                    var accordIcon = domConstruct.create("div", {className: "navigationHorizontalIcon imageryIcons discover"});
-                    var accordToggleButton = domConstruct.create("span", {innerHTML: "Discover", className: "navigationHorizontalText"});
-                    domConstruct.place(accordIcon, accordToggleButtonWrapperInner);
-                    domConstruct.place(accordToggleButton, accordToggleButtonWrapperInner);
-                    on(accordToggleButton, "click", lang.hitch(this, this.handleShowDiscovery));
-                    domConstruct.place(accordToggleButtonWrapper, this.navigationToolbar.navigationToolbar, "first");
-
-
-                    //create the exploit icon text
-                    var analysisToggleButtonWrapper = domConstruct.create("div", {className: "navigationTextWrapperHorizontal"});
-                    var analysisToggleButtonWrapperInner = domConstruct.create("span", {className: "navigationTextWrapperHorizontalInner"});
-                    domConstruct.place(analysisToggleButtonWrapperInner, analysisToggleButtonWrapper);
-                    var analysisIcon = domConstruct.create("div", {className: "navigationHorizontalIcon imageryIcons analysis"});
-                    var exploitToggleButton = domConstruct.create("span", {innerHTML: "Analysis", className: "navigationHorizontalText"});
-                    domConstruct.place(analysisIcon, analysisToggleButtonWrapperInner);
-                    domConstruct.place(exploitToggleButton, analysisToggleButtonWrapperInner);
-                    on(exploitToggleButton, "click", function () {
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
+                    var accordionButton = new ToolbarButton({
+                        buttonClass: "commonIcons16 binoculars",
+                        buttonText: "Discover",
+                        onClick: lang.hitch(this, this.handleShowDiscovery)
                     });
-                    domConstruct.place(analysisToggleButtonWrapper, accordToggleButtonWrapper, "after");
+                    var analysisButton = new ToolbarButton({
+                        buttonClass: "imageryIcons analysis",
+                        buttonText: "Analysis",
+                        onClick: lang.hitch(this, function () {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
+                        })
+                    });
+                    accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
+                    analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
+                    /*
+                     //create the discovery icon text. these buttons are added to the top left of the UI for discovery and analysis.
+                     var accordToggleButtonWrapper = domConstruct.create("div", {className: "navigationTextWrapperHorizontal"});
+                     var accordToggleButtonWrapperInner = domConstruct.create("span", {className: "navigationTextWrapperHorizontalInner"});
+                     domConstruct.place(accordToggleButtonWrapperInner, accordToggleButtonWrapper);
+                     var accordIcon = domConstruct.create("div", {className: "navigationHorizontalIcon imageryIcons discover"});
+                     var accordToggleButton = domConstruct.create("span", {innerHTML: "Discover", className: "navigationHorizontalText"});
+                     domConstruct.place(accordIcon, accordToggleButtonWrapperInner);
+                     domConstruct.place(accordToggleButton, accordToggleButtonWrapperInner);
+                     on(accordToggleButton, "click", lang.hitch(this, this.handleShowDiscovery));
+                     domConstruct.place(accordToggleButtonWrapper, this.navigationToolbar.navigationToolbar, "first");
+
+
+                     //create the exploit icon text
+                     var analysisToggleButtonWrapper = domConstruct.create("div", {className: "navigationTextWrapperHorizontal"});
+                     var analysisToggleButtonWrapperInner = domConstruct.create("span", {className: "navigationTextWrapperHorizontalInner"});
+                     domConstruct.place(analysisToggleButtonWrapperInner, analysisToggleButtonWrapper);
+                     var analysisIcon = domConstruct.create("div", {className: "navigationHorizontalIcon imageryIcons analysis"});
+                     var exploitToggleButton = domConstruct.create("span", {innerHTML: "Analysis", className: "navigationHorizontalText"});
+                     domConstruct.place(analysisIcon, analysisToggleButtonWrapperInner);
+                     domConstruct.place(exploitToggleButton, analysisToggleButtonWrapperInner);
+                     on(exploitToggleButton, "click", function () {
+                     topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
+                     });
+                     domConstruct.place(analysisToggleButtonWrapper, accordToggleButtonWrapper, "after");
+                     */
                 },
                 createAddonTools: function () {
                     //only add on tool for the discovery viewer is the swip widget

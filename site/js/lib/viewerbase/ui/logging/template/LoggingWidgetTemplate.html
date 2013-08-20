@@ -8,14 +8,12 @@
         </div>
         <div class="loggingWidgetActionContainerToggleEntry">
             <div class="commonIcons16 warning loggingWidgetActionDisplayToggleIcon"></div>
-
             <input type="checkbox" data-bind="checked:warningDisplayed"
                    title="Toggle Warning Messages"
                    class="loggingWidgetActionDisplayCheckbox"/>
         </div>
         <div class="loggingWidgetActionContainerToggleEntry">
             <div class="commonIcons16 error loggingWidgetActionDisplayToggleIcon"></div>
-
             <input type="checkbox" data-bind="checked:errorDisplayed"
                    title="Toggle Error Messages"
                    class="loggingWidgetActionDisplayCheckbox"/>
@@ -25,7 +23,6 @@
              data-dojo-attach-point="clearLogIcon"
              data-dojo-attach-event="onclick: showConfirmLogTooltip"></div>
     </div>
-
     <ul class="loggingWidgetEntryList"
         data-bind="foreach: filteredEntries">
         <li class="loggingInfoMessage" data-bind="css: $data.messageStyleClass">

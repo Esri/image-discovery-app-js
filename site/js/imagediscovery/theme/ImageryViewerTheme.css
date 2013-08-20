@@ -29,19 +29,22 @@ html, body {
     right: 5%;
 }
 .loadingImageServiceMessageContainer {
-    font-size: 2em;
-    height: 10%;
+    font-size: 12pt;
+    height: 8%;
     left: 35%;
     margin: auto;
-    padding-top: 4%;
+    padding-top: 2.5%;
     position: absolute;
     text-align: center;
     top: 38%;
-    width: 30%;
+    width: 25%;
 }
 .loadingImageServiceText, .loadingImageServiceThrobber {
     float: left;
     margin-left: 20px;
+}
+.loadingImageServiceText{
+    margin-top: 6px;
 }
 .loadingImageServiceThrobber {
     background: url(./assets/images/imageServiceLoadingThrobber.gif);

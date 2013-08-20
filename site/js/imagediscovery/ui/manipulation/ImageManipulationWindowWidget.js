@@ -19,7 +19,7 @@ define([
                 windowHeaderText: "Analysis",
                 windowIconAltText: "Analysis",
                 positioningParamName: "analysis",
-                windowIconClass: "commonIcons16 codePage",
+                windowIconClass: "imageryIcons analysis",
                 constructor: function (params) {
                     lang.mixin(this, params || {});
                 },
