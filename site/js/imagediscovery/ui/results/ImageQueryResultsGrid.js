@@ -397,6 +397,26 @@ define([
                     this.grid.set("query", filterFunctionInner);
                     this.setSelectedThumbnails();
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED);
+                    this.reHighlightRows();
+                },
+                reHighlightRows: function() {
+                    var scrolledIntoView = false;
+                    var unfilteredResults = this.store.query({isHighlighted: true});
+                    var currentVisibleItem;
+                    var row;
+
+                    for (var i = 0; i < unfilteredResults.length; i++) {
+                        currentVisibleItem = unfilteredResults[i];
+                        row = this.grid.row(currentVisibleItem);
+                        if (row && row.element) {
+                            this.grid.highlightRowYellow(row);
+                            if (!scrolledIntoView) {
+                                var geom = {y: row.element.offsetTop};
+                                this.grid.scrollTo(geom);
+                                scrolledIntoView = true;
+                            }
+                        }
+                    }
                 },
                 handleQueryComplete: function () {
                     //send the results to the user applied filter manager
