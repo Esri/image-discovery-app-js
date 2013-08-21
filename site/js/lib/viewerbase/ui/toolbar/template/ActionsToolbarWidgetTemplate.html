@@ -38,5 +38,34 @@
                  data-dojo-attach-event="onclick:toggleConfigureLocatorTooltip" title="Configure Locate"
                  class="defaultBorder configureLocate configureButtonIcon"></div>
         </div>
+        <div class="extentActionsToolbar" data-bind="visible:showExtentActionsToolbar">
+            <div class="smallActionsToolbarButton">
+                <div data-dojo-attach-point="initialExtentButton" title="Initial Extent"
+                     class="commonIcons16 firstItem"
+                     data-dojo-attach-event="onclick:handleGotoInitialExtent"></div>
+            </div>
+            <div class="smallActionsToolbarButton">
+                <div data-dojo-attach-point="prevExtentButton" title="Previous Extent"
+                     class="commonIcons16 previousGray"
+                     data-bind="css:{previous: prevExtentEnabled()}"
+                     data-dojo-attach-event="onclick:handleGotoPrevExtent"></div>
+            </div>
+            <div class="smallActionsToolbarButton">
+                <div data-dojo-attach-point="nextExtentButton" title="Full Extent"
+                     class="commonIcons16 locationGoTo"
+                     data-dojo-attach-event="onclick:handleGotoFullExtent"></div>
+            </div>
+            <div class="smallActionsToolbarButton">
+                <div data-dojo-attach-point="nextExtentButton" title="Next Extent"
+                     class="commonIcons16 nextGray"
+                     data-bind="css:{next: nextExtentEnabled()}"
+                     data-dojo-attach-event="onclick:handleGotoNextExtent"></div>
+            </div>
+            <div class="smallActionsToolbarButton">
+                <div data-dojo-attach-point="lastExtentButton" title="Last Extent"
+                     class="commonIcons16 lastItem"
+                     data-dojo-attach-event="onclick:handleGotoLastExtent"></div>
+            </div>
+        </div>
     </div>
 </div>

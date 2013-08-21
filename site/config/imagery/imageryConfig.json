@@ -115,7 +115,8 @@
         "showToolsDropdown": true,
         "showLayersButton": true,
         "showConfigureLocatorsIcon": false,
-        "showBookmarksButton": true
+        "showBookmarksButton": true,
+        "showExtentActions": false
     },
     "printWidget": {
         "create": true,

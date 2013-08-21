@@ -1,11 +1,11 @@
 {
-    "name":"esri",
-    "version":"1.0",
+    "name":"esriviewer",
+    "version":"1.1",
     "directories":{
         "lib":"."
     },
     "main":"main",
-    "description":"Base Viewer based on Arcgis 3.4 API ",
+    "description":"Base Viewer based on Arcgis 3.6 API ",
     "keywords":["Esri", "JavaScript", "Dojo", "Toolkit"],
     "homepage":"http://links.esri.com/javascript",
     "dojoBuild":"esriviewer.profile.js"
