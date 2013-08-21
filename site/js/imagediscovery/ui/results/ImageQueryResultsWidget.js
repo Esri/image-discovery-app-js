@@ -372,6 +372,7 @@ define([
                 },
                 clearResults: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR);
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
                 },
                 zoomToVisibleThumbnailExtent: function () {
                     if (this.viewModel.cart()) {

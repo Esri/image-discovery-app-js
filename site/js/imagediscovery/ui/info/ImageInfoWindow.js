@@ -28,7 +28,7 @@ define([
                     this.inherited(arguments);
                     //topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SHOW, lang.hitch(this, this.show));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE, lang.hitch(this, this.hide));
-
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.hide));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, lang.hitch(this, this.show));
                 },
                 postCreate: function () {
