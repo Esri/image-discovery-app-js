@@ -6,10 +6,10 @@
             "queryWhereClauseAppend": "Category = 1"
         },
         {
-               "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
-               "label": "Catalog 2",
-               "queryWhereClauseAppend": "Category = 1"
-           }
+            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
+            "label": "Catalog 2",
+            "queryWhereClauseAppend": "Category = 1"
+        }
     ],
     "imageDiscoveryQueryFields": [
         {

@@ -53,7 +53,7 @@
 
     "locators": [
         {
-            "url": "http://tasks.arcgis.com/ArcGIS/rest/services/WorldLocator/GeocodeServer"
+            "url": "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
         }
 
     ],
