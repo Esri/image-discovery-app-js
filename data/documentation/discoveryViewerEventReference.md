@@ -16,28 +16,28 @@ _Clear results_
 
 `RESULT.CLEAR`
 
-__Get unique attributes on visible imagery entries in the result grid__ (imagery visible on the map)
+_Get unique attributes on visible imagery entries in the result grid_ (imagery visible on the map)
 
-`RESULT.GET_UNIQUE_VISIBLE_RASTER_ATTRIBUTES` (fieldsArray:__Array__, callback:__Function__, queryParams:__Object__)
+`RESULT.GET_UNIQUE_VISIBLE_RASTER_ATTRIBUTES` (fieldsArray:Array, callback:Function, queryParams:Object)
 
 		fieldsArray is an array of fields to return unique values for
 		queryParams (optional) is a dojo store query object that is used to add a query before retrieving unique values
 
 _Get unique attributes on visible results in the grid_
 
-`RESULT.GET_UNIQUE_VISIBLE_ROW_ATTRIBUTES` (fieldsArray:__Array__, callback:__Function__, queryParams:__Object__)
+`RESULT.GET_UNIQUE_VISIBLE_ROW_ATTRIBUTES` (fieldsArray:Array, callback:Function, queryParams:Object)
 
 		fieldsArray is an array of fields to return unique values for
 		queryParams (optional) is a dojo store query object that is used to add a query before retrieving unique values
 _Query all search results_ (filtered results are included)
 
-`RESULT.QUERY_RESULT_SET` (queryParams:__Object__, callback:__Function__)
+`RESULT.QUERY_RESULT_SET` (queryParams:Object, callback:Function)
 
 		queryParams is the dojo store query to apply to the result set
 
 _Gray out grid results_
 
-`RESULT.GRAY_OUT_RESULTS_BY_FUNCTION` (isDisabledFunction:__Function__)
+`RESULT.GRAY_OUT_RESULTS_BY_FUNCTION` (isDisabledFunction:Function)
 
 		isDisabledFunction is a method that takes in a store item and returns true if the item is to be grayed out
 
@@ -55,7 +55,7 @@ _Enable all thumbnail checkboxes_
 
 _Get visible row count in results grid_
 
-`RESULT.GET_VISIBLE_GRID_RESULT_COUNT` (callback:__Function__)
+`RESULT.GET_VISIBLE_GRID_RESULT_COUNT` (callback:Function)
 
 #### Filtering Events
 ---
@@ -84,6 +84,6 @@ _Get Object ids of the items in the cart_
 	
 _Get discovery viewer configuration entry_
 
-`CONFIGURATION.GET` (paramName:__String__ , callback:__Function__)
+`CONFIGURATION.GET` (paramName:String , callback:Function)
 
 	paramName is an entry found in config/imagery/imageQueryConfiguration.json
