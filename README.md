@@ -1,6 +1,6 @@
 # image-discovery-app-js
 
-The Image Discovery Application enables users to search,discover,filter, and manipulate imagery through an easy to use web application. Multiple ArcGIS Server Image Services can be added to the Image Discovery Application for quick search and discovery. The Image Discovery Application supports full configuration of result fields,result styling, map display, operational layers. and reference layers.
+The Image Discovery Application enables users to search, discover, filter, and manipulate imagery through an easy to use web application. Multiple ArcGIS Server Image Services can be added to the Image Discovery Application for quick search and discovery. The Image Discovery Application supports full configuration of result fields,result styling, map display, operational layers. and reference layers.
 
 
 
@@ -34,6 +34,7 @@ The Image Discovery Application enables users to search,discover,filter, and man
 * Zoom To (USA)
 * Raster Function/Band Reordering/Mensuration
 * Swipe
+* Plot Coordinates
 
 ## Instructions
 
@@ -47,10 +48,10 @@ These instructions assume that you have a Web server like [Internet Information 
 
 1. Copy the contents of the zip file into your web server's root directory. In IIS, the default location for the web server's root folder is `c:\inetpub\wwwroot`
 2. In IIS, convert the folder to a "Web Application" and add .json (application/json) MIME type
-3. (Optional). If your application edits features in a feature service or generates requests that exceed 2000 characters you may need to setup and use a proxy page. Common situations where you may exceed the URL length are, using complext polygons as input to a task or specifying a spatial reference using well-known text (wkt). View the [Using the proxy page](http://help.arcgis.com/en/webapi/javascript/arcgis/jshelp/#ags_proxy) help topic for details on installing and configuring a proxy page.
+3. (Optional). If your application edits features in a feature service or generates requests that exceed 2000 characters you may need to setup and use a proxy page. Common situations where you may exceed the URL length are, using complex polygons as input to a task or specifying a spatial reference using well-known text (WKT). View the [Using the proxy page](http://help.arcgis.com/en/webapi/javascript/arcgis/jshelp/#ags_proxy) help topic for details on installing and configuring a proxy page.
 4. Test the page using the following URL: http://localhost/[DiscoveryApplicationPath]/index.html, where [DiscoveryApplicationPath] is the name of the folder where you extracted the zip contents.
 5. For Shapefile/KML/KMZ polygon search support, fileToFeatures.gpk located in geoprocessing\discoveryGeometryUpload\release must be deployed to an ArcGIS Server instance. Upload must be enabled when publishing the geoprocessing service.
-6. Shapefile/KML/CSV reporting, reportGenerator.gpk located in geoprocessing\reporting\release must be deployed to an ArcGIS Server instance.
+6. for Shapefile/KML/CSV reporting reportGenerator.gpk located in geoprocessing\reporting\release must be deployed to an ArcGIS Server instance.
 
 #### Configure the application
 
@@ -58,7 +59,7 @@ Now let's configure the application to point to an Search Image Service and set 
 
 1. Open `web\config\imagery\imageQueryConfiguration.json` in a text editor
 2. In the entry imageQueryLayers, set the URL to an ArcGIS Server Image Service endpoint.
-3. Set the label parameter for your ArcGIS ServerImage Service 
+3. Set the label parameter for your ArcGIS Server Image Service 
 4. In the entry imageQueryResultDisplayFields, set the result fields you would like to display in your result grid.
     - **field**: the field name to display
     - **label**: the label of the field to display in the result grid
@@ -67,27 +68,25 @@ Now let's configure the application to point to an Search Image Service and set 
     - **style**: object containing camel case CSS for how to style the field in the result grid
 
 5. If you deployed the fileToFeatures.gpk from step 5 in "Install the web application" set the URL of the GPServer in the "discoverGeometryUploadTask" configuration entry
-    - **uploadUrl**: URL to upload endpoint of the GPServer http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/uploads/upload
-    - **geoprocessingTaskUrl**: URL to the GPServer endpoint http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/FileToFeatures
+    - **uploadUrl**: URL to upload endpoint of the GPServer `http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/uploads/upload`
+    - **geoprocessingTaskUrl**: URL to the GPServer endpoint `http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/FileToFeatures`
 
 
 6. If you deployed the reportGenerator.gpk from step 6 in "Install the web application" set the URL of the GPServer in the "footprints" configuration entry
-    - **url**: URL to the GPServer endpoint http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/reportGenerator
+    - **url**: URL to the GPServer endpoint `http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/reportGenerator`
 
 
 
-7. Save the file then test your application. Results should display from your Image Service, displaying the result fields defined in imageQueryResultDisplayFields.
+7. Save the file and test your application. Results should display from your Image Service, displaying the result fields defined in imageQueryResultDisplayFields.
 
 #### Personalize the application
 
-You can personalize the Image Discovery Application by adding/removing widgets, setting operational layers, and customizing the map
+You can personalize the Image Discovery Application by adding/removing widgets, setting operational layers, and customizing the map.
 
 1. Open `web\config\imagery\imageryConfig.json` in a text editor
 2. All widgets have a "create" entry. Set "create" to true to enable the widget in the Image Discovery Application.
 
-    The social media widget requires an API key to Flickr. You can set your API key in `web\config\widgets\SocialMediaWidgetConfig.json` by replacing "<YOUR_FLICKR_API_KEY_HERE>" with your Flickr API key.
-
-    The weather widget requires an API key to wunderground. You can set your API key in `web\config\widgets\WeatherWidgetConfig.json` by replacing "<YOUR_WUNDERGROUND_API_KEY>" with your Wunderground API key.
+The weather widget requires an API key. You can get an API key at: [Weather Underground](http://www.wunderground.com/weather/api/d/docs). Set your API key in `web\config\widgets\WeatherWidgetConfig.json`.
 
 3. the "map" entry allows you to customize how the map is loaded. 
    - **initializationParameters**: This entry allows you to forward all the options supported by esri.Map to the map creation logic.
@@ -101,8 +100,8 @@ You can personalize the Image Discovery Application by adding/removing widgets, 
 ## Requirements
 
 * Notepad or HTML editor
-* A little background with HTML/CSS/Javascript
-* Experience with the [ArcGIS Javascript API](http://links.esri.com/javascript) would help.
+* Experience with HTML/CSS/Javascript
+* Experience with the [ArcGIS Javascript API](http://links.esri.com/javascript).
 
 ## Resources
 
