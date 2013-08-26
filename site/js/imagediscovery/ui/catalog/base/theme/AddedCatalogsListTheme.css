@@ -1,0 +1,14 @@
+.catalogListEntryLabel {
+    margin-left: 10px;
+    font-size: 9pt;
+}
+
+.saveGraphicsInputContainer {
+    margin-top: 3px;
+}
+
+.addedCatalogsList {
+    max-height: 325px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

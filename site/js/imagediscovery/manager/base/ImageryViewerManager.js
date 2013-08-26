@@ -36,14 +36,6 @@ define([
                     this.catalogLayers = [];
                     //query layer controllers array
                     this.catalogQueryControllers = [];
-                    //loading services throbber when the page loads
-                    this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
-                    this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
-                    this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber"});
-                    domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
-                    domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
-                    //add to the dom
-                    domConstruct.place(this.serviceLoadingContainer, window.body());
                 },
                 processConfig: function () {
                     if (this.appId != null) {
@@ -58,6 +50,16 @@ define([
                             this.loadConfig();
                         }
                     }
+                },
+                displayCatalogLoading: function () {
+                    //loading services throbber when the page loads
+                    this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
+                    this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
+                    this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber"});
+                    domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
+                    domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
+                    //add to the dom
+                    domConstruct.place(this.serviceLoadingContainer, window.body());
                 },
                 _initListeners: function () {
                     this.inherited(arguments);
@@ -163,7 +165,7 @@ define([
                     }
                 },
                 handleImageServiceLoaded: function (evt) {
-                    if(evt == null || evt.layer == null){
+                    if (evt == null || evt.layer == null) {
                         return;
                     }
                     var layer = evt.layer;
@@ -214,7 +216,28 @@ define([
                     //set the query config on the class instance
                     this.queryConfig = queryConfig;
                     //finally, start up the viewer
-                    this.startupViewer();
+                    if (this.queryConfig.userAddCatalogMode === true) {
+                        this.initUserAddCatalogMode();
+                    }
+                    else {
+                        this.startupViewer();
+                    }
+                },
+                startupViewer: function(){
+                    this.displayCatalogLoading();
+                    this.inherited(arguments);
+                },
+                initUserAddCatalogMode: function () {
+                    require(["imagediscovery/ui/catalog/AddCatalogModalWindow"], lang.hitch(this, function (AddCatalogModalWindow) {
+                        var addCatalodModalWindow = new AddCatalogModalWindow();
+                        addCatalodModalWindow.on("catalogSet", lang.hitch(this, function (catalogParams) {
+
+                            lang.mixin(this.queryConfig, catalogParams);
+                            addCatalodModalWindow.destroy();
+                            this.startupViewer();
+                        }));
+                    }));
+
                 },
                 handleQueryConfigLoadFailed: function () {
                     //show error since query json configuration load failed
@@ -259,17 +282,17 @@ define([
                     this.placeImageDiscoveryWidget();
                     domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
                     /*
-                    this.mainToolbar.locateToolbarContainer.parentNode.removeChild(this.mainToolbar.locateToolbarContainer);
-                    domConstruct.place(this.mainToolbar.locateToolbarContainer, this.imageDiscoveryWidget.imageDiscoverLocatorInputContainer);
-                    domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
-                    //IE9 renders the buttons differently when the locator is in the discovery tab pane
-                    if (has("ie") === 9) {
-                        domStyle.set(this.mainToolbar.locateButton, "height", "18px");
-                        domStyle.set(this.mainToolbar.configureLocateButton, "height", "18px");
-                    }
-                    //remove the on map class from the locator
-                    domClass.remove(this.mainToolbar.locateToolbarContainer, "locateToolbarContainerOnMap");
-                    */
+                     this.mainToolbar.locateToolbarContainer.parentNode.removeChild(this.mainToolbar.locateToolbarContainer);
+                     domConstruct.place(this.mainToolbar.locateToolbarContainer, this.imageDiscoveryWidget.imageDiscoverLocatorInputContainer);
+                     domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
+                     //IE9 renders the buttons differently when the locator is in the discovery tab pane
+                     if (has("ie") === 9) {
+                     domStyle.set(this.mainToolbar.locateButton, "height", "18px");
+                     domStyle.set(this.mainToolbar.configureLocateButton, "height", "18px");
+                     }
+                     //remove the on map class from the locator
+                     domClass.remove(this.mainToolbar.locateToolbarContainer, "locateToolbarContainerOnMap");
+                     */
                 },
                 loadImageryUIAddons: function () {
                     this._createSwipeWidget();

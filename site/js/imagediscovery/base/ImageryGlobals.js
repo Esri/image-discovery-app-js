@@ -187,6 +187,11 @@ define([
                             HIDE: "layerTransparencyWd:hide"
                         }
                     }
+                },
+                STORAGE:{
+                    LABELS:{
+                        CATALOGS: "localStorageCatalogs"
+                    }
                 }
             });
     });

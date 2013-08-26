@@ -76,6 +76,9 @@ define([
                 //format dates. date format is read from json configuration
                 dateFormatter: function (value) {
                     try {
+                        if(value == "" || value == null){
+                            return null;
+                        }
                         var date = new Date(value);
                         var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDisplayFormats.date;
                         return locale.format(date, {selector: "date", datePattern: formatter});

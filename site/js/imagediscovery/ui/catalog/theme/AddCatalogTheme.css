@@ -1,0 +1,103 @@
+.addCatalogModalWindow {
+    z-index: 75;
+    position: absolute;
+    top: 12%;
+    width: 95%;
+    margin-left: 2.5%;
+    font-family: verdana, sans-serif;
+    min-height: 45%;
+}
+
+.catalogFieldsListingList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+}
+
+.addCatalogUrlInputContainer {
+    width: 100%;
+}
+
+.addCatalogUrlInputTextBox {
+    width: 70%;
+}
+
+.catalogFieldsListingList {
+    max-height: 400px;
+    overflow: auto;
+    overflow-x: hidden;
+
+}
+
+.addCatalogFieldEntryAction {
+    margin-left: 15px;
+}
+
+.addCatalogFieldCheckbox {
+    vertical-align: middle;
+}
+
+.catalogFieldNameHeader {
+    font-size: 10pt;
+    color: blue;
+    text-decoration: underline;
+}
+
+.catalogFieldActions {
+    padding: 5px 10px;
+}
+
+.catalogSearchFieldsHeader {
+    border-bottom: 1px dashed;
+    color: #008000;
+    font-size: 13pt;
+    margin: 10px 0;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.addCatalogFieldLabelTextInput {
+    width: 20%;
+}
+
+.addCatalogFieldActionLbl {
+    color: black;
+    font-size: 9pt;
+}
+
+.addCatalogActionButtons {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.addCatalogActionButtons button {
+    margin-right: 10px;
+}
+
+.catalogAddMainHeader {
+    font-size: 11pt;
+    margin-bottom: 10px;
+}
+
+.catalogNameContainer {
+    margin-right: 25px;
+}
+
+.addCatalogFieldEntryAction {
+    vertical-align: middle;
+}
+
+.addCatalogContainer {
+    background: white;
+    padding: 0 2% 2%;
+}
+
+.addCatalogTabContainer {
+    font-size: 12pt;
+    line-height: 29px !important;
+}
+
+.addCatalogUrlLbl {
+    margin-bottom: 5px;
+}

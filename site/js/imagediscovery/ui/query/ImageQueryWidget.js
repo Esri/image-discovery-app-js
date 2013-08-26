@@ -20,7 +20,7 @@ define([
             [ContentPane, UITemplatedWidget],
             {
                 selectWidth: "80%",
-                maxSelectHeight: "200px",
+                maxSelectHeight: 200,
                 templateString: template,
                 constructor: function () {
                     this.stringFieldNames = [];

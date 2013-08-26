@@ -1,0 +1,15 @@
+<div>
+    <div class="addedUserPersistedGraphicsListContainer"
+         data-dojo-attach-point="addedUserPersistedGraphicsListContainer">
+        <ul data-dojo-attach-point="addedCatalogsList" class="viewerList addedCatalogsList"
+            data-bind="foreach: addedCatalogs">
+            <li class="graphicsListEntry">
+                <div title="Delete Catalog" class="viewerListEntryRemoveIcon commonIcons16 remove"
+                     data-bind="click:$parent.removeCatalog"></div>
+                <div title="Initialize Catalog" class="viewerListGenericIcon commonIcons16 layerShow"
+                     data-bind="click:$parent.addCatalog"></div>
+                <span class="catalogListEntryLabel" data-bind="text: $parent.getCatalogLabel($data)"></span>
+            </li>
+        </ul>
+    </div>
+</div>

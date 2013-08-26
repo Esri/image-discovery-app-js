@@ -15,6 +15,10 @@
             <span>Street:</span>
             <span data-bind="text:reverseGeocodeStreet"></span>
         </div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showAddressResult">
+            <span>Address:</span>
+            <span data-bind="text:reverseGeocodeAddress"></span>
+        </div>
         <div class="reverseGeocodeResultEntry" data-bind="visible: showCityResult">
             <span>City:</span>
             <span data-bind="text:reverseGeocodeCity"></span>
@@ -26,6 +30,10 @@
         <div class="reverseGeocodeResultEntry" data-bind="visible: showZipResult">
             <span>Zip:</span>
             <span data-bind="text:reverseGeocodeZip"></span>
+        </div>
+        <div class="reverseGeocodeResultEntry" data-bind="visible: showPostalResult">
+            <span>Postal:</span>
+            <span data-bind="text:reverseGeocodePostal"></span>
         </div>
         <div class="reverseGeocodeResultEntry" data-bind="visible: showCertaintyResult">
             <span>Certainty:</span>

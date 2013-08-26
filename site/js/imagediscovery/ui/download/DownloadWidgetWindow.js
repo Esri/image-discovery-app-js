@@ -24,7 +24,6 @@ define([
                 postCreate: function () {
                     this.inherited(arguments);
                     domClass.add(this.windowContent, "downloadWindowContent");
-
                 },
                 handleFirstWindowShow: function () {
                     this.firstShowListener.remove();
@@ -45,7 +44,5 @@ define([
                         this.downloadWidget.clearActiveMapGraphics();
                     }
                 }
-
             });
-
     });
