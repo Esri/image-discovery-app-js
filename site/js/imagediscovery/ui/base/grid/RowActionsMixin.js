@@ -14,28 +14,7 @@ define([
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.SET_EXTENT, entry.geometry.getExtent());
                     }
                 },
-                //handles pan and flash footprint request
-                /*
-                handlePanAndFlash: function (entry, e) {
-                    var entryScoped = entry;
-                    if (entryScoped && entryScoped.queryControllerId != null) {
-                        if (entryScoped.showFootprint == false) {
-                            entryScoped.showFootprint = true;
-                            this.showVisibleFootprints();
-                        }
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, entryScoped.queryControllerId, function (queryController) {
-                            if (queryController != null) {
-                                queryController.centerAndFlashFootprint(entryScoped);
-                            }
-                        });
-                    }
-                },
-                */
                 //handles show information window for a result
-                /*
-                handleShowInformation: function (entry, e) {
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SHOW, entry, this.layer);
-                }, */
                 //footprint checkbox toggle listener
                 handleShowFootprintToggle: function (item, checked) {
                     item.showFootprint = checked;
@@ -68,7 +47,7 @@ define([
                         }
                     }
                 },
-                 //given a query controller id it will hide footprints that are not checked in the grid
+                //given a query controller id it will hide footprints that are not checked in the grid
                 hideVisibleFootprintsByQueryControllerId: function (queryControllerId) {
                     var items = this.store.query({showFootprint: true, isFiltered: false, isGrayedOut: false, queryControllerId: queryControllerId});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
@@ -182,13 +161,12 @@ define([
                     }
                 },
                 /*
-                handleToggleAllFootprints: function (checked) {
-                    this.grid.toggleAllFootprints(checked);
-                },
-                */
+                 handleToggleAllFootprints: function (checked) {
+                 this.grid.toggleAllFootprints(checked);
+                 },
+                 */
                 handleToggleAllThumbnails: function (checked) {
                     this.grid.toggleAllThumbnails(checked);
                 }
-
             });
     });

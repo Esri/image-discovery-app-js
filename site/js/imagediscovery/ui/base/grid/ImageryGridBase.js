@@ -52,15 +52,6 @@ define([
                             row.data.isGrayedOut = true;
                         }
                         var currentCheckDijit;
-                        /*
-                         var showFootPrintInput = query("input[name=showFootprint]", row.element);
-                         if (showFootPrintInput.length > 0) {
-                         currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
-                         if (currentCheckDijit) {
-                         currentCheckDijit.set("disabled", true);
-                         }
-                         }
-                         */
                         var showThumbnailInput = query("input[name=showThumbNail]", row.element);
                         if (showThumbnailInput.length > 0) {
                             currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
@@ -92,15 +83,6 @@ define([
                         currentRow = this.row(grayedOutEntries[i]);
                         domClass.remove(currentRow.element, "grayedOutGridRow");
                         var currentCheckDijit;
-                        /*
-                         var showFootPrintInput = query("input[name=showFootprint]", currentRow.element);
-                         if (showFootPrintInput.length > 0) {
-                         currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
-                         if (currentCheckDijit) {
-                         currentCheckDijit.set("disabled", false);
-                         }
-                         }
-                         */
                         var showThumbnailInput = query("input[name=showThumbNail]", currentRow.element);
                         if (showThumbnailInput.length > 0) {
                             currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
@@ -161,37 +143,6 @@ define([
                         this.thumnailToggleDisabled = false;
                     }
                 },
-                /*
-                 toggleAllFootprints: function (checked) {
-                 var currentCheckDijit;
-                 var items = this.store.query({ isFiltered: false});
-                 var i;
-                 for (i = 0; i < items.length; i++) {
-                 // items[i].showFootprint = checked;
-                 var row = this.row(items[i]);
-
-                 var showFootPrintInput = query("input[name=showFootprint]", row.element);
-                 if (showFootPrintInput.length > 0) {
-                 currentCheckDijit = registry.getEnclosingWidget(showFootPrintInput[0]);
-                 if (currentCheckDijit) {
-                 currentCheckDijit.set("checked", checked);
-                 }
-                 }
-
-                 }
-                 var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
-                 var currentQueryLayerController;
-                 for (i = 0; i < queryLayerControllerItemsArray.length; i++) {
-                 currentQueryLayerController = queryLayerControllerItemsArray[i].queryController;
-                 if (checked) {
-                 currentQueryLayerController.showFootprints(queryLayerControllerItemsArray[i].items);
-                 }
-                 else {
-                 currentQueryLayerController.hideFootprints();
-                 }
-                 }
-                 },
-                 */
                 toggleAllThumbnails: function (checked) {
                     var currentCheckDijit;
                     var items = this.store.query({ isFiltered: false});

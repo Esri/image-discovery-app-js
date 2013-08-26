@@ -57,17 +57,11 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, lang.hitch(this, this.handleIsShoppingCartVisible));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.HIDE_RESET_ICON, lang.hitch(this, this.hideFilterResultIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SHOW_RESET_ICON, lang.hitch(this, this.showFilterResetIcon));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.HIDE_ICON, lang.hitch(this, this.hideTimeSliderIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.SHOW_ICON, lang.hitch(this, this.showTimeSliderIcon));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.checkForToolsActive));
-
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleFilterApplied));
-
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED, lang.hitch(this, this.handleZoomLevelChange));
-
                 },
                 postCreate: function () {
                     this.inherited(arguments);
@@ -104,7 +98,6 @@ define([
                         this.viewModel.toolsActive(true);
                     }
                 },
-
                 handleZoomLevelChange: function (extent, factor, anchor, level) {
                     if (this.viewModel.cart()) {
                         return;
@@ -137,7 +130,6 @@ define([
                             }
                         }
                     }
-
                 },
                 handleFilterApplied: function () {
                     //update the result count
@@ -157,7 +149,6 @@ define([
                     this.activeSourcesWidget = new ActiveSourcesWidget();
                     this.activeSourcesWidget.placeAt(this.activeServicesContainer);
                 },
-
                 handleActivateRectangleSelect: function () {
                     this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
@@ -196,8 +187,6 @@ define([
                             this.useHeatmap = searchConfiguration.useHeatmap;
                         }
                     }
-
-
                     var displayFieldsConfig;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
                         displayFieldsConfig = displayFieldsConf;
@@ -205,7 +194,6 @@ define([
                     if (displayFieldsConfig != null && lang.isObject(displayFieldsConfig)) {
                         this.resultFields = displayFieldsConfig;
                     }
-
                     var resultsFormattingConfig = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "resultsFormatting", function (resultsFormattingConf) {
                         resultsFormattingConfig = resultsFormattingConf;
@@ -300,7 +288,6 @@ define([
                         this.resultsGridWidget.restoreVisibleFootprints();
                         //hide the time slider if it is open
                         topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.TIME.WINDOW.HIDE);
-
                         this.checkForClusterLayerVisibility();
                         this.checkForFootprintLayerVisibility();
                     }
@@ -316,11 +303,9 @@ define([
                         topic.publish(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED);
                         //can only select features in the results table
                         this.clearDraw();
-
                         //hide the feature and cluster layers
                         if (this.resultsFootprintManager && this.resultsFootprintManager.isVisible()) {
                             this.resultsFootprintManager.hideLayer();
-
                         }
                         if (this.resultsClusterManager && this.resultsClusterManager.layerExists() && this.resultsClusterManager.isVisible()) {
                             this.resultsClusterManager.hideLayer();
@@ -368,7 +353,6 @@ define([
                     this.viewModel.resultCount(0);
                     this.clearDraw();
                     VIEWER_UTILS.debug("Cleared Results");
-
                 },
                 clearResults: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR);
@@ -434,7 +418,6 @@ define([
                     this.resultsGridWidget.resetAllFilters();
                 },
                 addQueryResults: function (results, queryLayerController) {
-
                     this.resultsClusterManager.addResults(results, queryLayerController);
                     this.resultsFootprintManager.addResults(results, queryLayerController);
                     VIEWER_UTILS.log("Populating Query Results Grid", VIEWER_GLOBALS.LOG_TYPE.INFO);
@@ -443,7 +426,6 @@ define([
                     }
                     this.resultsGridWidget.populateQueryResults(results, queryLayerController);
                     this.viewModel.resultCount(this.viewModel.resultCount() + results.features.length);
-
                     if (results.features.length > 0) {
                         if (this.activeSourcesWidget != null) {
                             this.activeSourcesWidget.addQueryLayerControllerEntry(queryLayerController);

@@ -27,7 +27,6 @@ define([
                     this.viewModel.raster.subscribe(lang.hitch(this.mensurationWidget, this.mensurationWidget.cancelMensuration));
                     this.viewModel.bands.subscribe(lang.hitch(this.mensurationWidget, this.mensurationWidget.cancelMensuration));
                 },
-
                 applyBindings: function () {
                     if (!this.bindingsApplied) {
                         ko.applyBindings(this.viewModel, this.domNode);
@@ -187,7 +186,6 @@ define([
                     }
                     else {
                         //   nothing is visible
-
                     }
                     if (!this.bindingsApplied) {
                         this.applyBindings();

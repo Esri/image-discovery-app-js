@@ -16,8 +16,6 @@ define([
                     this.downloadImageryData = ko.observable(true);
                     this.webMapCreation = ko.observable(false);
                     this.showWebMapCreationTab = ko.observable(true);
-
-
                 },
                 showReportingContent: function () {
                     this.reportingData(true);

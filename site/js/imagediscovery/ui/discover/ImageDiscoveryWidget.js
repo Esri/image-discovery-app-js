@@ -161,7 +161,6 @@ define([
                 handleAccordionHidden: function () {
                     if (this.imageQueryWidget) {
                         this.imageQueryWidget.closePopups();
-
                     }
                 },
                 handleOnShow: function () {
@@ -177,7 +176,6 @@ define([
                     if (this.currentAddedGraphics) {
                         for (var i = 0; i < this.currentAddedGraphics.length; i++) {
                             topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.REMOVE, this.currentAddedGraphics[i]);
-
                         }
                     }
                     this.currentAddedGraphics = [];
@@ -248,7 +246,6 @@ define([
                             topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.ADD, graphic);
                             searchGraphic = graphic;
                         }
-
                     }
                     imageQueryParameters.geometry = searchGraphic.geometry;
                     imageQueryParameters.errback = this.searchByGeometryGeometryQueryErrorback;

@@ -39,7 +39,5 @@ define([
                         layer.setOpacity(1 - transparency);
                     }
                 }
-
             });
-    })
-;
+    });

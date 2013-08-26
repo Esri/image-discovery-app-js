@@ -2,7 +2,8 @@
 
 
 There are 5 items for a widget (sample widget can be found in `js/template/ui/sample`)
-	
+
+
  	- CSS Theme
 		- Contains styles used in HTML Template
 		
@@ -23,6 +24,8 @@ There are 5 items for a widget (sample widget can be found in `js/template/ui/sa
 		- Imports CSS Theme (xstyle CSS plugin)
 		- Binds ViewModel to HTML Template
 		- Contains business logic for widget
+
+
 
 ###Create your own widget###
 
@@ -104,5 +107,3 @@ There are 5 items for a widget (sample widget can be found in `js/template/ui/sa
 		 `topic.publish(TEMPLATE_GLOBALS.EVENTS.WINDOW.MY_WIDGET.SHOW)`
 
 8. Your widget should now be fully functional and available under the tools drowdown menu of the viewer.
-
-

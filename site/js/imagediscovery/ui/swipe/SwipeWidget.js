@@ -23,13 +23,10 @@ define([
             {
                 chooseSwipeLevel: "2",
                 templateString: template,
-
                 postCreate: function () {
                     this.inherited(arguments);
-
                     this.createSwipeDiv();
                     //get a map reference
-
                     var mapRef;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GET, function (responseMap) {
                         mapRef = responseMap;
@@ -44,15 +41,15 @@ define([
                     ko.applyBindings(this.viewModel, this.domNode);
                 },
                 checkForSwipeEnabled: function () {
-                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (footprintsVis) {
-                         if (footprintsVis) {
-                             this.handleImageryLayersVisible();
-                         }
-                         else {
-                             this.handleImageryLayersHidden();
-                         }
-                     }));
-                 },
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (footprintsVis) {
+                        if (footprintsVis) {
+                            this.handleImageryLayersVisible();
+                        }
+                        else {
+                            this.handleImageryLayersHidden();
+                        }
+                    }));
+                },
                 initListeners: function () {
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersVisible));
@@ -123,7 +120,6 @@ define([
                         }));
                     }
                 },
-
                 clearClip: function () {
                     if (this.swipeDiv != null) {
                         this.swipeDiv.style.clip = sniff("ie") ? "rect(auto auto auto auto)" : "";
@@ -133,8 +129,6 @@ define([
                     if (this.swipeDiv != null) {
                         var offset_left = parseFloat(this.swipeDiv.style.left);
                         var offset_top = parseFloat(this.swipeDiv.style.top);
-
-
                         var rightval, leftval, topval, bottomval;
 
                         if (offset_left > 0) {
@@ -161,7 +155,6 @@ define([
                             topval = 0;
                             bottomval = this.map.height;
                         }
-
                         // If CSS Transformation is applied to the layer (i.e. this.swipeDiv),
                         // record the amount of translation and adjust clip rect
                         // accordingly
@@ -182,7 +175,6 @@ define([
                             }
 
                             var transformValue = this.swipeDiv.style.getPropertyValue(prefix + "transform");
-
                             if (transformValue) {
                                 if (transformValue.toLowerCase().indexOf("translate3d") !== -1) {
                                     transformValue = transformValue.replace("translate3d(", "").replace(")", "").replace(/px/ig, "").replace(/\s/i, "").split(",");
@@ -202,14 +194,12 @@ define([
                                 bottomval -= ty;
                             }
                         }
-
                         //Syntax for clip "rect(top,right,bottom,left)"
                         //var clipstring = "rect(0px " + val + "px " + this.map.height + "px " + " 0px)";
                         var clipstring = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
                         this.swipeDiv.style.clip = clipstring;
                     }
                 },
-
                 //This is called when "Stop Swipe" button is clicked
                 stopSwipe: function () {
                     this.map.showZoomSlider();
@@ -255,7 +245,6 @@ define([
                 initSwipe: function () {
                     var chooseLayer = this.chooseSwipeLevel;
                     this.swipeLayerId = this.viewModel.selectedSwipeLayerId();
-
                     //Turn off operational layers and basemap
                     if (this.viewModel.useRefLayer()) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.OPERATIONAL.GET, lang.hitch(this, this.turnOffOperationalLayers));
@@ -355,7 +344,6 @@ define([
                             this.viewModel.swipeLayers.push(item);
                         }
                     }));
-
                 },
                 handleImageryLayersVisible: function () {
                     this.viewModel.swipeEnbled(true);

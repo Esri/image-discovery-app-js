@@ -32,7 +32,6 @@ define([
                         return;
                     }
                     this.setBandProperties(this.layer.bands);
-
                 },
                 clearBandSelectOptions: function () {
                     domConstruct.empty(this.bandReorderSelectContainer);
@@ -76,9 +75,7 @@ define([
                             }
                         }
                         this.bandChangeListeners.push(bandSelect.on("change", lang.hitch(this, this.handleBandSelectChange, bandSelect)));
-
                     }
-
                 },
                 applyBandReorder: function () {
                     //two events are fired for each change. one for checked and unchecked. we only want to listen on one
@@ -146,7 +143,6 @@ define([
                                     if (!selectedBands[currentBandOptionValue]) {
                                         currentBandSelect.set("value", currentBandOptionValue);
                                         return;
-
                                     }
                                 }
                             }
@@ -160,7 +156,6 @@ define([
                     for (i = 0; i < this.bandSelects.length; i++) {
                         if (i != this.bandSelects[i].get("value")) {
                             bandsInOrder = false;
-
                         }
                     }
                     if (!bandsInOrder) {

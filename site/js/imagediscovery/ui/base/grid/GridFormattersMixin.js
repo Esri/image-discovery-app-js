@@ -24,9 +24,6 @@ define([
                 //zoom to icon
 
                 zoomToIconFormatter: function (object, value, node, option) {
-                 //   var panAndFlashIcon = domConstruct.create("div", {title: "Pan And Flash", className: "imageResultsZoomToIcon commonIcons16 globeGoTo"});
-                 //   on(panAndFlashIcon, "click", lang.hitch(this, this.handlePanAndFlash, object));
-                //    domConstruct.place(panAndFlashIcon, node);
                     var zoomIcon = domConstruct.create("div", {title: "Zoom To", className: "imageResultsZoomToIcon commonIcons16 magnifyingGlass"});
                     on(zoomIcon, "click", lang.hitch(this, this.handleZoomToResult, object));
                     domConstruct.place(zoomIcon, node);
@@ -38,25 +35,6 @@ define([
                     checkbox.on("change", lang.hitch(this, this.handleShowThumbNailToggle, object));
                     domConstruct.place(checkbox.domNode, node);
                 },
-                //footprint checkbox
-                /*
-                footprintCheckboxFormatter: function (object, value, node, option) {
-                    var checkbox = new CheckBox({name: "showFootprint", checked: object.showFootprint, title: "Toggle Footprint"});
-                    checkbox.on("change", lang.hitch(this, this.handleShowFootprintToggle, object));
-                    domConstruct.place(checkbox.domNode, node);
-                },
-                */
-                //info icon
-                /*
-                infoIconFormatter: function (object, value, node, option) {
-                    var source;
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, object.queryControllerId, function (cont) {
-                        source = cont.layer.url;
-                    });
-                    var infoIcon = domConstruct.create("div", {className: "imageResultsInfoIcon commonIcons16 information", title: source });
-                    on(infoIcon, "click", lang.hitch(this, this.handleShowInformation, object));
-                    domConstruct.place(infoIcon, node);
-                },*/
                 //can convert to hash
                 domainFormatter: function (codedValues, value) {
                     for (var i = 0; i < codedValues.length; i++) {

@@ -16,7 +16,6 @@ define([
                     this.getVisibleFootprintsHandler = lang.hitch(this, this._getVisibleFootprintsHandler);
                     this.initListeners();
                 },
-
                 initListeners: function () {
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.clearResults));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleQueryComplete));
@@ -25,7 +24,6 @@ define([
                 startup: function () {
                     this.createHeatmapLayer();
                 },
-
                 layerExists: function () {
                     return this.heatmapLayer != null;
                 },
@@ -57,8 +55,6 @@ define([
                             domConstruct.destroy(this.heatMapDiv);
                             this.heatMapDiv = null;
                         }
-
-
                     }
                 },
                 createHeatmapLayer: function () {
@@ -141,9 +137,7 @@ define([
                         });
                     }
                     this.heatmapLayer.setData(this.currentResultSet);
-
                     this.handleQueryComplete();
                 }
-
             });
     });

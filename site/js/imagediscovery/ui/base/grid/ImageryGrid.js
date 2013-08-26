@@ -91,26 +91,10 @@ define([
                     this.grid.shrink();
                 },
                 clearGrid: function () {
-
                     //clears the grid. removes all items from the grid and removes imagery/footprints from the map
                     if (this.thumbnailHeaderCheckbox) {
                         this.thumbnailHeaderCheckbox.set("checked", false);
                     }
-                    // this.footprintHeaderCheckbox.set("checked", false);
-                    //hide all the visible footprints
-                    /*
-                     var items = this.store.query({showFootprint: true});
-                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
-                     var currentQueryLayerController;
-                     var currentQueryLayerControllerItems;
-                     for (var i = 0; i < queryLayerControllerItemsArray.length; i++) {
-                     currentQueryLayerController = queryLayerControllerItemsArray[i].queryController;
-                     currentQueryLayerControllerItems = queryLayerControllerItemsArray[i].items;
-                     for (var j = 0; j < currentQueryLayerControllerItems.length; j++) {
-                     currentQueryLayerController.deleteFootprint(currentQueryLayerControllerItems[j]);
-                     }
-                     }
-                     */
                     this.createNewStore();
                     this.setSelectedThumbnails();
                 },
@@ -153,7 +137,6 @@ define([
                 generateManipulationColumns: function () {
                     //add-on fields for the discovery grid. these are appended to the fields from the configuration file
                     return [
-
                         {
                             field: "zoomToFootprint",
                             label: " ",
@@ -170,23 +153,6 @@ define([
                             renderHeaderCell: lang.hitch(this, this.thumbnailRenderHeaderCell),
                             unhidable: true
                         }
-                        /*
-                         {
-                         field: "showFootprint",
-                         label: " ",
-                         sortable: false,
-                         renderCell: lang.hitch(this, this.footprintCheckboxFormatter),
-                         renderHeaderCell: lang.hitch(this, this.footprintRenderHeaderCell),
-                         unhidable: true
-                         },
-
-                        {
-                            field: "showInformation",
-                            label: " ",
-                            sortable: false,
-                            renderCell: lang.hitch(this, this.infoIconFormatter),
-                            unhidable: true
-                        }  */
                     ];
                 },
                 generateLayerColumns: function () {
@@ -286,15 +252,6 @@ define([
                     }
                 },
                 /* Header Renderers */
-                /*
-                 footprintRenderHeaderCell: function (node) {
-                 var infoIcon = domConstruct.create("div", { title: "Toggle Footprints", className: "imageGridFootprintHeaderIcon"});
-                 this.footprintHeaderCheckbox = new CheckBox();
-                 this.footprintHeaderCheckbox.on("change", lang.hitch(this, this.handleToggleAllFootprints));
-                 domConstruct.place(this.footprintHeaderCheckbox.domNode, node);
-                 domConstruct.place(infoIcon, node);
-                 },
-                 */
                 thumbnailRenderHeaderCell: function (node) {
                     var infoIcon = domConstruct.create("div", { title: "Toggle Thumbnails", className: "imageGridThumbnailHeaderIcon"});
                     if (this.allowCheckAllThumbnails) {

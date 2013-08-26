@@ -21,7 +21,6 @@ define([
                     this.initSymbology();
                     this.initListeners();
                 },
-
                 initListeners: function () {
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.clearResults));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleQueryComplete));
@@ -39,7 +38,6 @@ define([
                 },
                 hideLayer: function () {
                     this.clusterLayer.hide();
-
                 },
                 showLayer: function () {
                     this.reloadLayer();

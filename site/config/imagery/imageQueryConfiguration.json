@@ -1,5 +1,5 @@
 {
-    "userAddCatalogMode": true,
+    "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
             "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",

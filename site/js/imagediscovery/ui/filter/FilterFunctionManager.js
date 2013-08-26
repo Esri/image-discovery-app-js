@@ -18,7 +18,6 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADD_FILTER_FUNCTION, lang.hitch(this, this.addFilterFunction));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_FILTER_FUNCTION, lang.hitch(this, this.removeFilterFunction));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.RELOAD_FILTER_FUNCTION, lang.hitch(this, this.reloadFilterFunction));
-
                 },
                 //this function attempts removal and then adds the filter function to the array. if it doesn't already exist it is just added
                 reloadFilterFunction: function (filterFunction) {

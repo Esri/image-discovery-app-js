@@ -38,14 +38,9 @@ define([
                 initListeners: function () {
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleQueryComplete));
-                    //topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT, lang.hitch(this, this.highlightResultsFromPointIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, lang.hitch(this, this.highlightResultsFromRectangleIntersect));
-                    //topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_POINT_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromPointIntersect));
-                    //topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_IMAGE_FROM_RECTANGLE_INTERSECT, lang.hitch(this, this.showCorrespondingImageFromRectangleIntersect));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_SHOW_IMAGE, lang.hitch(this, this.handleToggleShowImage));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, lang.hitch(this, this.toggleShoppingCartItem));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT, lang.hitch(this, this.handleGetVisibleGridResultCount));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ORDER_BY_LOCK_RASTER, lang.hitch(this, this.orderByLockRaster));
@@ -58,7 +53,6 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADDED, lang.hitch(this, this.handleFilterAdded));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, lang.hitch(this, this.handleGetVisibleFootprintGeometries));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, lang.hitch(this, this.handleGetVisibleFootprintFeatures));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.enableThumbnailToggle));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.disableThumbnailToggle));
 
@@ -80,9 +74,6 @@ define([
                     this.inherited(arguments);
                     if (!checked) {
                         var row = this.grid.row(object);
-                        //  if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                        //       domClass.remove(row.element, "yellowGridRow");
-                        //  }
                     }
                 },
                 clearHighlightedResults: function () {
@@ -101,14 +92,11 @@ define([
                 },
                 highlightResultsFromRectangleIntersect: function (envelope, containsFlag) {
                     var scrolledIntoView = false;
-                  //  var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
-
                     var imageInfoAndLayerArray = [];
-
                     for (var i = 0; i < unfilteredResults.length; i++) {
                         currentVisibleItem = unfilteredResults[i];
                         currentGeometry = currentVisibleItem.geometry;
@@ -153,57 +141,6 @@ define([
                     //show image info popup
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageInfoAndLayerArray);
                 },
-                /*
-                highlightResultsFromPointIntersect: function (pt) {
-                    var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
-                  //  var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
-                    var currentVisibleItem;
-                    var currentGeometry;
-                    var row;
-
-                    var imageInfoAndLayerArray = [];
-
-                    for (var i = 0; i < unfilteredResults.length; i++) {
-                        currentVisibleItem = unfilteredResults[i];
-                        currentGeometry = currentVisibleItem.geometry;
-                        row = this.grid.row(currentVisibleItem);
-                        if (GEOMETRY_UTILS.polygonIntersectsPoint(pt, currentGeometry)) {
-                            if (row && row.element) {
-                                this.grid.highlightRowYellow(row);
-                                if (!scrolledIntoView) {
-                                    var geom = {y: row.element.offsetTop};
-                                    this.grid.scrollTo(geom);
-                                    scrolledIntoView = true;
-                                }
-                                currentVisibleItem.isHighlighted = true;
-
-                                //highlight footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-
-                                //gather image info and associated layer info
-                                var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(currentVisibleItem);
-                                var imageAttrsAndLayer = {imageInfo: currentVisibleItem, layer: queryLayerController.layer};
-                                imageInfoAndLayerArray.push(imageAttrsAndLayer);
-                                //topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SHOW, currentVisibleItem, queryLayerController.layer);
-                            }
-                        }
-                        else {
-                            if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                                this.grid.unhighlightYellowRow(row);
-                                currentVisibleItem.isHighlighted = false;
-
-                                //remove highlight on footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                            }
-                        }
-                    }//end for loop
-
-                    //show image info popup
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageInfoAndLayerArray);
-                },
-                */
-
                 handleGetVisibleFootprintGeometries: function (callback) {
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var geometries = [];
@@ -211,7 +148,6 @@ define([
                         geometries.push(unfilteredResults[i].geometry);
                     }
                     callback(geometries);
-
                 },
                 handleGetVisibleFootprintFeatures: function (callback) {
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
@@ -221,95 +157,7 @@ define([
                     }
                     callback(features);
                 },
-                /*
-                showCorrespondingImageFromPointIntersect: function (pt) {
-                    var scrolledIntoView = false;
-                 //   var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false, showFootprint: true});
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
-                    var currentVisibleItem;
-                    var currentGeometry;
-                    var row;
-                    for (var i = 0; i < unfilteredResults.length; i++) {
-                        currentVisibleItem = unfilteredResults[i];
-                        currentGeometry = currentVisibleItem.geometry;
-                        row = this.grid.row(currentVisibleItem);
-                        if (GEOMETRY_UTILS.polygonIntersectsPoint(pt, currentGeometry)) {
-                            if (row && row.element) {
-                                this.grid.highlightRowYellow(row);
-                                if (!scrolledIntoView) {
-                                    var geom = {y: row.element.offsetTop};
-                                    this.grid.scrollTo(geom);
-                                    scrolledIntoView = true;
-                                }
-                                currentVisibleItem.isHighlighted = true;
-
-                                currentVisibleItem.showThumbNail = true;
-                                //update the checkbox
-                                var showThumbnailInput = query("input[name=showThumbNail]", row.element);
-                                var currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
-                                if (currentCheckDijit) {
-                                    currentCheckDijit.set("checked", true);
-                                }
-
-                                //highlight footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                            }
-                        }
-                        else {
-                            if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                                this.grid.unhighlightYellowRow(row);
-                                currentVisibleItem.isHighlighted = false;
-
-                                //remove highlight on footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                            }
-                        }
-                    }
-                },
-                showCorrespondingImageFromRectangleIntersect: function (envelope) {
-                    var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
-                    var currentVisibleItem;
-                    var currentGeometry;
-                    var row;
-                    for (var i = 0; i < unfilteredResults.length; i++) {
-                        currentVisibleItem = unfilteredResults[i];
-                        currentGeometry = currentVisibleItem.geometry;
-                        row = this.grid.row(currentVisibleItem);
-                        if (envelope.contains(currentGeometry.getExtent())) {
-                            if (row && row.element) {
-                                this.grid.highlightRowYellow(row);
-                                if (!scrolledIntoView) {
-                                    var geom = {y: row.element.offsetTop};
-                                    this.grid.scrollTo(geom);
-                                    scrolledIntoView = true;
-                                }
-                                currentVisibleItem.isHighlighted = true;
-
-                                currentVisibleItem.showThumbNail = true;
-                                //update the checkbox
-                                var showThumbnailInput = query("input[name=showThumbNail]", row.element);
-                                var currentCheckDijit = registry.getEnclosingWidget(showThumbnailInput[0]);
-                                if (currentCheckDijit) {
-                                    currentCheckDijit.set("checked", true);
-                                }
-                                //highlight footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                            }
-                        }
-                        else {
-                            if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                                this.grid.unhighlightYellowRow(row);
-                                currentVisibleItem.isHighlighted = false;
-
-                                //remove highlight on footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                            }
-                        }
-                    }
-                },
-                */
-                handleToggleShowImage: function(gridItem) {
+                handleToggleShowImage: function (gridItem) {
                     //find the row and check or uncheck the checkbox and that will trigger the image to be shown
                     var row = this.grid.row(gridItem);
                     var showThumbnailInput = query("input[name=showThumbNail]", row.element);
@@ -323,7 +171,7 @@ define([
                         }
                     }
                 },
-                toggleShoppingCartItem: function(gridItem) {
+                toggleShoppingCartItem: function (gridItem) {
                     var row = this.grid.row(gridItem);
                     var toggleShoppingCartInput = query("input[name=toggleAddToShoppingCart]", row.element);
                     var toggleShoppingCartInputDijit = registry.getEnclosingWidget(toggleShoppingCartInput[0]);
@@ -399,7 +247,7 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED);
                     this.reHighlightRows();
                 },
-                reHighlightRows: function() {
+                reHighlightRows: function () {
                     var scrolledIntoView = false;
                     var unfilteredResults = this.store.query({isHighlighted: true});
                     var currentVisibleItem;
@@ -432,7 +280,6 @@ define([
                             this.disableThumbnailToggle();
                         }
                     }));
-
                 },
                 //handle new results
                 populateQueryResults: function (results, queryLayerController) {
@@ -470,7 +317,6 @@ define([
                     this.responseFeatures = this.responseFeatures.concat(results.features);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.RESULT_GRID_POPULATED, results.features.length);
                 },
-
                 generateManipulationColumns: function () {
                     var parentColumns = this.inherited(arguments);
                     var columns = [
@@ -502,7 +348,6 @@ define([
                             filteredColumns[currentResultField.field] = currentResultField.filter;
                         }
                     }
-
                     //set the header renderer for the filter fields
                     var currentColumn;
                     for (i = 0; i < layerColumns.length; i++) {
@@ -537,7 +382,7 @@ define([
                     var clonedCartItem = lang.clone(entry);
                     //show the thumbnail by default
                     clonedCartItem.showThumbNail = true;
-                //    clonedCartItem.showFootprint = false;
+                    //    clonedCartItem.showFootprint = false;
                     clonedCartItem.isFiltered = false;
 
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, clonedCartItem);
@@ -590,8 +435,6 @@ define([
                         this.itemRemovedFromCartHandle.remove();
                         this.itemRemovedFromCartHandle = null;
                     }
-
-
                     this.inherited(arguments);
                 },
                 renderFilterHeaderColumn: function (currentColumn, node) {
