@@ -1,0 +1,13 @@
+<div>
+    <div class="identifyAdvancedOptionsHeader">Display Fields</div>
+    <ul class="identifyAdvancedFieldList" data-bind="foreach:identifyFields"
+        data-dojo-attach-point="displayFieldListing">
+        <li data-bind="ifnot: $parent.isIgnoreField($data.name)" class="displayFieldListingEntry">
+            <div class="identifyDisplayFieldsActions">
+                <input class="identifyFieldDisplayCheckbox" type="checkbox"
+                       data-bind="attr:{checked:true}"/>
+                <span class="identifyDisplayFieldName" data-bind="text:$data.name"></span>
+            </div>
+        </li>
+    </ul>
+</div>

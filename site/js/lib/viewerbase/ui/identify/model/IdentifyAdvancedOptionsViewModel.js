@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/ui/identify/model/IdentifyAdvancedOptionsViewModel",["dojo/_base/declare"],function(_1){return _1([],{ignoreIdentifyDisplayFields:{Shape:"Shape",Shape_Length:"Shape_Length",Shape_Area:"Shape_Area"},constructor:function(){this.identifyFields=ko.observableArray();},isIgnoreField:function(_2){return this.ignoreIdentifyDisplayFields[_2]!=null;}});});

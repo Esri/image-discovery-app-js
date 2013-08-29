@@ -18,10 +18,23 @@
             <div class="commonIcons32 rectangleUnselected fivePixelBorderRadius"
                  data-bind="click: toggleDrawActive, css:{rectangleSelected: drawActive}"></div>
         </div>
+        <div class="identifyAdvancedOptionsContainer" data-bind="visible:hasSelectedService">
+            <div class="identifyOptionsToggleContainer" data-bind="click:toggleIdentifyAdvancedOptions">
+                <div style="float: left" class="commonIcons16 up"
+                     data-bind="css: {down: identifyAdvancedOptionsVisible() == true}"></div>
+                <span>Advanced Options</span>
+            </div>
+            <div data-dojo-attach-point="identifyDisplayFieldsContainer"
+                 data-bind="visible: identifyAdvancedOptionsVisible() == true">
+            </div>
+
+        </div>
     </div>
+
     <div class="identifyResultsContainer" data-dojo-attach-point="identifyResultsContainer"
          data-bind="visible: identifyResultsVisible">
-        <div class="identifyResultsClearText" data-bind="visible:showClearResults, click:clearResults">clear results</div>
+        <div class="identifyResultsClearText" data-bind="visible:showClearResults, click:clearResults">clear results
+        </div>
 
 
     </div>
