@@ -36,12 +36,6 @@ define([
                     var rasterInfoUrl = VIEWER_UTILS.joinUrl(layer.url, id + "/info/keyProperties" + requestQuery);
                     this.loadProxiedJson(rasterInfoUrl, callback, errback);
                 },
-                /*
-                getRasterInfo: function (serviceUrl, id, callback, errback) {
-                    var rasterInfoUrl = VIEWER_UTILS.joinUrl(serviceUrl, id + "/info");
-                    this.loadJsonP(rasterInfoUrl, {f: "json"}, callback, errback);
-                },
-                */
                 sortItemsIntoQueryControllerArray: function (items) {
                     var queryControllerArray = [];
                     var controllerIdToItemLookup = [];

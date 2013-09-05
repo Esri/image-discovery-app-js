@@ -24,15 +24,23 @@ define([
         return declare(
             [ViewerManager],
             {
+                //base configuraiton url
                 configUrl: "config/imagery/imageryConfig.json",
+                //imagery configuration url
                 imageQueryConfigUrl: "config/imagery/imageQueryConfiguration.json",
+                //we want to use the imagery time slider instead of the base viewer time slider
                 forceHideCoreTimeSlider: true,
+                //we want to control the accordion visibility, not the base viewer
                 forceHideAccordionTab: true,
                 useProxyForImageryQueryConfig: false,
+                //allow the discovery accordion to move
                 allowAccordionMove: true,
+                //viewer positioning URL
                 viewerPositioningConfigUrl: "config/imagery/imageryViewerPositioning.json",
                 constructor: function () {
+                    //listen for UI load complete so we can tweak some UI for this viewer
                     this.on(this.FINALIZE_UI_LOAD_COMPLETE, lang.hitch(this.handleFinalizeUILoadComplete));
+                    //cached catalog layers
                     this.catalogLayers = [];
                     //query layer controllers array
                     this.catalogQueryControllers = [];
@@ -281,18 +289,6 @@ define([
                     this.loadImageryUIAddons();
                     this.placeImageDiscoveryWidget();
                     domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
-                    /*
-                     this.mainToolbar.locateToolbarContainer.parentNode.removeChild(this.mainToolbar.locateToolbarContainer);
-                     domConstruct.place(this.mainToolbar.locateToolbarContainer, this.imageDiscoveryWidget.imageDiscoverLocatorInputContainer);
-                     domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
-                     //IE9 renders the buttons differently when the locator is in the discovery tab pane
-                     if (has("ie") === 9) {
-                     domStyle.set(this.mainToolbar.locateButton, "height", "18px");
-                     domStyle.set(this.mainToolbar.configureLocateButton, "height", "18px");
-                     }
-                     //remove the on map class from the locator
-                     domClass.remove(this.mainToolbar.locateToolbarContainer, "locateToolbarContainerOnMap");
-                     */
                 },
                 loadImageryUIAddons: function () {
                     this._createSwipeWidget();
@@ -319,6 +315,7 @@ define([
                         }
                     }
                 },
+                 //_createViewerMainToolbar: extend the function to add the footprints toggle button
                 _createViewerMainToolbar: function () {
                     this.inherited(arguments);
                     var toggleFootprintsButton = new ToggleButton({

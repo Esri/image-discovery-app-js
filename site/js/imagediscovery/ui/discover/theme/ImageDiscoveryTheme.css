@@ -4,29 +4,27 @@
     width: 22px;
     vertical-align: bottom;
     margin-top: 3px;
-    float:right;
+    float: right;
 
 }
-.discoveryServiceSelect{
+
+.discoveryServiceSelect {
     width: 85%;
 }
-.discoveryServiceSelectContainer{
+
+.discoveryServiceSelectContainer {
     width: 45%;
 }
-.discoveryLocateContainer{
+
+.discoveryLocateContainer {
     width: 33%;
 
 }
 
-.discoveryToolsContainer{
+.discoveryToolsContainer {
     width: 35%;
 
 }
-/*
-.imageDiscoverLocatorInputContainer{
-    margin-left: 10%;
-}
-   */
 
 .discoveryIcon {
     cursor: pointer;
@@ -95,7 +93,12 @@
 .searchByBoundsHeaderLbl, .pointBufferHeaderLbl {
     text-align: left;
     margin: 5px 0 3px 10px;
-    font-size: 10pt;
+    font-size: 9pt;
+}
+
+.pointBufferHeaderLbl {
+    color: blue;
+
 }
 
 .searchByBoundsInputLbl {
@@ -113,7 +116,8 @@
     margin-right: 5%;
     margin-top: 10px;
 }
-.discoveryServiceSelectOuterContainer{
+
+.discoveryServiceSelectOuterContainer {
     margin-bottom: 15px;
 }
 
@@ -162,12 +166,18 @@
     text-align: left;
     margin-bottom: 13px;
     margin-left: 5px;
-    font-family: tahoma,sans-serif;
+    font-family: tahoma, sans-serif;
 }
 
 .searchByPointUnitsSelect {
     margin: 10px 0;
 }
+
 .searchByPointDistanceContainer {
     margin-top: 10px;
+}
+
+.discoveryPointAdvancedToggleContainer {
+    height: 20px;
+    cursor: pointer;
 }

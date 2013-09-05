@@ -2,7 +2,7 @@
 
 There are two main configuration files that allow users to customize/configure important properties of the viewer application, such as which widgets to include in the viewer, which image services will be searched, which fields will be displayed in the search results, etc. 
 
-####`imageryConfig.json`####
+####`config/imagery/imageryConfig.json`####
 This file defines general configuration properties of the viewer application.  
 
 - `windowTitle`
@@ -197,7 +197,7 @@ In addition to the above properties, the user can also use this file to customiz
     }
 
 
-####`imageQueryConfiguration.json`####
+####`config/imagery/imageQueryConfiguration.json`####
 This file defines configuration properties that are related to querying of images. 
 
 - `imageQueryLayers`

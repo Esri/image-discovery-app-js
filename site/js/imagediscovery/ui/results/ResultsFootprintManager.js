@@ -36,6 +36,18 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, lang.hitch(this, this.unhighlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, lang.hitch(this, this.centerAndFlashFootprint));
                 },
+                loadViewerConfigurationData: function () {
+                    var searchConfiguration = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
+                        searchConfiguration = searchConf;
+                    });
+                    if (searchConfiguration != null && lang.isObject(searchConfiguration)) {
+                        if (searchConfiguration.footprintZoomLevelStart != null) {
+                            this.footprintZoomLevelStart = searchConfiguration.footprintZoomLevelStart;
+                        }
+                    }
+
+                },
                 startup: function () {
                     this.createFootprintsLayer();
                 },
@@ -68,7 +80,7 @@ define([
                     //this.footprintGraphicsCache = {};
                 },
                 createFootprintsLayer: function () {
-                    this.footprintsLayer = new GraphicsLayer();
+                    this.footprintsLayer = new GraphicsLayer({displayOnPan: false});
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.footprintsLayer);
                     this.emit("footprintsLayerCreated");
                 },

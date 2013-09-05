@@ -3,7 +3,7 @@ define([
     "dojo/Evented" ,
     "esri/tasks/GeometryService"
 ],
-    function (declare, Evented,GeometryService) {
+    function (declare, Evented, GeometryService) {
         return declare(
             [Evented],
             {
@@ -45,7 +45,10 @@ define([
                     this.discoverByFieldsExpanded = ko.observable(false);
                     this.discoverByGeometryExpanded = ko.observable(true);
                     this.currentView = ko.observable(this.views.none);
-
+                    this.showPointAdvancedOptions = ko.observable(false);
+                },
+                togglePointAdvancedOptions: function () {
+                    this.showPointAdvancedOptions(!this.showPointAdvancedOptions());
                 },
                 toggleDiscoverByFields: function () {
                     this.discoverByFieldsExpanded(!this.discoverByFieldsExpanded());

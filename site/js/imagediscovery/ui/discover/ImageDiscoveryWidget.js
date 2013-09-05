@@ -52,7 +52,6 @@ define([
                     ko.applyBindings(this.viewModel, this.domNode);
                     if (this.discoverGeometryUploadTaskConfiguration == null || !lang.isObject(this.discoverGeometryUploadTaskConfiguration)) {
                         this.viewModel.searchByGeometryButtonVisible(false);
-
                     }
                     else {
                         this.createUploadView();
@@ -61,14 +60,15 @@ define([
                         this.createQueryView();
                     }
                 },
+                //handleDiscoveryByFieldsToggle: toggle the view for searching by field value in the discovery widget
+
                 handleDiscoveryByFieldsToggle: function (expanded) {
-                    //toggle the view for searching by field value in the discovery widget
                     if (!expanded && this.imageQueryWidget) {
                         this.imageQueryWidget.closePopups();
                     }
                 },
                 initListeners: function () {
-                    //listen for when the accordion has been hiden
+                    //listen for when the accordion has been hidden
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.HIDE_COMPLETE, lang.hitch(this, this.handleAccordionHidden));
                     //listen for when all query layer controllers have been loaded
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, lang.hitch(this, this.handleQueryLayerControllersLoaded));

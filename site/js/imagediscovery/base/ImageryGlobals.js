@@ -6,10 +6,14 @@ define([
             [], {
                 EVENTS: {
                     QUERY: {
+                        //fires when a query is complete
                         COMPLETE: "query:complete",
                         LAYER_CONTROLLERS: {
+                            //fired when all layer controllers are loaded
                             LOADED: "querylayerControllers:loaded",
+                            //get controller by controller id
                             GET_BY_ID: "querylayerControllers:getById",
+                            //get all query layer controllers
                             GET: "querylayerControllers:get"
                         },
                         RESULT: {
@@ -17,20 +21,27 @@ define([
                             ADD: "imgQuery:add",
                             //clears the current image service results
                             CLEAR: "imgQuery:clear",
+                            //gets unique field values for rasters that are visible on the map
                             GET_UNIQUE_VISIBLE_RASTER_ATTRIBUTES: "imgQuery:getUniqueVisibleRasterFields",
+                            //get unique field values for results in the grid
                             GET_UNIQUE_VISIBLE_ROW_ATTRIBUTES: "imgQuery:getUniqueVisibleRowFields",
+                            //perform a dojo store query on the backing store for the result grid
                             QUERY_RESULT_SET: "imgQuery:queryResultSet",
+                            //when fired will gray out results that pass the validation of the passed function
                             GRAY_OUT_RESULTS_BY_FUNCTION: "imgQuery:grayByFunction",
+                            //clear all grayed out results in the map
                             CLEAR_GRAYED_OUT_RESULTS: "imgQuery:clearGrayedOutResults",
+                            //disables the thumbnail checkboxes in the grid
                             DISABLE_THUMBNAIL_CHECKBOXES: "imgQuery:disableFootprintCheckboxes",
+                            //enable the thumbnail checkboxes in the grid
                             ENABLE_THUMBNAIL_CHECKBOXES: "imgQuery:enableFootprintCheckboxes",
-                            //HIGHLIGHT_RESULTS_FOM_POINT_INTERSECT: "imgQuery:highlightResultsFromPointIntersect",
+                            //highlights rasters and grid results based on passed rectangle
                             HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT: "imgQuery:highlightResultsFromRectangleIntersect",
-                            //SHOW_IMAGE_FROM_POINT_INTERSECT: "imgQuery:showImageFromPointIntersect",
-                            //SHOW_IMAGE_FROM_RECTANGLE_INTERSECT: "imgQuery:showImageFromRectangleIntersect",
+                            //clears highlighted results
                             CLEAR_HIGHLIGHTED_RESULTS: "imgQuery:clearHighlightedResults",
-                            ORDER_BY_LOCK_RASTER: "imgQuery:orderByLockRaster",
+                            //get the the count of visible grid results
                             GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",
+                            //fired when the result grid has been populated with results
                             RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated",
                             GET_VISIBLE_FOOTPRINT_GEOMETRIES: "imgQuery:getVsFtPtGeoms",
                             GET_VISIBLE_FOOTPRINT_FEATURES: "imgQuery:getVsFtPtFeatures"

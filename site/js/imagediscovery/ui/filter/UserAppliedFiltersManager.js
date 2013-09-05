@@ -176,14 +176,6 @@ define([
                     this.blockFilterChanges = true;
                     this.clearAllFilters();
                     this.appendFilterRanges(features);
-
-                    //enable all visible filters
-                    /*
-                     for (var i = 0; i < this.queryWidgets.length; i++) {
-                     this.queryWidgets[i].enableQueryIfVisible();
-                     }
-                     */
-
                     this.blockFilterChanges = false;
                 },
                 appendFilterRanges: function (features) {

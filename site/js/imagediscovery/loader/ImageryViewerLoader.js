@@ -18,6 +18,7 @@ define([
             {
                 //kicks off everything for the discovery viewer
                 constructor: function () {
+                    //load ie7 theme if necessary for css hacks
                     if (has("ie") == 7) {
                         this._listenForLoadIE7Theme();
                     }
@@ -41,6 +42,7 @@ define([
                 processConfigurationSettings: function () {
                     this.inherited(arguments);
                     this.viewerConfigurationParameters.useProxyForImageryQueryConfig = false;
+                    //see if a configuration was passed in the url
                     if (this.windowQueryObject != null && lang.isObject(this.windowQueryObject)) {
                         if (this.windowQueryObject.imageQueryConfig != null) {
                             this.viewerConfigurationParameters.imageQueryConfigUrl = this.windowQueryObject.imageQueryConfig;

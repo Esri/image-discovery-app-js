@@ -12,12 +12,6 @@
             "queryWhereClauseAppend": "Category = 1"
         }
     ],
-    "imageDiscoveryQueryFields": [
-        {
-            "field": "ProductName",
-            "label": "Product"
-        }
-    ],
     "imageQueryResultDisplayFields": [
         {
             "field": "OBJECTID",
@@ -36,7 +30,6 @@
                 "enable": false
             }
         },
-
         {
             "field": "Name",
             "label": "Name",

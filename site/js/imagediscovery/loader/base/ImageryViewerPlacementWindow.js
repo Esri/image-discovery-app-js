@@ -13,7 +13,6 @@ define([
                 placeDiscoveryWidget: function (discoveryWidget) {
                     topic.publish(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.ADD_ITEM, discoveryWidget);
                 }
-
             }
         );
     });

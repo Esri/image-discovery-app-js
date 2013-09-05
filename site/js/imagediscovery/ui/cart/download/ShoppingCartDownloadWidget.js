@@ -5,7 +5,6 @@ define([
     "../../download/DownloadWidget",
     "./ShoppingCartDownloadFootprintsWidget",
     "../export/ShoppingCartImageryExportWidget"
-
 ],
     function (declare, topic, lang, DownloadWidget, ShoppingCartDownloadFootprintsWidget, ShoppingCartImageryExportWidget) {
         return declare(

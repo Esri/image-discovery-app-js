@@ -140,30 +140,6 @@ define([
                     }, this);
                     this._singles.length = 0;
                 },
-
-                onClick: function (e) {
-                    // remove any previously showing single features
-                    this.clearSingles(this._singles);
-
-                    // find single graphics that make up the cluster that was clicked
-                    // would be nice to use filter but performance tanks with large arrays in IE
-                    var singles = [];
-                    for (var i = 0, il = this._clusterData.length; i < il; i++) {
-                        if (e.graphic.attributes.clusterId == this._clusterData[i].attributes.clusterId) {
-                            singles.push(this._clusterData[i]);
-                        }
-                    }
-                    if (singles.length > this._maxSingles) {
-                        alert("Sorry, that cluster contains more than " + this._maxSingles + " points. Zoom in for more detail.");
-                        return;
-                    } else {
-                        // stop the click from bubbling to the map
-                        e.stopPropagation();
-                        this._map.infoWindow.show(e.graphic.geometry);
-                        this._addSingles(singles);
-                    }
-                },
-
                 /*
                  internal methods
                  */
@@ -343,19 +319,7 @@ define([
                         );
                     } else {
                     }
-                },
-
-                // debug only...never called by the layer
-                _clusterMeta: function () {
-                    // print total number of features
-
-                    // add up counts and print it
-                    var count = 0;
-                    array.forEach(this._clusters, function (c) {
-                        count += c.attributes.clusterCount;
-                    });
                 }
-
             });
     });
 

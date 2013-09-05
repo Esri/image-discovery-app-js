@@ -35,8 +35,8 @@ define([
                 isComplete: function () {
                     return (this.errors.length + this.responses.length) === this.count;
                 },
+                //joins all of the query responses into a single response with a features array
                 _joinResponses: function () {
-                    //joins all of the query responses into a single response with a features array
                     var objectIdField;
                     var catalogLayer;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYER, function (lyr) {

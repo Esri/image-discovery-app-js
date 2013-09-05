@@ -9,8 +9,6 @@
                     data-bind="optionsCaption: '*Search All*' ,options: discoveryServicesList ,value:selectedDiscoveryService, optionsText: 'label', optionsValue: 'value'"></select>
         </div>
     </div>
-
-
     <div class="imageDiscoveryByQueryExpanderContainer"
          data-bind="click:toggleDiscoverByFields, visible: discoverByFieldsHeaderVisible">
         <div class="commonIcons16 up imageDiscoveryExpanderIcon"
@@ -45,16 +43,23 @@
                 <div data-dojo-attach-point="imageDiscoveryDescriptionContent">
                 </div>
                 <div data-bind="visible: isCurrentView(views.point)">
-                    <div class="pointBufferHeaderLbl">Point Buffer (optional)</div>
-                    <div class="searchByPointDistanceContainer">
-                        <span>Distance:</span>
-            <span data-dojo-type="dijit/form/NumberTextBox" style="width: 5em"
-                  data-dojo-attach-point="pointDrawBufferValue"></span>
+                    <div class="discoveryPointAdvancedToggleContainer" data-bind="click:togglePointAdvancedOptions">
+                        <div style="float: left" class="commonIcons16 up"
+                             data-bind="css: {down: showPointAdvancedOptions}"></div>
+                        <div style="float:left">Advanced Options</div>
                     </div>
-                    <span>Units:</span>
-                    <select class="searchByPointUnitsSelect"
-                            data-bind="options: pointGeometryUnits ,value:selectedPointUnits, optionsText: 'label', optionsValue: 'value'"
-                            ></select>
+                    <div data-bind="visible:showPointAdvancedOptions">
+                        <div class="pointBufferHeaderLbl">Point Buffer (optional)</div>
+                        <div class="searchByPointDistanceContainer">
+                            <span>Distance:</span>
+                        <span data-dojo-type="dijit/form/NumberTextBox" style="width: 5em"
+                              data-dojo-attach-point="pointDrawBufferValue"></span>
+                        </div>
+                        <span>Units:</span>
+                        <select class="searchByPointUnitsSelect"
+                                data-bind="options: pointGeometryUnits ,value:selectedPointUnits, optionsText: 'label', optionsValue: 'value'"
+                                ></select>
+                    </div>
                 </div>
                 <div data-bind="visible: isCurrentView(views.upload)"
                      data-dojo-attach-point="geometryUploadWidgetContainer">

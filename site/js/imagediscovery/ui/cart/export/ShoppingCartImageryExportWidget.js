@@ -27,8 +27,6 @@ define([
                             this.imageryExportDownloadWindow.downloadListWidget.clearDownloadList();
                         }
                         return null;
-
-
                     }
                     return objectIds;
                 }

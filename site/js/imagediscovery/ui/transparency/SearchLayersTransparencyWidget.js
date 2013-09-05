@@ -11,12 +11,11 @@ define([
     "dojo/dom-construct",
     "./SearchLayerSliderWidget"
 ],
-    function (declare, template,theme, topic, on, lang, UITemplatedWidget, domConstruct, SearchLayerSliderWidget) {
+    function (declare, template, theme, topic, on, lang, UITemplatedWidget, domConstruct, SearchLayerSliderWidget) {
         return declare(
             [UITemplatedWidget],
             {
                 templateString: template,
-
                 constructor: function () {
                     this.sliderCache = {};
                 },
@@ -39,7 +38,7 @@ define([
                             currQueryController = queryLayerControllers[i];
                             currLayer = currQueryController.layer;
                             if (this.sliderCache[currLayer.id] == null) {
-                                var sliderWidget = new SearchLayerSliderWidget({layer: currLayer,label:currQueryController.label});
+                                var sliderWidget = new SearchLayerSliderWidget({layer: currLayer, label: currQueryController.label});
                                 this.sliderCache[currLayer.id] = sliderWidget;
                                 domConstruct.place(sliderWidget.domNode, this.searchLayersTransparencySliderContent);
                             }
@@ -50,5 +49,4 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.TRANSPARENCY.POPUP.HIDE);
                 }
             });
-    })
-;
+    });

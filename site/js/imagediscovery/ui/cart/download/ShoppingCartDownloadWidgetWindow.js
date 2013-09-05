@@ -3,7 +3,7 @@ define([
     "../../download/DownloadWidgetWindow",
     "dojo/_base/lang"
 ],
-    function (declare, DownloadWidgetWindow,lang) {
+    function (declare, DownloadWidgetWindow, lang) {
         return declare(
             [DownloadWidgetWindow],
             {
@@ -18,7 +18,5 @@ define([
                         this.setContent(this.downloadWidget.domNode);
                     }));
                 }
-
             });
-
     });

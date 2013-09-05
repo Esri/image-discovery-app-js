@@ -1,0 +1,186 @@
+{
+    "cloudCover": {
+        "operator": "<=",
+        "fieldName": "CloudCover",
+        "values": [
+            {
+                "label": "0%;",
+                "value": 0
+            },
+            {
+                "label": "10%",
+                "value": 10
+            },
+            {
+                "label": "20%",
+                "value": 20
+            },
+            {
+                "label": "30%",
+                "value": 30
+            },
+            {
+                "label": "40%",
+                "value": 40
+            },
+            {
+                "label": "50%",
+                "value": 50
+            },
+            {
+                "label": "60%",
+                "value": 60
+            },
+            {
+                "label": "70%",
+                "value": 70
+            },
+            {
+                "label": "80%",
+                "value": 80
+            },
+            {
+                "label": "90%",
+                "value": 90
+            },
+            {
+                "label": "100%",
+                "value": 100
+            }
+        ]
+    },
+    "satellite": {
+        "operator": "=",
+        "fieldName": "Satellite",
+        "values": [
+            {
+                "value": "WV1",
+                "label": "WorldView 1 (WV1)"
+            },
+            {
+                "value": "WV2",
+                "label": "WorldView 2 (WV2)"
+            },
+            {
+                "value": "P1",
+                "label": "Pleiades 1 (P1)"
+            },
+            {
+                "value": "QB",
+                "label": "QuickBird (QB)"
+            },
+            {
+                "value": "GE1",
+                "label": "GeoEye 1 (GE1)"
+            },
+            {
+                "value": "IK",
+                "label": "IKONOS (IK)"
+            },
+            {
+                "value": "RE",
+                "label": "RapidEye (RE)"
+            },
+            {
+                "value": "SP1",
+                "label": "SPOT 1 (SP1)"
+            },
+            {
+                "value": "SP2",
+                "label": "SPOT 2 (SP2)"
+            },
+            {
+                "value": "SP3",
+                "label": "SPOT 3 (SP3)"
+            },
+            {
+                "value": "SP4",
+                "label": "SPOT 4 (SP4)"
+            },
+            {
+                "value": "SP5",
+                "label": "SPOT 5 (SP5)"
+            },
+            {
+                "value": "SP6",
+                "label": "SPOT 6 (SP6)"
+            }
+        ]
+    },
+    "offNadir": {
+        "operator": "<=",
+        "fieldName":"offNadir",
+        "values": [
+            {
+                "label": "5&deg;",
+                "value": 5
+            },
+            {
+                "label": "10&deg;",
+                "value": 10
+            },
+            {
+                "label": "15&deg;",
+                "value": 15
+            },
+            {
+                "label": "20&deg;",
+                "value": 20
+            },
+            {
+                "label": "25&deg;",
+                "value": 25
+            },
+            {
+                "label": "30&deg;",
+                "value": 30
+            },
+            {
+                "label": "45&deg;",
+                "value": 45
+            },
+            {
+                "label": "60&deg;",
+                "value": 60
+            },
+            {
+                "label": "75&deg;",
+                "value": 75
+            },
+            {
+                "label": "90&deg;",
+                "value": 90
+            }
+        ]
+    },
+    "resolution": {
+        "operator": "<=",
+        "fieldName": "lowPS",
+        "values": [
+            {
+                "label": "50cm",
+                "value": .05
+            },
+            {
+                "label": "1m",
+                "value": 1
+            },
+            {
+                "label": "5m",
+                "value": 5
+            },
+            {
+                "label": "10m",
+                "value": 10
+            },
+            {
+                "label": "20m",
+                "value": 20
+            },
+            {
+                "label": "30m",
+                "value": 30
+            }
+        ]
+    }
+}
