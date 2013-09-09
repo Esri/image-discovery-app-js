@@ -8,11 +8,11 @@ define([
     "dijit/registry",
     "dojo/_base/array",
     "./UserAppliedFilterLockController",
-    "./base/ImageFilterSliderWidget",
+    "./base/ImageFilterNumberRangeWidget",
     "./base/ImageFilterDateRangeWidget",
     "./base/ImageFilterStringListWidget"
 ],
-    function (declare, topic, on, lang, domConstruct, domStyle, registry, array, UserAppliedFilterLockController, ImageFilterSliderWidget, ImageFilterDateRangeWidget, ImageFilterStringListWidget) {
+    function (declare, topic, on, lang, domConstruct, domStyle, registry, array, UserAppliedFilterLockController, ImageFilterNumberRangeWidget, ImageFilterDateRangeWidget, ImageFilterStringListWidget) {
         return declare(
             [],
             {
@@ -23,7 +23,7 @@ define([
                     lang.mixin(this, params || {});
                     //queryWidgetConfig
                     this.queryWidgets = [];
-                    this.sliderWidgets = [];
+                    this.numberWidgets = [];
                     this.dateRangeWidgets = [];
                     this.stringListWidgets = [];
                     this.activeFilterFunctionLookup = {};
@@ -88,8 +88,8 @@ define([
                             if (currentFilterConfig.filter.unitsLabel != null && currentFilterConfig.filter.unitsLabel != "") {
                                 currentWidgetParams.unitsLabel = currentFilterConfig.filter.unitsLabel;
                             }
-                            newWidget = new ImageFilterSliderWidget(currentWidgetParams);
-                            this.sliderWidgets.push(newWidget);
+                            newWidget = new ImageFilterNumberRangeWidget(currentWidgetParams);
+                            this.numberWidgets.push(newWidget);
                         }
                         if (array.indexOf(this.stringListTypes, fieldType) > -1) {
                             newWidget = new ImageFilterStringListWidget(currentWidgetParams);
@@ -152,10 +152,10 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.BEFORE_CLEAR);
                     //hide all the filter widgets
                     for (var i = 0; i < this.queryWidgets.length; i++) {
-                        try{
-                        this.queryWidgets[i].hide();
+                        try {
+                            this.queryWidgets[i].hide();
                         }
-                        catch(err){
+                        catch (err) {
                         }
                     }
 
@@ -208,18 +208,18 @@ define([
                     //populate slider min/max/current
                     var currentWidget;
                     var currentRangeLookupArray;
-                    for (i = 0; i < this.sliderWidgets.length; i++) {
-                        currentWidget = this.sliderWidgets[i];
+                    for (i = 0; i < this.numberWidgets.length; i++) {
+                        currentWidget = this.numberWidgets[i];
                         currentRangeLookupArray = rangeLookupAsArray[currentWidget.queryField];
                         //check for empty string
                         var emptyStrIdx = array.indexOf(currentRangeLookupArray, "");
-                        if(emptyStrIdx > -1){
+                        if (emptyStrIdx > -1) {
                             currentRangeLookupArray.splice(emptyStrIdx, 1);
                         }
                         if (currentRangeLookupArray && currentRangeLookupArray.length > 1) {
                             currentWidget.show();
-                            max = Math.ceil(Math.max.apply(Math, currentRangeLookupArray)) + 1;
-                            min = Math.ceil(Math.min.apply(Math, currentRangeLookupArray)) - 1;
+                            max = Math.max.apply(Math, currentRangeLookupArray);
+                            min = Math.min.apply(Math, currentRangeLookupArray);
                             if (max < 0) {
                                 max = 0;
                             }
@@ -235,8 +235,6 @@ define([
                             }
                             currentWidget.set("maximum", max);
                             currentWidget.set("minimum", min);
-                            currentWidget.set("value", max);
-                            currentWidget.set("rule", [min, max]);
                         }
                         else {
                             //hide the widget

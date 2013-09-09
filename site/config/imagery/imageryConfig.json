@@ -11,15 +11,7 @@
             "logo": false
         },
         "useBasemapGallery": true,
-        "initialExtent": {
-            "xmin": -8847249.936968341,
-            "ymin": 3933736.784368135,
-            "xmax": -8651571.144558214,
-            "ymax": 4070100.442828942,
-            "spatialReference": {
-                "wkid": 102100
-            }
-        },
+
         "basemaps": {
             "topo": {
                 "label": "World Topographic",

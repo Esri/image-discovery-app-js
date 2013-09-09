@@ -160,11 +160,6 @@ define([
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.SET_EXTENT, extent);
                     }
                 },
-                /*
-                 handleToggleAllFootprints: function (checked) {
-                 this.grid.toggleAllFootprints(checked);
-                 },
-                 */
                 handleToggleAllThumbnails: function (checked) {
                     this.grid.toggleAllThumbnails(checked);
                 }

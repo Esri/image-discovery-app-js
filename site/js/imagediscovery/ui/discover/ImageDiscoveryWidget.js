@@ -49,7 +49,7 @@ define([
                     if (this.createQueryFieldsDiscoveryContent) {
                         this.viewModel.selectedDiscoveryService.subscribe(lang.hitch(this, this.handleSearchServiceChanged));
                     }
-                    ko.applyBindings(this.viewModel, this.domNode);
+                   ko.applyBindings(this.viewModel, this.domNode);
                     if (this.discoverGeometryUploadTaskConfiguration == null || !lang.isObject(this.discoverGeometryUploadTaskConfiguration)) {
                         this.viewModel.searchByGeometryButtonVisible(false);
                     }

@@ -3,7 +3,7 @@
     "imageQueryLayers": [
         {
             "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",
-            "label": "TN Lidar",
+            "label": "No",
             "queryWhereClauseAppend": "Category = 1"
         },
         {
@@ -27,14 +27,14 @@
             "field": "SensorName",
             "label": "Sensor",
             "filter": {
-                "enable": false
+                "enable": true
             }
         },
         {
             "field": "Name",
             "label": "Name",
             "filter": {
-                "enable": false
+                "enable": true
             },
             "style": {
                 "color": "red"
@@ -51,8 +51,7 @@
                 "unitsLabel": "m"
             },
             "style": {
-                "fontWeight": "bold",
-                "fontFace": "italic"
+                "fontSize": "8pt"
             }
         },
         {

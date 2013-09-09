@@ -14,17 +14,17 @@ define([
             [UITemplatedWidget],
             {
                 //set this to the image service
-                queryField:"queryField",
-                enabled:true,
-                templateString:template,
-                title:"Query Widget",
-                visible:true,
+                queryField: "queryField",
+                enabled: true,
+                templateString: template,
+                title: "Query Widget",
+                visible: true,
 
-                constructor:function (params) {
+                constructor: function (params) {
                     lang.mixin(this, params || {});
                 },
 
-                postCreate:function () {
+                postCreate: function () {
                     this.inherited(arguments);
                     this.filterFunctionCallback = lang.hitch(this, this.filterFunction);
                     this.createQueryContent();
@@ -36,43 +36,43 @@ define([
 
                     }
                 },
-                createQueryContent:function () {
+                createQueryContent: function () {
                     var contents = this._createView();
                     if (contents == null) {
                         return;
                     }
                     domConstruct.place(contents, this.imageQueryWidgetContents);
                 },
-                _createView:function () {
+                _createView: function () {
                     //override this
                 },
-                getQueryArray:function () {
+                getQueryArray: function () {
                     return "";
                 },
-                hide:function () {
+                hide: function () {
                     domStyle.set(this.domNode, "display", "none");
                     this.visible = false;
                     this.onFilterHidden();
                 },
-                show:function () {
+                show: function () {
                     domStyle.set(this.domNode, "display", "block");
                     this.visible = true;
                     this.onFilterDisplayed();
                 },
-                reset:function () {
+                reset: function () {
                     this.clearFilterFunction();
                 },
-                disableQuery:function () {
+                disableQuery: function () {
                     this.enabled = false;
                     this.onClearFilterFunction();
 
                 },
-                enableQueryIfVisible:function () {
+                enableQueryIfVisible: function () {
                     if (this.visible && !this.enabled) {
                         this.enableQuery();
                     }
                 },
-                enableQuery:function () {
+                enableQuery: function () {
                     this.enabled = true;
                     if (this.isDefaultState()) {
                         this.clearFilterFunction();
@@ -81,30 +81,30 @@ define([
                         this.applyFilterFunctionChange();
                     }
                 },
-                applyFilterFunctionChange:function () {
+                applyFilterFunctionChange: function () {
                     if (this.enabled) {
                         this.onApplyFilterFunction(this.filterFunctionCallback);
                     }
                 },
-                updateRangeFromVisible: function(){
+                updateRangeFromVisible: function () {
 
                 },
-                clearFilterFunction:function () {
+                clearFilterFunction: function () {
                     this.onClearFilterFunction();
                 },
-                filterFunction:function (item) {
+                filterFunction: function (item) {
                     return true;
                 },
-                onClearFilterFunction:function () {
+                onClearFilterFunction: function () {
 
                 },
-                onApplyFilterFunction:function (filterFxn) {
+                onApplyFilterFunction: function (filterFxn) {
                 },
-                onFilterHidden:function () {
+                onFilterHidden: function () {
                 },
-                onFilterDisplayed:function () {
+                onFilterDisplayed: function () {
                 },
-                isDefaultState:function () {
+                isDefaultState: function () {
                     return false;
                 }
 

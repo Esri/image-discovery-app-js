@@ -1,0 +1,42 @@
+<div class="imageFilterWidgetContentEntry">
+    <div data-dojo-attach-point="imageQueryWidgetContents"
+         class="imageQueryWidgetContents imageFilterNumberRangeWidgetContents">
+        <div class="imageFilterNumberRangeInfoContainer">
+            <div class="commonIcons16 information imageFilterNumberRangeInfo" title=""
+                 data-dojo-attach-point="rangeInformationHoverIcon"></div>
+        </div>
+        <div class="imageFilterModesContainer">
+            <span class="imageFilterNumberModesLbl"
+                  data-bind="css:{imageFilterNumberModesLblSelected: lessThanSelected},click:enableLessThan">Less Than</span>
+            <span class="imageFilterNumberModesLbl"
+                  data-bind="css:{imageFilterNumberModesLblSelected: greaterThanSelected},click:enableGreaterThan">Greater Than</span>
+            <span class="imageFilterNumberModesLbl"
+                  data-bind="css:{imageFilterNumberModesLblSelected: rangeSelected},click:enableRange">Range</span>
+        </div>
+        <div data-bind="visible:lessThanSelected" class="imageFilterNumberModeContentContainer">
+            <div class="numberFilterInputContents">
+                <input data-bind="value:currentLessThanValue, valueUpdate: 'afterkeydown',  event:{keyup:validateLessThan}"/>
+
+                <div class="commonIcons16 add applyNumberFilterIcon" title="Apply Filter"
+                     data-bind="click:applyLessThanFilter"></div>
+            </div>
+        </div>
+        <div data-bind="visible:greaterThanSelected" class="imageFilterNumberModeContentContainer">
+            <div class="numberFilterInputContents">
+                <input data-bind="value:currentGreaterThanValue, valueUpdate: 'afterkeydown',  event:{keyup:validateGreaterThan}"/>
+            </div>
+            <div class="commonIcons16 add applyNumberFilterIcon" title="Apply Filter"
+                 data-bind="click:applyGreaterThanFilter"></div>
+        </div>
+        <div data-bind="visible:rangeSelected" class="imageFilterNumberModeContentContainer">
+            <div class="numberFilterInputContents">
+                <input class="imageFilterDualNumberInput"
+                       data-bind="value:currentMinRangeValue, valueUpdate: 'afterkeydown',  event:{keyup:validateMinRange}"/>
+                <input class="imageFilterDualNumberInput"
+                       data-bind="value:currentMaxRangeValue, valueUpdate: 'afterkeydown',  event:{keyup:validateMaxRange}"/>
+            </div>
+            <div class="commonIcons16 add applyNumberFilterIcon" title="Apply Filter"
+                 data-bind="click:applyRangeFilter"></div>
+        </div>
+    </div>
+</div>

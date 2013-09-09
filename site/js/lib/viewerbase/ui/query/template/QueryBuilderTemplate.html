@@ -2,6 +2,11 @@
     <div class="defaultTabContainer addCatalogTabContainer">
         <span data-bind="click:showQueryBuilderInput, css: {selectedTab: queryBuilderInputVisible}">Build Query</span>
         <span data-bind="click:showQueryBuilderResults, css: {selectedTab: queryBuilderResultsVisible}">Results</span>
+        <span data-bind="visible:showQueryBuilderSymbologyTab, click:showQueryBuilderSymbology, css: {selectedTab: queryBuilderSymbologyVisible}">Symbology</span>
+    </div>
+    <div data-bind="visible:showHowToQueryContent" class="howToQueryContent">
+        <div class="howToQueryHeader">To perform a query:</div>
+        <div>right click a layer/service in the table of contents and select "Query Builder"</div>
     </div>
     <div class="querBuilderInputContainer" data-bind="visible:queryBuilderInputVisible">
         <div class="queryLayerNameContainer"><span>Query Layer: </span><span
@@ -92,9 +97,14 @@
             </div>
         </div>
     </div>
-    <div class="queryBuilderResultsContainer" style="min-height:300px" data-dojo-attach-point="queryBuilderResultsContainer"
+    <div class="queryBuilderResultsContainer" style="min-height:300px"
+         data-dojo-attach-point="queryBuilderResultsContainer"
          data-bind="visible:queryBuilderResultsVisible">
+    </div>
 
+    <div class="queryBuilderSymbologyContainer" style="min-height:300px"
+         data-dojo-attach-point="queryBuilderSymbologyContainer"
+         data-bind="visible:queryBuilderSymbologyVisible">
     </div>
 
 </div>

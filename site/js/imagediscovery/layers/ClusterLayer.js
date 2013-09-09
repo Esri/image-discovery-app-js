@@ -297,7 +297,6 @@ define([
                     } else {
                     }
                 },
-
                 _updateLabel: function (c) {
                     // find the existing label
                     var label = array.filter(this.graphics, function (g) {

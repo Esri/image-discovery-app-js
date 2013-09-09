@@ -1,0 +1,45 @@
+.imageFilterNumberRangeDisplay {
+    margin-bottom: 10px;
+    color: brown;
+}
+
+.imageFilterNumberModesLbl {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.imageFilterNumberModesLblSelected {
+    text-decoration: underline;
+    color: blue;
+}
+
+.imageFilterDualNumberInput {
+    width: 70px;
+}
+
+.imageFilterNumberRangeWidgetContents {
+    font-size: 9pt;
+}
+
+.imageFilterModesContainer {
+    margin-bottom: 10px;
+    color: gray;
+
+}
+
+.imageFilterNumberRangeInfoContainer {
+    height: 25px;
+}
+
+.applyNumberFilterIcon {
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+.numberFilterInputContents{
+   margin-left: 25px;
+}
+
+.imageFilterNumberModeContentContainer {
+    position: relative;
+}

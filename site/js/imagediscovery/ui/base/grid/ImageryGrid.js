@@ -185,7 +185,7 @@ define([
                                         currentFormatter = this.dateFormatterScoped;
                                     }
                                     else if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE && this.floatPrecision != null) {
-                                        currentFormatter = this.doubleFormatterScoped;
+                                      //  currentFormatter = this.doubleFormatterScoped;
                                     }
                                     else if (currentField.domain != null && currentField.domain.codedValues != null) {
                                         currentFormatter = lang.hitch(this, this.domainFormatter, currentField.domain.codedValues);

@@ -244,7 +244,6 @@ define([
                         }
                         queryString += this.cloudCover.fieldName + " " + this.cloudCover.operator + " " + this.currentCloudCoverValueObj.value;
                     }
-                    console.log(queryString);
                     return queryString;
                 },
                 _handleResolutionValueChanged: function (value) {

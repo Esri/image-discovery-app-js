@@ -101,6 +101,7 @@ define([
                     if (this.selectedValuesLookup[stringValue] == null) {
                         domClass.add(element, this.selectedClass);
                         domClass.remove(element, this.unselectedClass);
+                        domClass.remove(element, this.unselectedClass);
                         this.selectedValuesLookup[stringValue] = stringValue;
                         this.currentEnabledStringCount++;
                     }
