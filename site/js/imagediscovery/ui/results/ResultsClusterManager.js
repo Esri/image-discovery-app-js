@@ -29,34 +29,60 @@ define([
                 startup: function () {
                     this.createClusterLayer();
                 },
-
+                /**
+                 * returns true if the cluster layer exists in the clutster manager
+                 * @return {boolean}
+                 */
                 layerExists: function () {
                     return this.clusterLayer != null;
                 },
+                /**
+                 * returns true if the cluster layer is visible
+                 * @return {*}
+                 */
                 isVisible: function () {
                     return this.clusterLayer.visible;
                 },
+                /**
+                 hides the cluster layer
+
+                 */
                 hideLayer: function () {
                     this.clusterLayer.hide();
                 },
+                /**
+                 * displays the cluster layer on the map
+                 */
                 showLayer: function () {
                     this.reloadLayer();
                     this.clusterLayer.show();
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED);
                 },
+                /**
+                 * called when a discovery viewer query is complete
+                 */
                 handleQueryComplete: function () {
                     this.clusterLayer.clear();
                     this.clusterLayer._clusterGraphics();
                 },
+                /**
+                 * called when results are cleared. destroys the cluster layer
+                 */
                 clearResults: function () {
                     this.destroyClusterLayer();
                 },
+                /**
+                 * destroys the cluster layer
+                 */
                 destroyClusterLayer: function () {
                     if (this.clusterLayer) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.REMOVE_EXTERNAL_MANAGED_LAYER, this.clusterLayer);
                         this.clusterLayer = null;
                     }
                 },
+                /**
+                 * creates the cluster layer and adds it to the map
+                 */
                 createClusterLayer: function () {
                     this.destroyClusterLayer();
                     this.clusterLayer = new ClusterLayer({
@@ -80,11 +106,19 @@ define([
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.clusterLayer);
                     this.emit("clusterLayerCreated");
                 },
+                /**
+                 * initializes the symbology for the cluster layer
+                 */
                 initSymbology: function () {
                     this.pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_X, 1,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                             new Color("blue")));
                 },
+                /**
+                 * adds results to the cluster layer
+                 * @param results
+                 * @param queryLayerController
+                 */
                 addResults: function (results, queryLayerController) {
                     if (this.clusterLayer == null) {
                         this.createClusterLayer();
@@ -109,15 +143,26 @@ define([
                         }
                     }
                 },
+                /**
+                 * called when a discovery viewer filter has been applied. reloads the cluster layer
+                 */
                 handleFilterApplied: function () {
                     if (this.clusterLayer.visible) {
                         this.reloadLayer();
                     }
                 },
+                /**
+                 * reloads the cluster layer
+                 */
                 reloadLayer: function () {
                     this.clearResults();
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, this.getVisibleFootprintsHandler);
                 },
+                /**
+                 * adds passed footprints to the cluster layer
+                 * @param footprints
+                 * @private
+                 */
                 _getVisibleFootprintsHandler: function (footprints) {
                     this.createClusterLayer();
                     var currentCenter;

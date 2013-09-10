@@ -23,7 +23,7 @@ define([
                 templateString: template,
                 postCreate: function () {
                     this.inherited(arguments);
-                    this.geometryGeoprocessingSuccessCallback = lang.hitch(this, this.handleGeoprocessingSuccess);
+                    this.geometryGeoprocessingSuccessCallback = lang.hitch(this, this._handleGeoprocessingSuccess);
                     this.geometryGeoprocessingErrorCallback = lang.hitch(this, this.handleGeoprocessingError);
                     this.handleUploadFeaturesResponseCallback = lang.hitch(this, this.handleProcessUploadFeatures);
 
@@ -44,6 +44,9 @@ define([
                         this.geometryUploadTaskConfiguration = discoveryGeometryUploadConfiguration;
                     }
                 },
+                /**
+                 * called when an upload of geometry has been requested in the view
+                 */
                 handleGeometryUpload: function () {
                     var uploadFilePath = domAttr.get(this.uploadFileInput, "value");
                     if (uploadFilePath == null || uploadFilePath == "") {
@@ -68,20 +71,33 @@ define([
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Viewer not configured for upload");
                     }
                 },
+                /**
+                 * called when the geometry file could not be uploaded to the server
+                 * @param err
+                 */
                 handleFileLoadError: function (err) {
                     VIEWER_UTILS.log("Could not upload file", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not upload file");
                 },
+                /**
+                 * called when the geometry file has been uploaded to the server. An item id is returned from ArcGIS Server
+                 * @param response
+                 */
                 handleFileLoad: function (response) {
                     domAttr.set(this.uploadFileInput, "value", "");
 
                     if (response && lang.isObject(response) && response.item && response.item.itemID) {
                         var itemId = response.item.itemID;
                         //send the gp request
-                        this.sendGeometryToEsriFormatRequest(response.item);
+                        this._sendGeometryToEsriFormatRequest(response.item);
                     }
                 },
-                sendGeometryToEsriFormatRequest: function (uploadItem) {
+                /**
+                 * sends the uploaded item to the discovery applications geoprocessing task that converts the geometries to esri format
+                 * @private
+                 * @param uploadItem
+                 */
+                _sendGeometryToEsriFormatRequest: function (uploadItem) {
                     if (this.geometryUploadTaskConfiguration.geoprocessingTaskUrl == null) {
                         alert("geometry upload is missing upload target parameter 'geoprocessingTaskUrl'");
                     }
@@ -127,7 +143,12 @@ define([
                         this.geometryUploaderGeoprocessingTask.execute(requestParameters, this.geometryGeoprocessingSuccessCallback, this.geometryGeoprocessingErrorCallback);
                     }
                 },
-                handleGeoprocessingSuccess: function (response) {
+                /**
+                 *called when the geometry has been converted to esri format by the discovery application geoprocessing endpoint
+                 * @param response
+                 * @private
+                 */
+                _handleGeoprocessingSuccess: function (response) {
                     if (response && response.results) {
                         //get the output features
                         if (response.results[this.geometryUploadTaskConfiguration.outputFeaturesParameterName] != null) {
@@ -142,6 +163,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * processes the esri formatted geometries and sets the map extent
+                 * @param response
+                 */
                 handleProcessUploadFeatures: function (response) {
                     if (response && response.value && response.value.features) {
                         //assign symbology and add to map
@@ -190,10 +215,17 @@ define([
                 onPerformSearch: function (searchGeometries) {
 
                 },
+                /**
+                 * called when there was an error sending the upload file to the discovery applications geometry geoprocessor
+                 * @param err
+                 */
                 handleGeoprocessingError: function (err) {
                     VIEWER_UTILS.log("There was an error processing geometry upload", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not upload geometry");
                 },
+                /**
+                 * handles changes in the upload file form element
+                 */
                 handleFilePathChanged: function () {
                     var uploadFilePath = domAttr.get(this.uploadFileInput, "value");
                     if (uploadFilePath == null || uploadFilePath == "") {

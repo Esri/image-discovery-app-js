@@ -42,17 +42,16 @@ define([
                 storeIdField: "_storeId",
                 constructor: function (params) {
                     lang.mixin(this, params || {});
-                    this.setSelectedThumbCallback = lang.hitch(this, this.setSelectedThumbnails);
                     this.dateFormatterScoped = lang.hitch(this, this.dateFormatter);
-                    this.doubleFormatterScoped = lang.hitch(this, this.doubleFormatter);
-                    this.stringFormatterScoped = lang.hitch(this, this.stringFormatter);
                     this.fieldsFormattersByQueryControllerId = {};
-                    this.fieldStyleByQueryControllerId = {};
                 },
                 postCreate: function () {
                     this.inherited(arguments);
                     this.createGrid();
                 },
+                /**
+                 * loads the required discovery viewer configuration that the grid will use
+                 */
                 loadViewerConfigurationData: function () {
                     //get the fields to display from configuration
                     var displayFieldsConfig;
@@ -84,12 +83,21 @@ define([
                         }
                     }
                 },
+                /**
+                 * expands the grid
+                 */
                 expandGrid: function () {
                     this.grid.expand();
                 },
+                /**
+                 * shrinks the grid
+                 */
                 shrinkGrid: function () {
                     this.grid.shrink();
                 },
+                /**
+                 * clears the grid and removes all results
+                 */
                 clearGrid: function () {
                     //clears the grid. removes all items from the grid and removes imagery/footprints from the map
                     if (this.thumbnailHeaderCheckbox) {
@@ -98,10 +106,16 @@ define([
                     this.createNewStore();
                     this.setSelectedThumbnails();
                 },
+                /**
+                 * creates a new store for the grid
+                 */
                 createNewStore: function () {
                     this.store = new Observable(new Memory({ data: [], idProperty: this.storeIdField}));
                     this.grid.set("store", this.store);
                 },
+                /**
+                 * disables the thumbnail toggle buttons
+                 */
                 disableThumbnailToggle: function () {
                     //disable the from toggling the thumbnail checkbox
                     this.thumbnailToggleDisabled = true;
@@ -112,6 +126,9 @@ define([
                         this.grid.disableThumbnailToggle();
                     }
                 },
+                /**
+                 * enabled the thumbnail toggle buttons
+                 */
                 enableThumbnailToggle: function () {
                     //allow the user to toggle the thumbnail checkbox
                     this.thumbnailToggleDisabled = false;
@@ -122,18 +139,29 @@ define([
                         this.grid.enableThumbnailToggle();
                     }
                 },
+                /**
+                 * disables rows in the grid by function
+                 * @param isDisabledFunction function that takes in an item and returns true is the row is to be disabled
+                 */
                 grayOutRowsByFunction: function (isDisabledFunction) {
                     if (this.grid) {
                         this.grid.setGrayedOutRows(isDisabledFunction);
                         this.setSelectedThumbnails();
                     }
                 },
+                /**
+                 * clears the grayed out rows in the grid. rows are not removed from the grid
+                 */
                 clearGrayedOutRows: function () {
                     if (this.grid) {
                         this.grid.clearGrayedOutRows();
                         this.setSelectedThumbnails();
                     }
                 },
+                /**
+                 * create the add-on columns in the grid
+                 * @return {Array} columns to add to the grid
+                 */
                 generateManipulationColumns: function () {
                     //add-on fields for the discovery grid. these are appended to the fields from the configuration file
                     return [
@@ -155,6 +183,10 @@ define([
                         }
                     ];
                 },
+                /**
+                 * generates the columns specified in the discovery applications configuration file
+                 * @return {Array} columns to add to the grid
+                 */
                 generateLayerColumns: function () {
                     var i;
                     var j;
@@ -185,7 +217,7 @@ define([
                                         currentFormatter = this.dateFormatterScoped;
                                     }
                                     else if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE && this.floatPrecision != null) {
-                                      //  currentFormatter = this.doubleFormatterScoped;
+                                        //TODO: double formatting has been disabled. need to format on a column level and not a grid level
                                     }
                                     else if (currentField.domain != null && currentField.domain.codedValues != null) {
                                         currentFormatter = lang.hitch(this, this.domainFormatter, currentField.domain.codedValues);
@@ -231,6 +263,9 @@ define([
                     }
                     return layerColumns;
                 },
+                /**
+                 * creates the inner grid
+                 */
                 createGrid: function () {
                     //setup the columns
                     var columns = this.generateManipulationColumns();
@@ -246,12 +281,20 @@ define([
                     this.grid.on("dgrid-sort", lang.hitch(this, this.handleGridSort));
                     domConstruct.place(this.grid.domNode, this.domNode);
                 },
+                /**
+                 * called when the grid is sorted. lock raster is ordered by the current sorting of the grid
+                 * @param evt
+                 */
                 handleGridSort: function (evt) {
                     if (evt && evt.sort) {
                         this.setSelectedThumbnailsSorted(evt.sort);
                     }
                 },
                 /* Header Renderers */
+                /**
+                 * renders the thumbnail column in the grid
+                 * @param node
+                 */
                 thumbnailRenderHeaderCell: function (node) {
                     var infoIcon = domConstruct.create("div", { title: "Toggle Thumbnails", className: "imageGridThumbnailHeaderIcon"});
                     if (this.allowCheckAllThumbnails) {
@@ -263,7 +306,10 @@ define([
                 },
                 /*End  Header Renderers */
 
-                /* Handle Result click/select */
+                /**
+                 *  returns the object ids for visible items in the grid
+                 * @return {Array}
+                 */
                 getVisibleContentObjectIdArray: function () {
                     var items = this.store.query({isFiltered: false});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
@@ -281,6 +327,11 @@ define([
                     }
                     return queryLayerControllerObjectIdsArray;
                 },
+                /**
+                 * clones all visible items in the grid
+                 * @param ignoreFieldsLookup fields to ignore when cloning grid items
+                 * @return {Array} array of cloned items
+                 */
                 cloneVisibleItems: function (ignoreFieldsLookup) {
                     var clonedItems = [];
 
@@ -301,7 +352,12 @@ define([
                     }
                     return clonedItems;
                 },
-                //gets the unique values for rows that are visible on the map
+                /**
+                 *  gets the unique values for rows that are visible on the map
+                 * @param fieldsArray fields to return for grid items
+                 * @param queryParams query to use against the grid store. only items that pass the query are returned
+                 * @return {*}
+                 */
                 getUniqueVisibleThumbnailAttributes: function (fieldsArray, queryParams) {
                     if (queryParams == null) {
                         queryParams = {};
@@ -309,7 +365,12 @@ define([
                     queryParams.showThumbNail = true;
                     return this.getUniqueVisibleGridAttributes(fieldsArray, queryParams);
                 },
-                //gets the unique values for rows that are visible in the grid
+                /**
+                 *  gets the unique values for rows that are visible in the grid
+                 * @param fieldsArray fields to return for grid items
+                 * @param queryParams  query to use against the grid store. only items that pass the query are returned
+                 * @return {{}}
+                 */
                 getUniqueVisibleGridAttributes: function (fieldsArray, queryParams) {
                     if (fieldsArray == null || !lang.isArray(fieldsArray) || fieldsArray.length == 0) {
                         return {};
@@ -341,6 +402,10 @@ define([
                     }
                     return fieldsObj;
                 },
+                /**
+                 * returns the count of visible items in the grid
+                 * @return {*}
+                 */
                 getVisibleItemCount: function () {
                     var items = this.store.query();
                     return items.length;

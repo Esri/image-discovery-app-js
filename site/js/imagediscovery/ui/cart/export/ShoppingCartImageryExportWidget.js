@@ -4,11 +4,24 @@ define([
     "dojo/_base/lang",
     "../../export/ImageryExportWidget"
 ],
-    function (declare, topic, lang, ImageryExportWidget) {
+    /**
+     * creates the imagery export widget for the shopping cart
+     * @param declare
+     * @param topic
+     * @param lang
+     * @param ImageryExportWidget
+     * @return {*}
+     */
+        function (declare, topic, lang, ImageryExportWidget) {
         return declare(
             [ImageryExportWidget],
             {
+                //title to display for the window
                 imageryExportDownloadWindowTitle: "Checkout Complete",
+                /**
+                 * gets the object ids to checkout in the shopping cart
+                 * @return {*}
+                 */
                 getDownloadObjectIds: function () {
                     var objectIds = [];
                     //get object ids from the shopping cart grid

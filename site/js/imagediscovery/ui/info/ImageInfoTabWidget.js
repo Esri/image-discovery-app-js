@@ -10,20 +10,41 @@ define([
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/ImageInfoViewModel"
 ],
-    function (declare, template,theme, topic, locale, lang, domConstruct, domClass, UITemplatedWidget, ImageInfoViewModel) {
+    function (declare, template, theme, topic, locale, lang, domConstruct, domClass, UITemplatedWidget, ImageInfoViewModel) {
         return declare(
             [UITemplatedWidget],
             {
                 __defaultFloatPrecision: 3,
                 __defaultDateFormat: "dd-MM-yyyy",
-                defaultHideFields: {__serviceLabel: "__serviceLabel", queryControllerId: "queryControllerId", isHighlighted: "isHighlighted", isGrayedOut: "isGrayedOut", SrcImgID: "SrcImgID", MinPS: "MinPS", MaxPS: "MaxPS", LowPS: "LowPS", HighPS: "HighPS", Category: "Category", id: "id", geometry: "geometry", _storeId: "_storeId", isFiltered: "isFiltered", addedToCart: "addedToCart", showThumbNail: "showThumbNail", showFootprint: "showFootprint", OBJECTID: "OBJECTID", Shape_Area: "Shape_Area", Shape_Length: "Shape_Length" },
+                defaultHideFields: {
+                    __serviceLabel: "__serviceLabel",
+                    queryControllerId: "queryControllerId",
+                    isHighlighted: "isHighlighted",
+                    isGrayedOut: "isGrayedOut",
+                    SrcImgID: "SrcImgID",
+                    MinPS: "MinPS",
+                    MaxPS: "MaxPS",
+                    LowPS: "LowPS",
+                    HighPS: "HighPS",
+                    Category: "Category",
+                    id: "id",
+                    geometry: "geometry",
+                    _storeId: "_storeId",
+                    isFiltered: "isFiltered",
+                    addedToCart: "addedToCart",
+                    showThumbNail: "showThumbNail",
+                    showFootprint: "showFootprint",
+                    OBJECTID: "OBJECTID",
+                    Shape_Area: "Shape_Area",
+                    Shape_Length: "Shape_Length"
+                },
                 thumbnailDimensions: {h: 200, w: 200},
                 templateString: template,
                 constructor: function (params) {
                     this.dateFormat = null;
                     lang.mixin(this, params || {});
                 },
-                initListeners: function() {
+                initListeners: function () {
                     //when user adds item to shopping cart from Results view
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, lang.hitch(this, this.handleAddItemToCart));
                     //when user removes item from cart from Results view
@@ -88,14 +109,20 @@ define([
                         return null;
                     }
                 },
+                /**
+                 * show/hide image on the map
+                 * @param imageInfo
+                 */
 
-                //show/hide image on the map
-                handleToggleShowImage: function(imageInfo) {
+                handleToggleShowImage: function (imageInfo) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_SHOW_IMAGE, imageInfo);
 
                 },
-                //show thumbnail view
-                showThumbNail: function(imageInfoItem) {
+                /**
+                 * show thumbnail view
+                 * @param imageInfoItem
+                 */
+                showThumbNail: function (imageInfoItem) {
                     //using the query controller, get the image thumbnail
                     var queryController;
                     var imageInfo = imageInfoItem.imageInfoAndLayer.imageInfo;
@@ -112,16 +139,16 @@ define([
                         imageInfoItem.thumbnailURL(response.href);
                     }
                 },
-                handleToggleAddImageToShoppingCart: function(imageInfoItem) {
+                handleToggleAddImageToShoppingCart: function (imageInfoItem) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, imageInfoItem);
                 },
-                //set content of the image info popup
+                /**
+                 *   set content of the image info popup
+                 *   takes in an array where each element contains an image info object and its associated layer.
+                 *   populates all attributes from image info and retrieves the thumbnail for the row from the layer
+                 */
                 setImageInfos: function (imageInfoAndLayerArray) {
-                    //takes in an array where each element contains an image info object and its associated layer.
-                    //populates all attributes from image info and retrieves the thumbnail for the row from the layer
-
                     this.viewModel.clearImageInfos();
-
                     for (var i = 0; i < imageInfoAndLayerArray.length; i++) {
                         var imageInfoAndLayer = imageInfoAndLayerArray[i];
                         var imageInfo = imageInfoAndLayer.imageInfo;
@@ -173,7 +200,7 @@ define([
                 handleAddItemToCart: function (imageInfo) {
                     this.viewModel.addImageInfoToShoppingCart(imageInfo);
                 },
-                handleCenterAndFlashFootprint: function(imageInfo) {
+                handleCenterAndFlashFootprint: function (imageInfo) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, imageInfo);
                 }
             })

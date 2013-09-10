@@ -159,7 +159,6 @@ define([
                         ON_SHOW: "discovery:onShow"
                     },
                     CONFIGURATION: {
-                        GET_QUERY_SERVICES_INFO: "imgConfig:getQueryServicesInfo",
                         GET: "imgConfig:get",
                         GET_ENTRY: "imgConfig:getEntry"
                     },

@@ -14,10 +14,18 @@ define([
         return declare(
             [OnDemandGrid, ColumnHider],
             {
-                thumnailToggleDisabled: false,
+                //when true, the thumbnail checkboxes are disabled
+                thumbnailToggleDisabled: false,
+                //height of the grid
                 gridHeight: "160px",
+                //expanded height of the grid
                 expandedGridHeight: "350px",
-                renderRow: function (row, items) {
+                /**
+                 * renders a row in the grid
+                 * @param row row to render
+                 * @return {*}
+                 */
+                renderRow: function (row) {
                     var renderedRow = this.inherited(arguments);
                     if (row.isGrayedOut) {
                         this.grayOutRow({element: renderedRow});
@@ -28,6 +36,10 @@ define([
                     this.inherited(arguments);
                     domStyle.set(this.domNode, "height", this.gridHeight);
                 },
+                /**
+                 * sets grayed out rows based on passed function
+                 * @param isDisabledFunction takes in an item, returns to if the row it to be grayed out
+                 */
                 setGrayedOutRows: function (isDisabledFunction) {
                     if (isDisabledFunction && lang.isFunction(isDisabledFunction)) {
                         var rows = this.store.query({isFiltered: false});
@@ -42,6 +54,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * grays out a row
+                 * @param row row to gray out
+                 */
                 grayOutRow: function (row) {
                     if (lang.isObject(row)) {
                         domClass.add(row.element, "grayedOutGridRow");
@@ -76,6 +92,9 @@ define([
                         }
                     }
                 },
+                /**
+                 * clear all grayed out rows in the grid. the rows are still in the grid
+                 */
                 clearGrayedOutRows: function () {
                     var grayedOutEntries = this.store.query({ isGrayedOut: true});
                     var currentRow;
@@ -109,18 +128,29 @@ define([
                         currentRow.data.isGrayedOut = false;
                     }
                 },
+                /**
+                 * highlights a row yellow
+                 * @param row row to highlight yellow
+                 */
                 highlightRowYellow: function (row) {
                     if (row && row.element) {
                         domClass.add(row.element, "yellowGridRow");
                     }
                 },
+                /**
+                 * unhighlights a row in the grid
+                 * @param row row to unhighlight yellow
+                 */
                 unhighlightYellowRow: function (row) {
                     if (row && row.element) {
                         domClass.remove(row.element, "yellowGridRow");
                     }
                 },
+                /**
+                 * disables all thumbnail checkboxes in the grid
+                 */
                 disableThumbnailToggle: function () {
-                    if (!this.thumnailToggleDisabled) {
+                    if (!this.thumbnailToggleDisabled) {
                         var showFootPrintInputs = query("input[name=showThumbNail]", this.domNode);
                         for (var i = 0; i < showFootPrintInputs.length; i++) {
                             var currentCheckDijit = registry.getEnclosingWidget(showFootPrintInputs[i]);
@@ -128,11 +158,14 @@ define([
                                 currentCheckDijit.set("disabled", true);
                             }
                         }
-                        this.thumnailToggleDisabled = true;
+                        this.thumbnailToggleDisabled = true;
                     }
                 },
+                /**
+                 * enables all thumbnail checkboxes in the grid
+                 */
                 enableThumbnailToggle: function () {
-                    if (this.thumnailToggleDisabled) {
+                    if (this.thumbnailToggleDisabled) {
                         var showFootPrintInputs = query("input[name=showThumbNail]", this.domNode);
                         for (var i = 0; i < showFootPrintInputs.length; i++) {
                             var currentCheckDijit = registry.getEnclosingWidget(showFootPrintInputs[i]);
@@ -140,9 +173,13 @@ define([
                                 currentCheckDijit.set("disabled", false);
                             }
                         }
-                        this.thumnailToggleDisabled = false;
+                        this.thumbnailToggleDisabled = false;
                     }
                 },
+                /**
+                 * toggles all thumbnail checkboxes in the grid
+                 * @param checked boolean to use for checkbox state
+                 */
                 toggleAllThumbnails: function (checked) {
                     var currentCheckDijit;
                     var items = this.store.query({ isFiltered: false});
@@ -159,9 +196,15 @@ define([
                         }
                     }
                 },
+                /**
+                 * expands the grid
+                 */
                 expand: function () {
                     domStyle.set(this.domNode, "height", this.expandedGridHeight);
                 },
+                /**
+                 * shrinks the grid
+                 */
                 shrink: function () {
                     domStyle.set(this.domNode, "height", this.gridHeight);
                 }

@@ -10,11 +10,21 @@ define([
         return declare(
             [DownloadWidget],
             {
+                /**
+                 * creates the imagery export widget
+                 */
                 createExportWidget: function () {
-                    this.imageryExportWidget = new ShoppingCartImageryExportWidget().placeAt(this.imageExportContainer);
+                    if (this.imageryExportWidget == null) {
+                        this.imageryExportWidget = new ShoppingCartImageryExportWidget().placeAt(this.imageExportContainer);
+                    }
                 },
+                /**
+                 * creates the footprint download widget
+                 */
                 createFootprintDownloadWidget: function () {
-                    this.footprintExportWidget = new ShoppingCartDownloadFootprintsWidget().placeAt(this.downloadFootprintsContainer)
+                    if (this.footprintExportWidget == null) {
+                        this.footprintExportWidget = new ShoppingCartDownloadFootprintsWidget().placeAt(this.downloadFootprintsContainer);
+                    }
                 }
             });
     });

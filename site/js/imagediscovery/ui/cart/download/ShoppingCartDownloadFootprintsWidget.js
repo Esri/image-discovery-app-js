@@ -4,11 +4,22 @@ define([
     "dojo/_base/lang",
     "../../export/FootprintsExportWidget"
 ],
-    function (declare, topic, lang, FootprintsExportWidget) {
+    /**
+     * widget for downloading footprints
+     * @param declare
+     * @param topic
+     * @param lang
+     * @param FootprintsExportWidget
+     * @return {*}
+     */
+        function (declare, topic, lang, FootprintsExportWidget) {
         return declare(
             [FootprintsExportWidget],
             {
-                //retrieves the object ids for the items in the shopping cart grid
+                /**
+                 * retrieves the object ids for the items in the shopping cart grid
+                 * @return {*}
+                 */
                 getDownloadObjectIds: function () {
                     var objectIds = [];
                     //fire event to grid to get the object ids

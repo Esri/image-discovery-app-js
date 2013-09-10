@@ -25,6 +25,7 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
+                    //create the download list widget
                     this.downloadListWidget = new ImageryExportDownloadListWidget();
                     this.setContent(this.downloadListWidget.domNode);
                 },
@@ -40,9 +41,5 @@ define([
                     }
                     this.inherited(arguments);
                 }
-
-
-
             });
-
     });

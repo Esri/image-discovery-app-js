@@ -60,18 +60,21 @@ define([
                     this.itemRemovedFromCartHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
 
                 },
+                /**
+                 *
+                 * listener for IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT
+                 * returns the count of visible results in the grid
+                 * @param callback
+                 */
                 handleGetVisibleGridResultCount: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                         callback(unfilteredResults.length);
                     }
                 },
-                handleShowThumbNailToggle: function (object, checked) {
-                    this.inherited(arguments);
-                    if (!checked) {
-                        var row = this.grid.row(object);
-                    }
-                },
+                /**
+                 * clears highlighted results in the result grid
+                 */
                 clearHighlightedResults: function () {
                     var row;
                     var highlightedItems = this.store.query({isHighlighted: true});
@@ -86,6 +89,11 @@ define([
                         }
                     }
                 },
+                /**
+                 * highlights rows in yellow that are intersecting the passed envelope
+                 * @param envelope envelope to test
+                 * @param containsFlag flag for contains/intersects
+                 */
                 highlightResultsFromRectangleIntersect: function (envelope, containsFlag) {
                     var scrolledIntoView = false;
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
@@ -137,6 +145,10 @@ define([
                     //show image info popup
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageInfoAndLayerArray);
                 },
+                /**
+                 * returns visible footprints geometries in the result grid
+                 * @param callback function to send the visible footprint geometries to
+                 */
                 handleGetVisibleFootprintGeometries: function (callback) {
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var geometries = [];
@@ -145,6 +157,10 @@ define([
                     }
                     callback(geometries);
                 },
+                /**
+                 * returns visible footprint features in the result grid
+                 * @param callback  function to send the visible footprint features to
+                 */
                 handleGetVisibleFootprintFeatures: function (callback) {
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
                     var features = [];
@@ -153,6 +169,10 @@ define([
                     }
                     callback(features);
                 },
+                /**
+                 * toggles the thumbnail checkbox for the passed grid item
+                 * @param gridItem
+                 */
                 handleToggleShowImage: function (gridItem) {
                     //find the row and check or uncheck the checkbox and that will trigger the image to be shown
                     var row = this.grid.row(gridItem);
@@ -167,6 +187,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * toggle the shopping cart button for the passed item
+                 * @param gridItem
+                 */
                 toggleShoppingCartItem: function (gridItem) {
                     var row = this.grid.row(gridItem);
                     var toggleShoppingCartInput = query("input[name=toggleAddToShoppingCart]", row.element);
@@ -175,7 +199,10 @@ define([
                         this.handleToggleCartItem(gridItem, toggleShoppingCartInputDijit);
                     }
                 },
-
+                /**
+                 * called when a filter has been added to the discovery viewer
+                 * @param filterWidget
+                 */
                 handleFilterAdded: function (filterWidget) {
                     this.filterWidgetLookup[filterWidget.queryField] = filterWidget;
 
@@ -185,12 +212,19 @@ define([
                     filterWidget.on("filterHidden", lang.hitch(this, this.handleHideFilterIcon, filterWidget.queryField));
                     filterWidget.on("filterDisplayed", lang.hitch(this, this.handleShowFilterIcon, filterWidget.queryField));
                 },
+                /**
+                 * clears the result grid
+                 */
                 clearGrid: function () {
                     this.inherited(arguments);
                     this.hideAllFilterIcons();
                     this.onHideFilterResetIcon();
                     this.responseFeatures = [];
                 },
+                /**
+                 * grays out result grid rows by the passed functon
+                 * @param isDisabledFunction function that takes in an item and returns true if the item row should be grayed out
+                 */
                 grayOutRowsByFunction: function (isDisabledFunction) {
                     this.inherited(arguments);
                     //need to hide the filters
@@ -204,6 +238,9 @@ define([
                     }
                     this.onHideFilterResetIcon();
                 },
+                /**
+                 * clears all grayed out rows in the result grid
+                 */
                 clearGrayedOutRows: function () {
                     this.inherited(arguments);
                     //show the filters again
@@ -216,6 +253,10 @@ define([
                     }
                     this.onShowFilterResetIcon();
                 },
+                /**
+                 *  takes in a filter function. and applies filter function to each item
+                 * @param filterFunction
+                 */
                 handleApplyFilter: function (filterFunction) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.BEFORE_APPLY);
                     var filterFunctionInner = function (item) {
@@ -224,18 +265,7 @@ define([
                         if (queryLayerController == null) {
                             return;
                         }
-                        if (match) {
-                            //   if (item.isFiltered && item.showFootprint) {
-                            queryLayerController.showFootprint(item);
-                            //  }
-                            item.isFiltered = false;
-                        }
-                        else {
-                            //   if (item.showFootprint) {
-                            queryLayerController.hideFootprint(item);
-                            //   }
-                            item.isFiltered = true;
-                        }
+                        item.isFiltered = !match;
                         return match;
                     };
                     this.grid.set("query", filterFunctionInner);
@@ -243,6 +273,9 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED);
                     this.reHighlightRows();
                 },
+                /**
+                 * i have no idea what this function does
+                 */
                 reHighlightRows: function () {
                     var scrolledIntoView = false;
                     var unfilteredResults = this.store.query({isHighlighted: true});
@@ -262,6 +295,9 @@ define([
                         }
                     }
                 },
+                /**
+                 * called when a query in the discovery application is complete
+                 */
                 handleQueryComplete: function () {
                     //send the results to the user applied filter manager
                     this.userAppliedFiltersManager.setFeatures(this.responseFeatures);
@@ -277,7 +313,11 @@ define([
                         }
                     }));
                 },
-                //handle new results
+                /**
+                 * adds query results to the result grid
+                 * @param results
+                 * @param queryLayerController
+                 */
                 populateQueryResults: function (results, queryLayerController) {
                     if (this.store == null) {
                         this.createNewStore();
@@ -313,6 +353,10 @@ define([
                     this.responseFeatures = this.responseFeatures.concat(results.features);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.RESULT_GRID_POPULATED, results.features.length);
                 },
+                /**
+                 * generates the manipulation columns for the result grid
+                 * @return {Array}
+                 */
                 generateManipulationColumns: function () {
                     var parentColumns = this.inherited(arguments);
                     var columns = [
@@ -330,6 +374,10 @@ define([
                     }
                     return columns;
                 },
+                /**
+                 * generates the layer columns for the result grid
+                 * @return {*}
+                 */
                 generateLayerColumns: function () {
                     var layerColumns = this.inherited(arguments);
 
@@ -354,6 +402,14 @@ define([
                     }
                     return layerColumns;
                 },
+                /**
+                 * formatter function for the car column
+                 *
+                 * @param object
+                 * @param value
+                 * @param node
+                 * @param option
+                 */
                 cartIconFormatter: function (object, value, node, option) {
                     var iconClass = !value ? "resultGridCartIcon commonIcons16 shoppingCartEmpty" : "resultGridCartIcon  commonIcons16 shoppingCartAdded";
                     var title = !value ? "Add To Cart" : "Remove From Cart";
@@ -361,8 +417,13 @@ define([
                     cartButton.on("click", lang.hitch(this, this.handleToggleCartItem, object, cartButton));
                     domClass.add(cartButton.domNode, "queryResultShoppingCartButton");
                     domConstruct.place(cartButton.domNode, node);
-
                 },
+                /**
+                 * toggles the passed cart row entry
+                 * @param entry
+                 * @param cartButton
+                 * @param e
+                 */
                 handleToggleCartItem: function (entry, cartButton, e) {
                     if (domClass.contains(cartButton.iconNode, "shoppingCartEmpty")) {
                         this.addCartItem(entry, cartButton);
@@ -371,6 +432,11 @@ define([
                         this.removeCartItem(entry, cartButton, true);
                     }
                 },
+                /**
+                 * adds a result item entry to the shopping cart grid
+                 * @param entry
+                 * @param cartButton
+                 */
                 addCartItem: function (entry, cartButton) {
                     domClass.remove(cartButton.iconNode, "shoppingCartEmpty");
                     domClass.add(cartButton.iconNode, "shoppingCartAdded");
@@ -383,6 +449,12 @@ define([
 
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, clonedCartItem);
                 },
+                /**
+                 * removes a result item entry from the shopping cart grid
+                 * @param entry
+                 * @param cartButton
+                 * @param fireRemoveEvent
+                 */
                 removeCartItem: function (entry, cartButton, fireRemoveEvent) {
                     if (fireRemoveEvent == null) {
                         fireRemoveEvent = true;
@@ -398,6 +470,10 @@ define([
                     domClass.add(cartButton.iconNode, "shoppingCartEmpty");
                     domClass.remove(cartButton.iconNode, "shoppingCartAdded");
                 },
+                /**
+                 * called when an item has been removed from the shopping cart grid
+                 * @param resultId
+                 */
                 handleItemRemovedFromCart: function (resultId) {
                     var item = this.store.get(resultId);
                     if (item == null) {
@@ -445,6 +521,12 @@ define([
                     this.handleHideFilterIcon(currentColumn.field);
 
                 },
+                /**
+                 * toggles grid filter by field name and filter icon element
+                 * @param fieldName
+                 * @param filterIcon
+                 * @param e
+                 */
                 handleFilterHeaderPopupToggle: function (fieldName, filterIcon, e) {
                     //don't want to sort
                     e.stopPropagation();
@@ -466,6 +548,11 @@ define([
                         this.currentVisibleFilterTooltipObject = null;
                     }
                 },
+                /**
+                 * shows filter popup for field name and filter icon
+                 * @param fieldName
+                 * @param filterIcon
+                 */
                 showFilterPopup: function (fieldName, filterIcon) {
                     domClass.remove(filterIcon, "filterHidden");
                     domClass.add(filterIcon, "filterVisible");
@@ -501,48 +588,85 @@ define([
                         this.currentVisibleFilterTooltipObject = {tooltip: filterTooltip, filterIcon: filterIcon};
                     }
                 },
+                /**
+                 * hides all filter icons in the result grid
+                 */
                 hideAllFilterIcons: function () {
                     for (var key in this.filterIconLookup) {
                         this.handleHideFilterIcon(key);
                     }
                 },
+                /**
+                 * hides filter icon by the passed field name
+                 * @param queryField
+                 */
                 handleHideFilterIcon: function (queryField) {
                     var filterIconForWidget = this.filterIconLookup[queryField];
                     //need to hide the icon wrapper
                     domStyle.set(filterIconForWidget.parentNode, "display", "none");
                 },
+                /**
+                 * shows filter icon by the passed field name
+                 * @param queryField
+                 */
                 handleShowFilterIcon: function (queryField) {
                     var filterIconForWidget = this.filterIconLookup[queryField];
                     //need to show the icon wrapper
                     domStyle.set(filterIconForWidget.parentNode, "display", "block");
                 },
+                /**
+                 * clears yellow highlight for filter icon based on query field
+                 * @param queryField
+                 */
                 handleSetFilterIconCleared: function (queryField) {
                     var filterIconForWidget = this.filterIconLookup[queryField];
                     domClass.remove(filterIconForWidget, "filterHighlight");
                     domClass.add(filterIconForWidget, "filter");
                 },
+                /**
+                 * highlights filter icon yellow for passed query field
+                 * @param queryField
+                 */
                 handleSetFilterIconApplied: function (queryField) {
                     var filterIconForWidget = this.filterIconLookup[queryField];
                     domClass.remove(filterIconForWidget, "filter");
                     domClass.add(filterIconForWidget, "filterHighlight");
                 },
+                /**
+                 * clears highlights when the footer containg the results grid has been collapsed
+                 */
                 handleFooterCollapsed: function () {
                     this.hideVisibleFilterPopup();
                     this.clearHighlightedResults();
                 },
+                /**
+                 * hides the current visible filter popup
+                 *
+                 */
                 hideVisibleFilterPopup: function () {
                     if (this.currentVisibleFilterTooltipObject != null && lang.isObject(this.currentVisibleFilterTooltipObject)) {
                         this.hideFilterPopup(this.currentVisibleFilterTooltipObject.tooltip, this.currentVisibleFilterTooltipObject.filterIcon);
                     }
                 },
+                /**
+                 * returns the count of visible items in the result grid
+                 * @return {*}
+                 */
                 getVisibleItemCount: function () {
                     var items = this.store.query({isFiltered: false});
                     return items.length;
                 },
-                //passing this a query object will return the result of the query store
+                /**
+                 * passing this a query object will return the result of the query store
+                 * @param queryParams
+                 * @return {*}
+                 */
                 queryResultSet: function (queryParams) {
                     return this.store.query(queryParams);
                 },
+                /**
+                 * resets all filters associated with the result grid
+                 */
                 resetAllFilters: function () {
                     this.userAppliedFiltersManager.resetFilters();
                 },

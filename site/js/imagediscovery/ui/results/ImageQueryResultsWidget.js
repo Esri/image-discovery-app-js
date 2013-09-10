@@ -81,99 +81,6 @@ define([
                     this._createShoppingCartGrid();
                     this.createActiveSourcesWidget();
                 },
-                checkForToolsActive: function (level) {
-                    if (level == null) {
-                        var zoomLevel;
-                        topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, lang.hitch(this, function (mapLevel) {
-                            zoomLevel = mapLevel;
-                        }));
-                        level = zoomLevel;
-                    }
-                    if (level < this.footprintZoomLevelStart) {
-                        this.viewModel.toolsActive(false);
-                        this.clearDraw();
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
-                    }
-                    else {
-                        this.viewModel.toolsActive(true);
-                    }
-                },
-                handleZoomLevelChange: function (extent, factor, anchor, level) {
-                    if (this.viewModel.cart()) {
-                        return;
-                    }
-                    //hide the select tools if we are in clustering
-                    this.checkForToolsActive();
-                    //check to see if we dsiplay/hide the footprints layer
-                    if (this.resultsFootprintManager) {
-                        if (level < this.footprintZoomLevelStart) {
-                            if (this.resultsFootprintManager.isVisible()) {
-                                this.resultsFootprintManager.hideLayer();
-                            }
-                        }
-                        else {
-                            if (!this.resultsFootprintManager.isVisible()) {
-                                this.resultsFootprintManager.showLayer();
-                            }
-                        }
-                    }
-                    //check to see if we display/hide the cluster layer
-                    if (this.resultsClusterManager && this.resultsClusterManager.layerExists()) {
-                        if (level >= this.footprintZoomLevelStart) {
-                            if (this.resultsClusterManager.isVisible()) {
-                                this.resultsClusterManager.hideLayer();
-                            }
-                        }
-                        else {
-                            if (!this.resultsClusterManager.isVisible()) {
-                                this.resultsClusterManager.showLayer();
-                            }
-                        }
-                    }
-                },
-                handleFilterApplied: function () {
-                    //update the result count
-                    if (this.resultsGridWidget) {
-                        var count = this.resultsGridWidget.getVisibleItemCount();
-                        this.viewModel.resultCount(count);
-                    }
-                },
-                applyBindings: function () {
-                    if (!this.bindingsApplied) {
-                        ko.applyBindings(this.viewModel, this.domNode);
-                        this.bindingsApplied = true;
-                    }
-                },
-                createActiveSourcesWidget: function () {
-                    //create active sources widget
-                    this.activeSourcesWidget = new ActiveSourcesWidget();
-                    this.activeSourcesWidget.placeAt(this.activeServicesContainer);
-                },
-                handleActivateRectangleSelect: function () {
-                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
-                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
-                },
-                geometryAdded: function (geometry) {
-                    if (geometry instanceof Extent) {
-                        if (this.viewModel.rectangleSelectionActive()) {
-                            if (this.identifyContainsRadioBtn.checked) {
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
-                                    geometry, true);
-                            }
-                            else {
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
-                                    geometry, false);
-                            }
-                        }
-                    }
-                    this.setDraw(this.currentDrawType);
-                },
-                clearDraw: function () {
-                    this.inherited(arguments);
-                    this.currentDrawType = null;
-                    topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
-                    this.viewModel.clearAllDraw();
-                },
                 loadViewerConfigurationData: function () {
                     var searchConfiguration = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
@@ -216,11 +123,139 @@ define([
                         }
                     }
                 },
-                _createShoppingCartGrid: function () {
-                    this.shoppingCartGridWidget = new ShoppingCartGrid(this.getCartGridParameters());
-                    domConstruct.place(this.shoppingCartGridWidget.domNode, this.shoppingCartGridContainer);
-                    this.shoppingCartGridWidget.startup();
+                checkForToolsActive: function (level) {
+                    if (level == null) {
+                        var zoomLevel;
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, lang.hitch(this, function (mapLevel) {
+                            zoomLevel = mapLevel;
+                        }));
+                        level = zoomLevel;
+                    }
+                    if (level < this.footprintZoomLevelStart) {
+                        this.viewModel.toolsActive(false);
+                        this.clearDraw();
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
+                    }
+                    else {
+                        this.viewModel.toolsActive(true);
+                    }
                 },
+                /**
+                 * listener for VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED
+                 * figures out if the discovery application should display the cluser layer or the footprint layer
+                 * @param extent
+                 * @param factor
+                 * @param anchor
+                 * @param level
+                 */
+                handleZoomLevelChange: function (extent, factor, anchor, level) {
+                    if (this.viewModel.cart()) {
+                        return;
+                    }
+                    //hide the select tools if we are in clustering
+                    this.checkForToolsActive();
+                    //check to see if we dsiplay/hide the footprints layer
+                    if (this.resultsFootprintManager) {
+                        if (level < this.footprintZoomLevelStart) {
+                            if (this.resultsFootprintManager.isVisible()) {
+                                this.resultsFootprintManager.hideLayer();
+                            }
+                        }
+                        else {
+                            if (!this.resultsFootprintManager.isVisible()) {
+                                this.resultsFootprintManager.showLayer();
+                            }
+                        }
+                    }
+                    //check to see if we display/hide the cluster layer
+                    if (this.resultsClusterManager && this.resultsClusterManager.layerExists()) {
+                        if (level >= this.footprintZoomLevelStart) {
+                            if (this.resultsClusterManager.isVisible()) {
+                                this.resultsClusterManager.hideLayer();
+                            }
+                        }
+                        else {
+                            if (!this.resultsClusterManager.isVisible()) {
+                                this.resultsClusterManager.showLayer();
+                            }
+                        }
+                    }
+                },
+                /**
+                 * updates the result count when a filter has been applied to the result set
+                 */
+                handleFilterApplied: function () {
+                    //update the result count
+                    if (this.resultsGridWidget) {
+                        var count = this.resultsGridWidget.getVisibleItemCount();
+                        this.viewModel.resultCount(count);
+                    }
+                },
+                applyBindings: function () {
+                    if (!this.bindingsApplied) {
+                        ko.applyBindings(this.viewModel, this.domNode);
+                        this.bindingsApplied = true;
+                    }
+                },
+                /**
+                 * creates the active sources with inside the result widget
+                 */
+                createActiveSourcesWidget: function () {
+                    if (this.activeSourcesWidget == null) {
+                        this.activeSourcesWidget = new ActiveSourcesWidget();
+                        this.activeSourcesWidget.placeAt(this.activeServicesContainer);
+                    }
+                },
+                /**
+                 * activates the rectangle identify tool in the results widget
+                 */
+                handleActivateRectangleSelect: function () {
+                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
+                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
+                },
+                /**
+                 * called when a geometry has been created from the identify tool inside the results widget
+                 * @param geometry
+                 */
+                geometryAdded: function (geometry) {
+                    if (geometry instanceof Extent) {
+                        if (this.viewModel.rectangleSelectionActive()) {
+                            if (this.identifyContainsRadioBtn.checked) {
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
+                                    geometry, true);
+                            }
+                            else {
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
+                                    geometry, false);
+                            }
+                        }
+                    }
+                    this.setDraw(this.currentDrawType);
+                },
+                /**
+                 * clears the drawing on the map from the results widget (identify)
+                 */
+                clearDraw: function () {
+                    this.inherited(arguments);
+                    this.currentDrawType = null;
+                    topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
+                    this.viewModel.clearAllDraw();
+                },
+                /**
+                 * creates the shopping cart grid
+                 * @private
+                 */
+                _createShoppingCartGrid: function () {
+                    if (this.shoppingCartGridWidget == null) {
+                        this.shoppingCartGridWidget = new ShoppingCartGrid(this.getCartGridParameters());
+                        domConstruct.place(this.shoppingCartGridWidget.domNode, this.shoppingCartGridContainer);
+                        this.shoppingCartGridWidget.startup();
+                    }
+                },
+                /**
+                 * creates the search result grid
+                 * @private
+                 */
                 _createResultGrid: function () {
                     if (this.resultsGridWidget == null) {
                         this.resultsGridWidget = new ImageQueryResultsGrid(this.getResultGridParameters());
@@ -236,6 +271,9 @@ define([
                 getResultGridParameters: function () {
                     return {};
                 },
+                /**
+                 * called when the footer containing the results widget has been expanded the first time
+                 */
                 handleFooterFirstExpand: function () {
                     //hide the cart on first expand. the grid will not render properly if it's not in view when created
                     this.viewModel.cart(false);
@@ -252,6 +290,9 @@ define([
                     }
                     callback(this.resultsGridWidget.queryResultSet(queryObject));
                 },
+                /*
+                 toggles the visibility of the clear all results tooltip
+                 */
                 toggleClearAllResultsTooltip: function () {
                     if (this.clearResultsTooltip == null) {
                         this.createClearResultsTooltip();
@@ -263,6 +304,9 @@ define([
                         this.showClearResultsTooltip();
                     }
                 },
+                /**
+                 * displays the clear all results tooltip
+                 */
                 showClearResultsTooltip: function () {
                     if (this.clearResultsTooltip == null) {
                         this.createClearResultsTooltip();
@@ -271,13 +315,22 @@ define([
                         this.clearResultsTooltip.show();
                     }
                 },
+                /**
+                 * creates the clear all results tooltip
+                 */
                 createClearResultsTooltip: function () {
-                    this.clearResultsTooltip = new ConfirmTooltip({
-                        confirmCallback: lang.hitch(this, this.clearResults),
-                        aroundNode: this.clearResultsElement,
-                        displayText: "Clear Results? "
-                    });
+                    if (this.clearResultsTooltip == null) {
+                        this.clearResultsTooltip = new ConfirmTooltip({
+                            confirmCallback: lang.hitch(this, this.clearResults),
+                            aroundNode: this.clearResultsElement,
+                            displayText: "Clear Results? "
+                        });
+                    }
                 },
+                /**
+                 * called when the results grid visible has changed in the view
+                 * @param visible
+                 */
                 handleResultsVisibilityChange: function (visible) {
                     //results view
                     if (visible) {
@@ -292,6 +345,10 @@ define([
                         this.checkForFootprintLayerVisibility();
                     }
                 },
+                /**
+                 * called when the shopping cart grid visibility has changed in the view
+                 * @param visible
+                 */
                 handleCartVisibilityChange: function (visible) {
                     if (visible) {
                         //shopping cart view
@@ -318,11 +375,21 @@ define([
                         }
                     }
                 },
+                /**
+                 * passes boolean for shopping cart visibility to the passed callback
+                 * @param callback
+                 */
                 handleIsShoppingCartVisible: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.viewModel.cart());
                     }
                 },
+                /**
+                 * returns row attributes to the callbeack
+                 * @param fieldsArray fields to return
+                 * @param callback function to return to
+                 * @param queryParams options parameters to use as a query against the store
+                 */
                 handleGetVisibleRowAttributes: function (fieldsArray, callback, queryParams) {
                     if (callback == null || !lang.isFunction(callback)) {
                         return;
@@ -334,6 +401,12 @@ define([
                         callback(this.resultsGridWidget.getUniqueVisibleGridAttributes(fieldsArray, queryParams));
                     }
                 },
+                /**
+                 * returns row attributes for visible raster results to the callbeack
+                 * @param fieldsArray fields to return
+                 * @param callback function to return to
+                 * @param queryParams options parameters to use as a query against the store
+                 */
                 handleGetVisibleRasterAttributes: function (fieldsArray, callback, queryParams) {
                     if (callback == null || !lang.isFunction(callback)) {
                         return;
@@ -345,6 +418,9 @@ define([
                         callback(this.resultsGridWidget.getUniqueVisibleThumbnailAttributes(fieldsArray, queryParams));
                     }
                 },
+                /**
+                 * clears all query results
+                 */
                 handleClearQueryResults: function () {
                     //see if the cart is visible. if it is we need to refresh since clear results
                     if (this.viewModel.cart()) {
@@ -358,6 +434,9 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
                 },
+                /**
+                 * zooms to extent of all visible thumbnails
+                 */
                 zoomToVisibleThumbnailExtent: function () {
                     if (this.viewModel.cart()) {
                         if (this.shoppingCartGridWidget) {
@@ -432,17 +511,25 @@ define([
                         }
                     }
                 },
+                /**
+                 * creates the cluster manager that controls the show/hide of the cluster layer
+                 */
                 createClusterManager: function () {
-                    if (this.useHeatmap) {
-                        this.resultsClusterManager = new ResultsHeatmapManager();
+                    if (this.resultsClusterManager == null) {
+                        if (this.useHeatmap) {
+                            this.resultsClusterManager = new ResultsHeatmapManager();
+                        }
+                        else {
+                            this.resultsClusterManager = new ResultsClusterManager();
+                        }
+                        //see if the layer should be hidden/displayed on creation
+                        this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));
+                        this.resultsClusterManager.startup();
                     }
-                    else {
-                        this.resultsClusterManager = new ResultsClusterManager();
-                    }
-                    //see if the layer should be hidden/displayed on creation
-                    this.resultsClusterManager.on("clusterLayerCreated", lang.hitch(this, this.checkForClusterLayerVisibility));
-                    this.resultsClusterManager.startup();
                 },
+                /**
+                 * checks the current state of the discovery application ot see if the cluster or footprints layer should be displayed
+                 */
                 checkForClusterLayerVisibility: function () {
                     var zoomLevel;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, function (mapLevel) {
@@ -459,12 +546,20 @@ define([
                         }
                     }
                 },
+                /**
+                 * creates the footprint manager that handles the show/hide of the footprints layer
+                 */
                 createFootprintManager: function () {
-                    this.resultsFootprintManager = new ResultsFootprintManager();
-                    //see if the layer should be hidden/displayed on creation
-                    this.resultsFootprintManager.on("footprintsLayerCreated", lang.hitch(this, this.checkForFootprintLayerVisibility));
-                    this.resultsFootprintManager.startup();
+                    if (this.resultsFootprintManager == null) {
+                        this.resultsFootprintManager = new ResultsFootprintManager();
+                        //see if the layer should be hidden/displayed on creation
+                        this.resultsFootprintManager.on("footprintsLayerCreated", lang.hitch(this, this.checkForFootprintLayerVisibility));
+                        this.resultsFootprintManager.startup();
+                    }
                 },
+                /**
+                 * checks to see if the footprints layer should be hidden/displayed
+                 */
                 checkForFootprintLayerVisibility: function () {
                     var zoomLevel;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, function (mapLevel) {

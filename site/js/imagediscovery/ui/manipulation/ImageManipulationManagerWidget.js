@@ -45,13 +45,12 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersHidden));
 
                 },
-
                 handleImageryLayersHidden: function () {
                     this.hideManipulationContent("Zoom into imagery view for manipulation");
                     this.cancelMensuration();
                 },
                 handleImageryLayersVisible: function () {
-                     this.checkForAnalysisEnabled();
+                    this.checkForAnalysisEnabled();
                 },
                 postCreate: function () {
                     this.inherited(arguments);
@@ -81,8 +80,11 @@ define([
                         this.hideManipulationContent("Cannot perform analysis");
                     }
                 },
+                /**
+                 *  listener for IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.NO_SOURCES_LOCKED
+                 */
                 handleNoSourcesLocked: function () {
-                    //no sources locked so hide the analysis content
+                    // no sources locked so hide the analysis content
                     var cartVisible = false;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
                         cartVisible = vis;
@@ -94,6 +96,9 @@ define([
                     }
                     this.hideManipulationContent("There is no imagery to analyze.");
                 },
+                /**
+                 * listener for IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.MULTIPLE_SOURCES_LOCKED
+                 */
                 handleMultipleSourcesLocked: function () {
                     //hide the analysis content for multiple sources. can only analyze a single source
                     var cartVisible = false;
@@ -106,10 +111,16 @@ define([
                     }
                     this.hideManipulationContent("Cannot perform analysis on multiple sources");
                 },
+                /**
+                 *  listener for IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED
+                 */
                 handleCartViewDisplayed: function () {
                     //show disabled text for the exploitation
                     this.hideManipulationContent("Analysis disabled for shopping cart.");
                 },
+                /**
+                 * function checks state of discovery application to see if the analysis widget should be enabled
+                 */
                 checkForAnalysisEnabled: function () {
                     var hasSingleSourceLocked = false;
                     var hasNoSourcesLocked = false;
@@ -144,6 +155,9 @@ define([
                     }
 
                 },
+                /**
+                 * called when all results are cleared. Analysis is set to disabled since there are no results
+                 */
                 handleResultsCleared: function () {
                     this.handleClearAllManipulations();
                     this.viewModel.disabledContainer(true);
@@ -172,6 +186,10 @@ define([
                         this.currentManipulationVisibleContent.mensurationWidget.cancelMensuration();
                     }
                 },
+                /**
+                 * shows the manipulation widget using parameters on the layer inside queryLayerController
+                 * @param queryLayerController controller containing the layer to use for manipulation
+                 */
                 showManipulationContent: function (queryLayerController) {
                     if (this.currentManipulationVisibleContent) {
                         this.currentManipulationVisibleContent.hide();
@@ -185,12 +203,21 @@ define([
                     this.currentManipulationVisibleContent.show();
                     this.currentManipulationVisibleContent.selectNextVisibleTab();
                 },
+                /**
+                 * creates a manipulation widget for the passed query layer controller
+                 * @param queryLayerController
+                 * @return {imagediscovery.ui.manipulation.ImageManipulationContentWidget}
+                 */
                 createManipulationContent: function (queryLayerController) {
                     var imageManipulationContentWidget = new ImageManipulationContentWidget();
                     imageManipulationContentWidget.placeAt(this.imageManipulationEnabledContainer);
                     imageManipulationContentWidget.setQueryLayerController(queryLayerController);
                     return imageManipulationContentWidget;
                 },
+                /**
+                 * hides the manipulation content and displays the passed message
+                 * @param message
+                 */
                 hideManipulationContent: function (message) {
                     if (message == null) {
                         message = this.viewModel.defaultDisabledText;

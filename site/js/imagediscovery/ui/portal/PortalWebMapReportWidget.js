@@ -7,6 +7,10 @@ define([
         return declare(
             [PortalPublisherWidget],
             {
+                /**
+                 * returns discovery application catalog layers for web map report
+                 * @return {Array}
+                 */
                 getExternalLayers: function () {
                     var catalogLayers = [];
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (layerControllers) {

@@ -11,6 +11,9 @@ define([
                 windowIconAltText: "Checkout",
                 positioningParamName: "download",
                 windowIconClass: "commonIcons16 shoppingCartEmpty",
+                /**
+                 * creates the shopping cart download widget on first show
+                 */
                 handleFirstWindowShow: function () {
                     this.firstShowListener.remove();
                     require(["imagediscovery/ui/cart/download/ShoppingCartDownloadWidget"], lang.hitch(this, function (ShoppingCartDownloadWidget) {

@@ -51,39 +51,67 @@ define([
                 startup: function () {
                     this.createFootprintsLayer();
                 },
+                /**
+                 * makes the footprints layer opaque
+                 */
                 handleSetLayerOpaque: function () {
                     this.footprintsLayer.setOpacity(1.0);
                 },
+                /**
+                 * makes the footprints layer 100% transparent
+                 */
                 handleSetLayerTransparent: function () {
                     this.footprintsLayer.setOpacity(0);
                 },
+                /**
+                 * returns true to the callback if the footprints layer is visible
+                 * @param callback
+                 */
                 handleFootprintsLayerVisible: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.isVisible());
                     }
                 },
+                /**
+                 * returns true if the footprint layer is visible
+                 * @return {*}
+                 */
                 isVisible: function () {
                     return this.footprintsLayer.visible;
                 },
+                /**
+                 * hides the footprints layer
+                 */
                 hideLayer: function () {
                     this.footprintsLayer.hide();
 
                 },
+                /**
+                 * shows the footprints layer
+                 */
                 showLayer: function () {
                     this.reloadLayer();
                     this.footprintsLayer.show();
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED);
 
                 },
+                /**
+                 * clears the footprints layer graphics. called when the discovery vier results have been cleared
+                 */
                 clearResults: function () {
                     this.footprintsLayer.clear();
-                    //this.footprintGraphicsCache = {};
                 },
+                /**
+                 * creates the footprints layer and adds it to the map
+                 */
                 createFootprintsLayer: function () {
                     this.footprintsLayer = new GraphicsLayer({displayOnPan: false});
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.footprintsLayer);
                     this.emit("footprintsLayerCreated");
                 },
+                /**
+                 * initializes the symbology for the footprints layer
+                 */
                 initSymbology: function () {
                     this.footprintPolygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
@@ -93,6 +121,12 @@ define([
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                             new Color([255, 255, 0]), 2), new Color([255, 0, 0, 0]));
                 },
+                /**
+                 * adds results to the footprints layer
+                 *
+                 * @param results
+                 * @param queryLayerController
+                 */
                 addResults: function (results, queryLayerController) {
                     if (!this.footprintsLayer.visible) {
                         return;
@@ -113,16 +147,25 @@ define([
                         }
                     }
                 },
+                /**
+                 * called when a discovery viewer filter has been applied. reloads the footprints layer
+                 */
                 handleFilterApplied: function () {
                     if (this.footprintsLayer.visible) {
                         this.reloadLayer();
                     }
                 },
+                /**
+                 * reloads the footprints layer
+                 */
                 reloadLayer: function () {
                     this.clearResults();
                     //topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, this.getVisibleFootprintsHandler);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, this.getVisibleFootprintsHandler);
                 },
+                /**
+                 * i don't know what this does
+                 */
                 _getVisibleFootprintsHandler: function (footprintFeatures) {
                     var currentGeometry;
                     var currentFeature;
@@ -143,7 +186,10 @@ define([
                         }
                     }
                 },
-                //highlights a single footprint (the footprint should be visible already)
+                /**
+                 * highlights a single footprint (the footprint should be visible already)
+                 * @param featureObjID
+                 */
                 highlightFootprint: function (featureObjID) {
                     if (this.footprintGraphicsCache[featureObjID]) {
                         this.footprintGraphicsCache[featureObjID].symbol = this.highlightedFootprintPolygonSymbol;
@@ -151,7 +197,10 @@ define([
                         this.footprintsLayer.redraw();
                     }
                 },
-                //removes highlights a single footprint (the footprint should be visible already)
+                /**
+                 * removes highlights a single footprint (the footprint should be visible already)
+                 * @param featureObjID
+                 */
                 unhighlightFootprint: function (featureObjID) {
                     if (this.footprintGraphicsCache[featureObjID]) {
                         this.footprintGraphicsCache[featureObjID].symbol = this.footprintPolygonSymbol;
@@ -159,6 +208,9 @@ define([
                         this.footprintsLayer.redraw();
                     }
                 },
+                /**
+                 centers and flashes a result footprint on the footprints layer
+                 */
                 centerAndFlashFootprint: function (resultEntry) {
                     if (resultEntry != null) {
                         var graphic = this.footprintGraphicsCache[resultEntry.OBJECTID];

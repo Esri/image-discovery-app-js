@@ -11,6 +11,11 @@ define([
                 constructor: function () {
                     this.queryControllerToIdLookup = {}
                 },
+                /**
+                 * loads the key properties for the passed layer
+                 * @param layer
+                 * @param callback
+                 */
                 loadKeyProperties: function (layer, callback) {
                     //try to load the keyProperties
                     var wrappedCallback = lang.hitch(this, function (layer, keyProperites) {
@@ -28,6 +33,13 @@ define([
                     this.loadProxiedJson(layer.url + "/keyProperties" + requestQuery, wrappedCallback, wrappedErrback);
 
                 },
+                /**
+                 * returns key properties for a layer
+                 * @param layer
+                 * @param id
+                 * @param callback
+                 * @param errback
+                 */
                 getKeyPropertiesForRaster: function (layer, id, callback, errback) {
                     var requestQuery = "?f=json";
                     if (layer.credential && layer.credential.token != null) {
@@ -55,9 +67,19 @@ define([
                     }
                     return queryControllerArray;
                 },
+                /**
+                 * returns the query layer controller for a passed item (item contains queryControllerId)
+                 * @param item
+                 * @return {*}
+                 */
                 getQueryLayerControllerFromItem: function (item) {
                     return this.getQueryLayerControllerFromId(item.queryControllerId);
                 },
+                /**
+                 * returns the queryLayerController with the passed id
+                 * @param queryLayerControllerId
+                 * @return {*}
+                 */
                 getQueryLayerControllerFromId: function (queryLayerControllerId) {
                     if (this.queryControllerToIdLookup[queryLayerControllerId]) {
                         return this.queryControllerToIdLookup[queryLayerControllerId];
@@ -71,10 +93,20 @@ define([
                         return queryController;
                     }
                 },
+                /**
+                 * returns true is the layer supports download
+                 * @param layer
+                 * @return {boolean|*|boolean}
+                 */
                 layerSupportsDownload: function (layer) {
                     return (layer != null && layer.capabilities && layer.capabilities.toLowerCase().indexOf(("download")) > -1);
 
                 },
+                /**
+                 * takes in an array, sorts by type and only contains unique values for each type
+                 * @param ary
+                 * @return {*}
+                 */
                 toUniqueValueArray: function (ary) {
                     var prim = {"boolean": {}, "number": {}, "string": {}}, obj = [];
                     return ary.filter(function (x) {

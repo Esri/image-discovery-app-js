@@ -16,6 +16,10 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADD_USER_LOCK, lang.hitch(this, this.addLock));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_USER_LOCK, lang.hitch(this, this.removeLock));
                 },
+                /**
+                 * adds lock to filter widget. disables the user from applying filter functions
+                 * @param lockWidget
+                 */
                 addLock: function (lockWidget) {
                     if (array.indexOf(this.lockWidgetArray, lockWidget) < 0) {
                         this.lockWidgetArray.push(lockWidget);
@@ -24,6 +28,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * removes lock to filter widget. allows the user to apply filter functions if there are no locks
+                 * @param lockWidget
+                 */
                 removeLock: function (lockWidget) {
                     var idx = array.indexOf(this.lockWidgetArray, lockWidget);
                     if (idx > -1) {

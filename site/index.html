@@ -22,6 +22,10 @@
         config.defaults.io.proxyUrl = "proxy/proxy.ashx";
         config.defaults.io.corsEnabledServers.push("serverapi.arcgisonline.com");
         config.defaults.io.corsEnabledServers.push("tasks.arcgisonline.com");
+        config.defaults.io.corsEnabledServers.push("tasks.arcgis.com");
+        config.defaults.io.corsEnabledServers.push("server.arcgisonline.com");
+        config.defaults.io.corsEnabledServers.push("utility.arcgisonline.com");
+
         new ImageryViewerLoader({isDebug: false});
     });
 </script>

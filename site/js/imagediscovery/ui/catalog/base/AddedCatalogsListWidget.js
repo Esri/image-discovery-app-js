@@ -32,12 +32,10 @@ define([
                     for (var i = 0; i < catalogs.length; i++) {
                         this.viewModel.addedCatalogs.push(catalogs[i]);
                     }
-                    //  this.viewModel.sort();
                     this.applyBindings();
                 },
                 addPersistedCatalog: function (catalog) {
                     this.viewModel.addedCatalogs.push(catalog);
-                    //  this.viewModel.sort();
                 },
                 /*Events*/
                 onAddPersistedCatalog: function (persistedCatalogObject) {

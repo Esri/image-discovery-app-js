@@ -105,11 +105,18 @@ define([
                     this.inherited(arguments);
                     this.on("annotationCreated", lang.hitch(this, this.handleAnnotationCreatedFromUser));
                 },
+                /**
+                 * adds graphic to the map from the user footprints export bounds draw
+                 * @param annoObj
+                 */
                 handleAnnotationCreatedFromUser: function (annoObj) {
                     this.currentDrawGraphic = annoObj.graphic;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.ADD, this.currentDrawGraphic);
                     this.viewModel.userDrawActive(false);
                 },
+                /**
+                 * clears the users drawn footprints export graphic
+                 */
                 clearDraw: function () {
                     this.inherited(arguments);
                     if (this.currentDrawGraphic) {
@@ -138,6 +145,9 @@ define([
                     this.clearDraw();
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
                 },
+                /**
+                 * called when the user requests a footprint export
+                 */
                 handleFootprintsExportClick: function () {
                     if (!this._hasExportTask) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Cannot export. Footprints export task need to be present in configuration.");
@@ -213,6 +223,12 @@ define([
                         queryTaskDeferred.then(lang.hitch(this, this._handleExportQueryResponse, currentQueryLayer));
                     }
                 },
+                /**
+                 * converts a query response to a format for the discovery viewers footprint export geoprocessor
+                 * @param layer
+                 * @param queryResponse
+                 * @private
+                 */
                 _handleExportQueryResponse: function (layer, queryResponse) {
                     var queryResponseJson = queryResponse.toJson();
                     var i;
@@ -304,6 +320,13 @@ define([
                     this.clearDraw();
                     VIEWER_UTILS.log("Downloading Selected Data", VIEWER_GLOBALS.LOG_TYPE.INFO);
                 },
+                /**
+                 * returns true if the passed layer contains the field
+                 * @param layer  layer to check for field existing
+                 * @param field field to check for exist in the layer
+                 * @return {boolean}
+                 * @private
+                 */
                 _layerContainsField: function (layer, field) {
                     if (layer && layer.fields && lang.isArray(layer.fields) && layer.fields.length > 0) {
                         for (var i = 0; i < layer.fields.length; i++) {
@@ -315,6 +338,10 @@ define([
                     }
                     return false;
                 },
+                /**
+                 * handles the response from the discovery viewers footprint geoprocessor
+                 * @param response
+                 */
                 handleExportTaskResponse: function (response) {
                     if (response == null || !lang.isObject(response) || response.results == null) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not processed footprints export response. Please contact an administrator.");
@@ -330,11 +357,20 @@ define([
                         VIEWER_UTILS.log("Synchronous GP not implemented for footprints export.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                     }
                 },
+                /**
+                 * handles error from the discovery viewers footprint geoprocessor
+                 * @param error
+                 * @return {null}
+                 */
                 handleExportTaskError: function (error) {
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "There was an error requesting footprints export");
                     VIEWER_UTILS.log("There was an error requesting footprints export", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                     return null;
                 },
+                /**
+                 * opens the footprint download url in a new browser window
+                 * @param urlResponse
+                 */
                 handleProcessDownloadUrl: function (urlResponse) {
                     if (urlResponse == null || !lang.isObject(urlResponse) || urlResponse.value == null || !lang.isObject(urlResponse.value) || urlResponse.value.url == null) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "There was an error requesting footprints download URL");
@@ -347,6 +383,11 @@ define([
                 sanitizeFieldName: function (fieldName) {
                     return (fieldName.replace(/\W/g, '')).replace(/[0-9_]/, '');
                 },
+                /**
+                 * merges query results from catalog responses
+                 * @param results array of query results to merge
+                 * @return {*}
+                 */
                 mergeResults: function (results) {
                     //merges all of the query results into a single result
                     if (results.length == 1) {

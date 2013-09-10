@@ -140,6 +140,10 @@ define([
                 handleGenerateReport: function () {
                     this._generateReport();
                 },
+                /**
+                 * kicks of the report generation
+                 * @private
+                 */
                 _generateReport: function () {
                     if (this.viewModel.selectedExtractMode() === this.viewModel.draw && this.currentDrawGraphic == null) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Clip extent required");
@@ -155,6 +159,11 @@ define([
                     }
                     VIEWER_UTILS.log("Generating Report", VIEWER_GLOBALS.LOG_TYPE.INFO);
                 },
+                /**
+                 * returns the requested report extent
+                 * @return {*}
+                 * @private
+                 */
                 _getRequestedExtentGeometry: function () {
                     var extent;
                     if (this.viewModel.selectedExtractMode() === this.viewModel.viewerExtent) {
@@ -177,6 +186,14 @@ define([
                     }
                     return extent;
                 },
+                /**
+                 * queries layer for results by the passed extent
+                 * @param queryLayer
+                 * @param lockRasters
+                 * @param extent
+                 * @param returnGeometry
+                 * @return {*}
+                 */
                 queryForResultsByExtent: function (queryLayer, lockRasters, extent, returnGeometry) {
                     if (returnGeometry == null) {
                         returnGeometry = true;
@@ -199,6 +216,13 @@ define([
                     query.returnGeometry = returnGeometry;
                     return queryTask.execute(query);
                 },
+                /**
+                 * checks if layer contains the passed field. returns true if layer contains field
+                 * @param layer
+                 * @param field
+                 * @return {boolean}
+                 * @private
+                 */
                 _layerHasField: function (layer, field) {
                     if (layer == null || layer.fields == null) {
                         return false;
@@ -210,6 +234,11 @@ define([
                     }
                     return false;
                 },
+                /**
+                 * returns the current base map url
+                 * @return {*}
+                 * @private
+                 */
                 _getCurrentBasemapUrl: function () {
                     var currentBaseMap;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.BASEMAP.GET_CURRENT_URL, function (curr) {
@@ -222,6 +251,10 @@ define([
                     }
                     return currentBaseMap;
                 },
+                /**
+                 * generate the html report
+                 * @private
+                 */
                 _generateHTMLReport: function () {
                     if (this.reportingConfiguration == null || !lang.isObject(this.reportingConfiguration) ||
                         this.reportingConfiguration.html == null || !lang.isObject(this.reportingConfiguration.html) ||
@@ -269,6 +302,12 @@ define([
                         }
                     }
                 },
+                /**
+                 * handles server response for query against passed extent
+                 * @param queryLayerController
+                 * @param queryResponse
+                 * @private
+                 */
                 _handleResultsByExtentResponse: function (queryLayerController, queryResponse) {
                     var queryResponseJson = queryResponse.toJson();
                     if (queryResponseJson.features == null) {
@@ -360,6 +399,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * displays the html report in a new window
+                 * @private
+                 */
                 _displayHTMLReport: function () {
                     //do some magic here
                     var tableParameters = this._generateTableParameters(this.serviceQueryResponses);
@@ -372,6 +415,12 @@ define([
                     var opener = window.open(this.reportingConfiguration.html.templateURL);
 
                 },
+                /**
+                 * generates the table parameters for the html report <table> element
+                 * @param serviceQueryResponses
+                 * @return {{displayFormats: {}, tableDataArray: Array, displayFields: *, hasSourceField: boolean}}
+                 * @private
+                 */
                 _generateTableParameters: function (serviceQueryResponses) {
                     var tableDataArray = [];
                     var currentServiceQueryResponse;
@@ -400,6 +449,12 @@ define([
                         hasSourceField: true
                     }
                 },
+                /**
+                 * generates the map parameters for the html report map control
+                 * @param serviceQueryResponses
+                 * @return {{basemap: *, extent: *, displayData: Array}}
+                 * @private
+                 */
                 _generateMapParameters: function (serviceQueryResponses) {
                     var extent = this._getRequestedExtentGeometry();
                     if (extent == null) {

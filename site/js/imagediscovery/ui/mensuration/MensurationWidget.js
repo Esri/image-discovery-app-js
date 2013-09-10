@@ -72,13 +72,23 @@ define([
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP, lang.hitch(this, this.handleStopMensuration));
                 },
+                /**
+                 * stops the active mensuration and clears graphics added to map from mensuration widget
+                 */
                 handleStopMensuration: function () {
                     this.clearLastGraphic();
                     this.cancelMensuration();
                 },
+                /**
+                 * called when mensuration type has changed in view
+                 */
                 handleMensurationTypeChanged: function () {
                     this.initSubmitMensuration();
                 },
+                /**
+                 * called when mensuration draw is complete
+                 * @param geometry user drawn mensuration geometry
+                 */
                 handleMensurationDrawComplete: function (geometry) {
                     //create a graphic from the completed mensuration draw and add it to the map
                     this.toolChangeConnect.remove();
@@ -103,6 +113,9 @@ define([
                     this.initSubmitMensuration();
                     this.startUserGraphicDraw();
                 },
+                /**
+                 * initilizes user draw in mensuration widget
+                 */
                 startUserGraphicDraw: function () {
                     var selectedMensurationOption = this.viewModel.selectedMensurationOption();
                     if (selectedMensurationOption == null) {
@@ -121,16 +134,25 @@ define([
                         this.cancelMensuration()
                     }));
                 },
+                /**
+                 * clears the last mensuration drawn graphic from the map
+                 */
                 clearLastGraphic: function () {
                     if (this.currentMensurationGraphic != null) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.REMOVE, this.currentMensurationGraphic);
                         this.currentMensurationGraphic = null;
                     }
                 },
+                /**
+                 * cancels the active user mensuration draw
+                 */
                 cancelUserGraphicDraw: function () {
                     topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
                     this.clearLastGraphic();
                 },
+                /**
+                 * starts mensuration
+                 */
                 startMensuration: function () {
                     this.stopMensurationButton.set("disabled", false);
                     this.startMensurationButton.set("disabled", true);
@@ -138,6 +160,9 @@ define([
                     this.viewModel.mensurationTypeSelectEnabled(false);
                     this.startUserGraphicDraw();
                 },
+                /**
+                 * cancels the active mensuration
+                 */
                 cancelMensuration: function () {
                     //stop all mensuration operations
                     var mensurationEnabled = this.startMensurationButton.get("disabled");
@@ -155,6 +180,9 @@ define([
                         this.toolChangeConnect = null;
                     }
                 },
+                /**
+                 * initialize the request to perform mensuration server side
+                 */
                 initSubmitMensuration: function () {
                     if (this.currentMensurationGraphic == null || this.layer == null) {
                         return;
@@ -185,6 +213,12 @@ define([
 
                     this._performMensuration(mensurationParameters);
                 },
+                /**
+                 * send the mensuration request to the layer service
+                 * @param mensurationParams
+                 * @private
+                 */
+
                 _performMensuration: function (mensurationParams) {
                     if (mensurationParams == null || mensurationParams.mensurationType == null) {
                         //todo alert of the error
@@ -226,10 +260,19 @@ define([
                     var measureLayerUrl = this.layer.url + this.measureUrlAppend;
                     this.loadJsonP(measureLayerUrl, requestParams, this.mensurationCompleteCallback, this.mensurationErrorCallback)
                 },
+                /**
+                 * returns true if the passes layer supports mensursation
+                 * @param layer layer to check for mensuration support
+                 * @return {boolean}
+                 */
                 layerSupportsMensuration: function (layer) {
                     var menCapExcludeIdx = array.indexOf(this.noMensurationCapabilitesStrings, layer.mensurationCapabilities);
                     return !(layer == null || layer.mensurationCapabilities == null || menCapExcludeIdx > -1);
                 },
+                /**
+                 * sets the current query layer controller for mensuration
+                 * @param queryLayerController
+                 */
                 setQueryLayerController: function (queryLayerController) {
                     this.queryLayerController = queryLayerController;
                     if (this.queryLayerController == null || this.queryLayerController.layer == null) {
@@ -249,6 +292,10 @@ define([
                         this.applyBindings();
                     }
                 },
+                /**
+                 * sets the mensuration capabilities in the mensuration view
+                 * @param mensurationCapabilites
+                 */
                 setMensurationCapabilities: function (mensurationCapabilites) {
                     this.viewModel.mensurationOptions.removeAll();
                     var currentMensurationCapability;
@@ -266,7 +313,10 @@ define([
                     }
 
                 },
-
+                /**
+                 * preocesses a mensuration response from the active layer service
+                 * @param mensurationResponse
+                 */
                 handleMensurationComplete: function (mensurationResponse) {
                     //figure out which type of mensuration was performed and populate the view model with the results
                     if (mensurationResponse) {
@@ -327,6 +377,10 @@ define([
                         this.handleMensurationError(null);
                     }
                 },
+                /**
+                 * handles server side mensuration response error
+                 * @param error
+                 */
                 handleMensurationError: function (error) {
                     this.clearDisplayValues();
                     if (error) {

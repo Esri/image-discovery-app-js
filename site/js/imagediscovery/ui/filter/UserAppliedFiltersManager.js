@@ -21,7 +21,6 @@ define([
                 blockFilterApplyPublish: false,
                 constructor: function (params) {
                     lang.mixin(this, params || {});
-                    //queryWidgetConfig
                     this.queryWidgets = [];
                     this.numberWidgets = [];
                     this.dateRangeWidgets = [];
@@ -56,6 +55,9 @@ define([
                         this.resultFields = displayFieldsConfig;
                     }
                 },
+                /**
+                 * reads the fields to filter from configuration and creates filter widgets for each enabled grid column
+                 */
                 startupFilterWidgets: function () {
                     var catalogLayers;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, function (cLyrs) {
@@ -109,6 +111,9 @@ define([
 
                     }
                 },
+                /**
+                 * resets all the created filters
+                 */
                 resetFilters: function () {
                     //we only want to apply the filter publish after all widgets have been reset
                     this.blockFilterApplyPublish = true;
@@ -119,6 +124,9 @@ define([
                     //publish the filter update
                     this.updateQueryFilter();
                 },
+                /**
+                 * enables the filters
+                 */
                 enableUserFilters: function () {
                     var i;
                     var currentFilterWidgetStateObj;
@@ -135,6 +143,9 @@ define([
                         }
                     }
                 },
+                /**
+                 * disables the filters
+                 */
                 disableFilters: function () {
                     var currentFilterWidget;
                     this.lastFilterStateBeforeDisable = [];
@@ -148,6 +159,9 @@ define([
                 },
                 showClearAllFiltersIcon: function () {
                 },
+                /**
+                 * called when query results are cleared. All filter functions are removed from the current application state
+                 */
                 handleClearQueryResult: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.BEFORE_CLEAR);
                     //hide all the filter widgets
@@ -172,12 +186,20 @@ define([
                 addSourceFilterEntry: function () {
 
                 },
+                /**
+                 * uses passed features to create filter ranges for created filter widgets
+                 * @param features
+                 */
                 setFeatures: function (features) {
                     this.blockFilterChanges = true;
                     this.clearAllFilters();
                     this.appendFilterRanges(features);
                     this.blockFilterChanges = false;
                 },
+                /**
+                 * uses passed features to create filter ranges for created filter widgets
+                 * @param features
+                 */
                 appendFilterRanges: function (features) {
                     var hasVisibleWidget = false;
                     var i, key, min, max;
@@ -304,16 +326,28 @@ define([
                         this.hideClearAllFiltersIcon();
                     }
                 },
+                /**
+                 * clears all filters
+                 */
                 clearAllFilters: function () {
                     this.activeFilterFunctionLookup = {};
                     this.lastFilterStateBeforeDisable = [];
                 },
+                /**
+                 * applies the filter to the target
+                 * @param target
+                 * @param filterFxn
+                 */
                 handleFilterApply: function (target, filterFxn) {
                     if (!this.blockFilterChanges) {
                         this.activeFilterFunctionLookup[target] = filterFxn;
                         this.updateQueryFilter();
                     }
                 },
+                /**
+                 * clears the filter target
+                 * @param target
+                 */
                 handleClearFilter: function (target) {
                     if (!this.blockFilterChanges) {
                         if (this.activeFilterFunctionLookup[target]) {
@@ -322,11 +356,19 @@ define([
                         }
                     }
                 },
+                /**
+                 * when called, fires an event to reload the current filter function
+                 */
                 updateQueryFilter: function () {
                     if (!this.blockFilterApplyPublish) {
                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.RELOAD_FILTER_FUNCTION, this.processQueryFilterCallback);
                     }
                 },
+                /**
+                 * checks passed item to see if it passes all active filter functions
+                 * @param item item to test against active filter functions
+                 * @return {boolean}
+                 */
                 processFilterQuery: function (item) {
                     for (var key in this.activeFilterFunctionLookup) {
                         if (!this.activeFilterFunctionLookup[key](item)) {
@@ -341,6 +383,10 @@ define([
                 enableSubmit: function () {
                     this.submitQueryButton.set("disabled", false);
                 },
+                /**
+                 * returns where clause for all active filter functions
+                 * @return {string}
+                 */
                 getWhereClause: function () {
                     var where = [];
                     for (var i = 0; i < this.queryWidgets.length; i++) {

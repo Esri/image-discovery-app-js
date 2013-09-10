@@ -49,7 +49,7 @@ define([
                     if (this.createQueryFieldsDiscoveryContent) {
                         this.viewModel.selectedDiscoveryService.subscribe(lang.hitch(this, this.handleSearchServiceChanged));
                     }
-                   ko.applyBindings(this.viewModel, this.domNode);
+                    ko.applyBindings(this.viewModel, this.domNode);
                     if (this.discoverGeometryUploadTaskConfiguration == null || !lang.isObject(this.discoverGeometryUploadTaskConfiguration)) {
                         this.viewModel.searchByGeometryButtonVisible(false);
                     }
@@ -60,7 +60,9 @@ define([
                         this.createQueryView();
                     }
                 },
-                //handleDiscoveryByFieldsToggle: toggle the view for searching by field value in the discovery widget
+                /**
+                 * toggle the view for searching by field value in the discovery widget
+                 */
 
                 handleDiscoveryByFieldsToggle: function (expanded) {
                     if (!expanded && this.imageQueryWidget) {
@@ -77,6 +79,10 @@ define([
                     //listen for clear results
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleResultsCleared));
                 },
+                /**
+                 * called when the search service has changed in the service select box
+                 * @param queryController
+                 */
                 handleSearchServiceChanged: function (queryController) {
                     //when search service changed the unique values need to be reloaded
                     if (this.imageQueryWidget) {
@@ -89,6 +95,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * called when all of the query layer controllers have been loaded by the discovery application
+                 * @param queryLayerControllers
+                 */
                 handleQueryLayerControllersLoaded: function (queryLayerControllers) {
                     var currentQueryLayerController;
                     var currentQueryLayer;
@@ -111,6 +121,9 @@ define([
                         }
                     }
                 },
+                /**
+                 * hides the unique values widget for the discovery widget
+                 */
                 hideUniqueValuesContent: function () {
                     //hide unique values view
                     this.viewModel.discoverByFieldsExpanded(false);
@@ -142,6 +155,9 @@ define([
                 handleSearchByGeometryGeometryQueryError: function (msg) {
                     this.clearDraw();
                 },
+                /**
+                 * initializes symbology for the discovery widget
+                 */
                 initSymbology: function () {
                     //init the discovery widget symbology
                     this.polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
@@ -158,11 +174,17 @@ define([
                             new Color([0, 0, 255]), 1),
                         new Color([0, 0, 0, 0]));
                 },
+                /**
+                 * called when the parent accordion widget has been hidden that contains the discovery widget
+                 */
                 handleAccordionHidden: function () {
                     if (this.imageQueryWidget) {
                         this.imageQueryWidget.closePopups();
                     }
                 },
+                /**
+                 * called when the discovery widget has been displayed
+                 */
                 handleOnShow: function () {
                     //fire event telling other widgets the discovery widget has come into view
                     topic.publish(IMAGERY_GLOBALS.EVENTS.DISCOVERY.ON_SHOW);
@@ -171,6 +193,9 @@ define([
                     //when results are cleared remove and geometries left over from the initial search
                     this.clearVisibileGraphics();
                 },
+                /**
+                 * clears all discovery widget graphics on the map
+                 */
                 clearVisibileGraphics: function () {
                     //clears any graphics on the map created from the discovery widget
                     if (this.currentAddedGraphics) {
@@ -180,6 +205,9 @@ define([
                     }
                     this.currentAddedGraphics = [];
                 },
+                /**
+                 * activates the search by map extent in the discovery widget
+                 */
                 activateSearchByExtent: function () {
                     //searches by map extent
                     var mapExtent = null;
@@ -191,6 +219,11 @@ define([
                     }
                     this.performSearch(mapExtent, false);
                 },
+                /**
+                 * performs a search based on the current selected discovery widget
+                 * @param searchObject
+                 * @param zoomToArea
+                 */
                 performSearch: function (searchObject, zoomToArea) {
                     //figure out what type of search is being performed and perform the search
                     if (searchObject == null) {
@@ -251,6 +284,11 @@ define([
                     imageQueryParameters.errback = this.searchByGeometryGeometryQueryErrorback;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, imageQueryParameters);
                 },
+                /**
+                 * called when the current discovery search type changes
+                 * @param oldView
+                 * @param newView
+                 */
                 handleViewChanged: function (oldView, newView) {
                     //figure out what view we are in and publish draw events accordingly
                     if (oldView == newView && newView != this.viewModel.views.extent) {
@@ -275,6 +313,10 @@ define([
                         }
                     }
                 },
+                /**
+                 * performs a search on a graphic added to the map from the discovery widget
+                 * @param annoObj
+                 */
                 handleAnnotationAddedFromUser: function (annoObj) {
                     //{ id:uuid, type:type, graphic:graphic }
                     var isPointBuffer = false;
@@ -296,9 +338,18 @@ define([
                         this.performSearch(annoObj.graphic);
                     }
                 },
+                /**
+                 * handles a point buffer search error
+                 * @param annoObj
+                 */
                 handlePointBufferError: function (annoObj) {
                     this.performSearch(annoObj.graphic);
                 },
+                /**
+                 * handles a point buffer response
+                 * @param annoObj
+                 * @param bufferResponse
+                 */
                 handlePointBufferResponse: function (annoObj, bufferResponse) {
                     //clear the X graphic for the point
                     if (bufferResponse != null && lang.isArray(bufferResponse) && bufferResponse.length > 0) {
@@ -313,6 +364,9 @@ define([
                     this.clearVisibileGraphics();
                     this.inherited(arguments);
                 },
+                /**
+                 * creates the kml/shp/kmz upload widget and places is in the view
+                 */
                 createUploadView: function () {
                     //set the max upload geometries allowed
                     if (this.geometryUploadWidget == null) {
@@ -321,6 +375,9 @@ define([
                         this.geometryUploadWidget.on("performSearch", this.performSearchCallback);
                     }
                 },
+                /**
+                 * creates the search by bounds widget and places it in the view
+                 */
                 createBoundsView: function () {
                     if (this.searchByBoundsWidget == null) {
                         this.searchByBoundsWidget = new SearchByBoundsWidget();
@@ -328,6 +385,9 @@ define([
                         this.searchByBoundsWidget.on("boundsGeometryCreated", this.performSearchCallback);
                     }
                 },
+                /**
+                 * clears the graphics added to the map from the discovery widgets
+                 */
                 clearDraw: function () {
                     this.inherited(arguments);
                     //get zoom back for shift key

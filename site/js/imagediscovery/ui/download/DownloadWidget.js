@@ -12,7 +12,7 @@ define([
     "../reporting/ReportingWidget",
     "../portal/PortalWebMapReportWidget"
 ],
-    function (declare, template,theme, topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
+    function (declare, template, theme, topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
         return declare(
             [UITemplatedWidget],
             {
@@ -71,6 +71,9 @@ define([
                         this.showWebMapCreationTab = false;
                     }
                 },
+                /**
+                 * clears graphics added to the map from the download widget
+                 */
                 clearActiveMapGraphics: function () {
                     if (this.imageryExportWidget) {
                         this.imageryExportWidget.clearDraw();
@@ -99,20 +102,34 @@ define([
                         this.imageryExportWidget.viewModel.userDrawActive(false);
                     }
                 },
+                /**
+                 * creates the reporting widget and add it to the DOM
+                 */
                 createReportingWidget: function () {
-                    //create the reporting widget and add it to the DOM
-                    this.reportingWidget = new ReportingWidget().placeAt(this.reportingContainer);
+                    if (this.reportingWidget == null) {
+                        this.reportingWidget = new ReportingWidget().placeAt(this.reportingContainer);
+                    }
                 },
+                /**
+                 * creates the web map publishing widget and add it to the DOM
+                 */
                 createWebMapPublishingWidget: function () {
-                    //create the web map publishing widget and add it to the DOM
-                    this.webMapWidget = new PortalWebMapReportWidget().placeAt(this.webMapCreationContainer);
+                    if (this.webMapWidget == null) {
+                        this.webMapWidget = new PortalWebMapReportWidget().placeAt(this.webMapCreationContainer);
+                    }
                 },
+                /**
+                 * creates the web imagery export widget and add it to the DOM
+                 */
                 createExportWidget: function () {
-                    //create the web imagery export widget and add it to the DOM
-                    this.imageryExportWidget = new ImageryExportWidget().placeAt(this.imageExportContainer);
+                    if (this.imageryExportWidget == null) {
+                        this.imageryExportWidget = new ImageryExportWidget().placeAt(this.imageExportContainer);
+                    }
                 },
                 createFootprintDownloadWidget: function () {
-                    this.footprintExportWidget = new FootprintsExportWidget().placeAt(this.downloadFootprintsContainer)
+                    if (this.footprintExportWidget == null) {
+                        this.footprintExportWidget = new FootprintsExportWidget().placeAt(this.downloadFootprintsContainer);
+                    }
                 }
             });
     });

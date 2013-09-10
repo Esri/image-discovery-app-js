@@ -45,6 +45,10 @@ define([
                     //query layer controllers array
                     this.catalogQueryControllers = [];
                 },
+                /**
+                 *  checks to see if the viewer should load internal config file or web application by appid from portal
+                 *
+                 */
                 processConfig: function () {
                     if (this.appId != null) {
                         var configWebMapTemplateConfigUtil = new ImageryWebMapTemplateConfigurationUtil();
@@ -59,6 +63,10 @@ define([
                         }
                     }
                 },
+                /**
+                 *  shows "Loading catalog service" in the middle of the viewer while the catalog services are initialized
+                 *
+                 */
                 displayCatalogLoading: function () {
                     //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
@@ -69,12 +77,14 @@ define([
                     //add to the dom
                     domConstruct.place(this.serviceLoadingContainer, window.body());
                 },
+                /**
+                 *
+                 * @private
+                 */
                 _initListeners: function () {
                     this.inherited(arguments);
                     //add search result to the application
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
-                    //get service infos for catalog services
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_QUERY_SERVICES_INFO, lang.hitch(this, this.handleGetQueryServicesInfo));
                     //get all of the search catalog layers
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, lang.hitch(this, this.handleGetCatalogLayers));
                     //get configuration object
@@ -84,45 +94,65 @@ define([
                     //get the layer controllers. layer controllers contain layer reference and metadata associated with layer
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, lang.hitch(this, this.handleGetQueryLayerControllers));
                 },
+                /**
+                 *  listener function for IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET
+                 *  @param callback function to pass catalog layer controllers
+                 *
+                 */
                 handleGetQueryLayerControllers: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.catalogQueryControllers);
                     }
                 },
+                /**
+                 *  listener function for IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS
+                 *  @param callback function to pass catalog layer controllers
+                 *
+                 */
                 handleGetCatalogLayers: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.catalogLayers);
                     }
                 },
+                /**
+                 *  @private
+                 *  called when web map template configuration has been loaded from the URLs appid param
+                 *
+                 */
                 _handleWebMapTemplateConfigurationLoaded: function (config) {
                     this.handleConfigLoaded(config.viewerConfig);
                     this.queryConfig = config.imageryConfig;
                 },
+                /**
+                 *  listener function for IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY
+                 *  @param key configuration key to return
+                 *  @param callback function to return configuration object to
+                 */
                 handleGetImageryConfigurationKey: function (key, callback) {
                     if (key != null && key != "" && callback && lang.isFunction(callback)) {
                         callback(this.queryConfig[key]);
                     }
                 },
+                /**
+                 *  listener function for IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET. returns the imagery configuration to the callback
+                 *  @param callback function to return configuration  to
+                 */
                 handleGetImageryConfiguration: function (callback) {
                     if (callback && lang.isFunction(callback)) {
                         callback(this.queryConfig);
                     }
                 },
-                handleGetQueryServicesInfo: function (callback) {
-                    if (callback && lang.isFunction(callback)) {
-                        if (this.queryConfig && this.queryConfig.imageQueryLayers && lang.isArray(this.queryConfig.imageQueryLayers)) {
-                            callback(this.queryConfig.imageQueryLayers);
-                        }
-                        else {
-                            callback([]);
-                        }
-                    }
-                },
+                /**
+                 *  cancels mensuration on the mensuration widget
+                 */
                 cancelMensuration: function () {
                     if (this.imageManipulationWidget && this.imageManipulationWidget.mensurationWidget) {
                         this.imageManipulationWidget.mensurationWidget.cancelMensuration();
                     }
                 },
+                /**
+                 *  initializes controllers used be the discovery application. inherited function from base viewer
+                 */
                 loadControllers: function () {
                     this.createImageManipulationWidget();
                     //image info widget displays a results thumbnail and attributes
@@ -133,17 +163,39 @@ define([
                     this.createImageQueryController();
                     this.inherited(arguments);
                 },
+                /**
+                 *  creates the image discovery widget
+                 */
                 createImageDiscoveryWidget: function () {
-                    this.imageDiscoveryWidget = new ImageDiscoveryWidget();
+                    if (this.imageDiscoveryWidget == null) {
+                        this.imageDiscoveryWidget = new ImageDiscoveryWidget();
+                    }
                 },
+                /**
+                 *  creates the image query controller
+                 */
                 createImageQueryController: function () {
-                    this.imageQueryController = new ImageQueryController();
+                    if (this.imageQueryController == null) {
+                        this.imageQueryController = new ImageQueryController();
+                    }
                 },
+                /**
+                 *  creates the image info widget
+                 */
                 createImageInfoWidget: function () {
-                    this.imageInfoWidget = new ImageInfoWindow();
+                    if (this.imageInfoWidget == null) {
+                        this.imageInfoWidget = new ImageInfoWindow();
+                    }
                 },
+                /**
+                 * overridden in ImageryViewerManagerWindow
+                 */
                 createImageManipulationWidget: function () {
                 },
+                /**
+                 * called when the esri map has been loaded
+                 * @param map the esri map
+                 */
                 handleMapLoaded: function (map) {
                     this.inherited(arguments);
                     //load the image service urls we will operate on
@@ -166,12 +218,19 @@ define([
                     }
                     map.resize();
                 },
-                handleImageServiceLoadError: function (layer) {
+                /**
+                 * called when a catalog service failed to load
+                 */
+                handleImageServiceLoadError: function () {
                     VIEWER_UTILS.log("There was an error querying a catalog service.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                     if (++this.loadedQueryLayersCount == this.queryConfig.imageQueryLayers.length) {
                         this.finalizeQueryLayerLoad();
                     }
                 },
+                /**
+                 * called when a catalog service is loaded
+                 * @param evt  object with layer parameter for the loaded layer
+                 */
                 handleImageServiceLoaded: function (evt) {
                     if (evt == null || evt.layer == null) {
                         return;
@@ -182,6 +241,10 @@ define([
                     VIEWER_UTILS.log("Loaded Catalog Service", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     IMAGERY_UTILS.loadKeyProperties(layer, lang.hitch(this, this.handleQueryImageServiceKeyPropertiesLoaded));
                 },
+                /**
+                 * called when a layers key properties could not be loaded
+                 * @param layer layer that keyProperties could not be loaded for
+                 */
                 handleQueryImageServiceKeyPropertiesLoaded: function (layer) {
                     layer.hide();
                     this.catalogLayers.push(layer);
@@ -189,12 +252,20 @@ define([
                         this.finalizeQueryLayerLoad();
                     }
                 },
+                /**
+                 * called when all of the catalog layers have been processed. this destroys the loading services container
+                 */
                 finalizeQueryLayerLoad: function () {
                     domConstruct.destroy(this.serviceLoadingContainer);
                     VIEWER_UTILS.log("Publishing catalog layer to widgets", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     this.viewerAccordion.show();
                 },
+                /**
+                 * called when a query result has been recieved from ArcGIS Server
+                 * @param response  query response object
+                 * @param queryLayerController controller that the response is associated with
+                 */
                 handleImageQueryResultsResponse: function (response, queryLayerController) {
                     //expand the footer to show the results grid
                     topic.publish(VIEWER_GLOBALS.EVENTS.FOOTER.EXPAND);
@@ -205,6 +276,9 @@ define([
                     //set the results on the grid
                     this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
                 },
+                /**
+                 *  called when the base viewer configuration has been loaded
+                 */
                 handleBaseConfigurationsLoaded: function () {
                     //load query config
                     if (this.queryConfig == null) {
@@ -220,21 +294,32 @@ define([
                         this.handleQueryWidgetConfigurationLoaded(this.queryConfig);
                     }
                 },
+                /**
+                 * called when the discovery applications configuration json has been loaded
+                 * @param queryConfig  configuration object for the discovery application
+                 */
                 handleQueryWidgetConfigurationLoaded: function (queryConfig) {
                     //set the query config on the class instance
                     this.queryConfig = queryConfig;
-                    //finally, start up the viewer
+                    //check configuration for manually adding catalog services. configured services in json are ignored if this flag is true
                     if (this.queryConfig.userAddCatalogMode === true) {
                         this.initUserAddCatalogMode();
                     }
                     else {
+                        //start up the viewer
                         this.startupViewer();
                     }
                 },
-                startupViewer: function(){
+                /**
+                 * starts up the base viewer and displays catalog loading element
+                 */
+                startupViewer: function () {
                     this.displayCatalogLoading();
                     this.inherited(arguments);
                 },
+                /**
+                 * loads the add catalog widget and displays it as a modal window for discovery application
+                 */
                 initUserAddCatalogMode: function () {
                     require(["imagediscovery/ui/catalog/AddCatalogModalWindow"], lang.hitch(this, function (AddCatalogModalWindow) {
                         var addCatalodModalWindow = new AddCatalogModalWindow();
@@ -247,10 +332,16 @@ define([
                     }));
 
                 },
+                /**
+                 * called when the discovery application configuration file could not be loaded. The viewer is not functional if this function is called
+                 */
                 handleQueryConfigLoadFailed: function () {
                     //show error since query json configuration load failed
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not load query configuration. Application is not functional", 100000);
                 },
+                /**
+                 * creates the discovery application query results widget. the contents of this widget is presented in the base viewers footer widget
+                 */
                 createImageQueryResultsWidget: function () {
                     //need to set the catalog layer on this class because it wasn't create when the catalog layer was found
                     if (this.imageryQueryResultsWidget == null) {
@@ -259,12 +350,18 @@ define([
                         this.imageryQueryResultsWidget.startup();
                     }
                 },
+                /**
+                 * called the first time the base viewers footer is expanded
+                 */
                 handleFirstFooterShow: function () {
                     //on first footer show create the query results widget so we don't have the overhead on page load
                     if (this.imageryQueryResultsWidget == null) {
                         this.createImageQueryResultsWidget();
                     }
                 },
+                /**
+                 * called when there is a request to show the discovery widget inside the bas viewer accordion
+                 */
                 handleShowDiscovery: function () {
                     //toggles the discovery widget
                     if (!this.viewerAccordion.visible) {
@@ -280,29 +377,55 @@ define([
                         }
                     }
                 },
+                /**
+                 * creates the discovery applications viewer accordion
+                 * @private
+                 */
                 _createViewerAccordion: function () {
                     this.inherited(arguments);
                     this.viewerAccordion.hide();
                 },
+                /**
+                 * called by the base viewer after the UI elements for the base viewer are created
+                 */
                 finalizeUILoad: function () {
                     this.inherited(arguments);
-                    this.loadImageryUIAddons();
-                    this.placeImageDiscoveryWidget();
+                    this._loadImageryUIAddons();
+                    this._placeImageDiscoveryWidget();
                     domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
                 },
-                loadImageryUIAddons: function () {
+                /**
+                 * called after the discovery viewer's UI elements have been created
+                 * @private
+                 */
+                _loadImageryUIAddons: function () {
+                    //create the swipe widget
                     this._createSwipeWidget();
                 },
+                /**
+                 * reads configuration to see if the swipe widget should be created
+                 * @private
+                 */
                 _createSwipeWidget: function () {
                     if (this.viewerConfig.swipeWidget != null && lang.isObject(this.viewerConfig.swipeWidget) && this.viewerConfig.swipeWidget.create) {
                         this.createSwipeWidget();
                     }
                 },
+                /**
+                 * inherited in ImageryViewerManagerWindow to create the swipe widget
+                 */
                 createSwipeWidget: function () {
                 },
-                placeImageDiscoveryWidget: function () {
+                /**
+                 * called when the discovery widget is ready to be placed
+                 * @private
+                 */
+                _placeImageDiscoveryWidget: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
                 },
+                /**
+                 *
+                 */
                 handleFinalizeUILoadComplete: function () {
                     //move the throbber and the messaging widget if the header is displayed
                     if (this.viewerConfig.header != null && lang.isObject(this.viewerConfig.header) &&
@@ -315,7 +438,10 @@ define([
                         }
                     }
                 },
-                 //_createViewerMainToolbar: extend the function to add the footprints toggle button
+                /**
+                 *     extend the function to add the footprints toggle button
+                 *     @private
+                 */
                 _createViewerMainToolbar: function () {
                     this.inherited(arguments);
                     var toggleFootprintsButton = new ToggleButton({
@@ -324,12 +450,9 @@ define([
                         label: "Footprints",
                         iconClass: "dijitCheckBoxIcon"
                     });
-
                     domClass.add(toggleFootprintsButton.domNode, "defaultTextColor");
-
                     domStyle.set(toggleFootprintsButton.domNode.firstChild, "background", "none");
                     domStyle.set(toggleFootprintsButton.domNode.firstChild, "border", "none");
-
                     on(toggleFootprintsButton, "change", function (checked) {
                         if (checked) {
                             topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_OPAQUE);
@@ -339,9 +462,9 @@ define([
                         }
                     });
                     domConstruct.place(toggleFootprintsButton.domNode, this.mainToolbar.addOnContentContainer);
-
                     domStyle.set(this.mainToolbar.addOnContentContainer, "float", "right");
                 }
             }
         )
-    });
+    })
+;

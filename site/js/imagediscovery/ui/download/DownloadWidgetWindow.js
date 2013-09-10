@@ -25,6 +25,9 @@ define([
                     this.inherited(arguments);
                     domClass.add(this.windowContent, "downloadWindowContent");
                 },
+                /**
+                 * called on first window show. creates the inner download widget
+                 */
                 handleFirstWindowShow: function () {
                     this.firstShowListener.remove();
                     require(["imagediscovery/ui/download/DownloadWidget"], lang.hitch(this, function (DownloadWidget) {
@@ -41,6 +44,7 @@ define([
                 },
                 handleWindowHidden: function () {
                     if (this.downloadWidget) {
+                        //clear graphics on the map when the download widget is hidden
                         this.downloadWidget.clearActiveMapGraphics();
                     }
                 }

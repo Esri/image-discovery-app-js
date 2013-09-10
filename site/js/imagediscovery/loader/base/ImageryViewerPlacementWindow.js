@@ -9,7 +9,9 @@ define([
         return declare(
             [BaseImageryViewerPlacement, ViewerPlacementWindow],
             {
-                //placed the discovery widget into the core viewer tools accordion
+                /**
+                 *  place the discovery widget into the core viewer tools accordion
+                 */
                 placeDiscoveryWidget: function (discoveryWidget) {
                     topic.publish(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.ADD_ITEM, discoveryWidget);
                 }

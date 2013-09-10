@@ -29,7 +29,7 @@
         "referenceLayers": [
             {
                 "type": "dynamic",
-                "url": "//server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer"
+                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer"
             }
         ],
         "legend": {
@@ -39,7 +39,7 @@
             "create": false
         }
     },
-    "geometryServiceUrl": "//utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
+    "geometryServiceUrl": "http://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
 
     "locators": [
         {

@@ -21,7 +21,13 @@ define([
                 displayFormats: {
                     date: "MM/dd/yyyy"
                 },
-                //zoom to icon
+                /**
+                 * formats the zoom to icon column
+                 * @param object
+                 * @param value
+                 * @param node
+                 * @param option
+                 */
 
                 zoomToIconFormatter: function (object, value, node, option) {
                     var zoomIcon = domConstruct.create("div", {title: "Zoom To", className: "imageResultsZoomToIcon commonIcons16 magnifyingGlass"});
@@ -29,7 +35,13 @@ define([
                     domConstruct.place(zoomIcon, node);
                 },
 
-                //thumbnail checkbox
+                /**
+                 * formats the thumbnail checkbox
+                 * @param object
+                 * @param value
+                 * @param node
+                 * @param option
+                 */
                 thumbnailCheckboxFormatter: function (object, value, node, option) {
                     var checkbox = new CheckBox({name: "showThumbNail", checked: object.showThumbNail, title: "Toggle Thumbnail", disabled: this.thumbnailToggleDisabled});
                     checkbox.on("change", lang.hitch(this, this.handleShowThumbNailToggle, object));
@@ -44,17 +56,15 @@ define([
                     }
                     return value;
                 },
-                //format doubles. float precision is read from json configuration
-                doubleFormatter: function (value) {
-                    if (value != null && !(typeof value == "string")) {
-                        return value.toFixed(this.floatPrecision);
-                    }
-                    return null;
-                },
-                //format dates. date format is read from json configuration
+
+                /**
+                 * formats date rows in the result grid
+                 * @param value
+                 * @return {*}
+                 */
                 dateFormatter: function (value) {
                     try {
-                        if(value == "" || value == null){
+                        if (value == "" || value == null) {
                             return null;
                         }
                         var date = new Date(value);
@@ -65,6 +75,15 @@ define([
                         return null;
                     }
                 },
+                /**
+                 * formats a field
+                 * @param fieldName
+                 * @param object
+                 * @param value
+                 * @param node
+                 * @param option
+                 */
+                //TODO: i don't remember how this was implemented
                 definedResultFieldFormatter: function (fieldName, object, value, node, option) {
                     var formatters = this.fieldsFormattersByQueryControllerId[object.queryControllerId];
                     var formatter;
@@ -80,6 +99,11 @@ define([
                         domStyle.set(node, nodeStyle);
                     }
                 },
+                /**
+                 * gets the css style from configuration for a field
+                 * @param fieldName field to retrieve the css style for
+                 * @return Object css style for field. Null if there is no style
+                 */
                 getNodeStyleFromFieldName: function (fieldName) {
                     var style = null;
                     for (var i = 0; i < this.resultFields.length; i++) {

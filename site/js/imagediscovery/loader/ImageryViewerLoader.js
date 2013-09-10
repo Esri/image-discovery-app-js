@@ -16,7 +16,9 @@ define([
         return declare(
             [ViewerLoader],
             {
-                //kicks off everything for the discovery viewer
+                /**
+                 *  kicks off everything for the discovery viewer
+                 */
                 constructor: function () {
                     //load ie7 theme if necessary for css hacks
                     if (has("ie") == 7) {
@@ -24,7 +26,9 @@ define([
                     }
                     window.IMAGERY_UTILS = new ImageryUtils();
                 },
-                //the main viewer UI. Widgets are displayed in floating windows
+                /**
+                 *  the main viewer UI. Widgets are displayed in floating windows
+                 */
                 createViewerPlacementWindow: function () {
                     //viewer placement is the first entry point that uses globals
                     if (window.IMAGERY_GLOBALS == null) {
@@ -32,13 +36,21 @@ define([
                     }
                     this.viewPlacement = new ImageryViewerPlacementWindow();
                 },
+                /**
+                 *  create imagery globals, inclused event string defs.
+                 */
                 createImageryGlobals: function () {
                     return new ImageryGlobals();
                 },
+                /**
+                 *  create viewer manager. Currently only windowed mode is supported
+                 */
                 createViewerManagerWindow: function () {
                     return new ImageryViewerManagerWindow(this.viewerConfigurationParameters);
                 },
-                //read passed configuration settings
+                /**
+                 *  read passed configuration settings
+                 */
                 processConfigurationSettings: function () {
                     this.inherited(arguments);
                     this.viewerConfigurationParameters.useProxyForImageryQueryConfig = false;
@@ -51,6 +63,9 @@ define([
                         }
                     }
                 },
+                /**
+                 *  method is called by base viewer if IE7 is detected
+                 */
                 _listenForLoadIE7Theme: function () {
                     //listen for core UI load and load IE7 tweaks to the cascade uses the IE7 tweaks
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.CSS.CORE_UI_THEME_LOADED, function () {

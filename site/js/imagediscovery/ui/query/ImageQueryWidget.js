@@ -31,8 +31,6 @@ define([
                     this.queryFields = [];
                     this.queryFieldResponseCache = {};
                 },
-                initListeners: function () {
-                },
                 postCreate: function () {
                     this.inherited(arguments);
                     if (this.discoveryQueryFields != null && lang.isArray(this.discoveryQueryFields)) {

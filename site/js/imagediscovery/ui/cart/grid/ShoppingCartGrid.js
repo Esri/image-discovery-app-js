@@ -24,15 +24,26 @@ define([
                     //listen for request of object ids in the cart
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.GET_ADDED_OBJECT_IDS, lang.hitch(this, this.getAddedCartItemIds));
                 },
-                //handle new results
+                /**
+                 * adds an item to the shopping cart grid
+                 * @param item
+                 */
                 handleAddResultToCart: function (item) {
                     //get to the attributes of the results
                     //add the item to the cart store
                     this.store.add(item);
                 },
-                removeItemFromCart: function (resultId, item) {
+                /**
+                 * removes an item from the shopping cart
+                 * @param resultId id of the item to remove
+                 */
+                removeItemFromCart: function (resultId) {
                     this.store.remove(resultId);
                 },
+                /**
+                 * generates the columns to add to the shopping cart grid
+                 * @return {Array}
+                 */
                 generateManipulationColumns: function () {
                     var parentColumns = this.inherited(arguments);
                     var columns = [
@@ -49,6 +60,14 @@ define([
                     }
                     return columns;
                 },
+                /**
+                 * formats the shopping cart column of the shopping cart grid
+                 * @param object
+                 * @param value
+                 * @param node
+                 * @param option
+                 */
+
                 cartIconFormatter: function (object, value, node, option) {
                     //returns a button for removing item from the cart
                     var cartButton = new Button({iconClass: "resultGridCartIcon commonIcons16 shoppingCartAdded", title: "Remove From Cart"});
@@ -56,6 +75,10 @@ define([
                     domClass.add(cartButton.domNode, "queryResultShoppingCartButton");
                     domConstruct.place(cartButton.domNode, node);
                 },
+                /**
+                 * fired when the shopping cart column button has been pressed. removes the row from the grid
+                 * @param item
+                 */
                 handleRemoveCartItemClick: function (item) {
                     //handle removing item from the shopping cart
                     if (item.showFootprint) {
@@ -68,15 +91,19 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, itemId, item);
                     this.setSelectedThumbnails();
                 },
+                /**
+                 * returns all item ids for items in the shopping cart
+                 * @param callback
+                 * @return {*}
+                 */
                 getAddedCartItemIds: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.getVisibleContentObjectIdArray());
                         return null;
-
                     }
-                    else{
+                    else {
                         return this.getVisibleContentObjectIdArray();
                     }
                 }
             });
-});
+    });

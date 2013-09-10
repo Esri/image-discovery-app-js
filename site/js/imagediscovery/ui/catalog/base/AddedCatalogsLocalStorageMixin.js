@@ -29,7 +29,6 @@ define([
                         }
                     }
                     return this.persistedUserCatalogs.length > 0;
-
                 },
                 persistUserCatalog: function (catalog) {
                     if (catalog == null || !lang.isObject(catalog)) {

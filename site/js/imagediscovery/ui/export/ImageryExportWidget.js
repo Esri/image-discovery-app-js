@@ -78,8 +78,11 @@ define([
                     this.clearDraw();
                     this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
                 },
+                /**
+                 * handles the bulk of the imagery export
+                 */
                 handleExport: function () {
-                    //function handles the bulk of the imagery export
+
                     var selectedObjectIds = this.getDownloadObjectIds();
                     if (selectedObjectIds == null || !lang.isArray(selectedObjectIds) || selectedObjectIds.length == 0) {
                         return;
@@ -173,6 +176,10 @@ define([
                         this._imageryDownloadComplete();
                     }
                 },
+                /**
+                 * finalizes the imagery export
+                 * @private
+                 */
                 _imageryDownloadComplete: function () {
                     if (!this.hasDownloadItems) {
                         if (this.imageryExportDownloadWindow) {

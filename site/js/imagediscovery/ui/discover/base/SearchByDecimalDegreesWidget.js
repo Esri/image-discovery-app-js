@@ -7,19 +7,31 @@ define([
     "esri/SpatialReference"
 
 ],
-    function (declare, template, BaseSearchByWidget,NumberTextBox,Extent,SpatialReference) {
+    function (declare, template, BaseSearchByWidget, NumberTextBox, Extent, SpatialReference) {
         return declare(
             [ BaseSearchByWidget],
             {
                 searchWkid: 4326,
-                templateString:template,
-                handleValueChange:function () {
+                templateString: template,
+                /**
+                 * called when an input value is changed
+                 * @return {*}
+                 */
+                handleValueChange: function () {
                     return this.onValuesChanged(this.isValid());
                 },
-                isValid:function () {
+                /**
+                 * returns true when inputs are valid
+                 * @return {*}
+                 */
+                isValid: function () {
                     return this.validateLatDDBounds() && this.validateLonDDBounds();
                 },
-                validateLatDDBounds:function () {
+                /**
+                 * returns true if the LatDD inputs are valid
+                 * @return {boolean}
+                 */
+                validateLatDDBounds: function () {
                     var minx = this.boundsLLXInput.get("value");
                     var maxx = this.boundsURXInput.get("value");
                     if (isNaN(minx) || isNaN(maxx)) {
@@ -27,7 +39,11 @@ define([
                     }
                     return minx < maxx;
                 },
-                validateLonDDBounds:function () {
+                /**
+                 * returns true if the LonDD inputs are valid
+                 * @return {boolean}
+                 */
+                validateLonDDBounds: function () {
                     var miny = this.boundsLLYInput.get("value");
                     var maxy = this.boundsURYInput.get("value");
                     if (isNaN(miny) || isNaN(maxy)) {
@@ -35,12 +51,15 @@ define([
                     }
                     return miny < maxy;
                 },
-                getGeometry:function () {
+                /**
+                 returns the DD geometry
+                 */
+                getGeometry: function () {
                     var minx = this.boundsLLXInput.get("value");
                     var miny = this.boundsLLYInput.get("value");
                     var maxx = this.boundsURXInput.get("value");
                     var maxy = this.boundsURYInput.get("value");
-                    return new Extent(minx,miny,maxx,maxy,new SpatialReference({wkid:this.searchWkid}));
+                    return new Extent(minx, miny, maxx, maxy, new SpatialReference({wkid: this.searchWkid}));
                 }
 
             });

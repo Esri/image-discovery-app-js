@@ -7,20 +7,32 @@ define([
     "esri/SpatialReference"
 
 ],
-    function (declare,template, BaseSearchByWidget,NumberTextBox,Extent,SpatialReference) {
+    function (declare, template, BaseSearchByWidget, NumberTextBox, Extent, SpatialReference) {
         return declare(
             [ BaseSearchByWidget],
             {
-                searchWkid:4326,
-                boundsDMSBoxWidth:"2em",
+                searchWkid: 4326,
+                boundsDMSBoxWidth: "2em",
                 templateString: template,
-                handleValueChange:function () {
+                /**
+                 * called when an input value is changed
+                 * @return {*}
+                 */
+                handleValueChange: function () {
                     return this.onValuesChanged(this.isValid());
                 },
-                isValid:function () {
+                /**
+                 * returns true when inputs are valid
+                 * @return {*}
+                 */
+                isValid: function () {
                     return this.validateLatDMSBounds() && this.validateLonDMSBounds();
                 },
-                validateLatDMSBounds:function () {
+                /**
+                 * returns true if the Lat DMS inputs are valid
+                 * @return {boolean}
+                 */
+                validateLatDMSBounds: function () {
                     var minxDeg = this.boundsLLDMSDegXInput.get("value");
                     var minxMin = this.boundsLLDMSMinXInput.get("value");
                     var minxSec = this.boundsLLDMSSecXInput.get("value");
@@ -39,7 +51,11 @@ define([
 
                     return minxDD < maxxDD;
                 },
-                validateLonDMSBounds:function () {
+                /**
+                 * returns true if the Lon DMS inputs are valid
+                 * @return {boolean}
+                 */
+                validateLonDMSBounds: function () {
                     var minyDeg = this.boundsLLDMSDegYInput.get("value");
                     var minyMin = this.boundsLLDMSMinYInput.get("value");
                     var minySec = this.boundsLLDMSSecYInput.get("value");
@@ -58,8 +74,11 @@ define([
 
                     return minyDD < maxyDD;
                 },
-
-                getGeometry:function () {
+                /**
+                 * returns the DMS geometry
+                 * @return {esri.geometry.Extent}
+                 */
+                getGeometry: function () {
                     var minxDeg = this.boundsLLDMSDegXInput.get("value");
                     var minxMin = this.boundsLLDMSMinXInput.get("value");
                     var minxSec = this.boundsLLDMSSecXInput.get("value");
@@ -80,7 +99,7 @@ define([
                     var maxySec = this.boundsURDMSSecYInput.get("value");
                     var maxy = maxyDeg + (isNaN(maxyMin) ? 0 : (maxyMin / 60)) + (isNaN(maxySec) ? 0 : (maxySec / 3600));
 
-                    return new Extent(minx,miny,maxx,maxy,new SpatialReference({wkid:this.searchWkid}));
+                    return new Extent(minx, miny, maxx, maxy, new SpatialReference({wkid: this.searchWkid}));
 
                 }
             });

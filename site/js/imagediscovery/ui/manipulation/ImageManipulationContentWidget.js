@@ -34,6 +34,9 @@ define([
                         this.bindingsApplied = true;
                     }
                 },
+                /**
+                 * adds configuration widgets to the analysis widget
+                 */
                 addChildWidgetsToView: function () {
                     if (this.bandReorderWidget) {
                         this.bandReorderWidget.placeAt(this.bandReorderWidgetContainer);
@@ -48,11 +51,18 @@ define([
                         this.mosaicOperationWidget.placeAt(this.mosaicOperationWidgetContainer);
                     }
                 },
+                /**
+                 * cancels the mensuration widget
+                 */
                 cancelMensuration: function () {
                     if (this.mensurationWidget) {
                         this.mensurationWidget.cancelMensuration();
                     }
                 },
+                /**
+                 * creates all of the child manipulation widgets
+                 * @private
+                 */
                 _createManipulationWidgets: function () {
                     this._createBandReorderWidget();
                     this._createRasterFunctionWidget();

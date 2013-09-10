@@ -17,9 +17,17 @@ define([
                 checkInputRegExp:new RegExp(/^[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+$/),
                 nsewTextBoxWidth:"6em",
                 templateString:template,
+                /**
+                              * called when an input value is changed
+                              * @return {*}
+                              */
                 handleValueChange:function () {
                     return this.onValuesChanged(this.isValid());
                 },
+                /**
+                            * returns true when inputs are valid
+                            * @return {*}
+                            */
                 isValid:function () {
                     return this._getValidPointValues() != null;
                 },

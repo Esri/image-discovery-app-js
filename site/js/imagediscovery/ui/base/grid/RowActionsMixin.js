@@ -14,8 +14,12 @@ define([
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.SET_EXTENT, entry.geometry.getExtent());
                     }
                 },
-                //handles show information window for a result
-                //footprint checkbox toggle listener
+                /**
+                 * handles show information window for a result
+                 * @param item
+                 * @param checked
+                 */
+                //
                 handleShowFootprintToggle: function (item, checked) {
                     item.showFootprint = checked;
                     var queryController = IMAGERY_UTILS.getQueryLayerControllerFromItem(item);
@@ -28,12 +32,19 @@ define([
                         }
                     }
                 },
-                //forces the show of thumbnail
+                /**
+                 *  forces the show of thumbnail
+                 * @param item
+                 * @param checked
+                 */
                 handleShowThumbNailToggle: function (item, checked) {
                     item.showThumbNail = checked;
                     this.setSelectedThumbnails();
                 },
-                //given a query controller id it will show footprints that are checked in the grid
+                /**
+                 * given a query controller id it will show footprints that are checked in the grid
+                 * @param queryControllerId
+                 */
                 showVisibleFootprintsByQueryControllerId: function (queryControllerId) {
                     var items = this.store.query({showFootprint: true, isFiltered: false, isGrayedOut: false, queryControllerId: queryControllerId});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
@@ -47,7 +58,9 @@ define([
                         }
                     }
                 },
-                //given a query controller id it will hide footprints that are not checked in the grid
+                /**
+                 *  given a query controller id it will hide footprints that are not checked in the grid
+                 */
                 hideVisibleFootprintsByQueryControllerId: function (queryControllerId) {
                     var items = this.store.query({showFootprint: true, isFiltered: false, isGrayedOut: false, queryControllerId: queryControllerId});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
@@ -61,7 +74,9 @@ define([
                         }
                     }
                 },
-                //displays all footprints checked in the result grid
+                /**
+                 * displays all footprints checked in the result grid
+                 */
                 showVisibleFootprints: function () {
                     var queryControllers;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (queryConts) {
@@ -73,13 +88,18 @@ define([
                         }
                     }
                 },
+                /**
+                 * sets visible footprints back to visible if they were forced hidden
+                 */
                 restoreVisibleFootprints: function () {
                     if (this.tempFootprintHideStateActive) {
                         this.showVisibleFootprints();
                         this.tempFootprintHideStateActive = false;
                     }
                 },
-                //this temp hides footprints but does not alter the showFootprint flag on the object. call restoreVisibleFootprints to show them again.
+                /**
+                 * temp. hides footprints but does not alter the showFootprint flag on the object. call restoreVisibleFootprints to show them again.
+                 */
                 hideVisibleFootprints: function () {
                     if (!this.tempFootprintHideStateActive) {
                         var queryControllers;
@@ -94,6 +114,10 @@ define([
                         this.tempFootprintHideStateActive = true;
                     }
                 },
+                /**
+                 * sorts result items and sets the lock raster array to coincide with the grid sort
+                 * @param sort
+                 */
                 setSelectedThumbnailsSorted: function (sort) {
                     //todo: need to figure out how to clear for items not in the result set
                     topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL);
@@ -112,11 +136,14 @@ define([
                         }
                     }
                 },
+
                 setSelectedThumbnails: function () {
                     var sort = this.grid.get("sort");
                     this.setSelectedThumbnailsSorted(sort);
                 },
-                //zooms to extent of all visible rasters
+                /**
+                 * zooms to extent of all visible rasters
+                 */
                 zoomToVisibleRasters: function () {
                     var xmin;
                     var ymin;
@@ -160,6 +187,10 @@ define([
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.SET_EXTENT, extent);
                     }
                 },
+                /**
+                 * toggles all thumbnails in the grid
+                 * @param checked boolean to use for check state
+                 */
                 handleToggleAllThumbnails: function (checked) {
                     this.grid.toggleAllThumbnails(checked);
                 }

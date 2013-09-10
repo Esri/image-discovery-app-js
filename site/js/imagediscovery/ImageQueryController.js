@@ -39,7 +39,6 @@ define([
                 },
                 initListeners: function () {
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_NO_SOURCES_LOCKED, lang.hitch(this, this.handleHasNoSourcesLocked));
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_SINGLE_SOURCE_LOCKED, lang.hitch(this, this.handleHasSingleSourceLocked));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, lang.hitch(this, this.handleGetQueryLayerControllerById));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, lang.hitch(this, this.handleSetQueryLayerControllers));
@@ -50,6 +49,11 @@ define([
                     layerQueryParameters.whereClause = layerQueryParameters.layer.queryWhereClauseAppend ? layerQueryParameters.layer.queryWhereClauseAppend : "1 = 1";
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.QUERY_LAYER, layerQueryParameters);
                 },
+                /**
+                 * listener for IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID
+                 * @param id  id of the query layer controller to return
+                 * @param callback function to return the query layer controller to
+                 */
                 handleGetQueryLayerControllerById: function (id, callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         for (var i = 0; i < this.queryLayerControllers.length; i++) {
@@ -123,6 +127,11 @@ define([
                         on(currentQueryController, currentQueryController.LOCK_RASTERS_CHANGED, lang.hitch(this, this.handleLockRastersChanged, currentQueryController))
                     }
                 },
+                /**
+                 * listener for IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_NO_SOURCES_LOCKED
+                 *  passes true to callback if there is a lock raster on any of the catalog services
+                 * @param callback
+                 */
                 handleHasNoSourcesLocked: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         var hasSingleSource = true;
@@ -134,6 +143,11 @@ define([
                         callback(count == 0);
                     }
                 },
+                /**
+                 * listener for IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_SINGLE_SOURCE_LOCKED
+                 *  passes true to callback if there is only a single catalog service with lock raster
+                 * @param callback
+                 */
                 handleHasSingleSourceLocked: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         var hasSingleSource = true;
@@ -149,6 +163,12 @@ define([
                         callback(hasSingleSource && lockRasterEntry != null, lockRasterEntry);
                     }
                 },
+                /**
+                 * called when a lock raster has changed for a query layer controller. query controller
+                 *
+                 * @param queryController
+                 * @param lockRasters
+                 */
                 handleLockRastersChanged: function (queryController, lockRasters) {
                     if (lockRasters == null || lockRasters.length == 0) {
                         delete this.lockRasterLookup[queryController.id];
@@ -179,7 +199,9 @@ define([
                     }
 
                 },
-                //handles the image service query response
+                /**
+                 * handles the image service query response
+                 */
                 handleQueryResponseComplete: function (queryLayerController, response) {
                     if (this.maxQueryResults != null && (this.resultFeaturesCount >= this.maxQueryResults)) {
                         return;
@@ -202,7 +224,7 @@ define([
                         if (!maxResultsHit) {
                             topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, resultsString);
                         }
-                       topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE);
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE);
                         topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.RELEASE_HIDE_BLOCK);
 
                     }

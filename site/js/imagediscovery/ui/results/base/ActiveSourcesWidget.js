@@ -29,6 +29,10 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_FILTER_FUNCTION, this.processFilterFunctionsAgainstItemCallback);
 
                 },
+                /**
+                 * adds query layer controller entry to the active sources widget
+                 * @param queryLayerController
+                 */
                 addQueryLayerControllerEntry: function (queryLayerController) {
                     if (queryLayerController && queryLayerController.label) {
                         var container = domConstruct.create("div", {className: "activeSourceServiceEntry"});
@@ -41,6 +45,10 @@ define([
                         on(container, "click", lang.hitch(this, this.handleContainerToggle, {sourceValue: queryLayerController.label, icon: checkedUncheckedNode, queryLayerController: queryLayerController}))
                     }
                 },
+                /**
+                 * toggles the active sources container
+                 * @param params
+                 */
                 handleContainerToggle: function (params) {
                     if (params && params.icon && params.queryLayerController) {
                         if (domClass.contains(params.icon, "success")) {

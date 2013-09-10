@@ -7,19 +7,37 @@ define([
         return declare(
             [ UITemplatedWidget],
             {
-                boundsNumberBoxWidth:"5em",
-                onValuesChanged:function (valid) {
+                boundsNumberBoxWidth: "5em",
+                /**
+                 * handles when values change
+                 * @param valid  true when widget inputs are valid
+                 */
+                onValuesChanged: function (valid) {
                 },
-                getGeometry:function () {
+                /**
+                 * returns the query geometry
+                 * @return {null}
+                 */
+                getGeometry: function () {
                     return null;
                 },
-                isValid:function () {
+                /**
+                 * returns true when the widgets inputs are valid
+                 * @return {boolean}
+                 */
+                isValid: function () {
                     return true;
                 },
-                show:function () {
+                /**
+                 * shows the widget
+                 */
+                show: function () {
                     domStyle.set(this.domNode, "display", "block");
                 },
-                hide:function () {
+                /**
+                 * hides the widget
+                 */
+                hide: function () {
                     domStyle.set(this.domNode, "display", "none");
                 }
             });

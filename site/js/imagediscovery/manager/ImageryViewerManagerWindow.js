@@ -15,19 +15,31 @@ define([
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
-
+                /**
+                 * places the discovery widget
+                 * @param discoveryWidget widget instance to place
+                 */
                 placeDiscoveryWidget: function (discoveryWidget) {
                     //fire event telling the loader to place the discovery widget
                     topic.publish(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.ADD_ITEM, discoveryWidget);
                 },
+                /**
+                 * creates the image manipulation widget window
+                 */
                 createImageManipulationWidget: function () {
                     //create the image manipulation widget.
                     this.imageManipulationWidget = new ImageManipulationWindowWidget();
                 },
+                /**
+                 * creates the swipe widget
+                 */
                 createSwipeWidget: function () {
                     //create the swipe widget
                     this.swipeWindowWidget = new SwipeWindowWidget();
                 },
+                /**
+                 *  add discovery button and analysis button to the toolbar
+                 */
                 processNavigationToolbarAddons: function () {
                     var accordionButton = new ToolbarButton({
                         buttonClass: "commonIcons16 binoculars",
@@ -44,6 +56,9 @@ define([
                     accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
                     analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
                 },
+                /**
+                 *  add swipe widget to the tools dropdown
+                 */
                 createAddonTools: function () {
                     //only add on tool for the discovery viewer is the swip widget
                     this.inherited(arguments);
