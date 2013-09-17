@@ -7,6 +7,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 ![App](https://raw.github.com/Esri/text-and-legend-map-storytelling-template-js/master/images/storytelling-text-and-legend-map-template-js.png)
 
 ## Features
+
 * Supports Multiple Image Service Search
 * Search by: Map Extent, Point(buffer), Rectangle, Coordinates, KML/KMZ/SHP polygon upload
 * Configurable result Fields
@@ -19,6 +20,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 
 
 ##Widgets
+
 * Bookmarking
 * Basemaps
 * Drawing
@@ -35,6 +37,12 @@ The Image Discovery Application enables users to search, discover, filter, and m
 * Raster Function/Band Reordering/Mensuration
 * Swipe
 * Plot Coordinates
+
+## Requirements
+
+* Notepad or HTML editor
+* Experience with HTML/CSS/Javascript
+* Experience with the [ArcGIS Javascript API](http://links.esri.com/javascript)
 
 ## Instructions
 
@@ -96,13 +104,6 @@ The weather widget requires an API key. You can get an API key at: [Weather Unde
 4. the "header" entry allows you to customize the logo/text/help/contact header display in the viewer.
 5. the "bookmarks" entry allows you to point to a JSON file for preloaded bookmarks on application load. see web\config\bookmarks.json for the bookmark format
 
-
-## Requirements
-
-* Notepad or HTML editor
-* Experience with HTML/CSS/Javascript
-* Experience with the [ArcGIS Javascript API](http://links.esri.com/javascript).
-
 ## Resources
 
 * [ArcGIS for JavaScript API Resource Center](http://help.arcgis.com/en/webapi/javascript/arcgis/index.html)
@@ -114,7 +115,7 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 
 ## Contributing
 
-Anyone and everyone is welcome to contribute.
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
 
 ## Licensing
 Copyright 2013 Esri
@@ -131,7 +132,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-A copy of the license is available in the repository's [license.txt](https://raw.github.com/ArcGIS/image-discovery-app-js/master/license.txt) file.
+A copy of the license is available in the repository's [license.txt](license.txt) file.
 
-[](Esri Tags: Image Discovery)
+[](Esri Tags: Image Discovery ArcGIS for Defense and Intelligence)
 [](Esri Language: JavaScript)
