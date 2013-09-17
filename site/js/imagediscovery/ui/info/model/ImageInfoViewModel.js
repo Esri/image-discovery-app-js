@@ -49,7 +49,7 @@ define([
                     imageInfoItem["showAttrs"] = ko.observable(true);
                     imageInfoItem["thumbnailURL"] = ko.observable("");
                     imageInfoItem["currentView"] = ko.observable("attrsView");
-                    imageInfoItem["inShoppingCart"] = ko.observable(false);
+                    imageInfoItem["inShoppingCart"] = ko.observable(imageInfoItem.imageInfoAndLayer.imageInfo.addedToCart);
 
                     imageInfoItem["radioName"] = ko.observable('showView' + this.imageInfoArray().length);
                     this.imageInfoArray.push(imageInfoItem);
