@@ -12,12 +12,13 @@ define([
     "dojo/store/Observable",
     "dojo/store/Memory",
     "dijit/form/Button",
+    "dijit/form/CheckBox",
     "../base/grid/ImageryGrid",
     "dijit/TooltipDialog",
     "../filter/UserAppliedFiltersManager"
 
 ],
-    function (declare, domGeometry, topic, on, registry, query, lang, domConstruct, domClass, domStyle, Observable, Memory, Button, ImageryGrid, TooltipDialog, UserAppliedFiltersManager) {
+    function (declare, domGeometry, topic, on, registry, query, lang, domConstruct, domClass, domStyle, Observable, Memory, Button, CheckBox, ImageryGrid, TooltipDialog, UserAppliedFiltersManager) {
         return declare(
             [ImageryGrid],
             {
@@ -30,6 +31,11 @@ define([
                     //lookup for the filter icon in the grid header
                     this.filterIconLookup = {};
                     this.responseFeatures = [];
+
+                    //Need to keep this var at instance level so that
+                    //we can update them based on external events
+                    this.toggleAllCartItemsHeaderIconDiv = null;
+
                 },
                 postCreate: function () {
                     this.inherited(arguments);
@@ -59,6 +65,9 @@ define([
                     this.setFilterResultsHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SET, lang.hitch(this, this.handleApplyFilter));
                     this.itemRemovedFromCartHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
 
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO,lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
                 },
                 /**
                  *
@@ -365,6 +374,7 @@ define([
                             label: " ",
                             sortable: false,
                             renderCell: lang.hitch(this, this.cartIconFormatter),
+                            renderHeaderCell: lang.hitch(this, this.cartRenderHeaderCell),
                             unhidable: true
                         }
 
@@ -402,8 +412,17 @@ define([
                     }
                     return layerColumns;
                 },
+                cartRenderHeaderCell: function (node) {
+                    this.toggleAllCartItemsHeaderIconDiv = domConstruct.create("div", {
+                        title: "Add all or remove all from cart",
+                        className: "imageResultsGridCartHeaderIcon commonIcons16 shoppingCartEmpty"});
+
+                    on(this.toggleAllCartItemsHeaderIconDiv, "click", lang.hitch(this, this.handleToggleAllCartItems));
+                    domConstruct.place(this.toggleAllCartItemsHeaderIconDiv, node);
+                },
+
                 /**
-                 * formatter function for the car column
+                 * formatter function for the cart column
                  *
                  * @param object
                  * @param value
@@ -418,6 +437,63 @@ define([
                     domClass.add(cartButton.domNode, "queryResultShoppingCartButton");
                     domConstruct.place(cartButton.domNode, node);
                 },
+                /**
+                 * Either adds or removes all items to/from shopping cart.
+                 * @param cartHeaderCheckbox
+                 * @param cartIconDiv
+                 */
+                handleToggleAllCartItems: function() {
+                    var addAllItems = false;
+                    if (domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty")) {
+                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                        addAllItems = true;
+                    }
+                    else {
+                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                    }
+
+                    var items = this.store.query({ isFiltered: false});
+                    if (items.length > 0) {
+                        for (var i = 0; i < items.length; i++) {
+                            var row = this.grid.row(items[i]);
+                            var toggleShoppingCartInput = query("input[name=toggleAddToShoppingCart]", row.element);
+                            var toggleShoppingCartInputDijit = registry.getEnclosingWidget(toggleShoppingCartInput[0]);
+                            if (toggleShoppingCartInputDijit) {
+                                if (addAllItems &&
+                                    domClass.contains(toggleShoppingCartInputDijit.iconNode, "shoppingCartEmpty")) {
+                                    this.addCartItem(items[i], toggleShoppingCartInputDijit);
+                                }
+                                else if (!addAllItems &&
+                                    domClass.contains(toggleShoppingCartInputDijit.iconNode, "shoppingCartAdded")) {
+                                    this.removeCartItem(items[i], toggleShoppingCartInputDijit);
+                                }
+                            }
+                        }
+                    }
+                },
+                /**
+                 * Determine whether or not need to update the add/remove all cart
+                 * items button.
+                 */
+                handleUpdateToggleAllCartItemsButton: function() {
+                    var cartItemIconEmpty = domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty") ?
+                        true : false;
+                    var items = this.store.query({ addedToCart: false, isFiltered: false}); //any items not in cart?
+                    if (items.length == 0 && cartItemIconEmpty) {
+                        //no items NOT in cart => all items in cart
+                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                    }
+                    else if (items.length > 0 && !cartItemIconEmpty) {
+                        //at least one item not in cart
+                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                    }
+
+                },
+
                 /**
                  * toggles the passed cart row entry
                  * @param entry

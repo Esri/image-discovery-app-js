@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/topic",
+    "dojo/on",
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/dom-class",
@@ -9,7 +10,7 @@ define([
     "dijit/form/Button",
     "../../base/grid/ImageryGrid"
 ],
-    function (declare, topic, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid) {
+    function (declare, topic, on, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid) {
         return declare(
             [ImageryBaseGrid],
             {
@@ -52,6 +53,7 @@ define([
                             label: " ",
                             sortable: false,
                             renderCell: lang.hitch(this, this.cartIconFormatter),
+                            renderHeaderCell: lang.hitch(this, this.cartRenderHeaderCell),
                             unhidable: true
                         }
                     ];
@@ -60,6 +62,16 @@ define([
                     }
                     return columns;
                 },
+
+                cartRenderHeaderCell: function (node) {
+                    var cartDiv = domConstruct.create("div", {
+                        title: "Remove all from cart",
+                        className: "imageResultsGridCartHeaderIcon commonIcons16 shoppingCartAdded"});
+
+                    on(cartDiv, "click", lang.hitch(this, this.handleRemoveAllCartItems));
+                    domConstruct.place(cartDiv, node);
+                },
+
                 /**
                  * formats the shopping cart column of the shopping cart grid
                  * @param object
@@ -103,6 +115,14 @@ define([
                     }
                     else {
                         return this.getVisibleContentObjectIdArray();
+                    }
+                },
+                handleRemoveAllCartItems: function() {
+                    var items = this.store.query();
+                    if (items.length > 0) {
+                        for (var i = 0; i < items.length; i++) {
+                            this.handleRemoveCartItemClick(items[i]);
+                        }
                     }
                 }
             });

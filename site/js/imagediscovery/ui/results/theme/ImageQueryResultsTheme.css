@@ -55,8 +55,12 @@
     width: 48px;
 }
 
-.imageResultsGridThumbnailHeaderIcon, .imageResultsGridFootprintHeaderIcon {
+.imageResultsGridThumbnailHeaderIcon, .imageResultsGridFootprintHeaderIcon, .imageResultsGridCartHeaderIcon {
     vertical-align: middle;
+}
+
+.imageResultsGridCartHeaderIcon {
+    margin: 0px 0px 0px 12px;
 }
 
 .queryResultsTableLabel {
