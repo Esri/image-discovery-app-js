@@ -1,6 +1,6 @@
 <div>
     <div class="searchPortalTabContainer">
-        <span  data-bind="click:showSearch, css: {selectedTab: searchVisible}">Search</span>
+        <span data-bind="click:showSearch, css: {selectedTab: searchVisible}">Search</span>
         <span data-bind="click:showResults, css: {selectedTab: resultsVisible}">Results</span>
 
     </div>
@@ -20,8 +20,9 @@
     </div>
 
     <div class="searchPortalContentContainer">
-        <div data-bind="visible:searchVisible">
-            <div style="width: 45%;vertical-align: -3px" data-dojo-type="dijit/form/TextBox" data-dojo-attach-event="onKeyUp: onQueryStringKeyUp" data-dojo-attach-point="portalQueryString"></div>
+        <div data-bind="visible:searchVisible" data-dojo-attach-point="portalSearchContainer">
+            <div style="width: 45%;vertical-align: -3px" data-dojo-type="dijit/form/TextBox"
+                 data-dojo-attach-event="onKeyUp: onQueryStringKeyUp" data-dojo-attach-point="portalQueryString"></div>
             <select data-bind="options: portalSearchTypes ,value:selectedPortalSearchType"></select>
 
             <div class="searchPortalActions">
@@ -29,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div data-bind="visible:resultsVisible">
+        <div data-bind="visible:resultsVisible" data-dojo-attach-point="portalResultsContainer">
             <div class="searchPortalResultCountContainer">
                 <span>Results: </span>
                 <span data-bind="text: resultCount"></span>

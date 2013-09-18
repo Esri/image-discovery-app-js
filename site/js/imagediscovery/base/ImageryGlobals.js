@@ -86,7 +86,8 @@ define([
                         GET_ADDED_OBJECT_IDS: "cart:gAddedObjIds",
                         DISPLAYED: "cart:displayed",
                         HIDDEN: "cart:hidden",
-                        IS_VISIBLE: "cart:isVisible"
+                        IS_VISIBLE: "cart:isVisible",
+                        GET_VISIBLE_FIELD_NAMES: "cart:getVisFieldNames"
                     },
                     LAYER: {
                         //clears the lock ids for all  catalog image services

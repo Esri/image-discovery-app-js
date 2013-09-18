@@ -37,9 +37,9 @@ define([
                     this.imageInfoTabContainer = new ImageInfoTabWidget();
                     this.setContent(this.imageInfoTabContainer.domNode);
                 },
-                show: function(imageInfoAndLayerArray) {
+                show: function(imageInfoAndQueryLayerControllerArray) {
                     this.inherited(arguments);
-                    this.imageInfoTabContainer.setImageInfos(imageInfoAndLayerArray);
+                    this.imageInfoTabContainer.setImageInfos(imageInfoAndQueryLayerControllerArray);
                 }
             });
     });

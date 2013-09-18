@@ -4,11 +4,13 @@
         <span data-bind="click:showQueryBuilderResults, css: {selectedTab: queryBuilderResultsVisible}">Results</span>
         <span data-bind="visible:showQueryBuilderSymbologyTab, click:showQueryBuilderSymbology, css: {selectedTab: queryBuilderSymbologyVisible}">Symbology</span>
     </div>
-    <div data-bind="visible:showHowToQueryContent" class="howToQueryContent">
-        <div class="howToQueryHeader">To perform a query:</div>
-        <div>right click a layer/service in the table of contents and select "Query Builder"</div>
-    </div>
-    <div class="querBuilderInputContainer" data-bind="visible:queryBuilderInputVisible">
+
+    <div class="querBuilderInputContainer" data-bind="visible:queryBuilderInputVisible" data-dojo-attach-point="queryBuilderInputContainer">
+        <div data-bind="visible:showHowToQueryContent" class="howToQueryContent">
+            <div class="howToQueryHeader">To perform a query:</div>
+            <div>right click a layer/service in the table of contents and select "Query Builder"</div>
+        </div>
+
         <div class="queryLayerNameContainer"><span>Query Layer: </span><span
                 data-dojo-attach-point="queryLayerNameLabel"></span></div>
         <select data-dojo-attach-point="queryBuilderFields"

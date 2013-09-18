@@ -12,6 +12,83 @@ define([
                     this.queryControllerToIdLookup = {}
                 },
                 /**
+                 * returns object with exists flag and fieldName. fieldName is the services true field name (if the field is aliased through config)
+                 * @param fieldName
+                 * @param queryLayerController
+                 */
+                getFieldExistsAndServiceFieldName: function (fieldName, queryLayerController) {
+                    var response = {exists: false, fieldName: null};
+                    if (queryLayerController && queryLayerController.layer) {
+                        var layer = queryLayerController.layer;
+                        if (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping != null && lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                            var fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
+                            for (var key in fieldMapping) {
+                                if (fieldMapping[key] === fieldName) {
+                                    //check to make sure there isn't a field mapping configuration error and check to see that the field truly does exist on the layer
+                                    if (this.getServiceFieldExists(key, layer)) {
+                                        response.exists = true;
+                                        response.fieldName = key;
+                                        return response;
+                                    }
+                                }
+                            }
+                        }
+                        if (this.getServiceFieldExists(fieldName, layer)) {
+                            response.exists = true;
+                            response.fieldName = fieldName;
+                            return response;
+                        }
+                    }
+                    return response;
+                },
+                /**
+                 * checks a layer to see if the fieldname exists on the service
+                 * @param fieldName
+                 * @param layer
+                 * @return {boolean}
+                 */
+                getServiceFieldExists: function (fieldName, layer) {
+                    if (layer.fields) {
+                        var fields = layer.fields ? layer.fields : (layer.serviceDescription ? layer.serviceDescription.fields : []);
+                        var currField;
+                        for (var i = 0; i < fields.length; i++) {
+                            currField = fields[i];
+                            if (currField.alias === fieldName || currField.name === fieldName) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                },
+                /**
+                 * returns the field type for the passed fieldName in the layer. this will use fieldMapping if they exist in the query controller service configuration
+                 * @param {string} fieldName
+                 * @param {imagediscovery/ImageQueryLayerController} queryLayerController
+                 * @return {*}
+                 */
+                getFieldTypeFromQueryLayerController: function (fieldName, queryLayerController) {
+                    if (queryLayerController && queryLayerController.layer) {
+                        if (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping != null && lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                            var fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
+                            for (var key in fieldMapping) {
+                                if (fieldMapping[key] === fieldName) {
+                                    fieldName = key;
+                                }
+                            }
+                        }
+                        var layer = queryLayerController.layer;
+                        var fields = layer.fields ? layer.fields : (layer.serviceDescription ? layer.serviceDescription.fields : []);
+                        if (layer && fields && fieldName) {
+                            for (var i = 0; i < fields.length; i++) {
+                                if (fields[i].alias === fieldName || fields[i].name === fieldName) {
+                                    return fields[i].type;
+                                }
+                            }
+                        }
+                    }
+                    return null;
+                },
+                /**
                  * loads the key properties for the passed layer
                  * @param layer
                  * @param callback
@@ -115,7 +192,21 @@ define([
                             !prim[t][x] && (prim[t][x] = 1) :
                             obj.indexOf(x) < 0 && obj.push(x);
                     });
+                },
+                getDomainValueFromCode: function (codedValues, code) {
+                    for (var i = 0; i < codedValues.length; i++) {
+                        if (codedValues.code === code) {
+                            return codedValues.name;
+                        }
+                    }
+                    return code;
+                },
+                codedValuesDomainToHash: function (codedValues) {
+                    var hash = {};
+                    for (var i = 0; i < codedValues.length; i++) {
+                        hash[codedValues[i].code] = codedValues[i].name
+                    }
+                    return hash;
                 }
-
             });
     });

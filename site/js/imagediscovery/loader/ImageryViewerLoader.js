@@ -1,3 +1,9 @@
+/**
+ *
+ * @module esriimageryViewer/loader/base/ImageryViewerLoader
+ * @description bootstrap for imagery viewer loader.
+ * @extends {esriviewer/loader/ViewerLoader}
+ */
 define([
     "dojo/_base/declare",
     "xstyle/css!../theme/ImageryViewerTheme.css",
