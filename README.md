@@ -10,7 +10,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 
 * Supports Multiple Image Service Search
 * Search by: Map Extent, Point(buffer), Rectangle, Coordinates, KML/KMZ/SHP polygon upload
-* Configurable result Fields
+* Configurable result fields
 * Filter results from fields
 * Imagery result manipulation (Raster Functions,Band Reordering)
 * Supports time enabled maps.
@@ -40,6 +40,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 
 ## Requirements
 
+* Web server 
 * Notepad or HTML editor
 * Experience with HTML/CSS/Javascript
 * Experience with the [ArcGIS Javascript API](http://links.esri.com/javascript)
@@ -103,6 +104,10 @@ The weather widget requires an API key. You can get an API key at: [Weather Unde
    - **operationalLayers**: An Array of layer objects that will be displayed in the applications table of contents
 4. the "header" entry allows you to customize the logo/text/help/contact header display in the viewer.
 5. the "bookmarks" entry allows you to point to a JSON file for preloaded bookmarks on application load. see web\config\bookmarks.json for the bookmark format
+
+### Additional Usage Details
+
+Additional usage details may be found in the [documentation folder](documentation/README.md)
 
 ## Resources
 

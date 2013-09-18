@@ -1,8 +1,19 @@
-__author__ = 'rich5127'
+#----------------------------------------------------------------------------------
+# Copyright 2013 Esri
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#----------------------------------------------------------------------------------
 
-# Esri start of added imports
 import glob, zipfile, arcpy
-
 
 def kmlToFeatures(kmlFile):
     arcpy.AddMessage("kmlToFeatures")
@@ -60,6 +71,7 @@ def shpToFeatures(inShpZip):
         return outFeatures
     else:
         arcpy.AddError("No shapes were found")
+
 def ProcessInput():
     sourceKMLFile = arcpy.GetParameterAsText(0)
     sourceSHPFile = arcpy.GetParameterAsText(1)
