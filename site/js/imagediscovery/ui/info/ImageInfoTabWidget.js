@@ -22,10 +22,6 @@ define([
                     isHighlighted: "isHighlighted",
                     isGrayedOut: "isGrayedOut",
                     SrcImgID: "SrcImgID",
-                    MinPS: "MinPS",
-                    MaxPS: "MaxPS",
-                    LowPS: "LowPS",
-                    HighPS: "HighPS",
                     Category: "Category",
                     id: "id",
                     geometry: "geometry",
@@ -75,25 +71,37 @@ define([
                         }
                     }
                 },
-                getFieldTypeLookup: function (layer) {
+                getFieldTypeLookup: function (queryLayerController) {
                     var fieldTypeLookup = {
                         dateLookup: {},
                         doubleLookup: {},
                         domainLookup: {}
                     };
+                    var layer = queryLayerController.layer;
+                    var fieldMapping = {};
+                    if (queryLayerController.serviceConfiguration &&
+                        queryLayerController.serviceConfiguration.fieldMapping != null &&
+                        lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                        fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
+                    }
                     if (layer && layer.fields) {
                         //todo: put this in a hash
                         var currentField;
                         for (var i = 0; i < layer.fields.length; i++) {
                             currentField = layer.fields[i];
-                            if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
-                                fieldTypeLookup.dateLookup[currentField.name] = currentField;
+                            var mappedFieldName = currentField.name;
+                            if (fieldMapping[mappedFieldName] != null) {
+                                mappedFieldName = fieldMapping[mappedFieldName];
                             }
-                            else if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE) {
-                                fieldTypeLookup.doubleLookup[currentField.name] = currentField;
+                            var fieldType = IMAGERY_UTILS.getFieldTypeFromQueryLayerController(currentField.name, queryLayerController);
+                            if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
+                                fieldTypeLookup.dateLookup[mappedFieldName] = currentField;
+                            }
+                            else if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE) {
+                                fieldTypeLookup.doubleLookup[mappedFieldName] = currentField;
                             }
                             else if (currentField.domain != null && layer.fields[i].domain.codedValues != null) {
-                                fieldTypeLookup.domainLookup[currentField.name] = currentField;
+                                fieldTypeLookup.domainLookup[mappedFieldName] = currentField;
                             }
                         }
                     }
@@ -147,20 +155,19 @@ define([
                  *   takes in an array where each element contains an image info object and its associated layer.
                  *   populates all attributes from image info and retrieves the thumbnail for the row from the layer
                  */
-                setImageInfos: function (imageInfoAndLayerArray) {
+                setImageInfos: function (imageInfoAndQueryLayerControllerArray) {
                     this.viewModel.clearImageInfos();
-                    for (var i = 0; i < imageInfoAndLayerArray.length; i++) {
-                        var imageInfoAndLayer = imageInfoAndLayerArray[i];
-                        var imageInfo = imageInfoAndLayer.imageInfo;
-                        var layer = imageInfoAndLayer.layer; //will be used to retrieve thumbnail
-                        var fieldTypeLookup = this.getFieldTypeLookup(layer);
-
+                    for (var i = 0; i < imageInfoAndQueryLayerControllerArray.length; i++) {
+                        var imageInfoAndQueryLayerController = imageInfoAndQueryLayerControllerArray[i];
+                        var imageInfo = imageInfoAndQueryLayerController.imageInfo;
+                        var queryLayerController = imageInfoAndQueryLayerController.queryLayerController;
+                        var layer = queryLayerController.layer; //will be used to retrieve thumbnail
+                        var fieldTypeLookup = this.getFieldTypeLookup(queryLayerController);
                         var attributesNVPArray = [];
                         for (var key in imageInfo) {
                             if (this.defaultHideFields[key] != null) {
                                 continue;
                             }
-
                             var displayValue;
                             if (imageInfo[key] == null || imageInfo[key] === "") {
                                 displayValue = "*Empty*";
@@ -189,10 +196,10 @@ define([
                         } //end for loop of attributes in imageInfo object
 
                         this.viewModel.addImageInfoItem(
-                            {attributes: attributesNVPArray, imageInfoAndLayer: imageInfoAndLayer}
+                            {attributes: attributesNVPArray, imageInfoAndLayer: {imageInfo: imageInfo, layer: layer}}
                         );
 
-                    }//end for loop of imageInfoAndLayerArray elements
+                    }
                 },
                 handleItemRemovedFromCart: function (resultId, imageInfo) {
                     this.viewModel.removeImageInfoFromShoppingCart(imageInfo);

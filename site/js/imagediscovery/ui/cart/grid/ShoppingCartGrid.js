@@ -8,12 +8,14 @@ define([
     "dojo/store/Observable",
     "dojo/store/Memory",
     "dijit/form/Button",
-    "../../base/grid/ImageryGrid"
+    "../../base/grid/ImageryGrid",
+    "dojo/_base/array"
 ],
-    function (declare, topic, on, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid) {
+    function (declare, topic, on, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid,array) {
         return declare(
             [ImageryBaseGrid],
             {
+                ignoreVisibleFieldNames: [" ", "zoomToFootprint", "showThumbNail","addedToCart","__serviceLabel"],
                 constructor: function () {
                 },
                 initListeners: function () {
@@ -24,6 +26,28 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.removeItemFromCart));
                     //listen for request of object ids in the cart
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.GET_ADDED_OBJECT_IDS, lang.hitch(this, this.getAddedCartItemIds));
+                    //returns visible cart field names
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.GET_VISIBLE_FIELD_NAMES, lang.hitch(this, this.getVisibleCartFieldsNames));
+                },
+                /**
+                 * returns visible cart field names to callback
+                 * @param callback
+                 *
+                 */
+                getVisibleCartFieldsNames: function (callback) {
+                    if (callback == null || !lang.isFunction(callback)) {
+                        return;
+                    }
+                    var visibleColumns = [];
+                    var columns = this.grid.columns;
+                    var currentCol;
+                    for (var i = 0; i < columns.length; i++) {
+                        currentCol = columns[i];
+                        if (!this.grid.isColumnHidden(currentCol.id) && array.indexOf(this.ignoreVisibleFieldNames, currentCol.field) < 0) {
+                            visibleColumns.push(currentCol.field);
+                        }
+                    }
+                    callback(visibleColumns);
                 },
                 /**
                  * adds an item to the shopping cart grid

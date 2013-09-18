@@ -6,7 +6,7 @@
             <span class="bookmarkToolbarEntryText" data-bind="text: $data.label"></span>
         </div>
     </div>
-    <div class="bookmarksToolbarDropdownBookmarkRemovableEntries" data-bind="foreach:_removableBookmarks">
+    <div class="bookmarksToolbarDropdownBookmarkRemovableEntries" data-bind="template: {foreach:_removableBookmarks, afterAdd:handleAfterAddBookmark, beforeRemove:handleBeforeRemoveBookmark}">
         <div class="bookmarkToolbarEntryOuter">
             <div title="Remove Bookmark" class="commonIcons16 bookmarkToolbarEntryRemoveIcon remove"
                  data-bind="click: $parent.removeClick"></div>

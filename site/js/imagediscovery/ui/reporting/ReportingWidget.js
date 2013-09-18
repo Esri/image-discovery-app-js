@@ -4,6 +4,7 @@ define([
     "dojo/_base/declare",
     "dojo/date/locale",
     "dojo/topic",
+    "dojo/_base/array",
     "dojo/_base/lang",
     "dojo/_base/json",
     "dojo/_base/Color",
@@ -19,7 +20,7 @@ define([
     "esri/tasks/query",
     "esri/layers/ImageServiceParameters"
 ],
-    function (declare, locale, topic, lang, json, Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
+    function (declare, locale, topic, array, lang, json, Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
@@ -31,7 +32,6 @@ define([
                 },
                 __defaultExportImageHeight: 800,
                 __defaultExportImageWidth: 600,
-                __defaultFloatPrecision: 1,
                 templateString: template,
                 envelopeSymbol: new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL,
                     new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
@@ -75,9 +75,6 @@ define([
                     if (resultsFormattingConfig && lang.isObject(resultsFormattingConfig)) {
                         if (resultsFormattingConfig.displayFormats && lang.isObject(resultsFormattingConfig.displayFormats)) {
                             this.displayFormats = resultsFormattingConfig.displayFormats;
-                        }
-                        if (resultsFormattingConfig.floatPrecision != null) {
-                            this.floatPrecision = parseInt(resultsFormattingConfig.floatPrecision, 10);
                         }
                     }
                     var reportingConfiguration = null;
@@ -154,9 +151,6 @@ define([
                         //server side report
                         this._generateHTMLReport();
                     }
-                    else {
-                        //  this._generateServerSideReport();
-                    }
                     VIEWER_UTILS.log("Generating Report", VIEWER_GLOBALS.LOG_TYPE.INFO);
                 },
                 /**
@@ -188,26 +182,35 @@ define([
                 },
                 /**
                  * queries layer for results by the passed extent
-                 * @param queryLayer
+                 * @param queryLayerController
                  * @param lockRasters
                  * @param extent
                  * @param returnGeometry
                  * @return {*}
                  */
-                queryForResultsByExtent: function (queryLayer, lockRasters, extent, returnGeometry) {
+                queryForResultsByExtent: function (queryLayerController, lockRasters, extent, returnGeometry) {
                     if (returnGeometry == null) {
                         returnGeometry = true;
                     }
+                    var queryLayer = queryLayerController.layer;
                     var queryUrl = queryLayer.url;
                     var queryTask = new QueryTask(queryUrl);
                     var query = new Query();
                     //get the out fields
-                    var currentField;
                     query.outFields = [];
-                    for (var i = 0; i < this.resultFieldsArray.length; i++) {
-                        currentField = this.resultFieldsArray[i].field;
-                        if (this._layerHasField(queryLayer, currentField)) {
-                            query.outFields.push(currentField);
+                    var visibleCartFieldNames;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CART.GET_VISIBLE_FIELD_NAMES, function (viCtFdNms) {
+                        visibleCartFieldNames = viCtFdNms;
+                    });
+                    if (visibleCartFieldNames.length == 0) {
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "There are no columns in the result grid");
+                        VIEWER_UTILS.log("Could not generate report. There are no columns in the result grid.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
+                        return;
+                    }
+                    for (var i = 0; i < visibleCartFieldNames.length; i++) {
+                        var fieldExistsAndTrueFieldName = IMAGERY_UTILS.getFieldExistsAndServiceFieldName(visibleCartFieldNames[i], queryLayerController);
+                        if (fieldExistsAndTrueFieldName.exists) {
+                            query.outFields.push(fieldExistsAndTrueFieldName.fieldName);
                         }
                     }
                     query.geometry = extent;
@@ -215,24 +218,6 @@ define([
                     query.spatialRelationship = Query.SPATIAL_REL_CONTAINS;
                     query.returnGeometry = returnGeometry;
                     return queryTask.execute(query);
-                },
-                /**
-                 * checks if layer contains the passed field. returns true if layer contains field
-                 * @param layer
-                 * @param field
-                 * @return {boolean}
-                 * @private
-                 */
-                _layerHasField: function (layer, field) {
-                    if (layer == null || layer.fields == null) {
-                        return false;
-                    }
-                    for (var i = 0; i < layer.fields.length; i++) {
-                        if (layer.fields[i].name === field) {
-                            return true;
-                        }
-                    }
-                    return false;
                 },
                 /**
                  * returns the current base map url
@@ -296,7 +281,7 @@ define([
                             --this.pendingServiceQueries;
                         }
                         else {
-                            var queryTaskDeferred = this.queryForResultsByExtent(currentQueryLayerControllerLayer,
+                            var queryTaskDeferred = this.queryForResultsByExtent(currentQueryLayerController,
                                 currentMosaicRule.lockRasterIds, extent, false);
                             queryTaskDeferred.then(lang.hitch(this, this._handleResultsByExtentResponse, currentQueryLayerController));
                         }
@@ -322,29 +307,36 @@ define([
                         }
                         return;
                     }
-                    var fieldTypeLookup = {doubles: {}, dates: {}};
+                    var fieldMapping = (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping) ? queryLayerController.serviceConfiguration.fieldMapping : {};
+                    var fieldTypeLookup = {domains: {}, dates: {}};
                     var currentFeature;
                     var currentAttributes;
                     var currentValue;
                     var convertFieldName;
-                    var currentField;
                     var newFieldName;
+                    var currentField;
+                    // var newFieldName;
+                    var currentFieldType;
                     var i;
+                    //the main idea is to figure out the label of the grid column from the result field of the service. field mapping complicate this process.
+                    //we need to convert service field names -> mapping field name in configuration -> label displayed in the result grid
                     //convert the header field names to the labels in the viewer
                     if (this.resultFieldsLabelLookup && lang.isObject(this.resultFieldsLabelLookup)) {
                         if (queryResponseJson.fields && lang.isArray(queryResponseJson.fields)) {
                             var currentFieldName;
                             for (i = 0; i < queryResponseJson.fields.length; i++) {
                                 currentField = queryResponseJson.fields[i];
-                                currentFieldName = currentField.name;
+                                //see if there is a field mapping for this field
+                                currentFieldName = fieldMapping[currentField.name] != null ? fieldMapping[currentField.name] : currentField.name;
+                                currentFieldType = currentField.type;
                                 if (this.resultFieldsLabelLookup[currentFieldName]) {
                                     newFieldName = this.resultFieldsLabelLookup[currentFieldName];
                                     queryResponseJson.fields[i].name = newFieldName;
-                                    if (queryResponseJson.fields[i].type == VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
+                                    if (currentFieldType == VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
                                         fieldTypeLookup.dates[newFieldName] = newFieldName;
                                     }
-                                    else if (queryResponseJson.fields[i].type == VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE) {
-                                        fieldTypeLookup.doubles[newFieldName] = newFieldName;
+                                    else if (currentField.domain != null && lang.isObject(currentField.domain)) {
+                                        fieldTypeLookup.domains[newFieldName] = IMAGERY_UTILS.codedValuesDomainToHash(currentField.domain.codedValues);
                                     }
                                 }
                             }
@@ -360,28 +352,31 @@ define([
                                 continue;
                             }
                             this.hasResponseFeatures = true;
+                            var currentAttributeFieldName;
+                            var attributeKeysArray = [];
                             for (var key in currentAttributes) {
-                                if (this.resultFieldsLabelLookup[key]) {
+                                attributeKeysArray.push(key);
+                            }
+                            var currKey;
+
+                            for (var j = 0; j < attributeKeysArray.length; j++) {
+                                currKey = attributeKeysArray[j];
+                                currentAttributeFieldName = fieldMapping[currKey] != null ? fieldMapping[currKey] : currKey;
+                                if (this.resultFieldsLabelLookup[currentAttributeFieldName]) {
                                     //get the current value
-                                    currentValue = currentAttributes[key];
+                                    currentValue = currentAttributes[currKey];
                                     //delete the old key
-                                    delete  currentAttributes[key];
+                                    delete currentAttributes[currKey];
                                     //replace
-                                    convertFieldName = this.resultFieldsLabelLookup[key];
+                                    convertFieldName = this.resultFieldsLabelLookup[currentAttributeFieldName];
 
                                     //check for value formatter
                                     if (fieldTypeLookup.dates[convertFieldName] != null) {
-                                        // convert the date
-                                        currentValue = this.getFormattedDate(currentValue)
-
+                                        //convert the date
+                                        currentValue = this.getFormattedDate(currentValue);
                                     }
-                                    else if (fieldTypeLookup.doubles[convertFieldName] != null) {
-                                        if (this.floatPrecision != null) {
-                                            currentValue = currentValue.toFixed(this.floatPrecision);
-                                        }
-                                        else {
-                                            currentValue = currentValue.toFixed(this.__defaultFloatPrecision);
-                                        }
+                                    else if (fieldTypeLookup.domains[convertFieldName] != null) {
+                                        currentValue = fieldTypeLookup.domains[convertFieldName][currentValue];
                                     }
                                     currentAttributes[convertFieldName] = currentValue;
                                 }
@@ -396,6 +391,7 @@ define([
                         }
                         else {
                             this._displayHTMLReport();
+
                         }
                     }
                 },
@@ -422,6 +418,7 @@ define([
                  * @private
                  */
                 _generateTableParameters: function (serviceQueryResponses) {
+                    var i;
                     var tableDataArray = [];
                     var currentServiceQueryResponse;
                     //{featureSet: queryResponseJson, layer: layer})
@@ -429,10 +426,7 @@ define([
                     if (this.displayFormats && this.displayFormats.date) {
                         displayFormats.date = this.displayFormats.date;
                     }
-                    if (this.floatPrecision != null) {
-                        displayFormats.floatPrecision = this.floatPrecision;
-                    }
-                    for (var i = 0; i < serviceQueryResponses.length; i++) {
+                    for (i = 0; i < serviceQueryResponses.length; i++) {
                         currentServiceQueryResponse = serviceQueryResponses[i];
                         var layer = currentServiceQueryResponse.queryLayerController.layer;
                         tableDataArray.push({
@@ -441,11 +435,23 @@ define([
                             featureSet: currentServiceQueryResponse.featureSet
                         });
                     }
-
+                    //we only want to render the fields that are visible in the shopping cart grid
+                    var visibleCartFieldNames;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CART.GET_VISIBLE_FIELD_NAMES, function (viCtFdNms) {
+                        visibleCartFieldNames = viCtFdNms;
+                    });
+                    var reportRenderFields = [];
+                    var currentResultField;
+                    for (i = 0; i < this.resultFields.length; i++) {
+                        currentResultField = this.resultFields[i];
+                        if (array.indexOf(visibleCartFieldNames, currentResultField.field) > -1) {
+                            reportRenderFields.push(currentResultField);
+                        }
+                    }
                     return{
                         displayFormats: displayFormats,
                         tableDataArray: tableDataArray,
-                        displayFields: this.resultFields,
+                        displayFields: reportRenderFields,
                         hasSourceField: true
                     }
                 },

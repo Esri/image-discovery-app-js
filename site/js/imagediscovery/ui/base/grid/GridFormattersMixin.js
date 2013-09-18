@@ -47,14 +47,25 @@ define([
                     checkbox.on("change", lang.hitch(this, this.handleShowThumbNailToggle, object));
                     domConstruct.place(checkbox.domNode, node);
                 },
-                //can convert to hash
-                domainFormatter: function (codedValues, value) {
-                    for (var i = 0; i < codedValues.length; i++) {
-                        if (codedValues[i].code === value) {
-                            return codedValues[i].name;
-                        }
+                /**
+                 * formats domain values
+                 * @param codedValuesHash has created from codedValues object in IMAGERY_UTILS.codedValuesDomainToHash
+                 * @param value value to convert
+                 * @return {*}
+                 */
+                domainFormatter: function (codedValuesHash, value) {
+                    if (codedValuesHash[value] != null) {
+                        return codedValuesHash[value];
                     }
                     return value;
+
+                    /*
+                     for (var i = 0; i < codedValues.length; i++) {
+                     if (codedValues[i].code === value) {
+                     return codedValues[i].name;
+                     }
+                     }
+                     */
                 },
 
                 /**
