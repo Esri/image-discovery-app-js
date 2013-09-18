@@ -4,7 +4,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 
 
 
-![App](https://raw.github.com/Esri/text-and-legend-map-storytelling-template-js/master/images/storytelling-text-and-legend-map-template-js.png)
+![App](screenshot.png)
 
 ## Features
 
