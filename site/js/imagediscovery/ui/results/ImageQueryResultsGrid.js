@@ -109,7 +109,7 @@ define([
                     var currentVisibleItem;
                     var currentGeometry;
                     var row;
-                    var imageInfoAndLayerArray = [];
+                    var imageAttrsAndQueryLayerControllerArray = [];
                     for (var i = 0; i < unfilteredResults.length; i++) {
                         currentVisibleItem = unfilteredResults[i];
                         currentGeometry = currentVisibleItem.geometry;
@@ -136,8 +136,8 @@ define([
 
                                 //gather image info and associated layer info
                                 var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(currentVisibleItem);
-                                var imageAttrsAndLayer = {imageInfo: currentVisibleItem, layer: queryLayerController.layer};
-                                imageInfoAndLayerArray.push(imageAttrsAndLayer);
+                                var imageAttrsAndQueryLayerController= {imageInfo: currentVisibleItem, queryLayerController: queryLayerController};
+                                imageAttrsAndQueryLayerControllerArray.push(imageAttrsAndQueryLayerController);
                             }
                         }
                         else {
@@ -152,7 +152,7 @@ define([
                     }//end for loop
 
                     //show image info popup
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageInfoAndLayerArray);
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageAttrsAndQueryLayerControllerArray);
                 },
                 /**
                  * returns visible footprints geometries in the result grid
@@ -214,7 +214,6 @@ define([
                  */
                 handleFilterAdded: function (filterWidget) {
                     this.filterWidgetLookup[filterWidget.queryField] = filterWidget;
-
                     //bind filter to the filter icon
                     filterWidget.on("clearFilterFunction", lang.hitch(this, this.handleSetFilterIconCleared, filterWidget.queryField));
                     filterWidget.on("applyFilterFunction", lang.hitch(this, this.handleSetFilterIconApplied, filterWidget.queryField));
@@ -228,7 +227,6 @@ define([
                     this.inherited(arguments);
                     this.hideAllFilterIcons();
                     this.onHideFilterResetIcon();
-                    this.responseFeatures = [];
                 },
                 /**
                  * grays out result grid rows by the passed functon
@@ -309,7 +307,7 @@ define([
                  */
                 handleQueryComplete: function () {
                     //send the results to the user applied filter manager
-                    this.userAppliedFiltersManager.setFeatures(this.responseFeatures);
+                    this.userAppliedFiltersManager.initializeFilterRanges();
                     this.onShowFilterResetIcon();
 
                     //check to see if the footprints layer is visible. if it's not disable thumbnail toggle
@@ -335,6 +333,7 @@ define([
                     //get to the attributes of the results
                     var newItem;
                     var currentAttributes;
+                    //todo: need to make all of these added fields private so the column doesn't override
                     for (var i = 0; i < results.features.length; i++) {
                         var newItemMixin = {
                             __serviceLabel: queryLayerController.label,
@@ -349,8 +348,22 @@ define([
                             showFootprint: false
                         };
                         newItemMixin[this.storeIdField] = VIEWER_UTILS.generateUUID();
-
                         currentAttributes = results.features[i].attributes;
+
+                        if (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping != null && lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                            //perform field mappings on the result
+                            var fieldMappings = queryLayerController.serviceConfiguration.fieldMapping;
+                            for (var key in fieldMappings) {
+                                var mappingValue = fieldMappings[key];
+                                if (currentAttributes[key] == null) {
+                                    currentAttributes[mappingValue] = "";
+                                }
+                                else {
+                                    currentAttributes[mappingValue] = currentAttributes[key];
+                                    delete currentAttributes[key];
+                                }
+                            }
+                        }
                         for (var j = 0; j < this.resultFields.length; j++) {
                             if (currentAttributes[this.resultFields[j].field] == null) {
                                 currentAttributes[this.resultFields[j].field] = "";
@@ -359,7 +372,7 @@ define([
                         newItem = lang.mixin(currentAttributes, newItemMixin);
                         this.store.add(newItem);
                     }
-                    this.responseFeatures = this.responseFeatures.concat(results.features);
+
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.RESULT_GRID_POPULATED, results.features.length);
                 },
                 /**

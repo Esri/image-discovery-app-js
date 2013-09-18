@@ -220,11 +220,24 @@ define([
                                         //TODO: double formatting has been disabled. need to format on a column level and not a grid level
                                     }
                                     else if (currentField.domain != null && currentField.domain.codedValues != null) {
-                                        currentFormatter = lang.hitch(this, this.domainFormatter, currentField.domain.codedValues);
+                                        currentFormatter = lang.hitch(this, this.domainFormatter, IMAGERY_UTILS.codedValuesDomainToHash(currentField.domain.codedValues));
                                     }
                                     if (currentFormatter != null) {
-                                        controllerFormatterLookup[currentField.name] = currentFormatter;
+                                        var hasFieldMapping = false;
+                                        //check for fieldMapping on the query layer controller and set formatter on the alias too
+                                        if (currentQueryCont.serviceConfiguration && currentQueryCont.serviceConfiguration.fieldMapping != null && lang.isObject(currentQueryCont.serviceConfiguration.fieldMapping)) {
+                                            var fieldMapping = currentQueryCont.serviceConfiguration.fieldMapping;
+                                            if (fieldMapping[currentField.name] != null) {
+                                                controllerFormatterLookup[fieldMapping[currentField.name]] = currentFormatter;
+                                                hasFieldMapping = true;
+                                            }
+
+                                        }
+                                        if (!hasFieldMapping) {
+                                            controllerFormatterLookup[currentField.name] = currentFormatter;
+                                        }
                                     }
+
                                 }
                             }
                         }

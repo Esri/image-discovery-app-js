@@ -2,6 +2,7 @@ define([
     "dojo/_base/declare",
     "dojo/text!./template/FootprintsExportTemplate.html",
     "dojo/topic",
+    "dojo/date/locale",
     "dojo/_base/lang",
     "dojo/_base/json",
     "dojo/_base/Color",
@@ -15,14 +16,18 @@ define([
     "esri/tasks/query",
     "esri/tasks/Geoprocessor"
 ],
-    function (declare, template, topic, lang, json, Color, UITemplatedWidget, MapDrawSupport, FootprintsDownloadViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, Geoprocessor) {
+    function (declare, template, topic, locale, lang, json, Color, UITemplatedWidget, MapDrawSupport, FootprintsDownloadViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, Geoprocessor) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
+                __defaultDisplayFormats: {
+                    date: "MM/dd/yyyy"
+                },
+                displayFormats: {
+                    date: "MM/dd/yyyy"
+                },
                 hasResponseFeatures: false,
                 pendingServiceQueries: 0,
-                __defaultFloatPrecision: 3,
-                __defaultDateFormat: "dd-MM-yyyy",
                 templateString: template,
                 _hasExportTask: false,
                 envelopeSymbol: new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL,
@@ -209,38 +214,63 @@ define([
                         query.returnGeometry = true;
                         //get the out fields
                         query.outFields = [];
-                        if (this.resultFieldsArray && lang.isArray(this.resultFieldsArray)) {
-                            for (var j = 0; j < this.resultFieldsArray.length; j++) {
-                                if (this._layerContainsField(currentQueryLayer, this.resultFieldsArray[j].field)) {
-                                    query.outFields.push(this.resultFieldsArray[j].field);
-                                }
+                        var visibleCartFieldNames;
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.CART.GET_VISIBLE_FIELD_NAMES, function (viCtFdNms) {
+                            visibleCartFieldNames = viCtFdNms;
+                        });
+                        if (visibleCartFieldNames.length == 0) {
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "There are no columns in the result grid");
+                            VIEWER_UTILS.log("Could not export footprints. There are no columns in the result grid.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
+                            return;
+                        }
+                        for (var j = 0; j < visibleCartFieldNames.length; j++) {
+                            var fieldExistsAndTrueFieldName = IMAGERY_UTILS.getFieldExistsAndServiceFieldName(visibleCartFieldNames[j], currentQueryLayerController);
+                            if (fieldExistsAndTrueFieldName.exists) {
+                                query.outFields.push(fieldExistsAndTrueFieldName.fieldName);
                             }
                         }
-                        else {
-                            query.outFields = ["*"];
-                        }
                         var queryTaskDeferred = queryTask.execute(query);
-                        queryTaskDeferred.then(lang.hitch(this, this._handleExportQueryResponse, currentQueryLayer));
+                        queryTaskDeferred.then(lang.hitch(this, this._handleExportQueryResponse, currentQueryLayerController));
                     }
+
                 },
                 /**
                  * converts a query response to a format for the discovery viewers footprint export geoprocessor
-                 * @param layer
+                 * @param queryLayerController
                  * @param queryResponse
                  * @private
                  */
-                _handleExportQueryResponse: function (layer, queryResponse) {
+                _handleExportQueryResponse: function (queryLayerController, queryResponse) {
+                    var currentLayer = queryLayerController.layer;
                     var queryResponseJson = queryResponse.toJson();
                     var i;
+                    var fieldMapping = (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping) ? queryLayerController.serviceConfiguration.fieldMapping : {};
+                    var fieldTypeLookup = {domains: {}};
                     //convert the field names to the labels in the viewer
                     if (this.resultFieldsLabelLookup && lang.isObject(this.resultFieldsLabelLookup)) {
                         if (queryResponseJson.fields && lang.isArray(queryResponseJson.fields)) {
                             var currentFieldName;
+                            var currentFieldType;
+                            var currentField;
                             for (i = 0; i < queryResponseJson.fields.length; i++) {
-                                currentFieldName = queryResponseJson.fields[i].name;
+                                currentField = queryResponseJson.fields[i];
+                                currentFieldName = currentField.name;
+                                currentFieldType = currentField.type;
+                                if (currentFieldName == currentLayer.objectIdField) {
+                                    continue;
+                                }
+                                //attempt mapping
+                                currentFieldName = fieldMapping[currentFieldName] != null ? fieldMapping[currentFieldName] : currentFieldName;
                                 if (this.resultFieldsLabelLookup[currentFieldName]) {
-                                    queryResponseJson.fields[i].name = this.resultFieldsLabelLookup[currentFieldName];
-                                    queryResponseJson.fields[i].alias = this.resultFieldsLabelLookup[currentFieldName];
+                                    currentField.name = this.resultFieldsLabelLookup[currentFieldName];
+                                    currentField.alias = this.resultFieldsLabelLookup[currentFieldName];
+                                }
+                                if (currentField.domain != null && lang.isObject(currentField.domain)) {
+                                    fieldTypeLookup.domains[currentField.name] = IMAGERY_UTILS.codedValuesDomainToHash(currentField.domain.codedValues);
+                                    //clear the domain since we are handling domain conversion client side
+                                    currentField.domain = null;
+                                    //set the field type to string since we are setting the values as a string on the attributes
+                                    currentField.type = VIEWER_GLOBALS.ESRI_FIELD_TYPES.STRING;
                                 }
                             }
                         }
@@ -249,6 +279,8 @@ define([
                         var currentFeature;
                         var currentAttributes;
                         var currentValue;
+                        var currentAttributeFieldName;
+                        var convertFieldName;
                         if (queryResponseJson.features != null) {
                             for (i = 0; i < queryResponseJson.features.length; i++) {
                                 currentFeature = queryResponseJson.features[i];
@@ -260,19 +292,36 @@ define([
                                     continue;
                                 }
                                 this.hasResponseFeatures = true;
+                                var attributeKeysArray = [];
                                 for (var key in currentAttributes) {
-                                    if (this.resultFieldsLabelLookup[key]) {
+                                    //don't mess with object id field
+                                    if (key ===  currentLayer.objectIdField) {
+                                        continue;
+                                    }
+                                    attributeKeysArray.push(key);
+                                }
+                                var currKey;
+
+                                for (var j = 0; j < attributeKeysArray.length; j++) {
+                                    currKey = attributeKeysArray[j];
+                                    currentAttributeFieldName = fieldMapping[currKey] != null ? fieldMapping[currKey] : currKey;
+                                    if (this.resultFieldsLabelLookup[currentAttributeFieldName]) {
                                         //get the current value
-                                        currentValue = currentAttributes[key];
+                                        currentValue = currentAttributes[currKey];
                                         //delete the old key
-                                        delete  currentAttributes[key];
+                                        delete  currentAttributes[currKey];
                                         //replace
-                                        currentAttributes[this.resultFieldsLabelLookup[key]] = currentValue;
+                                        convertFieldName = this.resultFieldsLabelLookup[currentAttributeFieldName];
+                                        //check for value formatter
+                                        if (fieldTypeLookup.domains[convertFieldName] != null) {
+                                            currentValue = fieldTypeLookup.domains[convertFieldName][currentValue];
+                                            currentValue.toString();
+                                        }
+                                        currentAttributes[convertFieldName] = currentValue;
                                     }
                                 }
                             }
-                            this.serviceQueryResponseFeatures.push({response: queryResponseJson, layer: layer});
-
+                            this.serviceQueryResponseFeatures.push({response: queryResponseJson, layer: queryLayerController.layer});
                         }
                     }
                     if (--this.pendingServiceQueries < 1) {
@@ -284,18 +333,17 @@ define([
                             this._exportFootprints();
                         }
                     }
-
+                    else {
+                    }
                 },
                 _exportFootprints: function () {
                     var displayFormats = {
-                        floatPrecision: this.__defaultFloatPrecision,
-                        date: this.__defaultDateFormat
+                        date: this.__defaultDateFormat,
+                        floatPrecision: 6
+
                     };
                     if (this.displayFormats && this.displayFormats.date) {
                         displayFormats.date = this.displayFormats.date
-                    }
-                    if (this.floatPrecision != null) {
-                        displayFormats.floatPrecision = this.floatPrecision;
                     }
                     var footprintInfoObject = {
                         format: this.viewModel.selectedDownloadFormat(),
@@ -319,24 +367,6 @@ define([
 
                     this.clearDraw();
                     VIEWER_UTILS.log("Downloading Selected Data", VIEWER_GLOBALS.LOG_TYPE.INFO);
-                },
-                /**
-                 * returns true if the passed layer contains the field
-                 * @param layer  layer to check for field existing
-                 * @param field field to check for exist in the layer
-                 * @return {boolean}
-                 * @private
-                 */
-                _layerContainsField: function (layer, field) {
-                    if (layer && layer.fields && lang.isArray(layer.fields) && layer.fields.length > 0) {
-                        for (var i = 0; i < layer.fields.length; i++) {
-                            if (layer.fields[i].name == field) {
-                                return true;
-                            }
-                        }
-
-                    }
-                    return false;
                 },
                 /**
                  * handles the response from the discovery viewers footprint geoprocessor
@@ -377,7 +407,7 @@ define([
                         VIEWER_UTILS.log("There was an error requesting footprints download URL", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                     }
                     else {
-                        window.open(urlResponse.value.url);
+                        window.location = urlResponse.value.url;
                     }
                 },
                 sanitizeFieldName: function (fieldName) {
@@ -430,6 +460,18 @@ define([
                 //MUST BE EXTENDED to return array like: [queryController: CLASS, objectIds: [1,2,3]]
                 getDownloadObjectIds: function () {
                     alert("must extend getDownloadObjectIds to get query layer controllers and object ids ")
+                },
+                getFormattedDate: function (value) {
+                    try {
+                        var date = new Date(value);
+                        var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDisplayFormats.date;
+                        return locale.format(date, {selector: "date", datePattern: formatter});
+                    }
+                    catch (err) {
+                        return value;
+                    }
+
                 }
             });
-    });
+    })
+;

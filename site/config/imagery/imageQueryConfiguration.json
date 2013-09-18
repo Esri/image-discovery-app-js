@@ -2,14 +2,13 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://charlotte93.esri.com/arcgis/rest/services/NC/NAIP2010_4Band/ImageServer",
-            "label": "No",
-            "queryWhereClauseAppend": "Category = 1"
-        },
-        {
             "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
             "label": "Catalog 2",
-            "queryWhereClauseAppend": "Category = 1"
+            "queryWhereClauseAppend": "Category = 1",
+            "fieldMapping": {
+                "AcquisitionDate": "AcquisitionAlias",
+                "LowPS": "LowPSAlias"
+            }
         }
     ],
     "imageQueryResultDisplayFields": [
@@ -44,7 +43,7 @@
             }
         },
         {
-            "field": "LowPS",
+            "field": "LowPSAlias",
             "label": "GSD",
             "filter": {
                 "enable": true,
@@ -69,7 +68,7 @@
             }
         },
         {
-            "field": "AcquisitionDate",
+            "field": "AcquisitionAlias",
             "label": "Acquisition",
             "filter": {
                 "enable": true

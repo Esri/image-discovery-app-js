@@ -24,7 +24,7 @@ define([
         return declare(
             [ViewerManager],
             {
-                //base configuraiton url
+                //base configuration url
                 configUrl: "config/imagery/imageryConfig.json",
                 //imagery configuration url
                 imageQueryConfigUrl: "config/imagery/imageQueryConfiguration.json",
@@ -77,11 +77,7 @@ define([
                     //add to the dom
                     domConstruct.place(this.serviceLoadingContainer, window.body());
                 },
-                /**
-                 *
-                 * @private
-                 */
-                _initListeners: function () {
+                initListeners: function () {
                     this.inherited(arguments);
                     //add search result to the application
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
@@ -116,7 +112,7 @@ define([
                 },
                 /**
                  *  @private
-                 *  called when web map template configuration has been loaded from the URLs appid param
+                 *  @description called when web map template configuration has been loaded from the URLs appid param
                  *
                  */
                 _handleWebMapTemplateConfigurationLoaded: function (config) {
@@ -212,7 +208,7 @@ define([
                                     imageServiceQueryLayer.queryWhereClauseAppend = currentImageServiceObj.queryWhereClauseAppend;
                                 }
                                 imageServiceQueryLayer.searchServiceLabel = currentImageServiceObj.label ? currentImageServiceObj.label : "Search Service " + i;
-                                topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD, imageServiceQueryLayer, {canRemove: false, isOperationalLayer: false}, lang.hitch(this, this.handleImageServiceLoaded), lang.hitch(this, this.handleImageServiceLoadError));
+                                topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD, imageServiceQueryLayer, {canRemove: false, isOperationalLayer: false}, lang.hitch(this, this.handleImageServiceLoaded, currentImageServiceObj), lang.hitch(this, this.handleImageServiceLoadError));
                             }
                         }
                     }
@@ -229,15 +225,21 @@ define([
                 },
                 /**
                  * called when a catalog service is loaded
+                 *
                  * @param evt  object with layer parameter for the loaded layer
+                 * @param catalogServiceConfig
                  */
-                handleImageServiceLoaded: function (evt) {
+                handleImageServiceLoaded: function (catalogServiceConfig, evt) {
                     if (evt == null || evt.layer == null) {
                         return;
                     }
                     var layer = evt.layer;
                     //load the key properties
-                    this.catalogQueryControllers.push(new ImageQueryLayerController({layer: layer, label: layer.searchServiceLabel}));
+                    this.catalogQueryControllers.push(new ImageQueryLayerController({
+                        layer: layer,
+                        label: layer.searchServiceLabel,
+                        serviceConfiguration: catalogServiceConfig
+                    }));
                     VIEWER_UTILS.log("Loaded Catalog Service", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     IMAGERY_UTILS.loadKeyProperties(layer, lang.hitch(this, this.handleQueryImageServiceKeyPropertiesLoaded));
                 },
@@ -424,7 +426,7 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
                 },
                 /**
-                 *
+                 * called when finalize UI load is complete
                  */
                 handleFinalizeUILoadComplete: function () {
                     //move the throbber and the messaging widget if the header is displayed

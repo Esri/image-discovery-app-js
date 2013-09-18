@@ -21,6 +21,7 @@ define([
                 blockFilterApplyPublish: false,
                 constructor: function (params) {
                     lang.mixin(this, params || {});
+                    this.filterFieldNames = [];
                     this.queryWidgets = [];
                     this.numberWidgets = [];
                     this.dateRangeWidgets = [];
@@ -59,9 +60,9 @@ define([
                  * reads the fields to filter from configuration and creates filter widgets for each enabled grid column
                  */
                 startupFilterWidgets: function () {
-                    var catalogLayers;
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, function (cLyrs) {
-                        catalogLayers = cLyrs;
+                    var queryLayerControllers;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (qLyrCts) {
+                        queryLayerControllers = qLyrCts;
                     });
                     var i;
                     var currentFilterConfig;
@@ -76,8 +77,8 @@ define([
                             continue;
                         }
                         var fieldType = null;
-                        for (var j = 0; j < catalogLayers.length; j++) {
-                            fieldType = VIEWER_UTILS.getFieldTypeFromLayer(currentFilterConfig.field, catalogLayers[j]);
+                        for (var j = 0; j < queryLayerControllers.length; j++) {
+                            fieldType = IMAGERY_UTILS.getFieldTypeFromQueryLayerController(currentFilterConfig.field, queryLayerControllers[j]);
                             if (fieldType != null) {
                                 break;
                             }
@@ -85,6 +86,7 @@ define([
                         if (fieldType == null) {
                             continue;
                         }
+                        this.filterFieldNames.push(currentFilterConfig.field);
                         currentWidgetParams = {queryField: currentFilterConfig.field};
                         if (array.indexOf(this.sliderTypes, fieldType) > -1) {
                             if (currentFilterConfig.filter.unitsLabel != null && currentFilterConfig.filter.unitsLabel != "") {
@@ -187,22 +189,27 @@ define([
 
                 },
                 /**
-                 * uses passed features to create filter ranges for created filter widgets
-                 * @param features
+                 * initializes the filter ranges for all filters
                  */
-                setFeatures: function (features) {
+                initializeFilterRanges: function () {
                     this.blockFilterChanges = true;
                     this.clearAllFilters();
-                    this.appendFilterRanges(features);
+                    //get the unique values for each filter column
+                    var uniqueValuesLookup = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_UNIQUE_VISIBLE_ROW_ATTRIBUTES, this.filterFieldNames, function (unValLk) {
+                        uniqueValuesLookup = unValLk;
+                    });
+                    this.appendFilterRanges(uniqueValuesLookup);
                     this.blockFilterChanges = false;
                 },
                 /**
-                 * uses passed features to create filter ranges for created filter widgets
-                 * @param features
+                 * uses passed uniqueValuesLookup to create filter ranges for created filter widgets
+                 * @param uniqueValuesLookup
                  */
-                appendFilterRanges: function (features) {
+                appendFilterRanges: function (uniqueValuesLookup) {
                     var hasVisibleWidget = false;
                     var i, key, min, max;
+                    /*
                     var rangeLookup = {};
                     for (i = 0; i < this.queryWidgets.length; i++) {
                         rangeLookup[this.queryWidgets[i].queryField] = {};
@@ -227,12 +234,13 @@ define([
                             rangeLookupAsArray[key].push(rangeLookup[key][innerKey]);
                         }
                     }
+                    */
                     //populate slider min/max/current
                     var currentWidget;
                     var currentRangeLookupArray;
                     for (i = 0; i < this.numberWidgets.length; i++) {
                         currentWidget = this.numberWidgets[i];
-                        currentRangeLookupArray = rangeLookupAsArray[currentWidget.queryField];
+                        currentRangeLookupArray = uniqueValuesLookup[currentWidget.queryField];
                         //check for empty string
                         var emptyStrIdx = array.indexOf(currentRangeLookupArray, "");
                         if (emptyStrIdx > -1) {
@@ -267,7 +275,7 @@ define([
                     //populate string list widgets
                     for (i = 0; i < this.stringListWidgets.length; i++) {
                         currentWidget = this.stringListWidgets[i];
-                        currentStringListArray = rangeLookupAsArray[currentWidget.queryField];
+                        currentStringListArray = uniqueValuesLookup[currentWidget.queryField];
                         if (currentStringListArray && currentStringListArray.length > 1) {
                             hasVisibleWidget = true;
                             currentWidget.show();
@@ -286,7 +294,7 @@ define([
                     //populate date range widgets
                     for (i = 0; i < this.dateRangeWidgets.length; i++) {
                         currentWidget = this.dateRangeWidgets[i];
-                        currentRangeLookupArray = rangeLookupAsArray[currentWidget.queryField];
+                        currentRangeLookupArray = uniqueValuesLookup[currentWidget.queryField];
                         if (currentRangeLookupArray && currentRangeLookupArray.length > 1) {
                             currentWidget.show();
                             //add/subtract a day so we get the matching values for min and max

@@ -389,12 +389,17 @@ define([
                  * @param fieldsArray fields to return
                  * @param callback function to return to
                  * @param queryParams options parameters to use as a query against the store
+                 * @param forceResultsGrid when true, unique values will be retrieved from the results grid even if it's not the current view
                  */
-                handleGetVisibleRowAttributes: function (fieldsArray, callback, queryParams) {
+                handleGetVisibleRowAttributes: function (fieldsArray, callback, queryParams, forceResultsGrid) {
+
                     if (callback == null || !lang.isFunction(callback)) {
                         return;
                     }
-                    if (this.viewModel.cart()) {
+                    if (forceResultsGrid == null) {
+                        forceResultsGrid = false
+                    }
+                    if (this.viewModel.cart() && !forceResultsGrid) {
                         callback(this.shoppingCartGridWidget.getUniqueVisibleGridAttributes(fieldsArray, queryParams));
                     }
                     else {

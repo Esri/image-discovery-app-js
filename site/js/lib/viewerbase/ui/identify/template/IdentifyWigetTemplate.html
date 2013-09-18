@@ -3,7 +3,7 @@
         <span data-bind="click:showQuery, css: {selectedTab: identifyQueryVisible}">Identify</span>
         <span data-bind="click:showResults, css: {selectedTab: identifyResultsVisible}">Results</span>
     </div>
-    <div class="identifyQueryContainer" data-bind="visible: identifyQueryVisible">
+    <div class="identifyQueryContainer" data-bind="visible: identifyQueryVisible" data-dojo-attach-point="identifyQueryContainer">
         <div class="identifyServiceContainer">
             <div class="identifyWidgetLabel">Map Service</div>
             <select class="identifyWidgetSelect"
