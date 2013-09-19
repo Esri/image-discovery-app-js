@@ -41,3 +41,22 @@
     margin: 5px 3px;
 
 }
+
+.imageryDownloadAllInFlightContainer, .imageryDownloadAllContainer, .imageryDownloadAllLink {
+    height: 35px;
+}
+
+.imageryDownloadAllContainer, .imageryDownloadAllLink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.imageryDownloadAllInFlightText {
+    margin-left: 5px;
+    line-height: 30px;
+    color: blue;
+    position: absolute;
+    left: 55px;
+}
+

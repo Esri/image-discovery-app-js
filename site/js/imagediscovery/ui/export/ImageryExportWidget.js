@@ -82,7 +82,6 @@ define([
                  * handles the bulk of the imagery export
                  */
                 handleExport: function () {
-
                     var selectedObjectIds = this.getDownloadObjectIds();
                     if (selectedObjectIds == null || !lang.isArray(selectedObjectIds) || selectedObjectIds.length == 0) {
                         return;
@@ -221,12 +220,14 @@ define([
                             if (fileName == null || fileName == "") {
                                 fileName = currentRasterFile.id ? currentRasterFile.id : ("File " + filesAddedCounter);
                             }
-                            var downloadUrl = VIEWER_UTILS.joinUrl(currentDownloadResponseObject.layer.url, ("file?id=" + currentRasterFile.id));
+                            var serviceUrl =  currentDownloadResponseObject.layer.url;
+                            var downloadUrl = VIEWER_UTILS.joinUrl(serviceUrl, ("file?id=" + currentRasterFile.id));
                             if (currentRasterFile.rasterIds.length == 1) {
                                 currrentRasterFileRasterId = currentRasterFile.rasterIds[0];
                                 var addDownloadItem = {
                                     url: (downloadUrl + "&rasterId=" + currrentRasterFileRasterId),
-                                    label: fileName
+                                    label: fileName,
+                                    serviceName: REG_EXP_UTILS.getServiceNameFromUrl(serviceUrl)
                                 };
                                 if (currentRasterFile.size != null) {
                                     addDownloadItem.size = REG_EXP_UTILS.numberToStringWithCommas((currentRasterFile.size / this.bytesInMB).toFixed(2) + " MB");
@@ -240,6 +241,7 @@ define([
                     }
                     this.imageryExportDownloadWindow.show(downloadServiceItems);
                 }
+
             });
 
     });

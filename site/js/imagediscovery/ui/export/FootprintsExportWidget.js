@@ -374,7 +374,7 @@ define([
                  */
                 handleExportTaskResponse: function (response) {
                     if (response == null || !lang.isObject(response) || response.results == null) {
-                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not processed footprints export response. Please contact an administrator.");
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not process footprints export response. Please contact an administrator.");
                         VIEWER_UTILS.log("Could not processed footprints export response. Please contact an administrator for help.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                         return;
                     }
