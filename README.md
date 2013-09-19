@@ -30,7 +30,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 * ArcGIS Portal Search
 * Measure
 * Legend
-* Social Media (Flickr, YouTube, Twitter)
+* Social Media
 * Time Slider
 * Weather Conditions
 * Zoom To (USA)

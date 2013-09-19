@@ -168,7 +168,8 @@ define([
                             SHOW: "rptWindow:show",
                             HIDE: "rptWindow:hide",
                             TOGGLE: "rptWindow:toggle"
-                        }
+                        },
+                        DOWNLOAD_ALL_IMAGERY: "dwn:AllImagery"
                     },
                     MANIPULATION: {
                         STOP: "manip:stop",

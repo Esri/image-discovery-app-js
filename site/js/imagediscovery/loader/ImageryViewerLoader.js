@@ -43,7 +43,7 @@ define([
                     this.viewPlacement = new ImageryViewerPlacementWindow();
                 },
                 /**
-                 *  create imagery globals, inclused event string defs.
+                 *  create imagery globals, includes event string defs.
                  */
                 createImageryGlobals: function () {
                     return new ImageryGlobals();
