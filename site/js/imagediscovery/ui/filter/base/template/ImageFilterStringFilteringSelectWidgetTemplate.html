@@ -1,0 +1,27 @@
+<div class="defaultTextColor">
+    <div class="stringFilterModeRadios">
+        <input type="radio" name="stringFilterMode" value="include" data-bind="checked: stringFilterMode"/>
+        <span>Include</span>
+        <input type="radio" name="stringFilterMode" value="exclude" data-bind="checked: stringFilterMode"/>
+        <span>Exclude</span>
+    </div>
+    <div class="stringFilterSelectAndAddLbl">Select an item and click add</div>
+    <div class="stringFilterSelectAndAddContainer">
+        <div data-dojo-attach-point="stringFilteringSelectContainer" class="stringFilteringSelectContainer"></div>
+        <div class="commonIcons16 add imageFilterStringListAddIcon"
+             data-dojo-attach-event="onclick:addEntryToIncludeList"></div>
+    </div>
+    <div class="imageStringFilterAddedEntriesContainer"></div>
+    <div class="stringFilterIncludeLblWrapper">
+        <div data-bind="visible: hasIncludeEntry,text:stringFilterModeLabel" class="imageStringFilterAddedEntriesLbl"></div>
+    </div>
+    <ul class="imageStringFilterAddedEntriesList" data-bind="foreach:includeStrings">
+        <li>
+            <span data-bind="text:$data"></span>
+
+            <div class="commonIcons16 deleteSmall stringFilterRemoveIncludeIcon"
+                 data-bind="click:$parent.removeIncludedItem"></div>
+        </li>
+
+    </ul>
+</div>

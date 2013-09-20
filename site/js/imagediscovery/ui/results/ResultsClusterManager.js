@@ -9,10 +9,9 @@ define([
     "esri/symbols/SimpleLineSymbol",
     "esri/symbols/PictureMarkerSymbol",
     "esri/graphic",
-    "esri/renderers/ClassBreaksRenderer",
-    "dojo/_base/connect"
+    "esri/renderers/ClassBreaksRenderer"
 ],
-    function (declare, topic, Evented, Color, lang, ClusterLayer, SimpleMarkerSymbol, SimpleLineSymbol, PictureMarkerSymbol, Graphic, ClassBreaksRenderer, con) {
+    function (declare, topic, Evented, Color, lang, ClusterLayer, SimpleMarkerSymbol, SimpleLineSymbol, PictureMarkerSymbol, Graphic, ClassBreaksRenderer) {
         return declare(
             [Evented],
             {
@@ -147,7 +146,7 @@ define([
                  * called when a discovery viewer filter has been applied. reloads the cluster layer
                  */
                 handleFilterApplied: function () {
-                    if (this.clusterLayer.visible) {
+                    if (this.clusterLayer && this.clusterLayer.visible) {
                         this.reloadLayer();
                     }
                 },

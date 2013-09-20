@@ -1,15 +1,16 @@
-
- .imageFilterCheckboxContainer {
+.imageFilterCheckboxContainer {
     text-align: center;
 }
 
 .filterCheckLbl {
     margin-right: 5px;
 }
+
 .imageFilterSlideRuleContainer {
     color: black;
     font-size: 9pt;
 }
+
 .imageFilterDateRangeResetIcon {
     margin-right: 5px;
     float: left;
@@ -48,39 +49,40 @@
     margin: 10px 0 0;
     padding-bottom: 5px;
 }
-.imageryFilterSliderContainer, .imageFilterSlideRuleContainer{
+
+.imageryFilterSliderContainer, .imageFilterSlideRuleContainer {
     width: 90%;
     margin-left: 5%;
 }
-.imageFilterDateRangeWidgetContents{
+
+.imageFilterDateRangeWidgetContents {
     height: 50px;
 }
-.imageFilterDateSelectContent{
+
+.imageFilterDateSelectContent {
     float: left;
     width: 48%;
 }
 
-.imageryFilterSliderWidget{
+.imageryFilterSliderWidget {
     width: 200px;
 }
-.imageryFilterSliderValueContainer{
+
+.imageryFilterSliderValueContainer {
     margin-top: 5px;
 }
-.imageryFilterSliderValueUnitsContainer{
+
+.imageryFilterSliderValueUnitsContainer {
     margin-left: 2px;
 }
-.imageFilterStringListWrapperContainer{
-    max-height: 125px;
-    min-width: 140px;
-    padding: 3px;
-    max-width: 200px;
-    overflow: auto;
-}
-.imageFilterSliderWidgetDirectionRadios{
+
+
+.imageFilterSliderWidgetDirectionRadios {
     margin-bottom: 7px;
 }
-.imageFilterStringListHideAll{
-    text-align:right;
+
+.imageFilterStringListHideAll {
+    text-align: right;
     color: #878787;
     text-decoration: underline;
     cursor: pointer;

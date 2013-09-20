@@ -1,0 +1,36 @@
+.imageStringFilterAddedEntriesList {
+    color: #0000FF;
+    list-style-type: none;
+    margin: 5px 0 0;
+    padding: 0;
+    height: 100px;
+    max-height: 100px;
+    overflow: auto;
+}
+
+.imageFilterStringListAddIcon {
+    float: right;
+    margin-left: 7px;
+    margin-top: 1px;
+}
+.stringFilteringSelectContainer, .stringFilterRemoveIncludeIcon {
+    float: left;
+}
+
+.stringFilterSelectAndAddContainer {
+    height: 30px;
+}
+
+.stringFilterIncludeLblWrapper {
+    height: 15px;
+}
+
+.stringFilterSelectAndAddLbl {
+    color: #808080;
+    margin: 5px 0;
+}
+
+.stringFilterModeRadios {
+    font-size: 9pt;
+    text-align: center;
+}

@@ -227,6 +227,10 @@ define([
                     this.inherited(arguments);
                     this.hideAllFilterIcons();
                     this.onHideFilterResetIcon();
+                    if (domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded")) {
+                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                    }
                 },
                 /**
                  * grays out result grid rows by the passed functon
@@ -493,7 +497,19 @@ define([
                 handleUpdateToggleAllCartItemsButton: function() {
                     var cartItemIconEmpty = domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty") ?
                         true : false;
-                    var items = this.store.query({ addedToCart: false, isFiltered: false}); //any items not in cart?
+
+                    //Any items visible in results grid?
+                    var unfilteredItems = this.store.query({isFiltered: false});
+                    if (unfilteredItems.length == 0)  {
+                        if (!cartItemIconEmpty) {
+                            domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                            domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                        }
+                        return;
+                    }
+
+                    //Items that are visible in grid AND not added to cart
+                    var items = this.store.query({ addedToCart: false, isFiltered: false});
                     if (items.length == 0 && cartItemIconEmpty) {
                         //no items NOT in cart => all items in cart
                         domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");

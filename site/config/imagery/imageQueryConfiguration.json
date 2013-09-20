@@ -2,8 +2,8 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://arcgis-idmcloudsite-1166400923.us-west-1.elb.amazonaws.com/arcgis/rest/services/LiDARManagement/APS_images/ImageServer",
-            "label": "Catalog 2",
+            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
+            "label": "LandsatMaster",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
                 "AcquisitionDate": "AcquisitionAlias",
@@ -36,7 +36,8 @@
                 "enable": true
             },
             "style": {
-                "color": "red"
+                "color": "blue",
+                "fontSize": "8pt"
             },
             "gridOptions": {
                 "canHide": true
@@ -64,7 +65,7 @@
             "field": "Tag",
             "label": "Tag",
             "filter": {
-                "enable": false
+                "enable": true
             }
         },
         {
@@ -92,7 +93,7 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        "maxQueryResults": 100,
+        "maxQueryResults": 200,
         "allowCheckAllSearchResultThumbnails": true,
         "footprintZoomLevelStart": 9,
         "useHeatmap": false
@@ -111,13 +112,13 @@
                 "isAsync": true
             }
         },
-        "imageryDownload":{
+        "imageryDownload": {
             "task": {
-                 "url": "http://ec2-107-20-33-138.compute-1.amazonaws.com:6080/arcgis/rest/services/ImageDiscovery/DiscoveryDownloader/GPServer/DiscoveryDownloader",
-                 "downloadItemInputParameter": "inputJson",
-                 "outputUrlParameter": "outputZip",
-                 "isAsync": true
-             }
+                "url": "http://ec2-107-20-33-138.compute-1.amazonaws.com:6080/arcgis/rest/services/ImageDiscovery/DiscoveryDownloader/GPServer/DiscoveryDownloader",
+                "downloadItemInputParameter": "inputJson",
+                "outputUrlParameter": "outputZip",
+                "isAsync": true
+            }
         }
     },
     "utmLookup": {
