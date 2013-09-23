@@ -45,20 +45,41 @@ define([
                     this.currentMaxRangeValue("");
                     this.emit(this.CLEAR_FILTER);
                 },
-                validateLessThan: function () {
-                    this._validateEntry(this.currentLessThanValue);
+                validateLessThan: function (obj,e) {
+                    if (VIEWER_UTILS.isEnterKey(e)) {
+                        this.applyLessThanFilter();
+                    }
+                    else {
+                        this._validateEntry(this.currentLessThanValue);
+                    }
 
                 },
-                validateGreaterThan: function () {
-                    this._validateEntry(this.currentGreaterThanValue);
+                validateGreaterThan: function (obj, e) {
+                    if (VIEWER_UTILS.isEnterKey(e)) {
+                        this.applyGreaterThanFilter();
+                    }
+                    else {
+
+
+                        this._validateEntry(this.currentGreaterThanValue);
+                    }
 
                 },
-                validateMinRange: function () {
-                    this._validateEntry(this.currentMinRangeValue);
-
+                validateMinRange: function (obj, e) {
+                    if (VIEWER_UTILS.isEnterKey(e)) {
+                        this.applyRangeFilter();
+                    }
+                    else {
+                        this._validateEntry(this.currentMinRangeValue);
+                    }
                 },
-                validateMaxRange: function () {
-                    this._validateEntry(this.currentMaxRangeValue);
+                validateMaxRange: function (obj, e) {
+                    if (VIEWER_UTILS.isEnterKey(e)) {
+                      this.applyRangeFilter();
+                    }
+                    else {
+                        this._validateEntry(this.currentMaxRangeValue);
+                    }
                 },
                 _validateEntry: function (koValFxn) {
                     var currentVal = koValFxn();
