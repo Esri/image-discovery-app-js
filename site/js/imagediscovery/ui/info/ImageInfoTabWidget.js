@@ -161,6 +161,16 @@ define([
                         var imageInfoAndQueryLayerController = imageInfoAndQueryLayerControllerArray[i];
                         var imageInfo = imageInfoAndQueryLayerController.imageInfo;
                         var queryLayerController = imageInfoAndQueryLayerController.queryLayerController;
+                        var fieldMapping = {};
+                        if (queryLayerController.serviceConfiguration &&
+                            queryLayerController.serviceConfiguration.fieldMapping != null &&
+                            lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                            fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
+                        }
+                        var reverseFieldMapping = {};
+                        for (var key in fieldMapping) {
+                            reverseFieldMapping[fieldMapping[key]] = key;
+                        }
                         var layer = queryLayerController.layer; //will be used to retrieve thumbnail
                         var fieldTypeLookup = this.getFieldTypeLookup(queryLayerController);
                         var attributesNVPArray = [];
@@ -191,7 +201,8 @@ define([
                                     displayValue = imageInfo[key];
                                 }
                             }
-                            attributesNVPArray.push({name: key, value: displayValue});
+                            var colName = reverseFieldMapping[key] != null ? reverseFieldMapping[key] : key
+                            attributesNVPArray.push({name: colName, value: displayValue});
 
                         } //end for loop of attributes in imageInfo object
 

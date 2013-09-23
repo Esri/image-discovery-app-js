@@ -10,7 +10,7 @@ define([
     "./UserAppliedFilterLockController",
     "./base/ImageFilterNumberRangeWidget",
     "./base/ImageFilterDateRangeWidget",
-    "./base/ImageFilterStringListWidget"
+    "./base/ImageFilterStringFilteringSelectWidget"
 ],
     function (declare, topic, on, lang, domConstruct, domStyle, registry, array, UserAppliedFilterLockController, ImageFilterNumberRangeWidget, ImageFilterDateRangeWidget, ImageFilterStringListWidget) {
         return declare(
@@ -210,31 +210,31 @@ define([
                     var hasVisibleWidget = false;
                     var i, key, min, max;
                     /*
-                    var rangeLookup = {};
-                    for (i = 0; i < this.queryWidgets.length; i++) {
-                        rangeLookup[this.queryWidgets[i].queryField] = {};
-                    }
-                    var currentAttributes;
-                    for (i = 0; i < features.length; i++) {
-                        currentAttributes = features[i].attributes;
-                        for (key in rangeLookup) {
-                            if (currentAttributes[key] == null) {
-                                currentAttributes[key] = "";
-                            }
-                            rangeLookup[key][currentAttributes[key]] = currentAttributes[key];
-                        }
-                    }
+                     var rangeLookup = {};
+                     for (i = 0; i < this.queryWidgets.length; i++) {
+                     rangeLookup[this.queryWidgets[i].queryField] = {};
+                     }
+                     var currentAttributes;
+                     for (i = 0; i < features.length; i++) {
+                     currentAttributes = features[i].attributes;
+                     for (key in rangeLookup) {
+                     if (currentAttributes[key] == null) {
+                     currentAttributes[key] = "";
+                     }
+                     rangeLookup[key][currentAttributes[key]] = currentAttributes[key];
+                     }
+                     }
 
-                    var rangeLookupAsArray = {};
-                    //todo: maybe there is a better way to do this. depends if storing multiple values is better than filtering out dupes by using a object above
-                    //convert objects to array
-                    for (key in rangeLookup) {
-                        rangeLookupAsArray[key] = [];
-                        for (var innerKey in rangeLookup[key]) {
-                            rangeLookupAsArray[key].push(rangeLookup[key][innerKey]);
-                        }
-                    }
-                    */
+                     var rangeLookupAsArray = {};
+                     //todo: maybe there is a better way to do this. depends if storing multiple values is better than filtering out dupes by using a object above
+                     //convert objects to array
+                     for (key in rangeLookup) {
+                     rangeLookupAsArray[key] = [];
+                     for (var innerKey in rangeLookup[key]) {
+                     rangeLookupAsArray[key].push(rangeLookup[key][innerKey]);
+                     }
+                     }
+                     */
                     //populate slider min/max/current
                     var currentWidget;
                     var currentRangeLookupArray;
@@ -392,7 +392,7 @@ define([
                     this.submitQueryButton.set("disabled", false);
                 },
                 /**
-                 * returns where clause for all active filter functions
+                 * @description returns where clause for all active filter functions. I Don't know if this is used anywhere
                  * @return {string}
                  */
                 getWhereClause: function () {
