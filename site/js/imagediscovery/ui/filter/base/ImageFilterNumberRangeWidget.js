@@ -36,13 +36,10 @@ define([
                     if (property === "minimum" || property === "maximum") {
                         if (property === "minimum") {
                             this.viewModel.currentMinValue(value);
-                            domAttr.set(this.rangeInformationHoverIcon, "title", "Min: " + this.viewModel.currentMinValue()  + " Max: " + this.viewModel.currentMaxValue());
-                            //apply the binding when the first set of values has been set. KNOCKOUT ISN'T LIKING THE BINDING APPLIED BEFORE EVERYTHING HAS BEEN SET
                             this.applyBindings();
                         }
                         else {
                             this.viewModel.currentMaxValue(value);
-                            domAttr.set(this.rangeInformationHoverIcon, "title", "Min: " + this.viewModel.currentMinValue()  + " Max: " + this.viewModel.currentMaxValue());
                         }
                     }
                     else {
@@ -65,8 +62,8 @@ define([
                         else if (this.viewModel.rangeSelected()) {
                             var currentRangeMin = this.viewModel.currentMinRangeValue();
                             var currentRangeMax = this.viewModel.currentMaxRangeValue();
-                            where.push(this.queryField + " > " + currentRangeMin);
-                            where.push(this.queryField + " < " + currentRangeMax);
+                            where.push(this.queryField + " >= " + currentRangeMin);
+                            where.push(this.queryField + " <= " + currentRangeMax);
                         }
                     }
                     return where;
@@ -83,7 +80,7 @@ define([
                     }
                     else if (this.viewModel.rangeSelected()) {
                         var val = item[this.queryField];
-                        return item[this.queryField] > this.viewModel.currentMinRangeValue() && item[this.queryField] < this.viewModel.currentMaxRangeValue();
+                        return item[this.queryField] >= this.viewModel.currentMinRangeValue() && item[this.queryField] <= this.viewModel.currentMaxRangeValue();
                     }
                     else {
                         return false;

@@ -44,6 +44,12 @@
         "legend": {
             "create": false
         },
+        "display": {
+            "showScaleBar": true,
+            "showMGRS": false,
+            "showUTM": false,
+            "showScale": false
+        },
         "overview": {
             "create": false
         }
@@ -106,6 +112,9 @@
     "swipeWidget": {
         "create": true
     },
+    "pointUploadWidget": {
+        "create": false
+    },
     "layersWidget": {
         "allowAddLayers": true,
         "showWKIDInAddLayers": true
@@ -122,7 +131,7 @@
         "printTaskUrl": "http://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
     },
     "reverseGeocodeWidget": {
-        "create": true
+        "create": false
     },
     "identifyWidget": {
         "create": true

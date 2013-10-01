@@ -616,28 +616,42 @@ define([
                                 this.layerTransparencyTooltip = new TooltipDialog({
                                     content: transparencyWidget.domNode
                                 });
+                                this._toggleResultLayerTransparencyPopup();
                             })
+
                         );
                         this.layerTransparencyTooltipVisible = false;
                         topic.subscribe(IMAGERY_GLOBALS.EVENTS.TRANSPARENCY.POPUP.HIDE,
                             dojo.hitch(this, this.hideResultLayerTransparencyPopup));
                     }
-                    var params = {
-                        popup: this.layerTransparencyTooltip //content of popup is the TootipDialog
-                    };
-                    if (this.layerTransparencyTooltipVisible) {
-                        dijit.popup.close(this.layerTransparencyTooltip);
-                        this.layerTransparencyTooltipVisible = false;
-                    }
                     else {
-                        params.around = this.changeResultLayerTransparencyElement;
-                        params.orient = ["above"];
-                        dijit.popup.open(params);
-                        this.layerTransparencyTooltipVisible = true;
+                        this._toggleResultLayerTransparencyPopup();
+                    }
+
+                },
+                /**
+                 * assumes the transparency tooltip already exists
+                 * @private
+                 */
+                _toggleResultLayerTransparencyPopup: function () {
+                    if (this.layerTransparencyTooltip) {
+                        var params = {
+                            popup: this.layerTransparencyTooltip //content of popup is the TootipDialog
+                        };
+                        if (this.layerTransparencyTooltipVisible) {
+                            dijit.popup.close(this.layerTransparencyTooltip);
+                            this.layerTransparencyTooltipVisible = false;
+                        }
+                        else {
+                            params.around = this.changeResultLayerTransparencyElement;
+                            params.orient = ["above"];
+                            dijit.popup.open(params);
+                            this.layerTransparencyTooltipVisible = true;
+                        }
                     }
                 },
                 hideResultLayerTransparencyPopup: function () {
-                    if (this.layerTransparencyTooltipVisible) {
+                    if (this.layerTransparencyTooltipVisible && this.layerTransparencyTooltip) {
                         dijit.popup.close(this.layerTransparencyTooltip);
                         this.layerTransparencyTooltipVisible = false;
                     }

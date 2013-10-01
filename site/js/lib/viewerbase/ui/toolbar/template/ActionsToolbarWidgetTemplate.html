@@ -13,6 +13,7 @@
             <div class="actionsToolbarText">Layers</div>
         </div>
         <div data-dojo-attach-point="bookmarksButton" class="actionsToolbarButton"
+             data-bind="visible:showBookmarksButton"
              data-dojo-attach-event="onclick:toggleBookmarksListing">
             <div class="commonIcons16 bookmark actionsToolbarIcon"></div>
             <div class="actionsToolbarText">Bookmarks</div>
@@ -23,18 +24,22 @@
             <div class="actionsToolbarText">Basemaps</div>
 
         </div>
-        <span data-dojo-type="dijit/form/ToggleButton"
-              data-dojo-attach-point="labelsButton"
-              data-dojo-props="iconClass:'dijitCheckBoxIcon'">Labels</span>
+        <span data-bind="visible:showLabelsButton">
+            <span data-dojo-type="dijit/form/ToggleButton"
+                  data-dojo-attach-point="labelsButton"
+                  data-dojo-props="iconClass:'dijitCheckBoxIcon'">Labels</span>
+        </span>
 
         <div data-dojo-attach-point="addOnContentContainer"></div>
-        <div class="locateToolbarContainer locateToolbarContainerOnMap" data-dojo-attach-point="locateToolbarContainer" style="display:none">
+        <div class="locateToolbarContainer locateToolbarContainerOnMap" data-dojo-attach-point="locateToolbarContainer"
+             data-bind="visible: showLocator">
             <input value="${locateDefaultInput}" type="text" class="locateTextBox defaultBorder"
                    data-dojo-attach-point="locateTextBox"/>
 
             <div data-dojo-attach-point="locateButton" title="Locate"
                  class="defaultBorder searchButton searchButtonIcon"></div>
             <div data-dojo-attach-point="configureLocateButton"
+                 data-bind="visible:showConfigureLocatorsButton"
                  data-dojo-attach-event="onclick:toggleConfigureLocatorTooltip" title="Configure Locate"
                  class="defaultBorder configureLocate configureButtonIcon"></div>
         </div>
