@@ -3,6 +3,8 @@
 }
 .searchLayerTransparencyContent {
     width: 300px;
+    font-size: 9pt;
+    color: gray;
 }
 
 .transparencyWidgetPopupCloseIcon {
