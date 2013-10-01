@@ -89,6 +89,9 @@ define([
                     if (this.clearResultsTooltip && this.clearResultsTooltip.visible) {
                         this.clearResultsTooltip.hide();
                     }
+                    if(this.resetAllFiltersTooltip && this.resetAllFiltersTooltip.visible){
+                        this.resetAllFiltersTooltip.hide();
+                    }
                 },
                 loadViewerConfigurationData: function () {
                     var searchConfiguration = null;
