@@ -11,11 +11,11 @@ define([
     "../../base/grid/ImageryGrid",
     "dojo/_base/array"
 ],
-    function (declare, topic, on, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid,array) {
+    function (declare, topic, on, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid, array) {
         return declare(
             [ImageryBaseGrid],
             {
-                ignoreVisibleFieldNames: [" ", "zoomToFootprint", "showThumbNail","addedToCart","__serviceLabel"],
+                ignoreVisibleFieldNames: [" ", "zoomToFootprint", "showThumbNail", "addedToCart", "__serviceLabel"],
                 constructor: function () {
                 },
                 initListeners: function () {
@@ -40,6 +40,13 @@ define([
                     }
                     var visibleColumns = [];
                     var columns = this.grid.columns;
+                    if (!lang.isArray(columns)) {
+                        var colsAsArray = [];
+                        for (var key in columns) {
+                            colsAsArray.push(columns[key]);
+                        }
+                        columns = colsAsArray;
+                    }
                     var currentCol;
                     for (var i = 0; i < columns.length; i++) {
                         currentCol = columns[i];
@@ -141,7 +148,7 @@ define([
                         return this.getVisibleContentObjectIdArray();
                     }
                 },
-                handleRemoveAllCartItems: function() {
+                handleRemoveAllCartItems: function () {
                     var items = this.store.query();
                     if (items.length > 0) {
                         for (var i = 0; i < items.length; i++) {
