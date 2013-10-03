@@ -2,54 +2,9 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://idmstage:6080/arcgis/rest/services/PGE/dsm/ImageServer",
-            "label": "LiDAR DSM",
+            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
+            "label": "LandsatMaster",
             "queryWhereClauseAppend": "Category = 1",
-            "fieldMapping": {
-                "AcquisitionDate": "AcquisitionAlias",
-                "LowPS": "LowPSAlias"
-            }
-        },
-        {
-            "url": "http://idmstage:6080/arcgis/rest/services/PGE/dsm_paradise/ImageServer",
-            "label": "LiDAR DSM Paradise",
-            "queryWhereClauseAppend": "Category = 1",
-            "fieldMapping": {
-                "AcquisitionDate": "AcquisitionAlias",
-                "LowPS": "LowPSAlias"
-            }
-        },
-        {
-            "url": "http://idmstage:6080/arcgis/rest/services/PGE/dsm_caribou/ImageServer",
-            "label": "LiDAR DSM Caribou",
-            "queryWhereClauseAppend": "Category = 1",
-            "fieldMapping": {
-                "AcquisitionDate": "AcquisitionAlias",
-                "LowPS": "LowPSAlias"
-            }
-        },
-        {
-            "url": "http://idmstage:6080/arcgis/rest/services/PGE/dsm_rio_oso/ImageServer",
-            "label": "LiDAR DSM Rio Oso",
-            "queryWhereClauseAppend": "Category = 1",
-            "fieldMapping": {
-                "AcquisitionDate": "AcquisitionAlias",
-                "LowPS": "LowPSAlias"
-            }
-        },
-        {
-            "url": "http://idmstage:6080/arcgis/rest/services/PGE/BareEarth/ImageServer",
-            "label": "LiDAR DEM",
-            "queryWhereClauseAppend": "Category = 1",
-            "fieldMapping": {
-                "AcquisitionDate": "AcquisitionAlias",
-                "LowPS": "LowPSAlias"
-            }
-        },
-        {
-            "url": "http://idmstage:6080/arcgis/rest/services/PGE/ECWCatalog/ImageServer",
-            "label": "ECW Catalog",
-
             "fieldMapping": {
                 "AcquisitionDate": "AcquisitionAlias",
                 "LowPS": "LowPSAlias"

@@ -69,14 +69,14 @@
     "header": {
         "display": false,
         "headerText": "Discovery Application",
-        "headerImage": "images/kacstLogo.png",
+        "headerImage": "images/logo.png",
         "contact": {
             "label": "Contact Us",
-            "url": "http://www.kacst.edu.sa/en/contact/Pages/default.aspx"
+            "url": "http://www.esri.com"
         },
         "help": {
             "label": "Help",
-            "url": "http://www.kacst.edu.sa/en/Pages/default.aspx"
+            "url": "http://www.esri.com"
         }
     },
     "configureWidget": {
