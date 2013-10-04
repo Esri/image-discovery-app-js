@@ -202,7 +202,7 @@ define([
                             currentImageServiceObj = this.queryConfig.imageQueryLayers[i];
                             if (currentImageServiceObj.url) {
                                 //todo: need to make this an extended ImageService layer. can't do this until ArcGISImageServiceLayer supports AMD
-                                var imageServiceQueryLayer = new esri.layers.ArcGISImageServiceLayer(currentImageServiceObj.url);
+                                var imageServiceQueryLayer = new ArcGISImageServiceLayer(currentImageServiceObj.url);
                                 //see if there is a query to append to all the dynamic queries
                                 if (currentImageServiceObj.queryWhereClauseAppend && currentImageServiceObj.queryWhereClauseAppend.length > 0) {
                                     imageServiceQueryLayer.queryWhereClauseAppend = currentImageServiceObj.queryWhereClauseAppend;

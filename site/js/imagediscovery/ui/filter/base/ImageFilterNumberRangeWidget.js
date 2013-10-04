@@ -70,6 +70,7 @@ define([
                 },
                 reset: function () {
                     this.viewModel.resetValues();
+                    this.clearFilterFunction();
                 },
                 filterFunction: function (item) {
                     if (this.viewModel.lessThanSelected()) {
