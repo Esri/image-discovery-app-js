@@ -5,6 +5,8 @@
         <span data-bind="click:showPlotUTM, css: {selectedTab: plotUTMVisible}">UTM</span>
         <span data-bind="click:showPlotMGRS, css: {selectedTab: plotMGRSVisible}">MGRS</span>
     </div>
+    <div data-bind="visible:hasPlottedPoints, click:showPlottedPoints" class="commonIcons16 list showPlottedPointsListIcon"
+         title="Show Plotted Points"></div>
     <div data-bind="visible:plotDDVisible" data-dojo-attach-point="plotDDContainer">
     </div>
     <div data-bind="visible:plotDMSVisible" data-dojo-attach-point="plotDMSContainer">
@@ -14,15 +16,22 @@
     <div data-bind="visible:plotMGRSVisible" data-dojo-attach-point="plotMGRSContainer">
     </div>
 
-    <div class=" plotPointsActionContainer">
+    <div class="plotPointsActionContainer" data-bind="visible:plotPointsActionsVisible">
         <span class="plotPointZoomLevelContainer">
                 <span class="plotPointZoomLevelLabel">Zoom Level:</span>
                 <select data-bind="options: zoomLevels ,value:selectedZoomLevel"></select>
             </span>
-        <span data-dojo-type="dijit/form/Button" data-dojo-attach-point="clearButtonButton"
-              data-dojo-attach-event="onClick:clearGraphic">Clear</span>
         <span data-dojo-type="dijit/form/Button" data-dojo-attach-point="plottingButton"
               data-dojo-attach-event="onClick:plotPoint">Plot</span>
 
+    </div>
+    <div data-bind="visible:plottedPointsVisible" class="plottedPointListContainer">
+        <ul data-bind="foreach: plottedPoints" class="plottedPointsList">
+            <li>
+                <div class="commonIcons16 deleteSmall removePlottedPointIcon" data-bind="click:$parent.removePoint" title="Remove Point"></div>
+                <div class="commonIcons16 globeGoTo plottedPointGoToIcon" data-bind="click:$parent.zoomToPoint"  title="Go To Point"></div>
+                <span class="plottedPointLabel" data-bind="text: $data.label"></span>
+            </li>
+        </ul>
     </div>
 </div>

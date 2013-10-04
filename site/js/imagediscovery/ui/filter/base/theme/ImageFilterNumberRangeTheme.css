@@ -28,8 +28,17 @@
 }
 
 .imageFilterNumberRangeInfoContainer {
-    height: 25px;
+    /*margin: 0 0 5px;*/
+    color: gray;
+    font-size: 9pt;
 }
+.imageFilterNumberRangeInfoContainer div{
+    margin: 0 0 3px;
+}
+.imageFilterNumberRangeInfoLbl{
+    color: #60606B;
+}
+
 
 .applyNumberFilterIcon {
     position: absolute;

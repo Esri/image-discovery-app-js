@@ -25,7 +25,7 @@ define([
                 },
                 clearSources: function () {
                     this.activeSourcesLokup = {};
-                    domConstruct.empty(this.activeSourcesContainer);
+                    domConstruct.empty(this.activeSourcesList);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_FILTER_FUNCTION, this.processFilterFunctionsAgainstItemCallback);
 
                 },
@@ -35,12 +35,12 @@ define([
                  */
                 addQueryLayerControllerEntry: function (queryLayerController) {
                     if (queryLayerController && queryLayerController.label) {
-                        var container = domConstruct.create("div", {className: "activeSourceServiceEntry"});
-                        var lblNode = domConstruct.create("div", {className: "activeSourceServiceLbl", innerHTML: queryLayerController.label});
+                        var container = domConstruct.create("li", {className: "activeSourceServiceEntry defaultTextColor"});
+                        var lblNode = domConstruct.create("span", {className: "activeSourceServiceLbl", innerHTML: queryLayerController.label});
                         var checkedUncheckedNode = domConstruct.create("div", {className: "activeSourceServiceIcon commonIcons16 success"});
                         domConstruct.place(checkedUncheckedNode, container);
                         domConstruct.place(lblNode, container);
-                        domConstruct.place(container, this.activeSourcesContainer);
+                        domConstruct.place(container, this.activeSourcesList);
                         this.activeSourcesLookup[queryLayerController.label] = queryLayerController.label;
                         on(container, "click", lang.hitch(this, this.handleContainerToggle, {sourceValue: queryLayerController.label, icon: checkedUncheckedNode, queryLayerController: queryLayerController}))
                     }

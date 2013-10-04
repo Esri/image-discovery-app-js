@@ -4,6 +4,7 @@ define([
     "xstyle/css!./theme/ImageryExportTheme.css",
     "dojo/topic",
     "dojo/_base/json",
+    "dojo/_base/array",
     "dojo/_base/lang",
     "dojo/_base/Color",
     "esriviewer/base/DataLoaderSupport",
@@ -15,10 +16,11 @@ define([
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol"
 ],
-    function (declare, template, theme, topic, json, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+    function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
         return declare(
             [ UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
             {
+                downloadLimitExceedServerDetailString: "The requested number of download images exceeds the limit.",
                 bytesInMB: 1048576,
                 templateString: template,
                 imageryExportDownloadWindowTitle: "Your Files Have Been Prepared",
@@ -158,8 +160,14 @@ define([
                     }
                 },
                 _imageryDownloadErrorCallback: function (error) {
-                    topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "An error was encountered during export");
-                    VIEWER_UTILS.log("An error was encountered during export", VIEWER_GLOBALS.LOG_TYPE.ERROR);
+                    var errString  = "An error was encountered during export.";
+                    if(error && lang.isArray(error.details) && error.details.length > 0){
+                        if(array.indexOf(error.details,this.downloadLimitExceedServerDetailString) > -1){
+                            errString = "Cannot export imagery. Download limit exceeded on server."
+                        }
+                    }
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, errString);
+                    VIEWER_UTILS.log(errString, VIEWER_GLOBALS.LOG_TYPE.ERROR);
                 },
                 _imageryDownloadResponseCallback: function (layer, response) {
                     if (response == null || layer == null || response.rasterFiles == null || response.rasterFiles.length == 0) {
