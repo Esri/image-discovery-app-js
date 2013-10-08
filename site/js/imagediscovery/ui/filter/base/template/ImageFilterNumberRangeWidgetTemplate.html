@@ -1,9 +1,18 @@
-<div class="imageFilterWidgetContentEntry">
+<div class="imageFilterWidgetContentEntry" style="margin:0">
     <div data-dojo-attach-point="imageQueryWidgetContents"
          class="imageQueryWidgetContents imageFilterNumberRangeWidgetContents">
         <div class="imageFilterNumberRangeInfoContainer">
-            <div class="commonIcons16 information imageFilterNumberRangeInfo" title=""
-                 data-dojo-attach-point="rangeInformationHoverIcon"></div>
+            <!-- <div class="commonIcons16 information imageFilterNumberRangeInfo" title=""
+                  data-dojo-attach-point="rangeInformationHoverIcon"></div>
+                  -->
+            <div>
+                <span class="imageFilterNumberRangeInfoLbl">Min:</span>
+                <span data-bind="text:currentMinValue"></span>
+            </div>
+            <div>
+                <span class="imageFilterNumberRangeInfoLbl">Max:</span>
+                <span data-bind="text:currentMaxValue"></span>
+            </div>
         </div>
         <div class="imageFilterModesContainer">
             <span class="imageFilterNumberModesLbl"

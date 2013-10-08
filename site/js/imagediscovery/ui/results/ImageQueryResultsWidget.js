@@ -27,9 +27,10 @@ define([
     "dijit/TooltipDialog",
     "./ResultsClusterManager",
     "./ResultsHeatmapManager",
-    "./ResultsFootprintManager"
+    "./ResultsFootprintManager",
+    "../transparency/SearchLayersTransparencyWidget"
 ],
-    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager) {
+    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, MapDrawSupport, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager, SearchLayersTransparencyWidget) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
@@ -53,7 +54,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.QUERY_RESULT_SET, lang.hitch(this, this.handleQueryResultsSet));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleClearQueryResults));
                     this.firstFooterExpandListener = topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.EXPANDED, lang.hitch(this, this.handleFooterFirstExpand));
-                    topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.clearDraw));
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.handleFooterCollapsed));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, lang.hitch(this, this.handleIsShoppingCartVisible));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.HIDE_RESET_ICON, lang.hitch(this, this.hideFilterResultIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SHOW_RESET_ICON, lang.hitch(this, this.showFilterResetIcon));
@@ -80,6 +81,17 @@ define([
                     this._createResultGrid();
                     this._createShoppingCartGrid();
                     this.createActiveSourcesWidget();
+                },
+                handleFooterCollapsed: function () {
+                    this.clearDraw();
+                    this._hideActiveSourcesTooltip();
+                    this.hideResultLayerTransparencyPopup();
+                    if (this.clearResultsTooltip && this.clearResultsTooltip.visible) {
+                        this.clearResultsTooltip.hide();
+                    }
+                    if(this.resetAllFiltersTooltip && this.resetAllFiltersTooltip.visible){
+                        this.resetAllFiltersTooltip.hide();
+                    }
                 },
                 loadViewerConfigurationData: function () {
                     var searchConfiguration = null;
@@ -203,7 +215,40 @@ define([
                 createActiveSourcesWidget: function () {
                     if (this.activeSourcesWidget == null) {
                         this.activeSourcesWidget = new ActiveSourcesWidget();
-                        this.activeSourcesWidget.placeAt(this.activeServicesContainer);
+                        //      this.activeSourcesWidget.placeAt(this.activeServicesContainer);
+
+                        this.activeSourcesTooltipVisible = false;
+                        this.activeSourcesTooltip = new TooltipDialog({
+                            content: this.activeSourcesWidget.domNode
+                        });
+                        this.activeSourcesTooltip.on("hide", lang.hitch(this, function () {
+                            this.activeSourcesTooltipVisible = false;
+                        }));
+                    }
+                },
+                _toggleActiveSourcesTooltip: function () {
+                    if (!this.activeSourcesTooltipVisible) {
+                        this._showActiveSourcesTooltip();
+                    }
+                    else {
+                        this._hideActiveSourcesTooltip();
+                    }
+                },
+                _hideActiveSourcesTooltip: function () {
+                    if (this.activeSourcesTooltipVisible && this.activeSourcesTooltip) {
+                        dijit.popup.close(this.activeSourcesTooltip);
+                        this.activeSourcesTooltipVisible = false;
+                    }
+                },
+                _showActiveSourcesTooltip: function () {
+                    if (!this.activeSourcesTooltipVisible) {
+                        var params = {
+                            popup: this.activeSourcesTooltip,
+                            around: this.activeSourcesTooltipAnchor,
+                            orient: ["above"]
+                        };
+                        dijit.popup.open(params);
+                        this.activeSourcesTooltipVisible = true;
                     }
                 },
                 /**
@@ -608,36 +653,48 @@ define([
                     }
                     this.shoppingCartCheckoutHandler.checkout();
                 },
+
                 toggleResultLayerTransparencyPopup: function () {
                     if (this.layerTransparencyTooltip == null) {
-                        require(["imagediscovery/ui/transparency/SearchLayersTransparencyWidget"],
-                            lang.hitch(this, function (TransparencyWidget) {
-                                var transparencyWidget = new TransparencyWidget();
-                                this.layerTransparencyTooltip = new TooltipDialog({
-                                    content: transparencyWidget.domNode
-                                });
-                            })
-                        );
+                        var transparencyWidget = new SearchLayersTransparencyWidget();
+                        this.layerTransparencyTooltip = new TooltipDialog({
+                            content: transparencyWidget.domNode
+                        });
+                        this.layerTransparencyTooltip.on("hide", lang.hitch(this, function () {
+                            this.layerTransparencyTooltipVisible = false;
+                        }));
                         this.layerTransparencyTooltipVisible = false;
                         topic.subscribe(IMAGERY_GLOBALS.EVENTS.TRANSPARENCY.POPUP.HIDE,
                             dojo.hitch(this, this.hideResultLayerTransparencyPopup));
                     }
-                    var params = {
-                        popup: this.layerTransparencyTooltip //content of popup is the TootipDialog
-                    };
-                    if (this.layerTransparencyTooltipVisible) {
-                        dijit.popup.close(this.layerTransparencyTooltip);
-                        this.layerTransparencyTooltipVisible = false;
-                    }
                     else {
-                        params.around = this.changeResultLayerTransparencyElement;
-                        params.orient = ["above"];
-                        dijit.popup.open(params);
-                        this.layerTransparencyTooltipVisible = true;
+                        this._toggleResultLayerTransparencyPopup();
+                    }
+
+                },
+                /**
+                 * assumes the transparency tooltip already exists
+                 * @private
+                 */
+                _toggleResultLayerTransparencyPopup: function () {
+                    if (this.layerTransparencyTooltip) {
+                        var params = {
+                            popup: this.layerTransparencyTooltip //content of popup is the TootipDialog
+                        };
+                        if (this.layerTransparencyTooltipVisible) {
+                            dijit.popup.close(this.layerTransparencyTooltip);
+                            this.layerTransparencyTooltipVisible = false;
+                        }
+                        else {
+                            params.around = this.changeResultLayerTransparencyElement;
+                            params.orient = ["above"];
+                            dijit.popup.open(params);
+                            this.layerTransparencyTooltipVisible = true;
+                        }
                     }
                 },
                 hideResultLayerTransparencyPopup: function () {
-                    if (this.layerTransparencyTooltipVisible) {
+                    if (this.layerTransparencyTooltipVisible && this.layerTransparencyTooltip) {
                         dijit.popup.close(this.layerTransparencyTooltip);
                         this.layerTransparencyTooltipVisible = false;
                     }

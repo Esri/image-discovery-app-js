@@ -112,6 +112,12 @@
                     "fieldName": "plottingWidget",
                     "tooltip": "Show/Hide the Plot Coordinates Widget",
                     "label": "Plot Coordinates Widget"
+                },
+                {
+                    "type": "boolean",
+                    "fieldName": "pointUploadWidget",
+                    "tooltip": "Show/Hide the CSV Point Upload Widget (HTML5 only)",
+                    "label": "CSV Point Upload Widget"
                 }
             ]
         },
@@ -169,6 +175,7 @@
         "swipeWidget": true,
         "zoomToWidget": false,
         "portalSearchWidget": false,
+        "pointUploadWidget": false,
         "printWidget": true,
         "measureWidget": false,
         "plottingWidget": true,
