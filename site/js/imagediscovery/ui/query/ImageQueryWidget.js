@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageQueryWidgetTemplate.html",
-    "xstyle/css!./theme/ImageQueryWidgetTheme.css",
+ //   "xstyle/css!./theme/ImageQueryWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/array",
     "dojo/on",
@@ -15,7 +15,8 @@ define([
     "./base/AddedFieldValuesTooltip",
     "esriviewer/map/base/LayerQueryParameters"
 ],
-    function (declare, template, theme, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
+ //   function (declare, template, theme, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
+    function (declare, template,  topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {

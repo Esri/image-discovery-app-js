@@ -14,11 +14,6 @@
     height: 95%;
 }
 
-/*
-.imageInfoEntryList div {
-   margin: 5px 0;
-} */
-
 .imageInfoEntryList {
     list-style-type: none;
     margin: 5px 10px;

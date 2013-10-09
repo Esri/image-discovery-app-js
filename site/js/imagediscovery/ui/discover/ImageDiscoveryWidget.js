@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageDiscoveryTemplate.html",
-    "xstyle/css!./theme/ImageDiscoveryTheme.css",
+  //  "xstyle/css!./theme/ImageDiscoveryTheme.css",
     "dojo/topic",
     "dojo/has",
     'dijit/layout/ContentPane',
@@ -26,7 +26,8 @@ define([
     "esri/geometry/Extent",
     "../../base/ImageQueryLayerControllerQueryParameters"
 ],
-    function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+  //  function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    function (declare, template,  topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget, MapDrawSupport],
             {

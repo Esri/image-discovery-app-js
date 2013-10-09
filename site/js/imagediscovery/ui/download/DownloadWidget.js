@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/DownloadWidgetTemplate.html",
-    "xstyle/css!./theme/DownloadWidgetTheme.css",
+//    "xstyle/css!./theme/DownloadWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/_base/json",
@@ -12,7 +12,8 @@ define([
     "../reporting/ReportingWidget",
     "../portal/PortalWebMapReportWidget"
 ],
-    function (declare, template, theme, topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
+  //  function (declare, template, theme, topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
+    function (declare, template,  topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
         return declare(
             [UITemplatedWidget],
             {

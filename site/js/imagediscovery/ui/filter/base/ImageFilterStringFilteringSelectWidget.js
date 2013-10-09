@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageFilterStringFilteringSelectWidgetTemplate.html",
-    "xstyle/css!./theme/ImageFilterStringFilteringSelectTheme.css",
+ //   "xstyle/css!./theme/ImageFilterStringFilteringSelectTheme.css",
     "dojo/_base/lang",
     "dojo/dom-construct",
     "./BaseImageryFilterWidget",
@@ -9,7 +9,8 @@ define([
     "dojo/store/Memory",
     "./model/ImageFilterStringFilteringSelectViewModel"
 ],
-    function (declare, template, cssTheme, lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
+ //   function (declare, template, cssTheme, lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
+    function (declare, template,  lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
         return declare(
             [BaseImageryFilterWidget],
             {

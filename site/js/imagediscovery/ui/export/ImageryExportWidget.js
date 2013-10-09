@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageryExportTemplate.html",
-    "xstyle/css!./theme/ImageryExportTheme.css",
+ //   "xstyle/css!./theme/ImageryExportTheme.css",
     "dojo/topic",
     "dojo/_base/json",
     "dojo/_base/array",
@@ -16,7 +16,8 @@ define([
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol"
 ],
-    function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+  //  function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+    function (declare, template,  topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
         return declare(
             [ UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
             {

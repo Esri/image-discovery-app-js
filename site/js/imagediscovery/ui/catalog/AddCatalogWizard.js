@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/AddCatalogTemplate.html",
-    "xstyle/css!./theme/AddCatalogTheme.css",
+  //  "xstyle/css!./theme/AddCatalogTheme.css",
     "dojo/topic",
     "dojo/query",
     "dojo/NodeList-traverse",
@@ -13,7 +13,8 @@ define([
     "./base/AddedCatalogsLocalStorageMixin",
     "./base/AddedCatalogsListWidget"
 ],
-    function (declare, template, theme, topic, query, nodeTraverse, domConstruct, domAttr, lang, UITemplatedWidget, AddCatalogViewModel, AddedCatalogsLocalStorageMixin, AddedCatalogsList) {
+   // function (declare, template, theme, topic, query, nodeTraverse, domConstruct, domAttr, lang, UITemplatedWidget, AddCatalogViewModel, AddedCatalogsLocalStorageMixin, AddedCatalogsList) {
+    function (declare, template,  topic, query, nodeTraverse, domConstruct, domAttr, lang, UITemplatedWidget, AddCatalogViewModel, AddedCatalogsLocalStorageMixin, AddedCatalogsList) {
         return declare(
             [ UITemplatedWidget, AddedCatalogsLocalStorageMixin],
             {
