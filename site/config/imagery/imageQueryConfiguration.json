@@ -2,13 +2,14 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://imagery.arcgisonline.com/arcgis/rest/services/LandsatGLS/LandsatMaster/ImageServer",
-            "label": "LandsatMaster",
+            "url": "http://idmstage:6080/arcgis/rest/services/Demo/Portland/imageServer",
+            "label": "Portland",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
                 "AcquisitionDate": "AcquisitionAlias",
                 "LowPS": "LowPSAlias"
-            }
+            },
+            "supportsThumbnails": true
         }
     ],
     "imageQueryResultDisplayFields": [
@@ -76,6 +77,16 @@
             }
         }
     ],
+    "popupConfiguration": {
+        "displayFields": [
+            "SensorName",
+            "LowPSAlias",
+            "Name"
+
+
+        ]
+    },
+
     "resultsFormatting": {
         "displayFormats": {
             "date": "dd-MM-yyyy"
@@ -94,8 +105,8 @@
     },
     "searchConfiguration": {
         "maxQueryResults": 200,
-        "allowCheckAllSearchResultThumbnails": true,
-        "footprintZoomLevelStart": 9,
+        "allowCheckAllSearchResultThumbnails": false,
+        "footprintZoomLevelStart": 0,
         "useHeatmap": false
 
     },

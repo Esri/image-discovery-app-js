@@ -3,6 +3,7 @@ define([
     "dojo/Evented",
     "dojo/topic",
     "dojo/_base/connect",
+    "dojo/_base/array",
     "dojo/_base/lang",
     "dojo/_base/Color",
     "esri/symbols/SimpleFillSymbol",
@@ -13,7 +14,7 @@ define([
     "esri/layers/ImageServiceParameters",
     "esri/layers/MosaicRule"
 ],
-    function (declare, Evented, topic, con, lang, Color, SimpleFillSymbol, SimpleLineSymbol, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule) {
+    function (declare, Evented, topic, con, array, lang, Color, SimpleFillSymbol, SimpleLineSymbol, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule) {
         return declare(
             [Evented],
             {
@@ -143,7 +144,10 @@ define([
                     this.currentLockRasterIds = [];
                     var i;
                     for (i = 0; i < entries.length; i++) {
-                        this.currentLockRasterIds.push(entries[i][this.layer.objectIdField]);
+                        var currentObjectId = entries[i][this.layer.objectIdField];
+                        this.currentLockRasterIds.push(currentObjectId);
+                        //this._removeThumbnailByObjectId(currentObjectId);
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR);
                     }
                     this.updateMosaicRule();
                     this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
@@ -229,6 +233,15 @@ define([
                     if (this.hasLockRasters()) {
                         this.layer.show();
                     }
+                },
+                showThumbnail: function (resultEntry) {
+                    var objectId = resultEntry[this.layer.objectIdField];
+                    if (this.serviceConfiguration.supportsThumbnails && array.indexOf(this.currentLockRasterIds, objectId) < 0) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.SHOW, objectId, this.layer.url);
+                    }
+                },
+                supportsThumbnail: function () {
+                    return this.serviceConfiguration.supportsThumbnails != null && this.serviceConfiguration.supportsThumbnails == true;
                 }
             });
     });

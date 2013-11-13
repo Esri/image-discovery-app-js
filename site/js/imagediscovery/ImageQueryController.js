@@ -203,6 +203,7 @@ define([
                  * handles the image service query response
                  */
                 handleQueryResponseComplete: function (queryLayerController, response) {
+
                     if (this.maxQueryResults != null && (this.resultFeaturesCount >= this.maxQueryResults)) {
                         return;
                     }

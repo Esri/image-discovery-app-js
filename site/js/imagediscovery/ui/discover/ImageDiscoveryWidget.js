@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageDiscoveryTemplate.html",
-  //  "xstyle/css!./theme/ImageDiscoveryTheme.css",
+    //  "xstyle/css!./theme/ImageDiscoveryTheme.css",
     "dojo/topic",
     "dojo/has",
     'dijit/layout/ContentPane',
@@ -24,10 +24,11 @@ define([
     "esri/geometry/Point",
     "esri/geometry/Polygon",
     "esri/geometry/Extent",
-    "../../base/ImageQueryLayerControllerQueryParameters"
+    "../../base/ImageQueryLayerControllerQueryParameters",
+    "esri/layers/GraphicsLayer"
 ],
-  //  function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
-    function (declare, template,  topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    //  function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    function (declare, template, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters, GraphicsLayer) {
         return declare(
             [ContentPane, UITemplatedWidget, MapDrawSupport],
             {
@@ -36,10 +37,14 @@ define([
                 templateString: template,
                 constructor: function (params) {
                     lang.mixin(this, params || {});
-                    this.currentAddedGraphics = [];
                 },
                 postCreate: function () {
                     this.inherited(arguments);
+
+                    //create the discovery graphics layer
+                    this.discoveryGraphicsLayer = new GraphicsLayer();
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.discoveryGraphicsLayer);
+
                     this.searchByGeometryGeometryQueryErrorback = lang.hitch(this, this.handleSearchByGeometryGeometryQueryError);
                     this.performSearchCallback = lang.hitch(this, this.performSearch);
                     this.viewModel = new ImageDiscoveryViewModel();
@@ -198,13 +203,7 @@ define([
                  * clears all discovery widget graphics on the map
                  */
                 clearVisibileGraphics: function () {
-                    //clears any graphics on the map created from the discovery widget
-                    if (this.currentAddedGraphics) {
-                        for (var i = 0; i < this.currentAddedGraphics.length; i++) {
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.REMOVE, this.currentAddedGraphics[i]);
-                        }
-                    }
-                    this.currentAddedGraphics = [];
+                    this.discoveryGraphicsLayer.clear();
                 },
                 /**
                  * activates the search by map extent in the discovery widget
@@ -261,7 +260,7 @@ define([
                     //figure out if the search object is already a graphic or if it is a geometry that needs to be turned into a graphic
                     if (searchObject instanceof Graphic) {
                         searchGraphic = searchObject;
-                        this.currentAddedGraphics.push(searchObject);
+                        this.discoveryGraphicsLayer.add(searchGraphic);
                     }
                     else if (searchObject instanceof Geometry) {
                         graphic = null;
@@ -275,9 +274,7 @@ define([
                             graphic = new Graphic(searchObject, this.polygonSymbol);
                         }
                         if (graphic) {
-                            this.currentAddedGraphics.push(graphic);
-                            //add the graphic to the map
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.ADD, graphic);
+                            this.discoveryGraphicsLayer.add(graphic);
                             searchGraphic = graphic;
                         }
                     }
