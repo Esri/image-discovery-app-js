@@ -122,7 +122,9 @@ define([
                 },
 
                 handleLayerClick: function (evt) {
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, evt.graphic.attributes, {x: evt.pageX, y: evt.pageY});
+                    if (this.footprintsLayer && (this.footprintsLayer.opacity == null || this.footprintsLayer.opacity> 0)) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, evt.graphic.attributes, {x: evt.pageX, y: evt.pageY});
+                    }
                 },
                 /**
                  * initializes the symbology for the footprints layer

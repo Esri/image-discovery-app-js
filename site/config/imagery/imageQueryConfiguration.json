@@ -2,7 +2,7 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://idmstage:6080/arcgis/rest/services/Demo/Portland/imageServer",
+            "url": "https://firstlook.digitalglobe.com/arcgis/rest/services/FL/FirstLook_PostEvent_Philippines_Events/ImageServer",
             "label": "Portland",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {

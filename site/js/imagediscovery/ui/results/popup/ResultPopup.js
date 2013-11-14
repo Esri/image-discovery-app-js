@@ -54,6 +54,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
                     //when user removes item from cart from ShoppingCart view
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_TRANSPARENT,hideCurrentPopupScoped);
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, hideCurrentPopupScoped);
