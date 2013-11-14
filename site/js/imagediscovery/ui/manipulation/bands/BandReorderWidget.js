@@ -69,7 +69,7 @@ define([
                                 bandLbl = j + 1;
                             }
                             var bandValue = "" + j;
-                            var bandOption = {label: bandLbl, value: bandValue};
+                            var bandOption = {label: bandLbl + "", value: bandValue};
                             bandSelect.addOption(bandOption);
                             if (j === i) {
                                 bandSelect.set("value", bandValue);

@@ -12,8 +12,8 @@ define([
                 views: {
                     decimalDegree: "decimalDegree",
                     degreeMinuteSeconds: "degreeMinuteSeconds",
-                    utm: "utm",
-                    nsew: "nsew"
+                    utm: "utm"//,
+                 //   nsew: "nsew"
                 },
 
                 constructor: function () {
@@ -27,9 +27,11 @@ define([
                 utmClick: function () {
                     this.setView(this.views.utm);
                 },
+                /*
                 nsewClick: function () {
                     this.setView(this.views.nsew);
                 },
+                */
                 decimalDegreeClick: function () {
                     this.setView(this.views.decimalDegree);
                 },

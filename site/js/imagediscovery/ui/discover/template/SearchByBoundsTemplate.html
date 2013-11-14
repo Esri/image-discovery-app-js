@@ -14,10 +14,12 @@
                data-bind="click:utmClick"
                name="searchByBoundsInputFormat"/>
         <span class="searchByBoundsRadioLbl">UTM</span>
+      <!--
         <input data-dojo-attach-point="searchByBoundsFormatNSEWRadio" data-dojo-type="dijit/form/RadioButton"
                data-bind="click:nsewClick"
                name="searchByBoundsInputFormat"/>
         <span class="searchByBoundsRadioLbl">NSEW</span>
+        -->
     </div>
 
     <div class="searchByBoundsContentsContainer">
@@ -30,7 +32,7 @@
 
         <div data-bind="visible: isCurrentView(views.utm)" data-dojo-attach-point="utmWidgetContainer"></div>
 
-        <div data-bind="visible: isCurrentView(views.nsew)" data-dojo-attach-point="nsewWidgetContainer"></div>
+      <!--  <div data-bind="visible: isCurrentView(views.nsew)" data-dojo-attach-point="nsewWidgetContainer"></div>     -->
 
         <div class="searchByBoundsActionContainer">
              <span data-dojo-type="dijit/form/Button" data-dojo-attach-point="searchByBoundsSubmitButton"

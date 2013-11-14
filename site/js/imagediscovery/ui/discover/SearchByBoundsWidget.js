@@ -9,7 +9,7 @@ define([
     "./base/SearchByDecimalDegreesWidget",
     "./base/SearchByDMSWidget",
     "./base/SearchByUTMWidget",
-    "./base/SearchByNSEWWidget",
+  //  "./base/SearchByNSEWWidget",
     "./model/SearchByBoundsViewModel",
     "dijit/form/RadioButton",
     "dijit/form/Button"
@@ -17,7 +17,7 @@ define([
     /**
      *    this widget is contained in the discovery widget. allows the user to search by coordinates in the discovery widget
      */
-        function (declare, template, topic, lang, domStyle, UITemplatedWidget, MapDrawSupport, SearchByDecimalDegreesWidget, SearchByDMSWidget, SearchByUTMWidget, SearchByNSEWWidget, SearchByBoundsViewModel, RadioButton, Button) {
+        function (declare, template, topic, lang, domStyle, UITemplatedWidget, MapDrawSupport, SearchByDecimalDegreesWidget, SearchByDMSWidget, SearchByUTMWidget,/* SearchByNSEWWidget,*/ SearchByBoundsViewModel, RadioButton, Button) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
@@ -48,9 +48,11 @@ define([
                     else if (view == this.viewModel.views.utm) {
                         this.currentVisibleWidget = this.searchByBoundsUTMWidget;
                     }
+                    /*
                     else if (view == this.viewModel.views.nsew) {
                         this.currentVisibleWidget = this.searchByBoundsNSEWWidget;
                     }
+                    */
                     else {
                         this.currentVisibleWidget = null;
                     }
@@ -78,9 +80,11 @@ define([
                     this.searchByBoundsUTMWidget.placeAt(this.utmWidgetContainer);
 
                     //nsew
+                    /*
                     this.searchByBoundsNSEWWidget = new SearchByNSEWWidget();
                     this.searchByBoundsNSEWWidget.on("valuesChanged", checkValidBoundsCallback);
                     this.searchByBoundsNSEWWidget.placeAt(this.nsewWidgetContainer);
+                    */
                 },
                 /**
                  * sets the search by bounds button to enabled/disabled
@@ -125,9 +129,11 @@ define([
                     else if (this.searchByBoundsFormatUTMRadio.get("checked")) {
                         searchGeometry = this.searchByBoundsUTMWidget.getGeometry();
                     }
+                    /*
                     else if (this.searchByBoundsFormatNSEWRadio.get("checked")) {
                         searchGeometry = this.searchByBoundsNSEWWidget.getGeometry();
                     }
+                    */
                     else {
                         searchGeometry = this.searchByBoundsDecimalDegreeWidget.getGeometry();
                     }
