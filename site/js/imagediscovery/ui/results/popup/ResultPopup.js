@@ -37,7 +37,6 @@ define([
                 },
                 constructor: function () {
                     this.loadViewerConfigurationData();
-                    this.initListeners();
                     this.popupTooltip = new TooltipDialog();
                     //get map reference
                     var map;
@@ -45,9 +44,19 @@ define([
                         map = mapInstance;
                     });
                     this.map = map;
+                    this.initListeners();
+
                 },
                 initListeners: function () {
                     var hideCurrentPopupScoped = lang.hitch(this, this.hidePopup);
+
+                    //listen for user interaction with the map
+                    this.map.on("key-up",hideCurrentPopupScoped);
+                    this.map.on("mouse-drag-start",hideCurrentPopupScoped);
+                    this.map.on("mouse-wheel",hideCurrentPopupScoped);
+                  //  this.map.on("key-up",hideCurrentPopupScoped);
+
+
                     //when user adds item to shopping cart from Results view
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, lang.hitch(this, this.handleAddItemToCart));
                     //when user removes item from cart from Results view
@@ -55,7 +64,7 @@ define([
                     //when user removes item from cart from ShoppingCart view
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_TRANSPARENT,hideCurrentPopupScoped);
-                    topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, hideCurrentPopupScoped);
+                   // topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, lang.hitch(this, this.show));

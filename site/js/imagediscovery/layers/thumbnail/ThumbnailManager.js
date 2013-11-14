@@ -34,11 +34,12 @@ define([
                 },
                 initListeners: function () {
                     var clearGraphicsScoped = lang.hitch(this, this.clearThumbnails);
-                    topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, clearGraphicsScoped);
+                    //    topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, clearGraphicsScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, clearGraphicsScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.SHOW, lang.hitch(this, this.handleShowThumbnail));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR, clearGraphicsScoped);
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.REMOVE, lang.hitch(this, this.removeThumbnail));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.RELOAD, lang.hitch(this, this.updateThumbnails));
+
                 },
                 handleShowThumbnail: function (objectId, layerUrl) {
                     //check cache
@@ -71,8 +72,22 @@ define([
                     this.thumbnailGraphicsLayer.clear();
 
                 },
-                updateThumbnail: function (thumbnailItem) {
-                    if (this.thumbnailGraphicsLayer.graphics != null && this.thumbnailGraphicsLayer.graphics.length > 0) {
+                updateThumbnails: function () {
+                    this.clearThumbnails();
+                    for (var key in this.thumbnailInfoCache) {
+                        var currentLayerItems = this.thumbnailInfoCache[key];
+                        for (var key2 in currentLayerItems) {
+                            var currentThumbnailItem = currentLayerItems[key2];
+                            this.updateThumbnail(currentThumbnailItem, false);
+
+                        }
+                    }
+                },
+                updateThumbnail: function (thumbnailItem, clearGraphics) {
+                    if (clearGraphics == null) {
+                        clearGraphics = true;
+                    }
+                    if (clearGraphics && this.thumbnailGraphicsLayer.graphics != null && this.thumbnailGraphicsLayer.graphics.length > 0) {
                         this.clearThumbnails();
                     }
                     /*
@@ -85,7 +100,6 @@ define([
                     }
                     var centerPoint = thumbnailItem.extent.getCenter();
                     var screenGeom = screenUtils.toScreenGeometry(this.map.extent, this.map.width, this.map.height, thumbnailItem.extent);
-                    //  console.dir(screenGeom);
 
                     var screenWidth = Math.abs(screenGeom.xmax - screenGeom.xmin);
                     var screenHeight = Math.abs(screenGeom.ymax - screenGeom.ymin);

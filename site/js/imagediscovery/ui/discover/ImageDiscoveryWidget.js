@@ -24,11 +24,10 @@ define([
     "esri/geometry/Point",
     "esri/geometry/Polygon",
     "esri/geometry/Extent",
-    "../../base/ImageQueryLayerControllerQueryParameters",
-    "esri/layers/GraphicsLayer"
+    "../../base/ImageQueryLayerControllerQueryParameters"
 ],
     //  function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
-    function (declare, template, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters, GraphicsLayer) {
+    function (declare, template, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget, MapDrawSupport],
             {
@@ -41,9 +40,6 @@ define([
                 postCreate: function () {
                     this.inherited(arguments);
 
-                    //create the discovery graphics layer
-                    this.discoveryGraphicsLayer = new GraphicsLayer();
-                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.discoveryGraphicsLayer);
 
                     this.searchByGeometryGeometryQueryErrorback = lang.hitch(this, this.handleSearchByGeometryGeometryQueryError);
                     this.performSearchCallback = lang.hitch(this, this.performSearch);
@@ -197,13 +193,6 @@ define([
                 },
                 handleResultsCleared: function () {
                     //when results are cleared remove and geometries left over from the initial search
-                    this.clearVisibileGraphics();
-                },
-                /**
-                 * clears all discovery widget graphics on the map
-                 */
-                clearVisibileGraphics: function () {
-                    this.discoveryGraphicsLayer.clear();
                 },
                 /**
                  * activates the search by map extent in the discovery widget
@@ -260,7 +249,6 @@ define([
                     //figure out if the search object is already a graphic or if it is a geometry that needs to be turned into a graphic
                     if (searchObject instanceof Graphic) {
                         searchGraphic = searchObject;
-                        this.discoveryGraphicsLayer.add(searchGraphic);
                     }
                     else if (searchObject instanceof Geometry) {
                         graphic = null;
@@ -274,7 +262,6 @@ define([
                             graphic = new Graphic(searchObject, this.polygonSymbol);
                         }
                         if (graphic) {
-                            this.discoveryGraphicsLayer.add(graphic);
                             searchGraphic = graphic;
                         }
                     }
@@ -356,11 +343,6 @@ define([
                     else {
                         this.performSearch(annoObj.graphic);
                     }
-                },
-                setDraw: function (type) {
-                    //clear the last annotation
-                    this.clearVisibileGraphics();
-                    this.inherited(arguments);
                 },
                 /**
                  * creates the kml/shp/kmz upload widget and places is in the view

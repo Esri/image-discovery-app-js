@@ -50,8 +50,8 @@ define([
                         },
                         THUMBNAIL: {
                             SHOW: "thumbnail:show",
-                            REMOVE: "thumbnail:remove",
-                            CLEAR: "thumbnail:clear"
+                            CLEAR: "thumbnail:clear",
+                            RELOAD: "thumbnail:reload"
                         },
                         SEARCH: {
                             //search image service by geometry
