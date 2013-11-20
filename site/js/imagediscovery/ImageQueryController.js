@@ -118,6 +118,7 @@ define([
                     }
                 },
                 handleSetQueryLayerControllers: function (queryLayerControllers) {
+                    this.queryLayerControllers =  [];
                     if (queryLayerControllers != null && lang.isArray(queryLayerControllers) && queryLayerControllers.length > 0) {
                         this.queryLayerControllers = queryLayerControllers;
                     }

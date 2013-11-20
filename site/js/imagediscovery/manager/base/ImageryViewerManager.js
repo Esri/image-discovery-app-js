@@ -401,7 +401,7 @@ define([
                     this.inherited(arguments);
                     this._loadImageryUIAddons();
                     this._placeImageDiscoveryWidget();
-                    domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
+                   // domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
                 },
                 /**
                  * called after the discovery viewer's UI elements have been created
