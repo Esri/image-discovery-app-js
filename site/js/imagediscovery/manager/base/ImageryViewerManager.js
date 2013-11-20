@@ -154,7 +154,7 @@ define([
                 loadControllers: function () {
                     this.createImageManipulationWidget();
                     //image info widget displays a results thumbnail and attributes
-                   // this.createImageInfoWidget();
+                    // this.createImageInfoWidget();
                     //image discovery widget allows the user to locate and discover imagery
                     this.createImageDiscoveryWidget();
                     //query controller handles all requests to query catalog services.
@@ -180,13 +180,13 @@ define([
                 /**
                  *  creates the image info widget
                  */
-                    /*
-                createImageInfoWidget: function () {
-                    if (this.imageInfoWidget == null) {
-                        this.imageInfoWidget = new ImageInfoWindow();
-                    }
-                },
-                */
+                /*
+                 createImageInfoWidget: function () {
+                 if (this.imageInfoWidget == null) {
+                 this.imageInfoWidget = new ImageInfoWindow();
+                 }
+                 },
+                 */
                 /**
                  * overridden in ImageryViewerManagerWindow
                  */
@@ -401,7 +401,6 @@ define([
                     this.inherited(arguments);
                     this._loadImageryUIAddons();
                     this._placeImageDiscoveryWidget();
-                   // domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
                 },
                 /**
                  * called after the discovery viewer's UI elements have been created
