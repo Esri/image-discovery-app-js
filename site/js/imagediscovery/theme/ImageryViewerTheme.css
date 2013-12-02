@@ -45,3 +45,981 @@ html, body {
     height: 32px;
     width: 32px;
 }
+
+/*imagery sprite */
+.imageryIcons {
+    background: url(./assets/images/imagerySprite.png);
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+.imageryIcons.analysis {
+    background-position: 0 0;
+}
+.imageryIcons.discover {
+    background-position: 0 -18px;
+}
+.imageryIcons.lockRaster{
+    background-position: 0 -39px;
+}
+
+/* end imagery sprite */
+
+/*add catalog */
+.addCatalogModalWindow {
+    z-index: 75;
+    position: absolute;
+    top: 12%;
+    width: 95%;
+    margin-left: 2.5%;
+    font-family: verdana, sans-serif;
+    min-height: 45%;
+}
+
+.catalogFieldsListingList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+}
+
+.addCatalogUrlInputContainer {
+    width: 100%;
+}
+
+.addCatalogUrlInputTextBox {
+    width: 70%;
+}
+
+.catalogFieldsListingList {
+    max-height: 400px;
+    overflow: auto;
+    overflow-x: hidden;
+
+}
+
+.addCatalogFieldEntryAction {
+    margin-left: 15px;
+}
+
+.addCatalogFieldCheckbox {
+    vertical-align: middle;
+}
+
+.catalogFieldNameHeader {
+    font-size: 10pt;
+    color: blue;
+    text-decoration: underline;
+}
+
+.catalogFieldActions {
+    padding: 5px 10px;
+}
+
+.catalogSearchFieldsHeader {
+    border-bottom: 1px dashed;
+    color: #008000;
+    font-size: 13pt;
+    margin: 10px 0;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.addCatalogFieldLabelTextInput {
+    width: 20%;
+}
+
+.addCatalogFieldActionLbl {
+    color: black;
+    font-size: 9pt;
+}
+
+.addCatalogActionButtons {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.addCatalogActionButtons button {
+    margin-right: 10px;
+}
+
+.catalogAddMainHeader {
+    font-size: 11pt;
+    margin-bottom: 10px;
+}
+
+.catalogNameContainer {
+    margin-right: 25px;
+}
+
+.addCatalogFieldEntryAction {
+    vertical-align: middle;
+}
+
+.addCatalogContainer {
+    background: white;
+    padding: 0 2% 2%;
+}
+
+.addCatalogTabContainer {
+    font-size: 12pt;
+    line-height: 29px !important;
+}
+
+.addCatalogUrlLbl {
+    margin-bottom: 5px;
+}
+
+/* end add catalog */
+
+/*discovery */
+.discoveryStepIcon {
+    background: url(./assets/images/discovery/stepArrow.png);
+    height: 22px;
+    width: 22px;
+    vertical-align: bottom;
+    margin-top: 3px;
+    float: right;
+
+}
+
+.discoveryServiceSelect {
+    width: 85%;
+}
+
+.discoveryServiceSelectContainer {
+    width: 45%;
+}
+
+.discoveryLocateContainer {
+    width: 33%;
+
+}
+
+.discoveryToolsContainer {
+    width: 35%;
+
+}
+
+.discoveryIcon {
+    cursor: pointer;
+    background: url(./assets/images/discovery/discoverSprite.png);
+    height: 32px;
+    width: 32px;
+    float: left;
+}
+
+.discoveryIcon.byExtentUnselected {
+    background-position: 0 0;
+}
+
+.discoveryIcon.byExtentSelected {
+    background-position: 0 -96px;
+}
+
+.discoveryIcon.byBoundsUnselected {
+    background-position: 0 -32px;
+}
+
+.discoveryIcon.byBoundsSelected {
+    background-position: 0 -128px;
+}
+
+.discoveryIcon.byUploadUnselected {
+    background-position: 0 -64px;
+}
+
+.discoveryIcon.byUploadSelected {
+    background-position: 0 -160px;
+}
+
+.discoveryIcon.byPointUnselected {
+    background-position: 0 -193px;
+}
+
+.discoveryIcon.byPointSelected {
+    background-position: 0 -224px;
+}
+
+.discoveryIcon.byRectangleUnselected {
+    background-position: 0 -257px;
+}
+
+.discoveryIcon.byRectangleSelected {
+    background-position: 0 -290px;
+}
+
+.imageDiscoverySelectActions div {
+    margin: 0 10px;
+}
+
+.imageDiscoverySelectActions {
+    margin-left: 5%;
+    height: 32px;
+}
+
+.imageDiscoveryContainer {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    height: auto !important;
+}
+
+.searchByBoundsHeaderLbl, .pointBufferHeaderLbl {
+    text-align: left;
+    margin: 5px 0 3px 10px;
+    font-size: 9pt;
+}
+
+.pointBufferHeaderLbl {
+    color: blue;
+
+}
+
+.searchByBoundsInputLbl {
+    font-size: 9pt;
+    margin-left: 7px;
+    margin-right: 2px;
+}
+
+.searchByBoundsInputDMSLbl {
+    font-size: 9pt;
+}
+
+.searchByBoundsActionContainer {
+    float: right;
+    margin-right: 5%;
+    margin-top: 10px;
+}
+
+.discoveryServiceSelectOuterContainer {
+    margin-bottom: 15px;
+}
+
+.discoveryStepContainer {
+    margin: 10px 0 10px 0;
+    font-size: 10pt;
+}
+
+.imageDiscoveryActionContent {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.nsewWidgetInputContainer {
+    margin: 10px 0;
+}
+
+.searchByBoundsDescriptionLbl {
+    font-size: 9pt;
+    text-align: left;
+    margin-left: 10%;
+}
+
+.searchByUTMEntry {
+    margin: 5px 0 5px 20%;
+    text-align: left;
+}
+
+.searchByBoundsInputUTMLbl {
+    float: left;
+    width: 80px;
+    font-size: 9pt;
+}
+
+.searchByBoundsRadioLbl {
+    vertical-align: middle;
+}
+
+.searchByBoundsContentsContainer {
+    margin-top: 10px;
+}
+
+.discoveryDescriptionStepText {
+    color: blue;
+    font-size: 8pt;
+    text-align: left;
+    margin-bottom: 13px;
+    margin-left: 5px;
+    font-family: tahoma, sans-serif;
+}
+
+.searchByPointUnitsSelect {
+    margin: 10px 0;
+}
+
+.searchByPointDistanceContainer {
+    margin-top: 10px;
+}
+
+.discoveryPointAdvancedToggleContainer {
+    height: 20px;
+    cursor: pointer;
+}
+
+
+/* end discovery */
+
+/* download widget */
+.checkoutActionsContainer {
+    height: 100%;
+    position: relative;
+
+}
+
+.exportImageActionContainer, .reportWidgetActionsContainer, .resultsCartDownloadActionsContainer {
+    text-align: right;
+    margin-right: 15px;
+}
+
+.imageResultsExportContent {
+    margin: 10% 0 0 15%;
+}
+.downloadWindowContent{
+    padding-top: 0 !important;
+}
+
+/* end download widget */
+
+/*imagery export */
+.exportImageEntry {
+    margin: 5px 0;
+}
+
+.imageExportUserDrawRectangleButton {
+    vertical-align: middle;
+    float: right;
+    margin-right: 10%;
+}
+
+.imageryDownloadUserDrawIconContainer {
+    height: 32px;
+    width: 32px;
+    float: right;
+    margin-right: 10px;
+    margin-top: -5px;
+}
+
+.imageryDownloadLinkList {
+    list-style-type: none;
+    margin: 5px 0 0;
+    padding: 0;
+}
+
+.imageryDownloadLinkList li {
+    padding: 3px;
+}
+
+.imageryDownloadListContainer {
+    overflow: auto;
+    height: 300px;
+}
+
+.exportDownloadListSizeValue {
+    font-size: 8pt;
+    color: black;
+    margin-left: 3px;
+}
+
+.downloadServiceEntry {
+    margin: 5px 3px;
+
+}
+
+.imageryDownloadAllInFlightContainer, .imageryDownloadAllContainer, .imageryDownloadAllLink {
+    height: 35px;
+}
+
+.imageryDownloadAllContainer, .imageryDownloadAllLink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.imageryDownloadAllInFlightText {
+    margin-left: 5px;
+    line-height: 30px;
+    color: blue;
+    position: absolute;
+    left: 55px;
+}
+
+
+/* end imagery export */
+
+/*filter theme */
+.imageFilterCheckboxContainer {
+    text-align: center;
+}
+
+.filterCheckLbl {
+    margin-right: 5px;
+}
+
+.imageFilterSlideRuleContainer {
+    color: black;
+    font-size: 9pt;
+}
+
+.imageFilterDateRangeResetIcon {
+    margin-right: 5px;
+    float: left;
+    cursor: pointer;
+}
+
+.imageFilterDateInputLbl {
+    margin-left: 22px;
+}
+
+.imageFilterSlideRuleContainer .dijitRuleLabel {
+    font-weight: normal;
+    font-size: 9pt;
+}
+
+.imageFilterStringListEntryContainer .imageFilterStringListLbl {
+    cursor: pointer;
+}
+
+.imageFilterStringListEntryContainer .imageFilterStringListLblSelected {
+    color: blue;
+}
+
+.imageFilterStringListEntryContainer .imageFilterStringListLblUnselected {
+    text-decoration: line-through;
+}
+
+.imageFilterStringListContainer {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-left: 2.5%;
+    font-size: 9pt;
+}
+
+.imageFilterWidgetContentEntry {
+    margin: 10px 0 0;
+    padding-bottom: 5px;
+}
+
+.imageryFilterSliderContainer, .imageFilterSlideRuleContainer {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.imageFilterDateRangeWidgetContents {
+    height: 50px;
+}
+
+.imageFilterDateSelectContent {
+    float: left;
+    width: 48%;
+}
+
+.imageryFilterSliderWidget {
+    width: 200px;
+}
+
+.imageryFilterSliderValueContainer {
+    margin-top: 5px;
+}
+
+.imageryFilterSliderValueUnitsContainer {
+    margin-left: 2px;
+}
+
+
+.imageFilterSliderWidgetDirectionRadios {
+    margin-bottom: 7px;
+}
+
+.imageFilterStringListHideAll {
+    text-align: right;
+    color: #878787;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+/* end filter theme */
+
+/*filter number range */
+.imageFilterNumberRangeDisplay {
+    margin-bottom: 10px;
+    color: brown;
+}
+
+.imageFilterNumberModesLbl {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.imageFilterNumberModesLblSelected {
+    text-decoration: underline;
+    color: blue;
+}
+
+.imageFilterDualNumberInput {
+    width: 70px;
+}
+
+.imageFilterNumberRangeWidgetContents {
+    font-size: 9pt;
+}
+
+.imageFilterModesContainer {
+    margin-bottom: 10px;
+    color: gray;
+
+}
+
+.imageFilterNumberRangeInfoContainer {
+    /*margin: 0 0 5px;*/
+    color: gray;
+    font-size: 9pt;
+}
+.imageFilterNumberRangeInfoContainer div{
+    margin: 0 0 3px;
+}
+.imageFilterNumberRangeInfoLbl{
+    color: #60606B;
+}
+
+
+.applyNumberFilterIcon {
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+.numberFilterInputContents{
+    margin-left: 25px;
+}
+
+.imageFilterNumberModeContentContainer {
+    position: relative;
+}
+
+/* end filter number range */
+
+/*string filter */
+.imageStringFilterAddedEntriesList {
+    color: #0000FF;
+    list-style-type: none;
+    margin: 5px 0 0;
+    padding: 0;
+    height: 100px;
+    max-height: 100px;
+    overflow: auto;
+}
+
+.imageFilterStringListAddIcon {
+    float: right;
+    margin-left: 7px;
+    margin-top: 1px;
+}
+.stringFilteringSelectContainer, .stringFilterRemoveIncludeIcon {
+    float: left;
+}
+
+.stringFilterSelectAndAddContainer {
+    height: 30px;
+}
+
+.stringFilterIncludeLblWrapper {
+    height: 15px;
+}
+
+.stringFilterSelectAndAddLbl {
+    color: #808080;
+    margin: 5px 0;
+}
+
+.stringFilterModeRadios {
+    font-size: 9pt;
+    text-align: center;
+}
+
+/* end string filter */
+
+/* image info */
+.imageInfoContainer {
+    margin-top: 10px;
+    height: 95%;
+    overflow: auto;
+    background: white;
+}
+
+.imageInfoThumbnail {
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.imageryInfoWidget {
+    height: 95%;
+}
+
+.imageInfoEntryList {
+    list-style-type: none;
+    margin: 5px 10px;
+    padding: 0;
+}
+
+.imageInfoItem {
+    margin: 10px 0;
+    padding: 10px;
+    width: 90%;
+}
+
+.imageInfoItemHeader {
+    border-bottom: 1px solid #666666;
+    padding-left: 3px;
+    margin-left: -5px;
+    color: #666666;
+    margin-bottom: 5px;
+}
+
+.imageInfoItemContent {
+    list-style-type: none;
+    padding: 0;
+}
+
+.imageInfoAttributeEntryLbl {
+    color: black;
+}
+
+.imageInfoAttributeEntryValue {
+    color: blue;
+}
+
+.imageInfoAttributeEntryValue .emptyImageInfoValueEntry {
+    color: gray;
+}
+
+.imageInfoActionsContainer {
+    height: 20px;
+}
+.imageInfoActionsContainer div{
+    margin: 0 5px;
+}
+.imageInfoActionsContainerHeader {
+    float: left;
+    border: 1px solid #DFDFDF;
+    border-top: 0 none;
+    height: 35px;
+    margin-right: 15px;
+    line-height: 30px;
+    padding: 0 5px;
+    cursor: pointer;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+}
+
+.imageInfoWindow {
+    z-index: 150;
+}
+
+.imageInfoContent {
+    padding-top: 0 !important;
+    font-size: 8pt;
+}
+
+.showImageHeaderIcon {
+    background: url(./assets/images/info/thumbnail.png);
+    height: 18px;
+    width: 18px;
+    float: right;
+    cursor: pointer;
+}
+
+.shoppingCartHeaderIcon {
+    float: right;
+}
+
+.centerAndFlashFootprintHeaderIcon {
+    float: right;
+    margin-right: 2px;
+}
+
+/* end image info */
+
+/*band reorder */
+
+
+.bandReorderBandIndexLbl{
+    margin-right: 5px;
+}
+.bandReorderEntry{
+    margin: 10px 0;
+}
+.bandReorderActionsContainer{
+    margin-top: 10px;
+}
+
+/* end band reorder */
+
+/*raster function */
+.rasterFunctionActiveFunctionContent {
+    font-size: 8pt;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.rasterFunctionConfEntry {
+    margin: 2px 0 7px;
+    text-align: right;;
+}
+
+.rasterFunctionFunctionEntry {
+    margin-bottom: 5px;
+}
+
+.rasterFunctionTextBoxEntry {
+    margin: 10px 0;
+}
+
+.rasterFunctionTextBoxEntry .rasterFunctionTextBoxLabelEntry {
+    width: 6em;
+    float: left;
+    margin-right: 10px;
+}
+
+.rasterFunctionWidgetEntryContainer {
+    margin-top: 20px;
+
+}
+
+.applyFunction {
+    margin-bottom: 20px;
+}
+
+.applyRasterFunctionButtonContainer {
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+/* end raster function */
+
+/*manipulation */
+.imageManipulationTabContainer {
+    margin-bottom: 20px;
+    line-height: 26px;
+    font-weight: normal;
+}
+
+.imageManipulationTabContainer span {
+    border: 1px solid #DFDFDF;
+    border-top: 0;
+    cursor: pointer;
+    padding: 5px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    -webkit-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+
+.imageManipulationWidgetEntryContainer {
+    margin: auto;
+    text-align: center;
+    height: 100%;
+}
+
+.imageManipSliderLbl {
+    margin-bottom: 5px;
+    text-align: left;
+
+}
+
+.clearAllImageManipulationValues {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    color: gray;
+    text-decoration: underline;
+
+}
+.imageManipulationActionsContainer span {
+}
+
+.imageManipulationMensurationContainer {
+    margin-left: 15px;
+}
+
+.imageManipulationSelectSensorHeader {
+    margin: 15px 0;
+}
+
+.imageManipulationSelectContainer {
+    margin-bottom: 15px;
+}
+
+.imageManipulationTagAndSensorSelectContainer {
+    margin-top: 10px;
+}
+
+.imageManipulationContainer {
+    height: auto !important;
+    padding-top: 0;
+}
+
+.imageManipulationDisabledContainer {
+    padding: 20px 10px;
+}
+.imageManipulationWindowContent{
+    padding-top: 0 !important;
+}
+
+
+/* end manipulation */
+
+/* mensuration */
+.mensurationToolSelectContainer, .mensurationActionsContainer {
+    margin: 10px 0;
+}
+
+.mensurationCalculationValueContainer {
+    font-size: 11pt;
+    margin: 5px 0 5px 5px;
+    height: 26px;
+
+}
+
+.mensurationErrorInCalculationContainer {
+    margin-bottom: 10px;
+}
+
+
+/*end mensuration */
+
+/*prefilter */
+.prefilterContainer{
+    text-align: left;
+}
+
+/* end prefilter */
+
+
+/*query widget */
+.imageQueryFieldEntryLabel {
+    margin-left: 3px;
+    text-align: left;
+    margin-bottom: 3px;
+}
+
+.imageQueryFieldEntryContainer {
+    margin: 5px 7px;
+    height: 35px;
+}
+
+.imageDiscoveryExpanderIcon {
+    float: left;
+}
+
+.imageDiscoveryExpanderLabel {
+    float: left;
+    margin-left: 1px;
+    font-size: 9pt;
+    color: black;
+}
+
+.imageDiscoveryByQueryExpanderContainer {
+    height: 22px;
+    cursor: pointer;
+}
+
+.imageDiscoveryByQueryContainer {
+    margin-bottom: 5px;
+}
+
+.imageDiscoveryQueryAddFieldValueIcon {
+    float: left;
+    margin-right: 5px;
+}
+
+.imageDiscoveryQueryShowAddedValuesIcon {
+    float: left;
+    margin-left: 5px;
+}
+
+.addedDiscoveryFieldValuesList {
+    list-style-type: none;
+    margin: 5px 0;
+    padding: 0;
+}
+.addedDiscoveryFieldValueEntryRemoveIcon{
+    float:left;
+    margin-right: 3px;
+    margin-top: 2px;
+}
+.addedDiscoveryFieldValuesList li{
+    height: 20px;
+}
+.addedDiscoveryFieldValueEntryLabel{
+    font-size: 8pt;
+    color: blue;
+}
+
+/* end query widget */
+
+/*reporting */
+.reportingUserDrawIconContainer {
+    height: 32px;
+    width: 32px;
+    float: right;
+    margin-top: -5px;
+}
+/* end reporting */
+
+/*swipe widget */
+.swipeSlider {
+    position: absolute;
+    border-left: 1px solid #848484;
+    border-right: 1px solid #848484;
+    background-color: #dadada;
+    width: 6px;
+    height: 100%;
+    padding: 0 !important;
+    margin: 0;
+    cursor: col-resize;
+}
+/* end swipe widget */
+
+/*transparency widget */
+
+.searchTransparencySliderLayerName {
+    padding-bottom: 10px;
+}
+.searchLayerTransparencyContent {
+    width: 300px;
+    font-size: 9pt;
+    color: gray;
+}
+
+.transparencyWidgetPopupCloseIcon {
+    float: right;
+}
+
+.layerTransparencySliderEntry {
+    height: 40px;
+    margin: 10px 0;
+    padding: 5px;
+}
+
+/* end transparency widget */
+
+/*discovery upload */
+.uploadGeometryFileFormContainer {
+    margin-bottom: 10px;
+}
+
+.uploadGeometryActionsContainer {
+    text-align: right;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.uploadGeometryFileHeaderLabel {
+    text-align: left;
+    margin: 15px 5px;
+}
+
+
+/* end discovery upload */

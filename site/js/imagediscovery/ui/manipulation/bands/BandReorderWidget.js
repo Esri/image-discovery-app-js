@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/BandReorderTemplate.html",
-    "xstyle/css!./theme/BandReorderTheme.css",
+  //  "xstyle/css!./theme/BandReorderTheme.css",
     "dojo/topic",
     "dojo/_base/array",
     "dojo/_base/lang",
@@ -10,7 +10,8 @@ define([
     "dijit/form/Select",
     "dijit/form/Button"
 ],
-    function (declare, template, theme, topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
+//    function (declare, template, theme, topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
+    function (declare, template,  topic, array, lang, domConstruct, ImageManipulationWidgetBase, Select, Button) {
         return declare(
             [ImageManipulationWidgetBase],
             {
@@ -68,7 +69,7 @@ define([
                                 bandLbl = j + 1;
                             }
                             var bandValue = "" + j;
-                            var bandOption = {label: bandLbl, value: bandValue};
+                            var bandOption = {label: bandLbl + "", value: bandValue};
                             bandSelect.addOption(bandOption);
                             if (j === i) {
                                 bandSelect.set("value", bandValue);

@@ -47,6 +47,17 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
+
+                    //check to see if we display the source column
+                    var singleSourceMode = true;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (queryLayerControllers) {
+                        if (queryLayerControllers != null && queryLayerControllers.length > 1) {
+                            singleSourceMode = false;
+                        }
+                    });
+                    if(singleSourceMode){
+                        this.addSourceColumn = false;
+                    }
                     this.createGrid();
                 },
                 /**

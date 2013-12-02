@@ -7,7 +7,7 @@
 define([
     "dojo/_base/declare",
     "xstyle/css!../theme/ImageryViewerTheme.css",
-    "xstyle/css!../ui/base/theme/imagerySpriteTheme.css",
+    //"xstyle/css!../ui/base/theme/imagerySpriteTheme.css",
     "dojo/has",
     "dojo/topic",
     "esriviewer/loader/ViewerLoader",
@@ -18,7 +18,8 @@ define([
     "../manager/ImageryViewerManagerWindow",
     "xstyle/css"
 ],
-    function (declare, cssTheme, spriteTheme, has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
+   // function (declare, cssTheme, spriteTheme, has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
+        function (declare, cssTheme,  has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
         return declare(
             [ViewerLoader],
             {

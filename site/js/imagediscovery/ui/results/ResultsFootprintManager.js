@@ -9,14 +9,16 @@ define([
     "esri/symbols/SimpleLineSymbol",
     "esri/symbols/PictureMarkerSymbol",
     "esri/graphic",
-    "dojo/_base/connect"
+    "dojo/_base/connect",
+    "../results/popup/ResultPopup"
 ],
-    function (declare, topic, Evented, Color, lang, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, PictureMarkerSymbol, Graphic, con) {
+    function (declare, topic, Evented, Color, lang, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, PictureMarkerSymbol, Graphic, con, ResultPopup) {
         return declare(
             [Evented],
             {
                 constructor: function () {
                     this.getVisibleFootprintsHandler = lang.hitch(this, this._getVisibleFootprintsHandler);
+
                     this.initSymbology();
                     this.initListeners();
 
@@ -27,6 +29,7 @@ define([
                     this.highlightedFootprintsCache = {};
                 },
                 initListeners: function () {
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.moveLayerToTop));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.clearResults));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleFilterApplied));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, this.handleFootprintsLayerVisible));
@@ -35,6 +38,11 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, lang.hitch(this, this.highlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, lang.hitch(this, this.unhighlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, lang.hitch(this, this.centerAndFlashFootprint));
+                },
+                moveLayerToTop: function () {
+                    if (this.footprintsLayer) {
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MOVE_LAYER_TO_TOP, this.footprintsLayer);
+                    }
                 },
                 loadViewerConfigurationData: function () {
                     var searchConfiguration = null;
@@ -106,8 +114,17 @@ define([
                  */
                 createFootprintsLayer: function () {
                     this.footprintsLayer = new GraphicsLayer({displayOnPan: false});
+                    this.footprintsLayer.on("click", lang.hitch(this, this.handleLayerClick));
+                    // this.footprintsLayer.on("click",lang.hitch(this,this.handleLayerClick));
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.footprintsLayer);
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MOVE_LAYER_TO_TOP, this.footprintsLayer);
                     this.emit("footprintsLayerCreated");
+                },
+
+                handleLayerClick: function (evt) {
+                    if (this.footprintsLayer && (this.footprintsLayer.opacity == null || this.footprintsLayer.opacity> 0)) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, evt.graphic.attributes, {x: evt.pageX, y: evt.pageY});
+                    }
                 },
                 /**
                  * initializes the symbology for the footprints layer
@@ -115,7 +132,7 @@ define([
                 initSymbology: function () {
                     this.footprintPolygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                            new Color([255, 0, 0]), 1), new Color([255, 0, 0, 0]));
+                            new Color([255, 0, 0]), 1), new Color([255, 255, 0, 0]));
 
                     this.highlightedFootprintPolygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
@@ -139,6 +156,7 @@ define([
                             currentGeometry = currentFeature.geometry;
 
                             var graphic = new Graphic(currentGeometry, this.footprintPolygonSymbol);
+                            graphic.attributes = currentFeature.attributes;
                             this.footprintsLayer.add(graphic);
 
                             //add footprint to cache
@@ -164,7 +182,7 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, this.getVisibleFootprintsHandler);
                 },
                 /**
-                 * i don't know what this does
+                 * called when the shopping cart toggles back to the footprints result view
                  */
                 _getVisibleFootprintsHandler: function (footprintFeatures) {
                     var currentGeometry;
@@ -173,6 +191,7 @@ define([
                         currentFeature = footprintFeatures[i];
                         currentGeometry = currentFeature.geometry;
                         var graphic = new Graphic(currentGeometry, this.footprintPolygonSymbol);
+                        graphic.attributes = currentFeature;
                         this.footprintsLayer.add(graphic);
 
                         //add footprint to cache

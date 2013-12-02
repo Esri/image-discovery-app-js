@@ -1,0 +1,2 @@
+//>>built
+define("esriviewer/map/base/DistinctQuery",["dojo/_base/declare","esri/tasks/query"],function(_1,_2){return _1([_2],{toJson:function(){var _3=this.inherited(arguments);_3.returnDistinctValues=true;return _3;}});});

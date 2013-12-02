@@ -35,8 +35,10 @@ define([
                     this.applyBindings();
                     if (this.getInitialTimeSliderValues()) {
                         this.createTimeSlider();
+
                     }
                 },
+
                 applyResultsLock: function () {
                     if (!this.resultsLockApplied) {
                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADD_USER_LOCK, this);
@@ -63,6 +65,60 @@ define([
                             }
                         }
                     }
+                },
+                onTimeExtentChange: function (timeExtent) {
+                    if (timeExtent == null) {
+                        return;
+                    }
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.TIME.MAP_TIME_CHANGED, timeExtent);
+
+                    var startMonth = (timeExtent.startTime.getUTCMonth() + 1);
+                    var startDay = timeExtent.startTime.getUTCDate();
+                    var startYear = timeExtent.startTime.getFullYear();
+                    var startHours = timeExtent.startTime.getUTCHours();
+                    var startMinutes = timeExtent.startTime.getUTCMinutes();
+                    var startSeconds = timeExtent.startTime.getUTCSeconds();
+
+                    if (startMonth < 10) startMonth = "0" + startMonth;
+                    if (startDay < 10) startDay = "0" + startDay;
+                    if (startHours < 10) startHours = "0" + startHours;
+                    if (startMinutes < 10) startMinutes = "0" + startMinutes;
+                    if (startSeconds < 10) startSeconds = "0" + startSeconds;
+
+                    var startTime;
+                    if (this.viewModel.dayOnlyMode()) {
+                        startTime = startDay + "-" + startMonth + "-" + startYear;
+                    }
+                    else {
+                        startTime = startDay + "-" + startMonth + "-" + startYear + " " + startHours + ":" + startMinutes + ":" + startSeconds;
+
+                    }
+
+
+                    var endMonth = (timeExtent.endTime.getUTCMonth() + 1);
+                    var endDay = timeExtent.endTime.getUTCDate();
+                    var endYear = timeExtent.endTime.getFullYear();
+                    var endHours = timeExtent.endTime.getUTCHours();
+                    var endMinutes = timeExtent.endTime.getUTCMinutes();
+                    var endSeconds = timeExtent.endTime.getUTCSeconds();
+
+                    if (endMonth < 10) endMonth = "0" + endMonth;
+                    if (endDay < 10) endDay = "0" + endDay;
+                    if (endHours < 10) endHours = "0" + endHours;
+                    if (endMinutes < 10) endMinutes = "0" + endMinutes;
+                    if (endSeconds < 10) endSeconds = "0" + endSeconds;
+
+                    var endTime;
+                    if (this.viewModel.dayOnlyMode()) {
+                        endTime = endDay + "-" + endMonth + "-" + endYear;
+                    }
+                    else {
+                        endTime = endDay + "-" + endMonth + "-" + endYear + " " + endHours + ":" + endMinutes + ":" + endSeconds;
+
+                    }
+
+                    this.viewModel.currentTimeStartValue(startTime);
+                    this.viewModel.currentTimeEndValue(endTime);
                 },
                 createTimeSlider: function () {
                     var interval = this.viewModel.selectedInterval();
@@ -96,7 +152,7 @@ define([
                     this.currentTimeSlider._createHorizRule = function () {
                         return;
                     };
-                    this.currentTimeSlider.on("timeExtentChange", lang.hitch(this, this.onTimeExtentChange));
+                    this.currentTimeSlider.on("time-extent-change", lang.hitch(this, this.onTimeExtentChange));
                     domStyle.set(this.currentTimeSlider.domNode, "color", "white");
                     var useRangeSlider = this.viewModel.useRangeSlider();
                     this.currentTimeSlider.setThumbCount(useRangeSlider ? 2 : 1);
@@ -150,14 +206,17 @@ define([
                     var currentLayer;
                     var allStartTimes = [];
                     var allEndTimes = [];
+                    var currentQueryLayerController;
                     for (var i = 0; i < queryLayerControllers.length; i++) {
-                        currentLayer = queryLayerControllers[i].layer;
+                        currentQueryLayerController = queryLayerControllers[i];
+                        currentLayer = currentQueryLayerController.layer;
                         if (currentLayer.timeInfo == null || currentLayer.timeInfo.startTimeField == null || currentLayer.timeInfo.endTimeField == null) {
                             continue;
                         }
-                        this.queryControllerIdToTimeInfo[queryLayerControllers[i].id] = currentLayer.timeInfo;
-                        var startTimeField = currentLayer.timeInfo.startTimeField;
-                        var endTimeField = currentLayer.timeInfo.endTimeField;
+                        this.queryControllerIdToTimeInfo[currentQueryLayerController.id] = currentLayer.timeInfo;
+                        var fieldMapping = (currentQueryLayerController.serviceConfiguration && currentQueryLayerController.serviceConfiguration.fieldMapping) ? currentQueryLayerController.serviceConfiguration.fieldMapping : {};
+                        var startTimeField = fieldMapping[currentLayer.timeInfo.startTimeField] != null ? fieldMapping[currentLayer.timeInfo.startTimeField] : currentLayer.timeInfo.stendTimeFieldartTimeField;
+                        var endTimeField = fieldMapping[currentLayer.timeInfo.endTimeField] != null ? fieldMapping[currentLayer.timeInfo.endTimeField] : currentLayer.timeInfo.startTimeField;
                         var uniqueValuesParameters = [startTimeField];
                         if (startTimeField != endTimeField) {
                             uniqueValuesParameters.push(endTimeField);

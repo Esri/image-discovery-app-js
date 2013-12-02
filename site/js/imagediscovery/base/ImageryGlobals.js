@@ -17,6 +17,8 @@ define([
                             GET: "querylayerControllers:get"
                         },
                         RESULT: {
+                            SHOW_POPUP: "imgQuery:showPopup",
+                            SHOW_POPUP_FROM_MAP_COORDINATES: "imgQuery:showPopupFromMapCoordinates",
                             //fired when results from an image query has returned
                             ADD: "imgQuery:add",
                             //clears the current image service results
@@ -45,6 +47,11 @@ define([
                             RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated",
                             GET_VISIBLE_FOOTPRINT_GEOMETRIES: "imgQuery:getVsFtPtGeoms",
                             GET_VISIBLE_FOOTPRINT_FEATURES: "imgQuery:getVsFtPtFeatures"
+                        },
+                        THUMBNAIL: {
+                            SHOW: "thumbnail:show",
+                            CLEAR: "thumbnail:clear",
+                            RELOAD: "thumbnail:reload"
                         },
                         SEARCH: {
                             //search image service by geometry
@@ -108,7 +115,7 @@ define([
                         SET_FOOTPRINTS_LAYER_TRANSPARENT: "lys:ftPrintsLyrTrans",
                         SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq",
                         HIGHLIGHT_FOOTPRINT: "lyr:highlightFtPrint",
-                        UNHIGHLIGHT_FOOTPRINT:"lyr:unhighlightFtPrint",
+                        UNHIGHLIGHT_FOOTPRINT: "lyr:unhighlightFtPrint",
                         CENTER_AND_FLASH_FOOTPRINT: "lyr:centerAndFlashFtPrint"
                     },
                     LOCK_RASTER: {
@@ -121,6 +128,7 @@ define([
                         //   CART_SOURCE_LOCKED:  "lRaster:cartSrcLocked"
                     },
                     IMAGE: {
+                        //***deprecated do not use*****/
                         INFO: {
                             //shows the image info window
                             SHOW: "imgInfo:show",
@@ -131,7 +139,7 @@ define([
                             TOGGLE_SHOW_IMAGE: "imgInfo:showImage",
                             //add/remove item from shopping cart
                             TOGGLE_ADD_IMAGE_TO_SHOPPING_CART: "imgInfo:toggleAddImageToShoppingCart",
-
+                            //deprecated
                             SET_CONTENT_AND_SHOW: "imgInfo:setContentAndShow"
                         }
                     },
@@ -200,8 +208,8 @@ define([
                         }
                     }
                 },
-                STORAGE:{
-                    LABELS:{
+                STORAGE: {
+                    LABELS: {
                         CATALOGS: "localStorageCatalogs"
                     }
                 }

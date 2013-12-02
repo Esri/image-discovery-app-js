@@ -8,7 +8,7 @@ define([
     "dojo/_base/lang",
     "dojo/_base/json",
     "dojo/_base/Color",
-    "xstyle/css!./theme/ReportingTheme.css",
+  //  "xstyle/css!./theme/ReportingTheme.css",
     "dojo/text!./template/ReportingTemplate.html",
     "esriviewer/ui/base/UITemplatedWidget",
     "esriviewer/ui/draw/base/MapDrawSupport",
@@ -20,7 +20,8 @@ define([
     "esri/tasks/query",
     "esri/layers/ImageServiceParameters"
 ],
-    function (declare, locale, topic, array, lang, json, Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
+ //   function (declare, locale, topic, array, lang, json, Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
+    function (declare, locale, topic, array, lang, json, Color,  template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {

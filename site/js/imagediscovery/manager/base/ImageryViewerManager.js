@@ -15,12 +15,14 @@ define([
     "../../ui/discover/ImageDiscoveryWidget",
     "../../ImageQueryController",
     "../../ImageQueryLayerController",
-    "../../ui/info/ImageInfoWindow",
+    //"../../ui/info/ImageInfoWindow",
     "esri/layers/ArcGISImageServiceLayer",
     "./ImageryWebMapTemplateConfigurationUtil",
-    "dijit/form/ToggleButton"
+    "dijit/form/ToggleButton",
+    "../../layers/thumbnail/ThumbnailManager",
+    "../../ui/results/popup/ResultPopup"
 ],
-    function (declare, has, domStyle, topic, on, window, con, lang, domConstruct, domClass, ActionsToolbarWidget, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ImageInfoWindow, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton) {
+    function (declare, has, domStyle, topic, on, window, con, lang, domConstruct, domClass, ActionsToolbarWidget, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup) {
         return declare(
             [ViewerManager],
             {
@@ -152,7 +154,7 @@ define([
                 loadControllers: function () {
                     this.createImageManipulationWidget();
                     //image info widget displays a results thumbnail and attributes
-                    this.createImageInfoWidget();
+                    // this.createImageInfoWidget();
                     //image discovery widget allows the user to locate and discover imagery
                     this.createImageDiscoveryWidget();
                     //query controller handles all requests to query catalog services.
@@ -178,11 +180,13 @@ define([
                 /**
                  *  creates the image info widget
                  */
-                createImageInfoWidget: function () {
-                    if (this.imageInfoWidget == null) {
-                        this.imageInfoWidget = new ImageInfoWindow();
-                    }
-                },
+                /*
+                 createImageInfoWidget: function () {
+                 if (this.imageInfoWidget == null) {
+                 this.imageInfoWidget = new ImageInfoWindow();
+                 }
+                 },
+                 */
                 /**
                  * overridden in ImageryViewerManagerWindow
                  */
@@ -213,6 +217,9 @@ define([
                         }
                     }
                     map.resize();
+                    new ThumbnailManager();
+                    new ResultPopup();
+
                 },
                 /**
                  * called when a catalog service failed to load
@@ -394,7 +401,6 @@ define([
                     this.inherited(arguments);
                     this._loadImageryUIAddons();
                     this._placeImageDiscoveryWidget();
-                    domStyle.set(this.mainToolbar.locateToolbarContainer, "display", "block");
                 },
                 /**
                  * called after the discovery viewer's UI elements have been created

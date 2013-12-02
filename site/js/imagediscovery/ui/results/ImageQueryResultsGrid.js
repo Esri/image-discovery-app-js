@@ -15,10 +15,11 @@ define([
     "dijit/form/CheckBox",
     "../base/grid/ImageryGrid",
     "dijit/TooltipDialog",
-    "../filter/UserAppliedFiltersManager"
+    "../filter/UserAppliedFiltersManager",
+    "dgrid/util/mouse"
 
 ],
-    function (declare, domGeometry, topic, on, registry, query, lang, domConstruct, domClass, domStyle, Observable, Memory, Button, CheckBox, ImageryGrid, TooltipDialog, UserAppliedFiltersManager) {
+    function (declare, domGeometry, topic, on, registry, query, lang, domConstruct, domClass, domStyle, Observable, Memory, Button, CheckBox, ImageryGrid, TooltipDialog, UserAppliedFiltersManager, mouseUtil) {
         return declare(
             [ImageryGrid],
             {
@@ -44,7 +45,7 @@ define([
                 initListeners: function () {
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleQueryComplete));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, lang.hitch(this, this.highlightResultsFromRectangleIntersect));
+                    //  topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, lang.hitch(this, this.highlightResultsFromRectangleIntersect));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_SHOW_IMAGE, lang.hitch(this, this.handleToggleShowImage));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, lang.hitch(this, this.toggleShoppingCartItem));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
@@ -65,9 +66,55 @@ define([
                     this.setFilterResultsHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SET, lang.hitch(this, this.handleApplyFilter));
                     this.itemRemovedFromCartHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
 
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO,lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
+                },
+                createGrid: function () {
+                    this.inherited(arguments);
+                    this.grid.on(mouseUtil.enterRow, lang.hitch(this, this.handleRowMouseOver));
+                    this.grid.on(mouseUtil.leaveRow, lang.hitch(this, this.handleRowMouseOut));
+                    this.grid.on(".dgrid-row:click", lang.hitch(this, this.handleRowClick));
+                },
+
+                handleRowClick: function (evt) {
+                    if (domClass.contains(evt.target, "dgrid-cell")) {
+                        var row = this.grid.row(evt);
+                        if (row != null && row.data != null && row.data.geometry && lang.isFunction(row.data.geometry.getCentroid)) {
+                            var centroid = row.data.geometry.getCentroid();
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.PAN_TO, centroid);
+                            var extentHandle = topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, function () {
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP_FROM_MAP_COORDINATES, row.data, centroid);
+                                var queryController = IMAGERY_UTILS.getQueryLayerControllerFromItem(row.data);
+                                if (queryController != null) {
+                                    queryController.showThumbnail(row.data);
+                                }
+                                extentHandle.remove();
+                            });
+
+                        }
+                    }
+                },
+                handleRowMouseOver: function (evt) {
+                    var row = this.grid.row(evt);
+                    if (row != null && row.data != null && row.element != null) {
+                        domClass.add(row.element, "imageQueryResultHoverItem");
+                        var queryController = IMAGERY_UTILS.getQueryLayerControllerFromItem(row.data);
+                        if (queryController != null) {
+                            queryController.showThumbnail(row.data);
+                        }
+                    }
+
+                },
+                handleRowMouseOut: function (evt) {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR);
+
+
+                    var row = this.grid.row(evt);
+                    if (row != null && row.element != null) {
+                        domClass.remove(row.element, "imageQueryResultHoverItem");
+
+                    }
                 },
                 /**
                  *
@@ -103,57 +150,59 @@ define([
                  * @param envelope envelope to test
                  * @param containsFlag flag for contains/intersects
                  */
-                highlightResultsFromRectangleIntersect: function (envelope, containsFlag) {
-                    var scrolledIntoView = false;
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
-                    var currentVisibleItem;
-                    var currentGeometry;
-                    var row;
-                    var imageAttrsAndQueryLayerControllerArray = [];
-                    for (var i = 0; i < unfilteredResults.length; i++) {
-                        currentVisibleItem = unfilteredResults[i];
-                        currentGeometry = currentVisibleItem.geometry;
-                        row = this.grid.row(currentVisibleItem);
-                        var match;
-                        if (containsFlag) {
-                            match = envelope.contains(currentGeometry.getExtent());
-                        }
-                        else {
-                            match = envelope.intersects(currentGeometry);
-                        }
-                        if (match) {
-                            if (row && row.element) {
-                                this.grid.highlightRowYellow(row);
-                                if (!scrolledIntoView) {
-                                    var geom = {y: row.element.offsetTop};
-                                    this.grid.scrollTo(geom);
-                                    scrolledIntoView = true;
-                                }
-                                currentVisibleItem.isHighlighted = true;
+                /*
+                 highlightResultsFromRectangleIntersect: function (envelope, containsFlag) {
+                 var scrolledIntoView = false;
+                 var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
+                 var currentVisibleItem;
+                 var currentGeometry;
+                 var row;
+                 var imageAttrsAndQueryLayerControllerArray = [];
+                 for (var i = 0; i < unfilteredResults.length; i++) {
+                 currentVisibleItem = unfilteredResults[i];
+                 currentGeometry = currentVisibleItem.geometry;
+                 row = this.grid.row(currentVisibleItem);
+                 var match;
+                 if (containsFlag) {
+                 match = envelope.contains(currentGeometry.getExtent());
+                 }
+                 else {
+                 match = envelope.intersects(currentGeometry);
+                 }
+                 if (match) {
+                 if (row && row.element) {
+                 this.grid.highlightRowYellow(row);
+                 if (!scrolledIntoView) {
+                 var geom = {y: row.element.offsetTop};
+                 this.grid.scrollTo(geom);
+                 scrolledIntoView = true;
+                 }
+                 currentVisibleItem.isHighlighted = true;
 
-                                //highlight footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
+                 //highlight footprint
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
 
-                                //gather image info and associated layer info
-                                var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(currentVisibleItem);
-                                var imageAttrsAndQueryLayerController= {imageInfo: currentVisibleItem, queryLayerController: queryLayerController};
-                                imageAttrsAndQueryLayerControllerArray.push(imageAttrsAndQueryLayerController);
-                            }
-                        }
-                        else {
-                            if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                                this.grid.unhighlightYellowRow(row);
-                                currentVisibleItem.isHighlighted = false;
+                 //gather image info and associated layer info
+                 var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(currentVisibleItem);
+                 var imageAttrsAndQueryLayerController = {imageInfo: currentVisibleItem, queryLayerController: queryLayerController};
+                 imageAttrsAndQueryLayerControllerArray.push(imageAttrsAndQueryLayerController);
+                 }
+                 }
+                 else {
+                 if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
+                 this.grid.unhighlightYellowRow(row);
+                 currentVisibleItem.isHighlighted = false;
 
-                                //remove highlight on footprint
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                            }
-                        }
-                    }//end for loop
+                 //remove highlight on footprint
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
+                 }
+                 }
+                 }//end for loop
 
-                    //show image info popup
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageAttrsAndQueryLayerControllerArray);
-                },
+                 //show image info popup
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageAttrsAndQueryLayerControllerArray);
+                 },
+                 */
                 /**
                  * returns visible footprints geometries in the result grid
                  * @param callback function to send the visible footprint geometries to
@@ -459,7 +508,7 @@ define([
                  * @param cartHeaderCheckbox
                  * @param cartIconDiv
                  */
-                handleToggleAllCartItems: function() {
+                handleToggleAllCartItems: function () {
                     var addAllItems = false;
                     if (domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty")) {
                         domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
@@ -494,13 +543,13 @@ define([
                  * Determine whether or not need to update the add/remove all cart
                  * items button.
                  */
-                handleUpdateToggleAllCartItemsButton: function() {
+                handleUpdateToggleAllCartItemsButton: function () {
                     var cartItemIconEmpty = domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty") ?
                         true : false;
 
                     //Any items visible in results grid?
                     var unfilteredItems = this.store.query({isFiltered: false});
-                    if (unfilteredItems.length == 0)  {
+                    if (unfilteredItems.length == 0) {
                         if (!cartItemIconEmpty) {
                             domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
                             domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
@@ -780,6 +829,14 @@ define([
                 },
                 onShowFilterResetIcon: function () {
 
+                },
+                //handles zoom to result request
+                handleZoomToResult: function (entry, e) {
+                    var extentHandle = topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, function () {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.RELOAD);
+                        extentHandle.remove();
+                    });
+                    this.inherited(arguments);
                 }
             });
     });

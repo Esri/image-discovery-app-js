@@ -118,6 +118,7 @@ define([
                     }
                 },
                 handleSetQueryLayerControllers: function (queryLayerControllers) {
+                    this.queryLayerControllers =  [];
                     if (queryLayerControllers != null && lang.isArray(queryLayerControllers) && queryLayerControllers.length > 0) {
                         this.queryLayerControllers = queryLayerControllers;
                     }
@@ -203,6 +204,7 @@ define([
                  * handles the image service query response
                  */
                 handleQueryResponseComplete: function (queryLayerController, response) {
+
                     if (this.maxQueryResults != null && (this.resultFeaturesCount >= this.maxQueryResults)) {
                         return;
                     }

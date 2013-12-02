@@ -7,8 +7,8 @@ define([
         return declare(
             [Evented],
             {
-                CLEAR_DRAW: "clearDraw",
-                ACTIVATE_RECTANGLE_SELECT: "activateRectangleSelect",
+              //  CLEAR_DRAW: "clearDraw",
+               // ACTIVATE_RECTANGLE_SELECT: "activateRectangleSelect",
                 SHRINK_GRID: "shrinkGrid",
                 EXPAND_GRID: "expandGrid",
                 cart: ko.observable(true),
@@ -16,7 +16,7 @@ define([
                 expanded: ko.observable(false),
                 zoomToSelected: ko.observable(false),
                 timeSlider: ko.observable(true),
-                rectangleSelectionActive: ko.observable(false),
+              //  rectangleSelectionActive: ko.observable(false),
                 reportIcon: ko.observable(false),
                 filterIcon: ko.observable(false),
                 toolsActive: ko.observable(false),
@@ -89,7 +89,8 @@ define([
                 },
                 setFilterIconVisible: function () {
                     this.filterIcon(true);
-                },
+                }
+                /*
                 toggleRectangleResultsSelection: function () {
                     var stateBeforeClear = this.rectangleSelectionActive();
                     this.emit(this.CLEAR_DRAW);
@@ -102,6 +103,7 @@ define([
                 clearRectangleDraw: function () {
                     this.rectangleSelectionActive(false);
                 },
+
                 clearAllDraw: function () {
                     this.clearRectangleDraw();
                     this.drawActive(false);
@@ -111,5 +113,6 @@ define([
                 clearHighlights: function () {
                     this.emit(this.CLEAR_DRAW);
                 }
+                */
             });
     });

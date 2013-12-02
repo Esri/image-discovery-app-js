@@ -34,6 +34,7 @@
             }
         },
         "operationalLayers": [
+
         ],
         "referenceLayers": [
             {
@@ -62,6 +63,14 @@
         }
 
     ],
+    "queryBuilder": {
+        "create": true,
+        "configuration": {
+            "useCustomResultGraphics": true,
+            "maxResults": 50
+
+        }
+    },
     "toolsAccordion": {
         "create": true,
         "showTabInNavigation": false
@@ -124,7 +133,8 @@
         "showLayersButton": true,
         "showConfigureLocatorsIcon": false,
         "showBookmarksButton": true,
-        "showExtentActions": false
+        "showExtentActions": false,
+        "showLocator": true
     },
     "printWidget": {
         "create": true,
@@ -149,5 +159,6 @@
     "plottingWidget": {
         "create": true,
         "symbolUrl": "images/symbols/plotPin.png"
-    }
+    },
+    "animationsEnabled": true
 }

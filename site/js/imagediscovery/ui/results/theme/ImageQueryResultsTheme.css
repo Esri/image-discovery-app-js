@@ -103,6 +103,11 @@
 .imageryResultsGridContainer .dgrid {
     border-left: 0;
     border-bottom: 0;
+    cursor: pointer;
+}
+
+.imageQueryResultHoverItem {
+    background: url(../assets/images/hoverBg.png);
 }
 
 .dgrid-row .field-showThumbNail .dijitCheckBox, .dgrid-row .field-showFootprint .dijitCheckBox {
@@ -181,7 +186,7 @@
 }
 
 .activeSourcesTooltipAnchor {
-    float:left;
+    float: left;
     cursor: pointer;
     padding: 4px;
     background: #EEEEEE;
@@ -248,14 +253,33 @@
     cursor: pointer;
     margin-top: 2px;
 }
-
+      /*
 .toolsActiveContainer {
     float: left;
     width: 240px;
 }
-
+*/
+  /*
 .identifyOptionsContainer {
     float: left;
+}
+*/
+.imagePopupEntry{
+    font-size: 8pt;
+
+}
+.imagePopupLabel{
+    color: black;
+}
+.imagePopupValue{
+    color: #0000FF;
+}
+.imagePopupActionsContainer{
+    height: 22px;
+}
+.imagePopupCloseIcon{
+    float: right;
+    margin-left: 20px;
 }
 
 

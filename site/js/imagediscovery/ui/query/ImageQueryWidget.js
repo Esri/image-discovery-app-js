@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageQueryWidgetTemplate.html",
-    "xstyle/css!./theme/ImageQueryWidgetTheme.css",
+ //   "xstyle/css!./theme/ImageQueryWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/array",
     "dojo/on",
@@ -13,12 +13,15 @@ define([
     "dojo/_base/lang",
     "esriviewer/ui/base/UITemplatedWidget",
     "./base/AddedFieldValuesTooltip",
-    "esriviewer/map/base/LayerQueryParameters"
+    "esriviewer/map/base/LayerQueryParameters",
+    "esriviewer/map/base/DistinctValuesQueryParameters"
 ],
-    function (declare, template, theme, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
+    //  function (declare, template, theme, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
+    function (declare, template, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters,DistinctValuesQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {
+                _distinctLayerVersionSupported: 10.1,
                 selectWidth: "80%",
                 maxSelectHeight: 200,
                 templateString: template,
@@ -48,7 +51,8 @@ define([
                     this.stringFieldNames = [];
                     //set the string values
                     var currentField;
-                    for (var i = 0; i < currentQueryLayerController.layer.fields.length; i++) {
+                    var i;
+                    for (i = 0; i < currentQueryLayerController.layer.fields.length; i++) {
                         currentField = currentQueryLayerController.layer.fields[i];
                         if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.STRING) {
                             this.stringFieldNames.push(currentField.name);
@@ -60,14 +64,32 @@ define([
                         this.createQueryFieldEntryElements(this.queryFieldResponseCache[currentQueryLayerController.id]);
                     }
                     else {
-                        var queryParamsForLayer = new LayerQueryParameters({
-                            layer: currentQueryLayerController.layer,
-                            returnGeometry: false,
-                            outFields: this.queryFields,
-                            callback: lang.hitch(this, this.handleQueryFieldValuesResponse, currentQueryLayerController),
-                            errback: lang.hitch(this, this.handleQueryFieldValuesError)
-                        });
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS, queryParamsForLayer);
+                        if (currentQueryLayerController.layer.version < this._distinctLayerVersionSupported) {
+                            var queryParamsForLayer = new LayerQueryParameters({
+                                layer: currentQueryLayerController.layer,
+                                returnGeometry: false,
+                                outFields: this.queryFields,
+                                callback: lang.hitch(this, this.handleQueryFieldValuesResponse, currentQueryLayerController),
+                                errback: lang.hitch(this, this.handleQueryFieldValuesError)
+                            });
+
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS, queryParamsForLayer);
+                        }
+                        else{
+                            
+                           for(i = 0; i < this.queryFields.length;i++){
+                               var distinctParameters = new DistinctValuesQueryParameters({
+                               });
+                               topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.GET_DISTINCT_FIELD_VALUES, {
+                                   callback: lang.hitch(this, this.handleQueryFieldValuesResponse, currentQueryLayerController),
+                                   errback: lang.hitch(this, this.handleQueryFieldValuesError),
+                                   layer: currentQueryLayerController.layer,
+                                   distinctField: this.queryFields[i],
+                                   processResponse: false
+
+                               });
+                           }
+                        }
                     }
                 },
                 loadViewerConfigurationData: function () {

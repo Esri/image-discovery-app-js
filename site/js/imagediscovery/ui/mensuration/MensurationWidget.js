@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/MensurationWidgetTemplate.html",
-    "xstyle/css!./theme/MensurationWidgetTheme.css",
+  //  "xstyle/css!./theme/MensurationWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "esriviewer/ui/base/UITemplatedWidget",
@@ -21,7 +21,8 @@ define([
     "dojo/_base/array"
 ],
     //this widget is contained in the analysis window content
-    function (declare, template, theme, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
+  //  function (declare, template, theme, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
+    function (declare, template,  topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
         return declare(
             [UITemplatedWidget, DataLoaderSupport],
             {
@@ -35,7 +36,7 @@ define([
                 mensurationOperationParamName: "measureOperation",
                 fromGeometryParamName: "fromGeometry",
                 toGeometryParamName: "toGeometry",
-                noMensurationCapabilitesStrings: ["None", "None,Basic"],
+                noMensurationCapabilitesStrings: ["None", "None,Basic",""],
                 templateString: template,
                 mensurationLineSymbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 255]), 3),
                 mensurationPointSymbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 1,

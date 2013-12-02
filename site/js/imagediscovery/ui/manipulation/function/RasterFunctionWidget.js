@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/RasterFunctionTemplate.html",
-    "xstyle/css!./theme/RasterFunctionTheme.css",
+  //  "xstyle/css!./theme/RasterFunctionTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/_base/array",
@@ -11,7 +11,8 @@ define([
     "./model/RasterFunctionViewModel"
 
 ],
-    function (declare, template, theme, topic, lang, array, ImageManipulationWidgetBase, BaseBandReorderWidget, BaseRasterFunctionWidget, RasterFunctionViewModel) {
+   // function (declare, template, theme, topic, lang, array, ImageManipulationWidgetBase, BaseBandReorderWidget, BaseRasterFunctionWidget, RasterFunctionViewModel) {
+    function (declare, template,  topic, lang, array, ImageManipulationWidgetBase, BaseBandReorderWidget, BaseRasterFunctionWidget, RasterFunctionViewModel) {
         return declare(
             [ImageManipulationWidgetBase],
             {

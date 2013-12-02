@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/PrefilterWidgetTemplate.html",
-    "xstyle/css!./theme/PrefilterWidgetTheme.css",
+  //  "xstyle/css!./theme/PrefilterWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/dom-construct",
@@ -12,7 +12,8 @@ define([
     "dijit/DropDownMenu",
     "dijit/MenuItem"
 ],
-    function (declare, template, theme, topic, lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
+ //   function (declare, template, theme, topic, lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
+    function (declare, template,  topic, lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
         return declare(
             [ UITemplatedWidget],
             {

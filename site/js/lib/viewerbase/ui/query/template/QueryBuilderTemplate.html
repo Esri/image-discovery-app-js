@@ -1,7 +1,7 @@
 <div style="height: 100%">
-    <div class="defaultTabContainer addCatalogTabContainer">
+    <div data-bind="visible:showTabs" class="defaultTabContainer addCatalogTabContainer">
         <span data-bind="click:showQueryBuilderInput, css: {selectedTab: queryBuilderInputVisible}">Build Query</span>
-        <span data-bind="click:showQueryBuilderResults, css: {selectedTab: queryBuilderResultsVisible}">Results</span>
+        <span data-bind="visible:showQueryBuilderResultsTab, click:showQueryBuilderResults, css: {selectedTab: queryBuilderResultsVisible}">Results</span>
         <span data-bind="visible:showQueryBuilderSymbologyTab, click:showQueryBuilderSymbology, css: {selectedTab: queryBuilderSymbologyVisible}">Symbology</span>
     </div>
 
@@ -11,8 +11,10 @@
             <div>right click a layer/service in the table of contents and select "Query Builder"</div>
         </div>
 
-        <div class="queryLayerNameContainer"><span>Query Layer: </span><span
-                data-dojo-attach-point="queryLayerNameLabel"></span></div>
+        <div data-bind="visible:showQueryLayerName" class="queryLayerNameContainer">
+            <span>Query Layer: </span>
+            <span data-dojo-attach-point="queryLayerNameLabel"></span>
+        </div>
         <select data-dojo-attach-point="queryBuilderFields"
                 data-bind="event: {dblclick: queryFieldDoubleClick},options: queryBuilderFields ,value:selectedQueryBuilderField, optionsText: 'label', optionsValue: 'value'"
                 class="queryBuilderFields" size="7">
