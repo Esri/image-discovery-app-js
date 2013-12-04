@@ -2,13 +2,12 @@ define([
     "dojo/_base/declare",
     "dojo/topic",
     "dojo/Evented",
-    "dojo/_base/Color",
     "dojo/_base/lang",
     "../../layers/HeatmapLayer",
     "dojo/dom-construct",
     "dojo/_base/window"
 ],
-    function (declare, topic, Evented, Color, lang, HeatmapLayer, domConstruct, window) {
+    function (declare, topic, Evented,  lang, HeatmapLayer, domConstruct, window) {
         return declare(
             [Evented],
             {

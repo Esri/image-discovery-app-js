@@ -3,12 +3,11 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/SwipeWidgetTemplate.html",
-  //  "xstyle/css!./theme/SwipeWidgetTheme.css",
+    //  "xstyle/css!./theme/SwipeWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/sniff",
     "dojo/dom",
-    "dojo/_base/array",
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/SwipeViewModel",
     "dojo/dnd/move",
@@ -17,8 +16,8 @@ define([
     "dojo/dom-style",
     "dijit/form/Button"
 ],
-  //  function (declare, template, theme, topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
-    function (declare, template,  topic, lang, sniff, dom, array, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
+    //  function (declare, template, theme, topic, lang, sniff, dom,  UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
+    function (declare, template, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
@@ -195,10 +194,7 @@ define([
                                 bottomval -= ty;
                             }
                         }
-                        //Syntax for clip "rect(top,right,bottom,left)"
-                        //var clipstring = "rect(0px " + val + "px " + this.map.height + "px " + " 0px)";
-                        var clipstring = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
-                        this.swipeDiv.style.clip = clipstring;
+                        this.swipeDiv.style.clip = "rect(" + topval + "px " + rightval + "px " + bottomval + "px " + leftval + "px)";
                     }
                 },
                 //This is called when "Stop Swipe" button is clicked
@@ -235,11 +231,10 @@ define([
                     }
                 },
                 turnOffOperationalLayers: function (opLayers) {
-                    var operationalLayers = opLayers;
-                    for (var i = 0; i < operationalLayers.length; i++) {
-                        if (operationalLayers[i].visible) {
-                            this.currentlyVisibleOperLayers.push(operationalLayers[i]);
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MAKE_INVISIBLE, operationalLayers[i]);
+                    for (var i = 0; i < opLayers.length; i++) {
+                        if (opLayers[i].visible) {
+                            this.currentlyVisibleOperLayers.push(opLayers[i]);
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MAKE_INVISIBLE, opLayers[i]);
                         }
                     }
                 },

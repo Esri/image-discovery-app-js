@@ -10,10 +10,9 @@ define([
     "esri/layers/MosaicRule",
     "esri/layers/ArcGISImageServiceLayer",
     "esri/layers/RasterFunction",
-    "esri/geometry/Extent",
-    "dojo/_base/array"
+    "esri/geometry/Extent"
 ],
-    function (declare,  Map, domConstruct, lang, dom, ArcGISTiledMapServiceLayer, MosaicRule, ArcGISImageServiceLayer, RasterFunction, Extent, array) {
+    function (declare,  Map, domConstruct, lang, dom, ArcGISTiledMapServiceLayer, MosaicRule, ArcGISImageServiceLayer, RasterFunction, Extent) {
         return declare(
             [],
             {

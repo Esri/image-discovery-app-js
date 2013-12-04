@@ -4,11 +4,10 @@ define([
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/dom-class",
-    "dojo/dom-style",
     "dojo/dom-attr",
     "./BaseImageryFilterWidget"
 ],
-    function (declare, on, lang, domConstruct, domClass, domStyle, domAttr, BaseImageryFilterWidget) {
+    function (declare, on, lang, domConstruct, domClass,  domAttr, BaseImageryFilterWidget) {
         return declare(
             [BaseImageryFilterWidget],
             {

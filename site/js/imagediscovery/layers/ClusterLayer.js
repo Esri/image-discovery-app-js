@@ -52,8 +52,7 @@ define([
                     this._singles = []; // populated when a graphic is clicked
                     this._showSingles = options.hasOwnProperty("showSingles") ? options.showSingles : true;
                     // symbol for single graphics
-                    var sms = SimpleMarkerSymbol;
-                    this._singleSym = options.singleSymbol || new sms("circle", 6, null, new Color("#888"));
+                    this._singleSym = options.singleSymbol || new SimpleMarkerSymbol("circle", 6, null, new Color("#888"));
                     this._singleTemplate = options.singleTemplate || new PopupTemplate({ "title": "", "description": "{*}" });
                     this._maxSingles = options.maxSingles || 1000;
 
@@ -82,8 +81,7 @@ define([
                     });
 
                     // GraphicsLayer will add its own listener here
-                    var div = this.inherited(arguments);
-                    return div;
+                    return this.inherited(arguments);
                 },
 
                 _unsetMap: function () {

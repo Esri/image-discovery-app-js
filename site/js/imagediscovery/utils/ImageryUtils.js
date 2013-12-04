@@ -95,8 +95,8 @@ define([
                  */
                 loadKeyProperties: function (layer, callback) {
                     //try to load the keyProperties
-                    var wrappedCallback = lang.hitch(this, function (layer, keyProperites) {
-                        layer.keyProperties = keyProperites;
+                    var wrappedCallback = lang.hitch(this, function (layer, keyProperties) {
+                        layer.keyProperties = keyProperties;
                         callback(layer);
                     }, layer);
                     var wrappedErrback = lang.hitch(this, function () {

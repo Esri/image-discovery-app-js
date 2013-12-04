@@ -1,11 +1,10 @@
 define([
     "dojo/_base/declare",
-    "dojo/dom-attr",
     "dojo/_base/lang",
     'esri/layers/MosaicRule',
     "dojo/topic"
 ],
-    function (declare, domAttr, lang, MosaicRule,topic) {
+    function (declare,  lang, MosaicRule,topic) {
         return declare(
             [],
             {

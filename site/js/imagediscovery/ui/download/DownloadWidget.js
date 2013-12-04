@@ -4,7 +4,6 @@ define([
 //    "xstyle/css!./theme/DownloadWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
-    "dojo/_base/json",
     "esriviewer/ui/base/UITemplatedWidget",
     "../export/ImageryExportWidget",
     "../export/FootprintsExportWidget",
@@ -12,8 +11,8 @@ define([
     "../reporting/ReportingWidget",
     "../portal/PortalWebMapReportWidget"
 ],
-  //  function (declare, template, theme, topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
-    function (declare, template,  topic, lang, json, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
+    //  function (declare, template, theme, topic, lang,  UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
+    function (declare, template, topic, lang, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
         return declare(
             [UITemplatedWidget],
             {

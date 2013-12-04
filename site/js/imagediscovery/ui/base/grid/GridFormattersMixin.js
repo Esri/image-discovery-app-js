@@ -5,12 +5,11 @@ define([
     "dojo/dom-attr",
     "dojo/dom-style",
     "dojo/on",
-    "dojo/topic",
     "dojo/date/locale",
     "dijit/form/CheckBox"
 ],
     //this class returns formatted elements for fields in the grid
-    function (declare, lang, domConstruct, domAttr, domStyle, on, topic, locale, CheckBox) {
+    function (declare, lang, domConstruct, domAttr, domStyle, on,  locale, CheckBox) {
         return declare(
             [],
             {

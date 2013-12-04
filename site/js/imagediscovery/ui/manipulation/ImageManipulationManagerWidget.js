@@ -4,15 +4,14 @@ define([
    // "xstyle/css!./theme/ImageManipulationTheme.css",
     "dojo/_base/lang",
     "dojo/topic",
-    "dojo/on",
     'dijit/layout/ContentPane',
     "dijit/form/Select",
     "esriviewer/ui/base/UITemplatedWidget",
     "./ImageManipulationContentWidget",
     "./model/ImageManipulationManagerViewModel"
 ],
-  //  function (declare, template, theme, lang, topic, on, ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
-    function (declare, template,  lang, topic, on, ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
+  //  function (declare, template, theme, lang, topic,  ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
+    function (declare, template,  lang, topic,  ContentPane, Select, UITemplatedWidget, ImageManipulationContentWidget, ImageManipulationManagerViewModel) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {

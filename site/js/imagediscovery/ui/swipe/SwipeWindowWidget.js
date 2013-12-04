@@ -2,11 +2,9 @@ define([
     "dojo/_base/declare",
     "dojo/_base/lang",
     "dojo/topic",
-    "dojo/window",
-    "dojo/dom-style",
     "esriviewer/ui/window/WindowWidget"
 ],
-    function (declare, lang, topic, window, domStyle, WindowWidget) {
+    function (declare, lang, topic, WindowWidget) {
         return declare(
             [WindowWidget],
             {

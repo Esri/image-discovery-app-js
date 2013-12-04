@@ -1,8 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/PrefilterWidgetTemplate.html",
-  //  "xstyle/css!./theme/PrefilterWidgetTheme.css",
-    "dojo/topic",
+    //  "xstyle/css!./theme/PrefilterWidgetTheme.css",
     "dojo/_base/lang",
     "dojo/dom-construct",
     "esriviewer/ui/base/UITemplatedWidget",
@@ -12,8 +11,8 @@ define([
     "dijit/DropDownMenu",
     "dijit/MenuItem"
 ],
- //   function (declare, template, theme, topic, lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
-    function (declare, template,  topic, lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
+    //   function (declare, template, theme,  lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
+    function (declare, template, lang, domConstruct, UITemplatedWidget, HorizontalSlider, PrefilterWidgetViewModel, DropDownButton, DropDownMenu, MenuItem) {
         return declare(
             [ UITemplatedWidget],
             {
@@ -225,7 +224,7 @@ define([
                 getQuery: function () {
                     var queryString = "";
                     if (this.currentResolutionValueObj != null) {
-                        queryString += this.resolution.fieldName + " " + this.resolution.operator + " " +  this.currentResolutionValueObj.value;
+                        queryString += this.resolution.fieldName + " " + this.resolution.operator + " " + this.currentResolutionValueObj.value;
                     }
                     if (this.currentSatelliteValueObj != null) {
                         if (queryString != "") {

@@ -1,14 +1,10 @@
 define([
     "dojo/_base/declare",
     "dojo/topic",
-    "dijit/registry",
-    "dojo/query",
-    "dojo/dom-style",
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/store/Observable",
     "esriviewer/ui/base/UIWidget",
-    "dojo/on",
     "dojo/store/Memory",
     "dijit/form/CheckBox",
     "./ImageryGridBase",
@@ -16,7 +12,7 @@ define([
     "./RowActionsMixin"
 ],
     //this is the class to extend if you need an image discovery grid
-    function (declare, topic, registry, query, domStyle, lang, domConstruct, Observable, UIWidget, on, Memory, CheckBox, Grid, GridFormattersMixin, RowActionsMixin) {
+    function (declare, topic, lang, domConstruct, Observable, UIWidget, Memory, CheckBox, ImageryGridBase, GridFormattersMixin, RowActionsMixin) {
         return declare(
             [UIWidget, GridFormattersMixin, RowActionsMixin],
             {
@@ -55,7 +51,7 @@ define([
                             singleSourceMode = false;
                         }
                     });
-                    if(singleSourceMode){
+                    if (singleSourceMode) {
                         this.addSourceColumn = false;
                     }
                     this.createGrid();
@@ -297,7 +293,7 @@ define([
                     columns = columns.concat(layerColumns);
                     //setup the store
                     this.store = new Observable(new Memory({ data: [], idProperty: this.storeIdField}));
-                    this.grid = new Grid({
+                    this.grid = new ImageryGridBase({
                         columns: columns,
                         store: this.store
                     });

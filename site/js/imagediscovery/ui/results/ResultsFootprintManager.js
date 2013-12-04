@@ -7,12 +7,9 @@ define([
     "esri/layers/GraphicsLayer",
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol",
-    "esri/symbols/PictureMarkerSymbol",
-    "esri/graphic",
-    "dojo/_base/connect",
-    "../results/popup/ResultPopup"
+    "esri/graphic"
 ],
-    function (declare, topic, Evented, Color, lang, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, PictureMarkerSymbol, Graphic, con, ResultPopup) {
+    function (declare, topic, Evented, Color, lang, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic) {
         return declare(
             [Evented],
             {
@@ -104,7 +101,7 @@ define([
 
                 },
                 /**
-                 * clears the footprints layer graphics. called when the discovery vier results have been cleared
+                 * clears the footprints layer graphics. called when the discovery viewer results have been cleared
                  */
                 clearResults: function () {
                     this.footprintsLayer.clear();
@@ -122,7 +119,7 @@ define([
                 },
 
                 handleLayerClick: function (evt) {
-                    if (this.footprintsLayer && (this.footprintsLayer.opacity == null || this.footprintsLayer.opacity> 0)) {
+                    if (this.footprintsLayer && (this.footprintsLayer.opacity == null || this.footprintsLayer.opacity > 0)) {
                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, evt.graphic.attributes, {x: evt.pageX, y: evt.pageY});
                     }
                 },

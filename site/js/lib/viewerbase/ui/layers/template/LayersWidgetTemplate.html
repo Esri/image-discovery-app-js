@@ -3,11 +3,11 @@
         <span data-dojo-attach-point="layersTab"
               data-bind="click:showLayersList, css: {selectedTab: layersListVisible}">Layers</span>
         <span data-dojo-attach-point="addLayersTab"
-              data-bind="click:showAddLayers, css: {selectedTab: addlayersVisible}">Add Layer</span>
-        <span data-dojo-attach-point="persistsedLayersTab"
+              data-bind="click:showAddLayers, css: {selectedTab: addLayersVisible}">Add Layer</span>
+        <span data-dojo-attach-point="persistedLayersTab"
               data-bind="click:showUserPersistedLayers, css: {selectedTab: persistedLayersVisible}">Saved Layers</span>
     </div>
-    <div data-bind="visible:addlayersVisible" class="addLayerContainer" data-dojo-attach-point="addLayerContainer">
+    <div data-bind="visible:addLayersVisible" class="addLayerContainer" data-dojo-attach-point="addLayerContainer">
         <div class="addLayerContainerInner">
             <div class="viewerAddLayerWorkingWKIDContainer" data-bind="visible:showWKIDInAddLayers">
                 <span class="viewerAddLayerLabel ">Map WKID:</span>

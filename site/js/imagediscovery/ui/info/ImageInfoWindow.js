@@ -2,12 +2,11 @@ define([
     "dojo/_base/declare",
     "dojo/_base/lang",
     "dojo/topic",
-    "dojo/dom-style",
     "dojo/dom-class",
     "esriviewer/ui/window/WindowWidget",
     "./ImageInfoTabWidget"
 ],
-    function (declare, lang, topic, domStyle, domClass, WindowWidget, ImageInfoTabWidget) {
+    function (declare, lang, topic,  domClass, WindowWidget, ImageInfoTabWidget) {
         return declare(
             [WindowWidget],
             {

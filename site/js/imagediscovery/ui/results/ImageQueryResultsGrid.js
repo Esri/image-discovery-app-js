@@ -1,6 +1,5 @@
 define([
     "dojo/_base/declare",
-    "dojo/dom-geometry",
     "dojo/topic",
     "dojo/on",
     "dijit/registry",
@@ -9,8 +8,6 @@ define([
     "dojo/dom-construct",
     "dojo/dom-class",
     "dojo/dom-style",
-    "dojo/store/Observable",
-    "dojo/store/Memory",
     "dijit/form/Button",
     "dijit/form/CheckBox",
     "../base/grid/ImageryGrid",
@@ -19,7 +16,7 @@ define([
     "dgrid/util/mouse"
 
 ],
-    function (declare, domGeometry, topic, on, registry, query, lang, domConstruct, domClass, domStyle, Observable, Memory, Button, CheckBox, ImageryGrid, TooltipDialog, UserAppliedFiltersManager, mouseUtil) {
+    function (declare,  topic, on, registry, query, lang, domConstruct, domClass, domStyle,   Button, CheckBox, ImageryGrid, TooltipDialog, UserAppliedFiltersManager, mouseUtil) {
         return declare(
             [ImageryGrid],
             {
@@ -323,7 +320,7 @@ define([
                         var match = filterFunction(item);
                         var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(item);
                         if (queryLayerController == null) {
-                            return;
+                            return null;
                         }
                         item.isFiltered = !match;
                         return match;
@@ -787,7 +784,7 @@ define([
                     domClass.add(filterIconForWidget, "filterHighlight");
                 },
                 /**
-                 * clears highlights when the footer containg the results grid has been collapsed
+                 * clears highlights when the footer contains the results grid has been collapsed
                  */
                 handleFooterCollapsed: function () {
                     this.hideVisibleFilterPopup();

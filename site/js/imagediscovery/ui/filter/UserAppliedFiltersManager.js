@@ -1,18 +1,14 @@
 define([
     "dojo/_base/declare",
     "dojo/topic",
-    "dojo/on",
     "dojo/_base/lang",
-    "dojo/dom-construct",
-    "dojo/dom-style",
-    "dijit/registry",
     "dojo/_base/array",
     "./UserAppliedFilterLockController",
     "./base/ImageFilterNumberRangeWidget",
     "./base/ImageFilterDateRangeWidget",
     "./base/ImageFilterStringFilteringSelectWidget"
 ],
-    function (declare, topic, on, lang, domConstruct, domStyle, registry, array, UserAppliedFilterLockController, ImageFilterNumberRangeWidget, ImageFilterDateRangeWidget, ImageFilterStringListWidget) {
+    function (declare, topic, lang, array, UserAppliedFilterLockController, ImageFilterNumberRangeWidget, ImageFilterDateRangeWidget, ImageFilterStringFilteringSelectWidget) {
         return declare(
             [],
             {
@@ -96,7 +92,7 @@ define([
                             this.numberWidgets.push(newWidget);
                         }
                         if (array.indexOf(this.stringListTypes, fieldType) > -1) {
-                            newWidget = new ImageFilterStringListWidget(currentWidgetParams);
+                            newWidget = new ImageFilterStringFilteringSelectWidget(currentWidgetParams);
                             this.stringListWidgets.push(newWidget);
                         }
                         if (array.indexOf(this.dateTypes, fieldType) > -1) {

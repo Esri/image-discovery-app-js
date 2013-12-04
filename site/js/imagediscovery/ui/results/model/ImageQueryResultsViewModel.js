@@ -1,9 +1,8 @@
 define([
     "dojo/_base/declare",
-    "dojo/Evented",
-    "dojo/topic"
+    "dojo/Evented"
 ],
-    function (declare, Evented, topic) {
+    function (declare, Evented) {
         return declare(
             [Evented],
             {

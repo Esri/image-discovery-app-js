@@ -5,13 +5,11 @@ define([
     "dojo/topic",
     "dojo/date/locale",
     "dojo/_base/lang",
-    "dojo/dom-construct",
-    "dojo/dom-class",
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/ImageInfoViewModel"
 ],
- //   function (declare, template, theme, topic, locale, lang, domConstruct, domClass, UITemplatedWidget, ImageInfoViewModel) {
-    function (declare, template,  topic, locale, lang, domConstruct, domClass, UITemplatedWidget, ImageInfoViewModel) {
+ //   function (declare, template, theme, topic, locale, lang,   UITemplatedWidget, ImageInfoViewModel) {
+    function (declare, template,  topic, locale, lang,   UITemplatedWidget, ImageInfoViewModel) {
         return declare(
             [UITemplatedWidget],
             {
@@ -202,7 +200,7 @@ define([
                                     displayValue = imageInfo[key];
                                 }
                             }
-                            var colName = reverseFieldMapping[key] != null ? reverseFieldMapping[key] : key
+                            var colName = reverseFieldMapping[key] != null ? reverseFieldMapping[key] : key;
                             attributesNVPArray.push({name: colName, value: displayValue});
 
                         } //end for loop of attributes in imageInfo object

@@ -1,19 +1,15 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageManipulationContentTemplate.html",
-    "dojo/topic",
     "dojo/_base/lang",
-    "dojo/on",
     "dojo/dom-style",
     "esriviewer/ui/base/UITemplatedWidget",
-    "esriviewer/ui/tooltip/ConfirmTooltip",
     "./function/RasterFunctionWidget",
-   // "./operation/MosaicOperationWidget",
     "./bands/BandReorderWidget",
     "../mensuration/MensurationWidget",
     "./model/ImageManipulationViewModel"
 ],
-    function (declare, template, topic, lang, on, domStyle, UITemplatedWidget, ConfirmTooltip, RasterFunctionWidget,/* MosaicOperationWidget, */BandReorderWidget, MensurationWidget, ImageManipulationViewModel) {
+    function (declare, template, lang, domStyle, UITemplatedWidget, RasterFunctionWidget, BandReorderWidget, MensurationWidget, ImageManipulationViewModel) {
         return declare(
             [UITemplatedWidget],
             {
@@ -48,10 +44,10 @@ define([
                         this.mensurationWidget.placeAt(this.mensurationWidgetContainer);
                     }
                     /*
-                    if (this.mosaicOperationWidget) {
-                        this.mosaicOperationWidget.placeAt(this.mosaicOperationWidgetContainer);
-                    }
-                    */
+                     if (this.mosaicOperationWidget) {
+                     this.mosaicOperationWidget.placeAt(this.mosaicOperationWidgetContainer);
+                     }
+                     */
                 },
                 /**
                  * cancels the mensuration widget
@@ -68,7 +64,7 @@ define([
                 _createManipulationWidgets: function () {
                     this._createBandReorderWidget();
                     this._createRasterFunctionWidget();
-                 //   this._createMosaicOperationWidget();
+                    //   this._createMosaicOperationWidget();
                     this._createMensurationWidget();
                     if (this.bandReorderWidget && this.rasterFunctionWidget) {
                         this.bandReorderWidget.on("beforeBandReorder", lang.hitch(this, this.handleBeforeBandReorderWidgetApplied));
@@ -77,12 +73,12 @@ define([
                     }
                 },
                 /*
-                _createMosaicOperationWidget: function () {
-                    if (this.mosaicOperationWidget == null) {
-                        this.mosaicOperationWidget = new MosaicOperationWidget();
-                    }
-                },
-                */
+                 _createMosaicOperationWidget: function () {
+                 if (this.mosaicOperationWidget == null) {
+                 this.mosaicOperationWidget = new MosaicOperationWidget();
+                 }
+                 },
+                 */
                 _createBandReorderWidget: function () {
                     if (this.bandReorderWidget == null) {
                         this.bandReorderWidget = new BandReorderWidget();
@@ -158,14 +154,14 @@ define([
                     this.selectNextVisibleTab();
                 },
                 /*
-                hideRendererTab: function () {
-                    domStyle.set(this.rendererTab, "display", "none");
-                    this.selectNextVisibleTab();
-                },
-                showRendererTab: function () {
-                    domStyle.set(this.rendererTab, "display", "inline");
-                },
-                */
+                 hideRendererTab: function () {
+                 domStyle.set(this.rendererTab, "display", "none");
+                 this.selectNextVisibleTab();
+                 },
+                 showRendererTab: function () {
+                 domStyle.set(this.rendererTab, "display", "inline");
+                 },
+                 */
                 hideMensurationTab: function () {
                     domStyle.set(this.mensurationTab, "display", "none");
                     this.selectNextVisibleTab();
@@ -174,13 +170,13 @@ define([
                     domStyle.set(this.mensurationTab, "display", "inline");
                 },
                 /*
-                showMiscTab: function () {
-                    domStyle.set(this.mosaicOperationsTab, "display", "inline");
-                },
-                hideMiscTab: function () {
-                    domStyle.set(this.mosaicOperationsTab, "display", "none");
-                },
-                */
+                 showMiscTab: function () {
+                 domStyle.set(this.mosaicOperationsTab, "display", "inline");
+                 },
+                 hideMiscTab: function () {
+                 domStyle.set(this.mosaicOperationsTab, "display", "none");
+                 },
+                 */
                 hideBandReorderTab: function () {
                     domStyle.set(this.bandsTab, "display", "none");
                     this.selectNextVisibleTab();

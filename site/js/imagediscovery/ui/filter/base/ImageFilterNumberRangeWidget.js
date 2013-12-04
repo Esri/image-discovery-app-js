@@ -3,12 +3,11 @@ define([
     "dojo/text!./template/ImageFilterNumberRangeWidgetTemplate.html",
  //   "xstyle/css!./theme/ImageFilterNumberRangeTheme.css",
     "dojo/_base/lang",
-    "dojo/dom-attr",
     "./BaseImageryFilterWidget",
     "./model/ImageFilterNumberRangeViewModel"
 ],
-  //  function (declare, template, css, lang, domAttr, BaseImageryFilterWidget, ImageFilterNumberRangeViewModel) {
-    function (declare, template,  lang, domAttr, BaseImageryFilterWidget, ImageFilterNumberRangeViewModel) {
+  //  function (declare, template, css, lang,  BaseImageryFilterWidget, ImageFilterNumberRangeViewModel) {
+    function (declare, template,  lang,  BaseImageryFilterWidget, ImageFilterNumberRangeViewModel) {
         return declare(
             [BaseImageryFilterWidget],
             {

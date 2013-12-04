@@ -29,7 +29,7 @@ define([
                     this.createClusterLayer();
                 },
                 /**
-                 * returns true if the cluster layer exists in the clutster manager
+                 * returns true if the cluster layer exists in the cluster manager
                  * @return {boolean}
                  */
                 layerExists: function () {

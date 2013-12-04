@@ -1,13 +1,12 @@
 define([
     "dojo/_base/declare",
     "dojo/_base/lang",
-    "dojo/dom-construct",
     "dijit/TooltipDialog",
     "./AddedFieldValuesToolipContents",
     "esriviewer/ui/base/UIWidget"
 
 ],
-    function (declare, lang, domConstruct, TooltipDialog, AddedFieldValuesToolipContents, UIWidget) {
+    function (declare, lang, TooltipDialog, AddedFieldValuesToolipContents, UIWidget) {
         return declare(
             [UIWidget],
             {
@@ -25,7 +24,7 @@ define([
                     this.visible = false;
                 },
                 addFieldValue: function (fieldValue) {
-                    if(this.addedFieldValuesContent.addFieldValue(fieldValue)){
+                    if (this.addedFieldValuesContent.addFieldValue(fieldValue)) {
                         this.onItemAdded()
                     }
                 },
@@ -70,11 +69,11 @@ define([
                     this.hide();
                     this.onEmpty();
                 },
-                hasFieldValues: function(){
+                hasFieldValues: function () {
                     return this.addedFieldValuesContent.hasFieldValues();
                 },
-                getFieldValues: function(){
-                  return this.addedFieldValuesContent.getFieldValues();
+                getFieldValues: function () {
+                    return this.addedFieldValuesContent.getFieldValues();
                 },
                 onEmpty: function () {
 

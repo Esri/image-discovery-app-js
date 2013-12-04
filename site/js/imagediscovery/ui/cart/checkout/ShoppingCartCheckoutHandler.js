@@ -1,6 +1,5 @@
 define([
     "dojo/_base/declare",
-    "dojo/topic",
     "dojo/_base/lang",
     "esriviewer/base/DataLoaderSupport",
     "../download/ShoppingCartDownloadWidgetWindow"
@@ -14,7 +13,7 @@ define([
      * @param ShoppingCartDownloadWidgetWindow
      * @return {*}
      */
-        function (declare, topic, lang, DataLoaderSupport, ShoppingCartDownloadWidgetWindow) {
+        function (declare,  lang, DataLoaderSupport, ShoppingCartDownloadWidgetWindow) {
         return declare(
             [DataLoaderSupport],
             {

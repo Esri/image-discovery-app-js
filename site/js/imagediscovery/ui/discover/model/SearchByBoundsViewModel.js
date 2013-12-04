@@ -1,9 +1,8 @@
 define([
     "dojo/_base/declare",
-    "dojo/_base/lang",
     "dojo/Evented"
 ],
-    function (declare, lang, Evented) {
+    function (declare, Evented) {
         return declare(
             [Evented],
             {
@@ -12,8 +11,7 @@ define([
                 views: {
                     decimalDegree: "decimalDegree",
                     degreeMinuteSeconds: "degreeMinuteSeconds",
-                    utm: "utm"//,
-                 //   nsew: "nsew"
+                    utm: "utm"
                 },
 
                 constructor: function () {
@@ -27,11 +25,6 @@ define([
                 utmClick: function () {
                     this.setView(this.views.utm);
                 },
-                /*
-                nsewClick: function () {
-                    this.setView(this.views.nsew);
-                },
-                */
                 decimalDegreeClick: function () {
                     this.setView(this.views.decimalDegree);
                 },
@@ -41,7 +34,7 @@ define([
                 setView: function (type) {
                     if (this.currentView() != type) {
                         this.currentView(type);
-                        this.emit(this.VIEW_CHANGE,type);
+                        this.emit(this.VIEW_CHANGE, type);
                     }
                 }
 
