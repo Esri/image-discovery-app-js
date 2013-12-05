@@ -2,7 +2,7 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "https://firstlook.digitalglobe.com/arcgis/rest/services/FL/FirstLook_PostEvent_Philippines_Events/ImageServer",
+            "url": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Toronto/ImageServer",
             "label": "Portland",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
@@ -94,8 +94,8 @@
         "floatPrecision": 1
     },
     "discoverGeometryUploadTask": {
-        "uploadUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
-        "geoprocessingTaskUrl": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/fileToFeatures",
+        "uploadUrl": "http://rickyr7.esri.com:6080/arcgis/rest/services/DiscoveryGeoprocessing2/GPServer/uploads/upload",
+        "geoprocessingTaskUrl": "http://rickyr7.esri.com:6080/arcgis/rest/services/DiscoveryGeoprocessing2/GPServer/fileToFeatures",
         "uploadSHPFileParameterName": "uploadSHPFile",
         "uploadKMLFileParameterName": "uploadKMLFile",
         "uploadKMZFileParameterName": "uploadKMZFile",
@@ -117,7 +117,7 @@
         },
         "footprints": {
             "task": {
-                "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                "url": "http://rickyr7.esri.com:6080/arcgis/rest/services/DiscoveryGeoprocessing2/GPServer/reportGenerator",
                 "featureInputParameter": "Input_JSON_String",
                 "outputUrlParameter": "Report_URL",
                 "isAsync": true
@@ -125,7 +125,7 @@
         },
         "imageryDownload": {
             "task": {
-                "url": "http://ec2-107-20-33-138.compute-1.amazonaws.com:6080/arcgis/rest/services/ImageDiscovery/DiscoveryDownloader/GPServer/DiscoveryDownloader",
+                "url": "http://rickyr7.esri.com:6080/arcgis/rest/services/DiscoveryGeoprocessing2/GPServer/DiscoveryDownloader",
                 "downloadItemInputParameter": "inputJson",
                 "outputUrlParameter": "outputZip",
                 "isAsync": true
