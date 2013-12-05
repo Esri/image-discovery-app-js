@@ -20,7 +20,7 @@
         <div data-bind="visible:hasSearchFields">
             <div class="catalogSearchFieldsHeader">Search Fields</div>
             <ul class="catalogFieldsListingList" data-bind="foreach:searchFields"
-                data-dojo-attach-point="catalgFieldsListing">
+                data-dojo-attach-point="catalogFieldsListing">
                 <li data-bind="ifnot: $parent.isIgnoreField($data.name)" class="catalogFieldListingEntry">
                     <span class="catalogFieldNameHeader" data-bind="text:$data.name"></span>
                     <div class="catalogFieldActions">

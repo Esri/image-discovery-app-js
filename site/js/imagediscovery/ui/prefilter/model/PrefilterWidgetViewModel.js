@@ -14,7 +14,7 @@ define([
                     this.sensorOptions = ko.observableArray([
                         {label: "Landsat-7-ETM+", value: "Landsat-7-ETM+"},
                         {label: "Landsat-5-TM", value: "Landsat-5-TM"},
-                        {label: "Landsat-1-MSS", value: "Landsat-1-MSS"},
+                        {label: "Landsat-1-MSS", value: "Landsat-1-MSS"}
                     ]);
                 }
 

@@ -2,19 +2,15 @@ define([
     "dojo/_base/declare",
     "dojo/Evented",
     "dojo/topic",
-    "dojo/_base/connect",
     "dojo/_base/array",
     "dojo/_base/lang",
-    "dojo/_base/Color",
-    "esri/symbols/SimpleFillSymbol",
-    "esri/symbols/SimpleLineSymbol",
     "esri/layers/GraphicsLayer",
     "esri/layers/RasterFunction",
     "esri/graphic",
     "esri/layers/ImageServiceParameters",
     "esri/layers/MosaicRule"
 ],
-    function (declare, Evented, topic, con, array, lang, Color, SimpleFillSymbol, SimpleLineSymbol, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule) {
+    function (declare, Evented, topic,  array, lang, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule) {
         return declare(
             [Evented],
             {

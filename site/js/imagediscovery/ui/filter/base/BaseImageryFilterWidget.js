@@ -2,14 +2,12 @@ define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageryFilterWidgetTemplate.html",
     "dojo/dom-construct",
-    "dojo/dom-attr",
     "dojo/dom-style",
-    "dojo/dom-class",
     "dojo/_base/lang",
     "dojo/_base/connect",
     "esriviewer/ui/base/UITemplatedWidget"
 ],
-    function (declare, template, domConstruct, domAttr, domStyle, domClass, lang, con, UITemplatedWidget) {
+    function (declare, template, domConstruct,  domStyle,  lang, con, UITemplatedWidget) {
         return declare(
             [UITemplatedWidget],
             {

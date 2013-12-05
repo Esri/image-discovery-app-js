@@ -1,13 +1,11 @@
 define([
     "dojo/_base/declare",
-    "dojo/topic",
     "dojo/_base/lang",
-    "dojo/dom-class",
     "esriviewer/ui/window/WindowWidget",
     "./ImageryExportDownloadListWidget"
 
 ],
-    function (declare, topic, lang, domClass, WindowWidget, ImageryExportDownloadListWidget) {
+    function (declare, lang, WindowWidget, ImageryExportDownloadListWidget) {
         return declare(
             [WindowWidget],
             {

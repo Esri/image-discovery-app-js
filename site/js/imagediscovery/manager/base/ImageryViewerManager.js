@@ -1,6 +1,5 @@
 define([
     "dojo/_base/declare",
-    "dojo/has",
     "dojo/dom-style",
     "dojo/topic",
     "dojo/on",
@@ -9,7 +8,6 @@ define([
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/dom-class",
-    "esriviewer/ui/toolbar/ActionsToolbarWidget",
     "esriviewer/manager/base/ViewerManager",
     "../../ui/results/ImageQueryResultsWidget",
     "../../ui/discover/ImageDiscoveryWidget",
@@ -22,7 +20,7 @@ define([
     "../../layers/thumbnail/ThumbnailManager",
     "../../ui/results/popup/ResultPopup"
 ],
-    function (declare, has, domStyle, topic, on, window, con, lang, domConstruct, domClass, ActionsToolbarWidget, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup) {
         return declare(
             [ViewerManager],
             {
@@ -271,7 +269,7 @@ define([
                     this.viewerAccordion.show();
                 },
                 /**
-                 * called when a query result has been recieved from ArcGIS Server
+                 * called when a query result has been received from ArcGIS Server
                  * @param response  query response object
                  * @param queryLayerController controller that the response is associated with
                  */
@@ -331,11 +329,11 @@ define([
                  */
                 initUserAddCatalogMode: function () {
                     require(["imagediscovery/ui/catalog/AddCatalogModalWindow"], lang.hitch(this, function (AddCatalogModalWindow) {
-                        var addCatalodModalWindow = new AddCatalogModalWindow();
-                        addCatalodModalWindow.on("catalogSet", lang.hitch(this, function (catalogParams) {
+                        var addCatalogModalWindow = new AddCatalogModalWindow();
+                        addCatalogModalWindow.on("catalogSet", lang.hitch(this, function (catalogParams) {
 
                             lang.mixin(this.queryConfig, catalogParams);
-                            addCatalodModalWindow.destroy();
+                            addCatalogModalWindow.destroy();
                             this.startupViewer();
                         }));
                     }));

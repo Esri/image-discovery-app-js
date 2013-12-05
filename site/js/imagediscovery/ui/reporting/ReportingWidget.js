@@ -6,9 +6,8 @@ define([
     "dojo/topic",
     "dojo/_base/array",
     "dojo/_base/lang",
-    "dojo/_base/json",
     "dojo/_base/Color",
-  //  "xstyle/css!./theme/ReportingTheme.css",
+    //  "xstyle/css!./theme/ReportingTheme.css",
     "dojo/text!./template/ReportingTemplate.html",
     "esriviewer/ui/base/UITemplatedWidget",
     "esriviewer/ui/draw/base/MapDrawSupport",
@@ -17,11 +16,10 @@ define([
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol" ,
     "esri/tasks/QueryTask",
-    "esri/tasks/query",
-    "esri/layers/ImageServiceParameters"
+    "esri/tasks/query"
 ],
- //   function (declare, locale, topic, array, lang, json, Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
-    function (declare, locale, topic, array, lang, json, Color,  template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, ImageServiceParameters) {
+    //   function (declare, locale, topic, array, lang,  Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query) {
+    function (declare, locale, topic, array, lang,  Color, template, UITemplatedWidget, MapDrawSupport, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
@@ -465,11 +463,11 @@ define([
                 _generateMapParameters: function (serviceQueryResponses) {
                     var extent = this._getRequestedExtentGeometry();
                     if (extent == null) {
-                        return;
+                        return {};
                     }
                     var currentBaseMap = this._getCurrentBasemapUrl();
                     if (currentBaseMap == null) {
-                        return;
+                        return {};
                     }
                     var displayData = [];
                     var currentServiceQueryResponse;

@@ -206,7 +206,7 @@ define([
                                 displayValue = imageInfo[key];
                             }
                         }
-                        var colName = reverseFieldMapping[key] != null ? reverseFieldMapping[key] : key
+                        var colName = reverseFieldMapping[key] != null ? reverseFieldMapping[key] : key;
                         attributesNVPArray.push({name: colName, value: displayValue});
 
                     } //end for loop of attributes in imageInfo object

@@ -1,12 +1,9 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageFilterSliderWidgetTemplate.html",
-    "dojo/_base/window",
     "dojo/dom-construct",
     "dojo/_base/lang",
     "dojo/dom-attr",
-    "dojo/dom-style",
-    "dojo/dom-class",
     "./BaseImageryFilterWidget",
     "dijit/form/HorizontalSlider",
     "dijit/form/HorizontalRuleLabels",
@@ -14,7 +11,7 @@ define([
     "dijit/form/RadioButton"
 
 ],
-    function (declare, template, window, domConstruct, lang, domAttr, domStyle, domClass, BaseImageryFilterWidget, HorizontalSlider, HorizontalRuleLabels, HorizontalRule,RadioButton) {
+    function (declare, template, domConstruct, lang, domAttr, BaseImageryFilterWidget, HorizontalSlider, HorizontalRuleLabels, HorizontalRule, RadioButton) {
         return declare(
             [BaseImageryFilterWidget],
             {

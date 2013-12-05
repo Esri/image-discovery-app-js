@@ -2,12 +2,10 @@ define([
     "dojo/_base/declare",
     "dojo/on",
     "dojo/topic",
-    "dojo/_base/connect",
     "dojo/_base/lang",
-    "./base/SearchByGeometriesAggregator",
     "esriviewer/map/base/LayerQueryParameters"
 ],
-    function (declare, on, topic, con, lang, SearchByGeometriesAggregator, LayerQueryParameters) {
+    function (declare, on, topic,  lang, LayerQueryParameters) {
         return declare(
             [],
             {
@@ -118,7 +116,7 @@ define([
                     }
                 },
                 handleSetQueryLayerControllers: function (queryLayerControllers) {
-                    this.queryLayerControllers =  [];
+                    this.queryLayerControllers = [];
                     if (queryLayerControllers != null && lang.isArray(queryLayerControllers) && queryLayerControllers.length > 0) {
                         this.queryLayerControllers = queryLayerControllers;
                     }

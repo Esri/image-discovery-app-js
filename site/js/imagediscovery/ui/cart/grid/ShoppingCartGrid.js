@@ -5,15 +5,13 @@ define([
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dojo/dom-class",
-    "dojo/store/Observable",
-    "dojo/store/Memory",
     "dijit/form/Button",
     "../../base/grid/ImageryGrid",
     "dojo/_base/array"
 ],
-    function (declare, topic, on, lang, domConstruct, domClass, Observable, Memory, Button, ImageryBaseGrid, array) {
+    function (declare, topic, on, lang, domConstruct, domClass,   Button, ImageryGrid, array) {
         return declare(
-            [ImageryBaseGrid],
+            [ImageryGrid],
             {
                 ignoreVisibleFieldNames: [" ", "zoomToFootprint", "showThumbNail", "addedToCart", "__serviceLabel"],
                 constructor: function () {

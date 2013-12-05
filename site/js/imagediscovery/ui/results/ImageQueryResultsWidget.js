@@ -3,17 +3,9 @@ define([
     "dojo/text!./template/ImageQueryResultTemplate.html",
     "xstyle/css!./theme/ImageQueryResultsTheme.css",
     "dojo/topic",
-    "dojo/_base/xhr",
-    "dojo/query",
     "dojo/_base/lang",
     "dojo/dom-construct",
-    "dojo/dom-attr",
-    "dojo/dom-class",
-    "dojo/dom-style",
-    "dojo/on",
     "dijit/form/Button",
-    "esri/geometry/Point",
-    "esri/geometry/Extent",
     "esriviewer/ui/base/UITemplatedWidget",
     "esriviewer/ui/tooltip/ConfirmTooltip",
     "./ImageQueryResultsGrid",
@@ -23,16 +15,15 @@ define([
     "../filter/FilterFunctionManager" ,
     "../cart/checkout/ShoppingCartCheckoutHandler",
     "./base/ActiveSourcesWidget",
- //   "esriviewer/ui/draw/base/MapDrawSupport",
     "dijit/TooltipDialog",
     "./ResultsClusterManager",
     "./ResultsHeatmapManager",
     "./ResultsFootprintManager",
     "../transparency/SearchLayersTransparencyWidget"
 ],
-    function (declare, template, theme, topic, xhr, query, lang, domConstruct, domAttr, domClass, domStyle, on, Button, Point, Extent, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget,/* MapDrawSupport,  */TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager, SearchLayersTransparencyWidget) {
+    function (declare, template, theme, topic, lang, domConstruct, Button, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager, SearchLayersTransparencyWidget) {
         return declare(
-          //  [UITemplatedWidget, MapDrawSupport],
+            //  [UITemplatedWidget, MapDrawSupport],
             [UITemplatedWidget],
             {
                 footprintZoomLevelStart: 12,
@@ -61,7 +52,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SHOW_RESET_ICON, lang.hitch(this, this.showFilterResetIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.HIDE_ICON, lang.hitch(this, this.hideTimeSliderIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.SHOW_ICON, lang.hitch(this, this.showTimeSliderIcon));
-             //       topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.checkForToolsActive));
+                    //       topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.checkForToolsActive));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleFilterApplied));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED, lang.hitch(this, this.handleZoomLevelChange));
                 },
@@ -75,8 +66,8 @@ define([
                     this.viewModel.cart.subscribe(lang.hitch(this, this.handleCartVisibilityChange));
                     this.viewModel.results.subscribe(lang.hitch(this, this.handleResultsVisibilityChange));
                     this.viewModel.resultsVisibleAndHasResults.subscribe(lang.hitch(this, this.handleFilterIconStateChange));
-                  //  this.viewModel.on(this.viewModel.ACTIVATE_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateRectangleSelect));
-                 //   this.viewModel.on(this.viewModel.CLEAR_DRAW, lang.hitch(this, this.clearDraw));
+                    //  this.viewModel.on(this.viewModel.ACTIVATE_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateRectangleSelect));
+                    //   this.viewModel.on(this.viewModel.CLEAR_DRAW, lang.hitch(this, this.clearDraw));
                     this.viewModel.setFilterIconHidden();
 
 
@@ -99,7 +90,7 @@ define([
                     }
                 },
                 handleFooterCollapsed: function () {
-                //    this.clearDraw();
+                    //    this.clearDraw();
                     this._hideActiveSourcesTooltip();
                     this.hideResultLayerTransparencyPopup();
                     if (this.clearResultsTooltip && this.clearResultsTooltip.visible) {
@@ -153,24 +144,24 @@ define([
 
                 },
                 /*
-                checkForToolsActive: function (level) {
-                    if (level == null) {
-                        var zoomLevel;
-                        topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, lang.hitch(this, function (mapLevel) {
-                            zoomLevel = mapLevel;
-                        }));
-                        level = zoomLevel;
-                    }
-                    if (level < this.footprintZoomLevelStart) {
-                        this.viewModel.toolsActive(false);
-                        this.clearDraw();
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
-                    }
-                    else {
-                        this.viewModel.toolsActive(true);
-                    }
-                },
-                */
+                 checkForToolsActive: function (level) {
+                 if (level == null) {
+                 var zoomLevel;
+                 topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, lang.hitch(this, function (mapLevel) {
+                 zoomLevel = mapLevel;
+                 }));
+                 level = zoomLevel;
+                 }
+                 if (level < this.footprintZoomLevelStart) {
+                 this.viewModel.toolsActive(false);
+                 this.clearDraw();
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
+                 }
+                 else {
+                 this.viewModel.toolsActive(true);
+                 }
+                 },
+                 */
                 /**
                  * listener for VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED
                  * figures out if the discovery application should display the cluser layer or the footprint layer
@@ -184,8 +175,8 @@ define([
                         return;
                     }
                     //hide the select tools if we are in clustering
-                  //  this.checkForToolsActive();
-                    //check to see if we dsiplay/hide the footprints layer
+                    //  this.checkForToolsActive();
+                    //check to see if we display/hide the footprints layer
                     if (this.resultsFootprintManager) {
                         if (level < this.footprintZoomLevelStart) {
                             if (this.resultsFootprintManager.isVisible()) {
@@ -273,44 +264,44 @@ define([
                 /**
                  * activates the rectangle identify tool in the results widget
                  */
-                    /*
-                handleActivateRectangleSelect: function () {
-                    this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
-                    this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
-                },
-                */
+                /*
+                 handleActivateRectangleSelect: function () {
+                 this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
+                 this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
+                 },
+                 */
                 /**
                  * called when a geometry has been created from the identify tool inside the results widget
                  * @param geometry
                  */
-                    /*
-                geometryAdded: function (geometry) {
-                    if (geometry instanceof Extent) {
-                        if (this.viewModel.rectangleSelectionActive()) {
-                            if (this.identifyContainsRadioBtn.checked) {
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
-                                    geometry, true);
-                            }
-                            else {
-                                topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
-                                    geometry, false);
-                            }
-                        }
-                    }
-                    this.setDraw(this.currentDrawType);
-                },
-                */
+                /*
+                 geometryAdded: function (geometry) {
+                 if (geometry instanceof Extent) {
+                 if (this.viewModel.rectangleSelectionActive()) {
+                 if (this.identifyContainsRadioBtn.checked) {
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
+                 geometry, true);
+                 }
+                 else {
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
+                 geometry, false);
+                 }
+                 }
+                 }
+                 this.setDraw(this.currentDrawType);
+                 },
+                 */
                 /**
                  * clears the drawing on the map from the results widget (identify)
                  */
-                    /*
-                clearDraw: function () {
-                    this.inherited(arguments);
-                    this.currentDrawType = null;
-                    topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
-                    this.viewModel.clearAllDraw();
-                },
-                */
+                /*
+                 clearDraw: function () {
+                 this.inherited(arguments);
+                 this.currentDrawType = null;
+                 topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
+                 this.viewModel.clearAllDraw();
+                 },
+                 */
                 /**
                  * creates the shopping cart grid
                  * @private
@@ -429,7 +420,7 @@ define([
                         this.shoppingCartGridWidget.setSelectedThumbnails();
                         topic.publish(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED);
                         //can only select features in the results table
-                     //   this.clearDraw();
+                        //   this.clearDraw();
                         //hide the feature and cluster layers
                         if (this.resultsFootprintManager && this.resultsFootprintManager.isVisible()) {
                             this.resultsFootprintManager.hideLayer();
@@ -455,7 +446,7 @@ define([
                     }
                 },
                 /**
-                 * returns row attributes to the callbeack
+                 * returns row attributes to the callback
                  * @param fieldsArray fields to return
                  * @param callback function to return to
                  * @param queryParams options parameters to use as a query against the store
@@ -477,7 +468,7 @@ define([
                     }
                 },
                 /**
-                 * returns row attributes for visible raster results to the callbeack
+                 * returns row attributes for visible raster results to the callback
                  * @param fieldsArray fields to return
                  * @param callback function to return to
                  * @param queryParams options parameters to use as a query against the store
@@ -502,7 +493,7 @@ define([
                         this.shoppingCartGridWidget.setSelectedThumbnails();
                     }
                     this.viewModel.resultCount(0);
-                 //   this.clearDraw();
+                    //   this.clearDraw();
                     VIEWER_UTILS.debug("Cleared Results");
                 },
                 clearResults: function () {

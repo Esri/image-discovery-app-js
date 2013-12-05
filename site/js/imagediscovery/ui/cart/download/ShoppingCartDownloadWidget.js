@@ -1,12 +1,10 @@
 define([
     "dojo/_base/declare",
-    "dojo/topic",
-    "dojo/_base/lang",
     "../../download/DownloadWidget",
     "./ShoppingCartDownloadFootprintsWidget",
     "../export/ShoppingCartImageryExportWidget"
 ],
-    function (declare, topic, lang, DownloadWidget, ShoppingCartDownloadFootprintsWidget, ShoppingCartImageryExportWidget) {
+    function (declare, DownloadWidget, ShoppingCartDownloadFootprintsWidget, ShoppingCartImageryExportWidget) {
         return declare(
             [DownloadWidget],
             {

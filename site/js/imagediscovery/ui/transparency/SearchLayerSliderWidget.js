@@ -3,16 +3,14 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/SearchLayerSliderTemplate.html",
-    "dojo/topic",
     "dojo/_base/lang",
     "esriviewer/ui/base/UITemplatedWidget",
-    "dojo/dom-construct",
     "dijit/form/HorizontalSlider",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
     "./model/SearchLayerSliderViewModel"
 ],
-    function (declare, template, topic, lang, UITemplatedWidget, domConstruct, HorizontalSlider, HorizontalRule, HorizontalRuleLabels, SearchLayerSliderViewModel) {
+    function (declare, template, lang, UITemplatedWidget, HorizontalSlider, HorizontalRule, HorizontalRuleLabels, SearchLayerSliderViewModel) {
         return declare(
             [UITemplatedWidget],
             {
@@ -32,7 +30,7 @@ define([
                     ko.applyBindings(this.viewModel, this.domNode);
                 },
                 handleTransparencyChange: function (transValue) {
-                    this.onTransparencyChanged(this.layer, transValue *.01);
+                    this.onTransparencyChanged(this.layer, transValue * .01);
                 },
                 onTransparencyChanged: function (layer, transparency) {
                     if (layer != null) {

@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/MensurationWidgetTemplate.html",
-  //  "xstyle/css!./theme/MensurationWidgetTheme.css",
+    //  "xstyle/css!./theme/MensurationWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/lang",
     "esriviewer/ui/base/UITemplatedWidget",
@@ -21,8 +21,8 @@ define([
     "dojo/_base/array"
 ],
     //this widget is contained in the analysis window content
-  //  function (declare, template, theme, topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
-    function (declare, template,  topic, lang, DataLoaderSupport, UITemplatedWidget, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
+    //  function (declare, template, theme, topic, lang, UITemplatedWidget,DataLoaderSupport , Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
+    function (declare, template, topic, lang, UITemplatedWidget, DataLoaderSupport, Color, json, MensurationViewModel, Button, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Polyline, Point, Polygon, Extent, Graphic, array) {
         return declare(
             [UITemplatedWidget, DataLoaderSupport],
             {
@@ -36,7 +36,7 @@ define([
                 mensurationOperationParamName: "measureOperation",
                 fromGeometryParamName: "fromGeometry",
                 toGeometryParamName: "toGeometry",
-                noMensurationCapabilitesStrings: ["None", "None,Basic",""],
+                noMensurationCapabilitiesStrings: ["None", "None,Basic", ""],
                 templateString: template,
                 mensurationLineSymbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 255]), 3),
                 mensurationPointSymbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 1,
@@ -262,12 +262,12 @@ define([
                     this.loadJsonP(measureLayerUrl, requestParams, this.mensurationCompleteCallback, this.mensurationErrorCallback)
                 },
                 /**
-                 * returns true if the passes layer supports mensursation
+                 * returns true if the passes layer supports mensuration
                  * @param layer layer to check for mensuration support
                  * @return {boolean}
                  */
                 layerSupportsMensuration: function (layer) {
-                    var menCapExcludeIdx = array.indexOf(this.noMensurationCapabilitesStrings, layer.mensurationCapabilities);
+                    var menCapExcludeIdx = array.indexOf(this.noMensurationCapabilitiesStrings, layer.mensurationCapabilities);
                     return !(layer == null || layer.mensurationCapabilities == null || menCapExcludeIdx > -1);
                 },
                 /**
@@ -282,7 +282,7 @@ define([
                     this.layer = this.queryLayerController.layer;
                     //kill all the mensuration options
                     this.viewModel.mensurationOptions.removeAll();
-                    if (this.layer == null || array.indexOf(this.noMensurationCapabilitesStrings, this.layer.mensurationCapabilities) > -1) {
+                    if (this.layer == null || array.indexOf(this.noMensurationCapabilitiesStrings, this.layer.mensurationCapabilities) > -1) {
                         this.viewModel.setMensurationNotSupported();
                     }
                     else {
@@ -295,15 +295,15 @@ define([
                 },
                 /**
                  * sets the mensuration capabilities in the mensuration view
-                 * @param mensurationCapabilites
+                 * @param mensurationCapabilities
                  */
-                setMensurationCapabilities: function (mensurationCapabilites) {
+                setMensurationCapabilities: function (mensurationCapabilities) {
                     this.viewModel.mensurationOptions.removeAll();
                     var currentMensurationCapability;
                     var currentMensurationCapArray;
                     var i, j;
-                    for (i = 0; i < mensurationCapabilites.length; i++) {
-                        currentMensurationCapability = mensurationCapabilites[i];
+                    for (i = 0; i < mensurationCapabilities.length; i++) {
+                        currentMensurationCapability = mensurationCapabilities[i];
                         currentMensurationCapArray = this.mensurationCapabilitiesLookup[currentMensurationCapability];
                         if (currentMensurationCapArray == null) {
                             continue;
@@ -315,7 +315,7 @@ define([
 
                 },
                 /**
-                 * preocesses a mensuration response from the active layer service
+                 * processes a mensuration response from the active layer service
                  * @param mensurationResponse
                  */
                 handleMensurationComplete: function (mensurationResponse) {

@@ -2,8 +2,6 @@ define([
     "dojo/_base/declare",
     "dojo/_base/lang",
     "dojo/topic",
-    "dojo/on",
-    "dojo/dom-construct",
     "./base/ImageryViewerManager",
     "esriviewer/manager/ViewerManagerWindow",
     "../ui/manipulation/ImageManipulationWindowWidget",
@@ -11,7 +9,7 @@ define([
     "dijit/MenuItem",
     "esriviewer/ui/toolbar/base/button/Button"
 ],
-    function (declare, lang, topic, on, domConstruct, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem, ToolbarButton) {
+    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem, Button) {
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
@@ -41,12 +39,12 @@ define([
                  *  add discovery button and analysis button to the toolbar
                  */
                 processNavigationToolbarAddons: function () {
-                    var accordionButton = new ToolbarButton({
+                    var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
                         buttonText: "Discover",
                         onClick: lang.hitch(this, this.handleShowDiscovery)
                     });
-                    var analysisButton = new ToolbarButton({
+                    var analysisButton = new Button({
                         buttonClass: "imageryIcons analysis",
                         buttonText: "Analysis",
                         onClick: lang.hitch(this, function () {

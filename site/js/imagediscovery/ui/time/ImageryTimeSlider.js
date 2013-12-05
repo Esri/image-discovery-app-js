@@ -4,14 +4,13 @@ define([
     "dojo/dom-style",
     "dojo/topic",
     "dojo/_base/lang",
-    "dojo/query",
     "dojo/dom-construct",
     "esri/TimeExtent",
     "esri/dijit/TimeSlider",
     "esriviewer/ui/time/TimeSliderWidget",
     "./model/ImageryTimeSliderViewModel"
 ],
-    function (declare, template, domStyle, topic, lang, query, domConstruct, TimeExtent, TimeSlider, TimeSliderWidget, ImageryTimeSliderViewModel) {
+    function (declare, template, domStyle, topic, lang,  domConstruct, TimeExtent, TimeSlider, TimeSliderWidget, ImageryTimeSliderViewModel) {
         return declare(
             [TimeSliderWidget],
             {
@@ -291,8 +290,7 @@ define([
                     //only want results that have visible thumbnails
                     var itemStartTime = item[timeInfoForItem.startTimeField];
                     var itemEndTime = item[timeInfoForItem.endTimeField];
-                    var isValid = !(itemStartTime < this.currentStartTime || itemEndTime > this.currentEndTime) && item.showThumbNail;
-                    return  isValid;
+                    return !(itemStartTime < this.currentStartTime || itemEndTime > this.currentEndTime) && item.showThumbNail;
                 },
                 show: function () {
                     if (!this.visible) {

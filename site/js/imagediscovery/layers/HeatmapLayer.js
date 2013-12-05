@@ -1,7 +1,6 @@
 define([
     "dojo/_base/declare",
     "dijit/_WidgetBase",
-    "dojo/dom-construct",
     "dojo/dom",
     "dojo/query",
     "dojo/dom-style",
@@ -9,7 +8,7 @@ define([
     "esri/layers/DynamicMapServiceLayer",
     "esri/geometry/screenUtils",
     "esri/geometry/Point"
-], function (declare, _WidgetBase, domConstruct, dom, query, domStyle, on, DynamicMapServiceLayer, screenUtils, Point) {
+], function (declare, _WidgetBase,  dom, query, domStyle, on, DynamicMapServiceLayer, screenUtils, Point) {
     return declare([_WidgetBase, DynamicMapServiceLayer], {
         // constructor
         constructor: function (properties, srcNode) {

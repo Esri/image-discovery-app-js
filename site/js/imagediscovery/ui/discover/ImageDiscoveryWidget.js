@@ -6,8 +6,6 @@ define([
     "dojo/has",
     'dijit/layout/ContentPane',
     "dojo/_base/lang",
-    "dojo/dom-style",
-    "dojo/dom-class",
     "esriviewer/ui/base/UITemplatedWidget",
     "esriviewer/ui/draw/base/MapDrawSupport",
     "dojo/_base/Color",
@@ -26,8 +24,8 @@ define([
     "esri/geometry/Extent",
     "../../base/ImageQueryLayerControllerQueryParameters"
 ],
-    //  function (declare, template, theme, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
-    function (declare, template, topic, has, ContentPane, lang, domStyle, domClass, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    //  function (declare, template, theme, topic, has, ContentPane, lang,   UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    function (declare, template, topic, has, ContentPane, lang, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget, MapDrawSupport],
             {
@@ -139,14 +137,14 @@ define([
                 },
                 loadViewerConfigurationData: function () {
                     //load the configuration
-                    var discoveryGeometryUploadConfiguration;
+                    var discoveryGeometryUploadConfiguration = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "discoverGeometryUploadTask", function (discoveryGeometryUploadConf) {
                         discoveryGeometryUploadConfiguration = discoveryGeometryUploadConf;
                     });
                     if (discoveryGeometryUploadConfiguration != null && lang.isObject(discoveryGeometryUploadConfiguration)) {
                         this.discoverGeometryUploadTaskConfiguration = discoveryGeometryUploadConfiguration;
                     }
-                    var discoveryQueryFields;
+                    var discoveryQueryFields = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageDiscoveryQueryFields", function (discoveryQueryFieldsConf) {
                         discoveryQueryFields = discoveryQueryFieldsConf;
                     });

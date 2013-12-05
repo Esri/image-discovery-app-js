@@ -3,12 +3,11 @@ define([
     "dojo/text!./template/MosaicOperationTemplate.html",
     "dojo/topic",
     "dojo/_base/lang",
-    "dojo/_base/array",
     "../base/ImageManipulationWidgetBase",
     "./model/MosaicOperationViewModel"
 
 ],
-    function (declare, template, topic, lang, array, ImageManipulationWidgetBase, MosaicOperationViewModel) {
+    function (declare, template, topic, lang,  ImageManipulationWidgetBase, MosaicOperationViewModel) {
         return declare(
             [ImageManipulationWidgetBase],
             {

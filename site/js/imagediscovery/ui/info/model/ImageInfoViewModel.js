@@ -1,11 +1,9 @@
 define([
     "dojo/_base/declare",
-    "dojo/_base/lang",
-    "dojo/topic",
     "dojo/Evented",
     "dojo/_base/array"
 ],
-    function (declare,lang, topic, Evented, array) {
+    function (declare, Evented, array) {
         return declare(
             [Evented],
             {
@@ -19,7 +17,7 @@ define([
                 constructor: function () {
                     var self = this;
 
-                    this.showThumbnailView = function(imageInfoItem) {
+                    this.showThumbnailView = function (imageInfoItem) {
                         imageInfoItem.showAttrs(false);
                         if (imageInfoItem.thumbnailURL() == "") {
                             self.emit(self.SHOW_THUMBNAIL, imageInfoItem);
@@ -27,20 +25,20 @@ define([
                         return true; //must have this statement to let the default click action proceed
                     };
 
-                    this.toggleShowImage = function(imageInfoItem) {
+                    this.toggleShowImage = function (imageInfoItem) {
                         self.emit(self.TOGGLE_SHOW_IMAGE_ON_MAP, imageInfoItem.imageInfoAndLayer.imageInfo);
                     };
 
-                    this.showAttrsView = function(imageInfoItem) {
+                    this.showAttrsView = function (imageInfoItem) {
                         imageInfoItem.showAttrs(true);
                         return true;    //must have this statement to let the default click action proceed
                     };
-                    this.toggleAddImgToShoppingCart = function(imageInfoItem) {
+                    this.toggleAddImgToShoppingCart = function (imageInfoItem) {
                         var inShoppingCartBool = imageInfoItem.inShoppingCart();
                         imageInfoItem.inShoppingCart(!inShoppingCartBool);
                         self.emit(self.TOGGLE_ADD_IMG_TO_SHOPPING_CART, imageInfoItem.imageInfoAndLayer.imageInfo);
                     };
-                    this.centerAndFlashFootprint = function(imageInfoItem) {
+                    this.centerAndFlashFootprint = function (imageInfoItem) {
                         self.emit(self.CENTER_AND_FLASH_FOOTPRINT, imageInfoItem.imageInfoAndLayer.imageInfo);
                     }
 
@@ -54,14 +52,14 @@ define([
                     imageInfoItem["radioName"] = ko.observable('showView' + this.imageInfoArray().length);
                     this.imageInfoArray.push(imageInfoItem);
                 },
-                clearImageInfos: function() {
+                clearImageInfos: function () {
                     this.imageInfoArray.removeAll();
                 },
-                findImageInfoItem: function(imageInfo) {
-                    var filteredArray = array.filter(this.imageInfoArray(), function(item){
+                findImageInfoItem: function (imageInfo) {
+                    var filteredArray = array.filter(this.imageInfoArray(), function (item) {
                         var imgInfo = item.imageInfoAndLayer.imageInfo;
                         if (imgInfo.queryControllerId == imageInfo.queryControllerId &&
-                            imgInfo.OBJECTID == imageInfo.OBJECTID)  {
+                            imgInfo.OBJECTID == imageInfo.OBJECTID) {
                             return true;
                         }
                         return false;
@@ -71,13 +69,13 @@ define([
                     }
                     return null;
                 },
-                removeImageInfoFromShoppingCart: function(imageInfo) {
+                removeImageInfoFromShoppingCart: function (imageInfo) {
                     var imageInfoItemFound = this.findImageInfoItem(imageInfo);
                     if (imageInfoItemFound) {
                         imageInfoItemFound.inShoppingCart(false);
                     }
                 },
-                addImageInfoToShoppingCart: function(imageInfo) {
+                addImageInfoToShoppingCart: function (imageInfo) {
                     var imageInfoItemFound = this.findImageInfoItem(imageInfo);
                     if (imageInfoItemFound) {
                         imageInfoItemFound.inShoppingCart(true);
