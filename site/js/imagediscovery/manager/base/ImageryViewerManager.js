@@ -18,9 +18,11 @@ define([
     "./ImageryWebMapTemplateConfigurationUtil",
     "dijit/form/ToggleButton",
     "../../layers/thumbnail/ThumbnailManager",
-    "../../ui/results/popup/ResultPopup"
+    "../../ui/results/popup/ResultPopup",
+    "esriviewer/ui/toolbar/base/button/Button"
+
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup,Button) {
         return declare(
             [ViewerManager],
             {
@@ -68,6 +70,7 @@ define([
                  *
                  */
                 displayCatalogLoading: function () {
+                    console.log("displayCatalogLoading");
                     //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
                     this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
@@ -267,6 +270,27 @@ define([
                     VIEWER_UTILS.log("Publishing catalog layer to widgets", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     this.viewerAccordion.show();
+                    this.createDiscoveryToolbarButtons();
+                },
+                /**
+                 *  add discovery button and analysis button to the toolbar
+                 */
+                createDiscoveryToolbarButtons: function(){
+                    console.log("processNavigationToolbarAddons");
+                    var accordionButton = new Button({
+                        buttonClass: "commonIcons16 binoculars",
+                        buttonText: "Discover",
+                        onClick: lang.hitch(this, this.handleShowDiscovery)
+                    });
+                    var analysisButton = new Button({
+                        buttonClass: "imageryIcons analysis",
+                        buttonText: "Analysis",
+                        onClick: lang.hitch(this, function () {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
+                        })
+                    });
+                    accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
+                    analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
                 },
                 /**
                  * called when a query result has been received from ArcGIS Server

@@ -6,10 +6,9 @@ define([
     "esriviewer/manager/ViewerManagerWindow",
     "../ui/manipulation/ImageManipulationWindowWidget",
     "../ui/swipe/SwipeWindowWidget",
-    "dijit/MenuItem",
-    "esriviewer/ui/toolbar/base/button/Button"
+    "dijit/MenuItem"
 ],
-    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem, Button) {
+    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem) {
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
@@ -35,25 +34,7 @@ define([
                     //create the swipe widget
                     this.swipeWindowWidget = new SwipeWindowWidget();
                 },
-                /**
-                 *  add discovery button and analysis button to the toolbar
-                 */
-                processNavigationToolbarAddons: function () {
-                    var accordionButton = new Button({
-                        buttonClass: "commonIcons16 binoculars",
-                        buttonText: "Discover",
-                        onClick: lang.hitch(this, this.handleShowDiscovery)
-                    });
-                    var analysisButton = new Button({
-                        buttonClass: "imageryIcons analysis",
-                        buttonText: "Analysis",
-                        onClick: lang.hitch(this, function () {
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
-                        })
-                    });
-                    accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
-                    analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
-                },
+
                 /**
                  *  add swipe widget to the tools dropdown
                  */
