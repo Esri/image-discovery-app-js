@@ -681,7 +681,7 @@ define([
                         }));
                         this.layerTransparencyTooltipVisible = false;
                         topic.subscribe(IMAGERY_GLOBALS.EVENTS.TRANSPARENCY.POPUP.HIDE,
-                            dojo.hitch(this, this.hideResultLayerTransparencyPopup));
+                            lang.hitch(this, this.hideResultLayerTransparencyPopup));
                     }
                     else {
                         this._toggleResultLayerTransparencyPopup();

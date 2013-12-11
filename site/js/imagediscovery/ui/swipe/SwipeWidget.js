@@ -13,11 +13,12 @@ define([
     "dojo/dnd/move",
     "dojo/_base/connect",
     "dojo/dom-construct",
+    "dojo/_base/array",
     "dojo/dom-style",
     "dijit/form/Button"
 ],
     //  function (declare, template, theme, topic, lang, sniff, dom,  UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
-    function (declare, template, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
+    function (declare, template, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct,array, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
@@ -297,7 +298,7 @@ define([
                     }
                 },
                 toggleBaseMap: function (show) {
-                    dojo.forEach(this.map.layerIds, dojo.hitch(this, function (id) {
+                    array.forEach(this.map.layerIds, dojo.hitch(this, function (id) {
                         var layer = this.map.getLayer(id); //layer is a Layer object
                         var layerURL = layer.url;
 
