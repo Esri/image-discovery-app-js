@@ -15,6 +15,7 @@ define([
             [DataLoaderSupport],
             {
                 constructor: function () {
+                    this.thumbnailTokenCache = {};
                     var map;
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GET, function (mapInstance) {
                         map = mapInstance;
@@ -29,7 +30,6 @@ define([
                 },
                 initListeners: function () {
                     var clearGraphicsScoped = lang.hitch(this, this.clearThumbnails);
-                    //    topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, clearGraphicsScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, clearGraphicsScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.SHOW, lang.hitch(this, this.handleShowThumbnail));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR, clearGraphicsScoped);
@@ -48,6 +48,22 @@ define([
                     var itemUrl = VIEWER_UTILS.joinUrl(layerUrl, objectId);
                     var infoUrl = VIEWER_UTILS.joinUrl(itemUrl, "info");
                     var thumbnailUrl = VIEWER_UTILS.joinUrl(itemUrl, "thumbnail");
+                    var token = null;
+                    if (this.thumbnailTokenCache[layerUrl] == null) {
+                        var userObject = null;
+                        topic.publish(VIEWER_GLOBALS.EVENTS.IDENTITY_MANAGER.GET_TOKEN, layerUrl, function (userObj) {
+                            userObject = userObj;
+                        });
+                        if (userObject != null && lang.isObject(userObject)) {
+                            this.thumbnailTokenCache[layerUrl] = userObject;
+                        }
+                        else {
+                            this.thumbnailTokenCache[layerUrl] = {username: null, token: null};
+                        }
+                    }
+                    if (this.thumbnailTokenCache[layerUrl].token != null) {
+                        thumbnailUrl += "?token=" + this.thumbnailTokenCache[layerUrl].token;
+                    }
                     this.loadJsonP(infoUrl, {f: "json"}, lang.hitch(this, this.handleThumbnailInfoLoaded, objectId, layerUrl, thumbnailUrl));
                 },
                 handleThumbnailInfoLoaded: function (objectId, layerUrl, thumbnailUrl, info) {
@@ -85,11 +101,7 @@ define([
                     if (clearGraphics && this.thumbnailGraphicsLayer.graphics != null && this.thumbnailGraphicsLayer.graphics.length > 0) {
                         this.clearThumbnails();
                     }
-                    /*
-                     if (thumbnailItem.graphic != null) {
-                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.REMOVE, thumbnailItem.graphic);
-                     }
-                     */
+
                     if (thumbnailItem.extent == null || thumbnailItem.thumbnailUrl == null) {
                         return;
                     }
@@ -102,8 +114,8 @@ define([
                     var graphic = new Graphic(centerPoint, symbol, {}, null);
 
                     this.thumbnailGraphicsLayer.add(graphic);
-                    // topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.ADD, thumbnailItem.graphic);
                 }
             });
 
-    });
+    })
+;
