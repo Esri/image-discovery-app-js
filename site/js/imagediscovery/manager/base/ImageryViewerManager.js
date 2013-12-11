@@ -70,7 +70,6 @@ define([
                  *
                  */
                 displayCatalogLoading: function () {
-                    console.log("displayCatalogLoading");
                     //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
                     this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
@@ -276,7 +275,6 @@ define([
                  *  add discovery button and analysis button to the toolbar
                  */
                 createDiscoveryToolbarButtons: function(){
-                    console.log("processNavigationToolbarAddons");
                     var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
                         buttonText: "Discover",
