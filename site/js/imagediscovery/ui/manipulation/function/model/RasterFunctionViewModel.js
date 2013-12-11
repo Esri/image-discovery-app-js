@@ -23,7 +23,7 @@ define([
                     var selectedIndex = this.rasterFunctions.indexOf(value);
                     var selectedLookupObservableId;
                     if (selectedIndex > -1) {
-                        if(this.currentSelectedRasterFunctionWidget){
+                        if (this.currentSelectedRasterFunctionWidget) {
                             this.currentSelectedRasterFunctionWidget.hide();
                         }
                         var selectedRasterFunctionWidget = this.rasterFunctions()[selectedIndex];
@@ -53,7 +53,7 @@ define([
                     //strip whitespace
                     var internalVar = "rst_" + (rasterFunctionObject.label).replace(/\s+/g, "_");
                     //dots not allowed
-                    internalVar = internalVar.replace(/\./g, "_");
+                    internalVar = internalVar.replace(/[.-]/g, "_");
                     //add data bind to domNode
                     var widget = rasterFunctionObject.widget;
                     var widgetDomNode = widget.domNode;
