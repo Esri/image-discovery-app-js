@@ -1,6 +1,6 @@
 # image-discovery-app-js
 
-####Creating a Web Mapping Application 
+####Creating a Discovery Viewer Web Mapping Application 
 
 Starting with an empty map in portal click the `Add` button and select `Add Layer from Web`
 
@@ -42,12 +42,13 @@ Navigate to the item in Portal and click `Configure App`
 
 ![App](screenshots/web_application/11.png)
 
-In the right pane you can select which widgets to display, the header to display, and which fields to display in the search results (comma separated)
+In the right pane you can select which widgets to display, the header to display, and which fields to display in the search results
 
 ![App](screenshots/web_application/12.png)
 
 Once configuration is complete click `Save`. 
-The applicaiton is now accessible through the Link provided in the Portal item description.
+
+The application is now accessible through the link provided in the Portal item description.
 
 
 
