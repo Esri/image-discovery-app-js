@@ -33,7 +33,9 @@ define([
                     showFootprint: "showFootprint",
                     OBJECTID: "OBJECTID",
                     Shape_Area: "Shape_Area",
-                    Shape_Length: "Shape_Length"
+                    Shape_Length: "Shape_Length",
+                    SHAPE_Area: "SHAPE_Area",
+                    SHAPE_Length: "SHAPE_Length"
                 },
                 constructor: function () {
                     this.loadViewerConfigurationData();
@@ -51,10 +53,10 @@ define([
                     var hideCurrentPopupScoped = lang.hitch(this, this.hidePopup);
 
                     //listen for user interaction with the map
-                    this.map.on("key-up",hideCurrentPopupScoped);
-                    this.map.on("mouse-drag-start",hideCurrentPopupScoped);
-                    this.map.on("mouse-wheel",hideCurrentPopupScoped);
-                  //  this.map.on("key-up",hideCurrentPopupScoped);
+                    this.map.on("key-up", hideCurrentPopupScoped);
+                    this.map.on("mouse-drag-start", hideCurrentPopupScoped);
+                    this.map.on("mouse-wheel", hideCurrentPopupScoped);
+                    //  this.map.on("key-up",hideCurrentPopupScoped);
 
 
                     //when user adds item to shopping cart from Results view
@@ -63,8 +65,8 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
                     //when user removes item from cart from ShoppingCart view
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_TRANSPARENT,hideCurrentPopupScoped);
-                   // topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, hideCurrentPopupScoped);
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_TRANSPARENT, hideCurrentPopupScoped);
+                    // topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.CHANGED, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, lang.hitch(this, this.show));
@@ -78,6 +80,7 @@ define([
                     dijit.popup.close(this.popupTooltip);
 
                     this.currentToggleCartIcon = null;
+                    this.currentImageInfoPopupObject = null;
                 },
                 loadViewerConfigurationData: function () {
                     var resultsFormattingConfig = null;
@@ -108,11 +111,11 @@ define([
                 },
                 show: function (itemInfo, displayPoint) {
                     this.hidePopup();
-                    this.anchorDiv = domConstruct.create("div", {style: {height: "1px", width: "1px",position:"absolute",left:displayPoint.x + "px", top: displayPoint.y + "px"}});
+                    this.anchorDiv = domConstruct.create("div", {style: {height: "1px", width: "1px", position: "absolute", left: displayPoint.x + "px", top: displayPoint.y + "px"}});
                     domConstruct.place(this.anchorDiv, dojoWindow.body());
                     this.currentImageInfoPopupObject = this.processImageInfo(itemInfo);
                     if (this.currentImageInfoPopupObject && this.currentImageInfoPopupObject.imageInfoAndLayer) {
-                        this.popupTooltip.set("content",this.getHTML(this.currentImageInfoPopupObject));
+                        this.popupTooltip.set("content", this.getHTML(this.currentImageInfoPopupObject));
                         dijit.popup.open({
                             popup: this.popupTooltip,
                             around: this.anchorDiv,
@@ -281,20 +284,36 @@ define([
                         topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, this.currentImageInfoPopupObject.imageInfoAndLayer.imageInfo);
                     }
                 },
-                handleItemRemovedFromCart: function () {
-                    if (this.currentToggleCartIcon) {
+                handleItemRemovedFromCart: function (itemUUID, imageInfo) {
+                    if (this._isCartItemPopupItem(imageInfo)) {
                         domClass.remove(this.currentToggleCartIcon, "shoppingCartAdded");
                         domClass.add(this.currentToggleCartIcon, "shoppingCartEmpty");
                     }
 
                 },
                 handleAddItemToCart: function (imageInfo) {
-                    if (this.currentToggleCartIcon) {
+                    if (this._isCartItemPopupItem(imageInfo)) {
                         domClass.remove(this.currentToggleCartIcon, "shoppingCartEmpty");
                         domClass.add(this.currentToggleCartIcon, "shoppingCartAdded");
+
                     }
+                },
+                _isCartItemPopupItem: function (imageInfo) {
+                    if (this.currentImageInfoPopupObject && this.currentImageInfoPopupObject.imageInfoAndLayer &&
+                        this.currentImageInfoPopupObject.imageInfoAndLayer.imageInfo &&
+                        this.currentImageInfoPopupObject.imageInfoAndLayer.queryLayerController) {
+                        var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(imageInfo);
+                        if (queryLayerController == this.currentImageInfoPopupObject.imageInfoAndLayer.queryLayerController && queryLayerController.layer) {
+                            var objectIdField = queryLayerController.layer.objectIdField;
+                            if (objectIdField) {
+                                var cartItemId = imageInfo[objectIdField];
+                                var popupItemId = this.currentImageInfoPopupObject.imageInfoAndLayer.imageInfo[objectIdField];
+                                return cartItemId == popupItemId;
+                            }
+                        }
+                    }
+                    return false;
                 }
-            })
-            ;
+            });
     })
 ;
