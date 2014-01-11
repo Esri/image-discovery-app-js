@@ -1,27 +1,35 @@
 html, body {
     overflow: hidden;
 }
+
 .imageInfoWindow .windowContent {
     height: 97%;
 }
+
 .navigationToolbar .navigationControl {
     display: block;
 }
+
 .esriControlsBR {
     bottom: 30px;
 }
+
 .mapScaleAndCoordsContainer {
     bottom: 30px;
 }
+
 .activeMessagingWidget {
     top: 10px;
 }
+
 .logoHeaderContainer {
     height: 80px;
 }
+
 .headerMainText {
     right: 5%;
 }
+
 .loadingImageServiceMessageContainer {
     font-size: 12pt;
     height: 8%;
@@ -33,18 +41,23 @@ html, body {
     top: 38%;
     width: 25%;
 }
+
 .loadingImageServiceText, .loadingImageServiceThrobber {
     float: left;
     margin-left: 20px;
 }
-.loadingImageServiceText{
+
+.loadingImageServiceText {
     margin-top: 6px;
 }
-.loadingImageServiceThrobber {
-    background: url(./assets/images/imageServiceLoadingThrobber.gif);
-    height: 32px;
-    width: 32px;
+
+.loadingSpinnerThrobber {
+    background: url(./assets/images/discovery/loader.gif);
+    height: 24px;
+    width: 24px;
+
 }
+
 
 /*imagery sprite */
 .imageryIcons {
@@ -53,13 +66,16 @@ html, body {
     width: 16px;
     cursor: pointer;
 }
+
 .imageryIcons.analysis {
     background-position: 0 0;
 }
+
 .imageryIcons.discover {
     background-position: 0 -18px;
 }
-.imageryIcons.lockRaster{
+
+.imageryIcons.lockRaster {
     background-position: 0 -39px;
 }
 
@@ -199,6 +215,24 @@ html, body {
 .discoveryToolsContainer {
     width: 35%;
 
+}
+
+.imageDiscoveryInProgressContainer {
+    margin: auto;
+    text-align: center;
+    height: 59px;
+}
+
+.imageDiscoveryThrobber {
+    float: left;
+    margin-left: 70px;
+}
+
+.imageDiscoveryThrobberText {
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    font-size: 12pt;
 }
 
 .discoveryIcon {
@@ -357,7 +391,6 @@ html, body {
     cursor: pointer;
 }
 
-
 /* end discovery */
 
 /* download widget */
@@ -375,7 +408,8 @@ html, body {
 .imageResultsExportContent {
     margin: 10% 0 0 15%;
 }
-.downloadWindowContent{
+
+.downloadWindowContent {
     padding-top: 0 !important;
 }
 
@@ -443,7 +477,6 @@ html, body {
     position: absolute;
     left: 55px;
 }
-
 
 /* end imagery export */
 
@@ -526,7 +559,6 @@ html, body {
     margin-left: 2px;
 }
 
-
 .imageFilterSliderWidgetDirectionRadios {
     margin-bottom: 7px;
 }
@@ -576,20 +608,22 @@ html, body {
     color: gray;
     font-size: 9pt;
 }
-.imageFilterNumberRangeInfoContainer div{
+
+.imageFilterNumberRangeInfoContainer div {
     margin: 0 0 3px;
 }
-.imageFilterNumberRangeInfoLbl{
+
+.imageFilterNumberRangeInfoLbl {
     color: #60606B;
 }
-
 
 .applyNumberFilterIcon {
     position: absolute;
     left: 0;
     top: 2px;
 }
-.numberFilterInputContents{
+
+.numberFilterInputContents {
     margin-left: 25px;
 }
 
@@ -615,6 +649,7 @@ html, body {
     margin-left: 7px;
     margin-top: 1px;
 }
+
 .stringFilteringSelectContainer, .stringFilterRemoveIncludeIcon {
     float: left;
 }
@@ -696,9 +731,11 @@ html, body {
 .imageInfoActionsContainer {
     height: 20px;
 }
-.imageInfoActionsContainer div{
+
+.imageInfoActionsContainer div {
     margin: 0 5px;
 }
+
 .imageInfoActionsContainerHeader {
     float: left;
     border: 1px solid #DFDFDF;
@@ -743,14 +780,15 @@ html, body {
 
 /*band reorder */
 
-
-.bandReorderBandIndexLbl{
+.bandReorderBandIndexLbl {
     margin-right: 5px;
 }
-.bandReorderEntry{
+
+.bandReorderEntry {
     margin: 10px 0;
 }
-.bandReorderActionsContainer{
+
+.bandReorderActionsContainer {
     margin-top: 10px;
 }
 
@@ -836,6 +874,7 @@ html, body {
     text-decoration: underline;
 
 }
+
 .imageManipulationActionsContainer span {
 }
 
@@ -863,10 +902,10 @@ html, body {
 .imageManipulationDisabledContainer {
     padding: 20px 10px;
 }
-.imageManipulationWindowContent{
+
+.imageManipulationWindowContent {
     padding-top: 0 !important;
 }
-
 
 /* end manipulation */
 
@@ -886,16 +925,14 @@ html, body {
     margin-bottom: 10px;
 }
 
-
 /*end mensuration */
 
 /*prefilter */
-.prefilterContainer{
+.prefilterContainer {
     text-align: left;
 }
 
 /* end prefilter */
-
 
 /*query widget */
 .imageQueryFieldEntryLabel {
@@ -944,15 +981,18 @@ html, body {
     margin: 5px 0;
     padding: 0;
 }
-.addedDiscoveryFieldValueEntryRemoveIcon{
-    float:left;
+
+.addedDiscoveryFieldValueEntryRemoveIcon {
+    float: left;
     margin-right: 3px;
     margin-top: 2px;
 }
-.addedDiscoveryFieldValuesList li{
+
+.addedDiscoveryFieldValuesList li {
     height: 20px;
 }
-.addedDiscoveryFieldValueEntryLabel{
+
+.addedDiscoveryFieldValueEntryLabel {
     font-size: 8pt;
     color: blue;
 }
@@ -966,6 +1006,7 @@ html, body {
     float: right;
     margin-top: -5px;
 }
+
 /* end reporting */
 
 /*swipe widget */
@@ -980,6 +1021,7 @@ html, body {
     margin: 0;
     cursor: col-resize;
 }
+
 /* end swipe widget */
 
 /*transparency widget */
@@ -987,6 +1029,7 @@ html, body {
 .searchTransparencySliderLayerName {
     padding-bottom: 10px;
 }
+
 .searchLayerTransparencyContent {
     width: 300px;
     font-size: 9pt;
@@ -1020,6 +1063,5 @@ html, body {
     text-align: left;
     margin: 15px 5px;
 }
-
 
 /* end discovery upload */

@@ -46,7 +46,7 @@
             "create": false
         },
         "display": {
-            "showScaleBar": true,
+            "showScaleBar": false,
             "showMGRS": false,
             "showUTM": false,
             "showScale": false

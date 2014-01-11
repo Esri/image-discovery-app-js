@@ -23,7 +23,6 @@ define([
 ],
     function (declare, template, theme, topic, lang, domConstruct, Button, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager, SearchLayersTransparencyWidget) {
         return declare(
-            //  [UITemplatedWidget, MapDrawSupport],
             [UITemplatedWidget],
             {
                 footprintZoomLevelStart: 12,
@@ -41,19 +40,17 @@ define([
                     this.pointOptions = {showTooltips: false};
                 },
                 initListeners: function () {
+                    this.firstFooterExpandListener = topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.EXPANDED, lang.hitch(this, this.handleFooterFirstExpand));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_UNIQUE_VISIBLE_RASTER_ATTRIBUTES, lang.hitch(this, this.handleGetVisibleRasterAttributes));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_UNIQUE_VISIBLE_ROW_ATTRIBUTES, lang.hitch(this, this.handleGetVisibleRowAttributes));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.QUERY_RESULT_SET, lang.hitch(this, this.handleQueryResultsSet));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleClearQueryResults));
-                    this.firstFooterExpandListener = topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.EXPANDED, lang.hitch(this, this.handleFooterFirstExpand));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.FOOTER.COLLAPSED, lang.hitch(this, this.handleFooterCollapsed));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, lang.hitch(this, this.handleIsShoppingCartVisible));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.HIDE_RESET_ICON, lang.hitch(this, this.hideFilterResultIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SHOW_RESET_ICON, lang.hitch(this, this.showFilterResetIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.HIDE_ICON, lang.hitch(this, this.hideTimeSliderIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.SHOW_ICON, lang.hitch(this, this.showTimeSliderIcon));
-                    //       topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.checkForToolsActive));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleFilterApplied));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED, lang.hitch(this, this.handleZoomLevelChange));
                 },
                 postCreate: function () {
@@ -65,9 +62,7 @@ define([
                     this.viewModel.expanded.subscribe(lang.hitch(this, this.toggleGrid));
                     this.viewModel.cart.subscribe(lang.hitch(this, this.handleCartVisibilityChange));
                     this.viewModel.results.subscribe(lang.hitch(this, this.handleResultsVisibilityChange));
-                    this.viewModel.resultsVisibleAndHasResults.subscribe(lang.hitch(this, this.handleFilterIconStateChange));
-                    //  this.viewModel.on(this.viewModel.ACTIVATE_RECTANGLE_SELECT, lang.hitch(this, this.handleActivateRectangleSelect));
-                    //   this.viewModel.on(this.viewModel.CLEAR_DRAW, lang.hitch(this, this.clearDraw));
+                    this.viewModel.resultsVisible.subscribe(lang.hitch(this, this.handleFilterIconStateChange));
                     this.viewModel.setFilterIconHidden();
 
 
@@ -90,7 +85,6 @@ define([
                     }
                 },
                 handleFooterCollapsed: function () {
-                    //    this.clearDraw();
                     this._hideActiveSourcesTooltip();
                     this.hideResultLayerTransparencyPopup();
                     if (this.clearResultsTooltip && this.clearResultsTooltip.visible) {
@@ -143,25 +137,6 @@ define([
                     }
 
                 },
-                /*
-                 checkForToolsActive: function (level) {
-                 if (level == null) {
-                 var zoomLevel;
-                 topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_LEVEL, lang.hitch(this, function (mapLevel) {
-                 zoomLevel = mapLevel;
-                 }));
-                 level = zoomLevel;
-                 }
-                 if (level < this.footprintZoomLevelStart) {
-                 this.viewModel.toolsActive(false);
-                 this.clearDraw();
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.HIDE);
-                 }
-                 else {
-                 this.viewModel.toolsActive(true);
-                 }
-                 },
-                 */
                 /**
                  * listener for VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED
                  * figures out if the discovery application should display the cluser layer or the footprint layer
@@ -203,16 +178,6 @@ define([
                         }
                     }
                 },
-                /**
-                 * updates the result count when a filter has been applied to the result set
-                 */
-                handleFilterApplied: function () {
-                    //update the result count
-                    if (this.resultsGridWidget) {
-                        var count = this.resultsGridWidget.getVisibleItemCount();
-                        this.viewModel.resultCount(count);
-                    }
-                },
                 applyBindings: function () {
                     if (!this.bindingsApplied) {
                         ko.applyBindings(this.viewModel, this.domNode);
@@ -223,6 +188,7 @@ define([
                  * creates the active sources with inside the result widget
                  */
                 createActiveSourcesWidget: function () {
+                    //active sources widget allows the user to toggle visibility of results for each services search results
                     if (this.activeSourcesWidget == null) {
                         this.activeSourcesWidget = new ActiveSourcesWidget();
                         //      this.activeSourcesWidget.placeAt(this.activeServicesContainer);
@@ -261,47 +227,6 @@ define([
                         this.activeSourcesTooltipVisible = true;
                     }
                 },
-                /**
-                 * activates the rectangle identify tool in the results widget
-                 */
-                /*
-                 handleActivateRectangleSelect: function () {
-                 this.currentDrawType = VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE;
-                 this.setDraw(VIEWER_GLOBALS.EVENTS.MAP.TOOLS.DRAW_RECTANGLE);
-                 },
-                 */
-                /**
-                 * called when a geometry has been created from the identify tool inside the results widget
-                 * @param geometry
-                 */
-                /*
-                 geometryAdded: function (geometry) {
-                 if (geometry instanceof Extent) {
-                 if (this.viewModel.rectangleSelectionActive()) {
-                 if (this.identifyContainsRadioBtn.checked) {
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
-                 geometry, true);
-                 }
-                 else {
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT,
-                 geometry, false);
-                 }
-                 }
-                 }
-                 this.setDraw(this.currentDrawType);
-                 },
-                 */
-                /**
-                 * clears the drawing on the map from the results widget (identify)
-                 */
-                /*
-                 clearDraw: function () {
-                 this.inherited(arguments);
-                 this.currentDrawType = null;
-                 topic.publish(VIEWER_GLOBALS.EVENTS.DRAW.USER.DRAW_CANCEL);
-                 this.viewModel.clearAllDraw();
-                 },
-                 */
                 /**
                  * creates the shopping cart grid
                  * @private
@@ -418,6 +343,7 @@ define([
                         this.resultsGridWidget.hideVisibleFootprints();
                         this.shoppingCartGridWidget.restoreVisibleFootprints();
                         this.shoppingCartGridWidget.setSelectedThumbnails();
+                        this.shoppingCartGridWidget.refresh();
                         topic.publish(IMAGERY_GLOBALS.EVENTS.CART.DISPLAYED);
                         //can only select features in the results table
                         //   this.clearDraw();
@@ -562,19 +488,20 @@ define([
                 resetFilters: function () {
                     this.resultsGridWidget.resetAllFilters();
                 },
-                addQueryResults: function (results, queryLayerController) {
-                    this.resultsClusterManager.addResults(results, queryLayerController);
-                    this.resultsFootprintManager.addResults(results, queryLayerController);
+                addQueryResults: function (queryResults) {
+                    //todo      this.resultsClusterManager.addResults(results, queryLayerController);
                     VIEWER_UTILS.log("Populating Query Results Grid", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     if (this.viewModel.cart()) {
                         this.viewModel.toggleGrid();
                     }
-                    this.resultsGridWidget.populateQueryResults(results, queryLayerController);
-                    this.viewModel.resultCount(this.viewModel.resultCount() + results.features.length);
-                    if (results.features.length > 0) {
-                        if (this.activeSourcesWidget != null) {
-                            this.activeSourcesWidget.addQueryLayerControllerEntry(queryLayerController);
+                    this.resultsGridWidget.populateQueryResults(queryResults);
+                    if (queryResults.length > 0) {
+                        for (var i = 0; i < queryResults.length; i++) {
+                            if (this.activeSourcesWidget != null) {
+                                this.activeSourcesWidget.addQueryLayerControllerEntry(queryResults[i].queryLayerController);
+                            }
                         }
+
                     }
                 },
                 /**

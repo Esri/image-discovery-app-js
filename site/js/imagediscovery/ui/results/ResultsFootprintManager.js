@@ -35,6 +35,8 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, lang.hitch(this, this.highlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, lang.hitch(this, this.unhighlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, lang.hitch(this, this.centerAndFlashFootprint));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.REFRESH_FOOTPRINTS_LAYER, lang.hitch(this, this.reloadLayer));
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_GRAPHICS_LAYER_CREATED, lang.hitch(this, this.moveLayerToTop));
                 },
                 moveLayerToTop: function () {
                     if (this.footprintsLayer) {
@@ -104,7 +106,9 @@ define([
                  * clears the footprints layer graphics. called when the discovery viewer results have been cleared
                  */
                 clearResults: function () {
-                    this.footprintsLayer.clear();
+                    if (this.footprintsLayer) {
+                        this.footprintsLayer.clear();
+                    }
                 },
                 /**
                  * creates the footprints layer and adds it to the map
@@ -136,33 +140,6 @@ define([
                             new Color([255, 255, 0]), 2), new Color([255, 0, 0, 0]));
                 },
                 /**
-                 * adds results to the footprints layer
-                 *
-                 * @param results
-                 * @param queryLayerController
-                 */
-                addResults: function (results, queryLayerController) {
-                    if (!this.footprintsLayer.visible) {
-                        return;
-                    }
-                    if (results != null && results.features != null && lang.isArray(results.features)) {
-                        var currentFeature;
-                        var currentGeometry;
-                        for (var i = 0; i < results.features.length; i++) {
-                            currentFeature = results.features[i];
-                            currentGeometry = currentFeature.geometry;
-
-                            var graphic = new Graphic(currentGeometry, this.footprintPolygonSymbol);
-                            graphic.attributes = currentFeature.attributes;
-                            this.footprintsLayer.add(graphic);
-
-                            //add footprint to cache
-                            var oid = currentFeature.attributes["OBJECTID"];
-                            this.footprintGraphicsCache[oid] = graphic;
-                        }
-                    }
-                },
-                /**
                  * called when a discovery viewer filter has been applied. reloads the footprints layer
                  */
                 handleFilterApplied: function () {
@@ -175,7 +152,6 @@ define([
                  */
                 reloadLayer: function () {
                     this.clearResults();
-                    //topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, this.getVisibleFootprintsHandler);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, this.getVisibleFootprintsHandler);
                 },
                 /**

@@ -6,8 +6,6 @@ define([
         return declare(
             [Evented],
             {
-              //  CLEAR_DRAW: "clearDraw",
-               // ACTIVATE_RECTANGLE_SELECT: "activateRectangleSelect",
                 SHRINK_GRID: "shrinkGrid",
                 EXPAND_GRID: "expandGrid",
                 cart: ko.observable(true),
@@ -15,7 +13,6 @@ define([
                 expanded: ko.observable(false),
                 zoomToSelected: ko.observable(false),
                 timeSlider: ko.observable(true),
-              //  rectangleSelectionActive: ko.observable(false),
                 reportIcon: ko.observable(false),
                 filterIcon: ko.observable(false),
                 toolsActive: ko.observable(false),
@@ -25,17 +22,17 @@ define([
                 constructor: function () {
                     var self = this;
                     var showTrashIconAnon = function () {
-                        return  self.results() && self.resultCount() > 0;
+                        return  self.results();
                     };
                     this.showTrashIcon = ko.computed(showTrashIconAnon);
                     var showTimeSliderAnon = function () {
-                        return self.results() && self.timeSlider() && self.resultCount() > 0 && self.toolsActive();
+                        return self.results() && self.timeSlider()  && self.toolsActive();
                     };
                     this.showTimeSlider = ko.computed(showTimeSliderAnon);
 
 
                     var showLayerTransparencyAnon = function () {
-                        return self.results() && self.resultCount() > 0 && self.toolsActive();
+                        return self.results();
                     };
                     this.showLayerTransparency = ko.computed(showLayerTransparencyAnon);
 
@@ -50,14 +47,10 @@ define([
                         return  self.filterIcon() && self.results();
                     };
                     this.showFilterResetIcon = ko.computed(showFilterResetIconAnon);
-                    var resultsVisibleAndHasResults = function () {
-                        return self.results() && self.resultCount() > 0;
+                    var resultsVisible = function () {
+                        return self.results();
                     };
-                    this.resultsVisibleAndHasResults = ko.computed(resultsVisibleAndHasResults);
-                    var resultLblAnon = function () {
-                        return self.resultCount() != 1 ? "s" : "";
-                    };
-                    this.resultAppend = ko.computed(resultLblAnon);
+                    this.resultsVisible = ko.computed(resultsVisible);
                 },
                 toggleGrid: function () {
                     if (this.cart()) {
@@ -90,28 +83,28 @@ define([
                     this.filterIcon(true);
                 }
                 /*
-                toggleRectangleResultsSelection: function () {
-                    var stateBeforeClear = this.rectangleSelectionActive();
-                    this.emit(this.CLEAR_DRAW);
-                    if (!stateBeforeClear) {
-                        this.emit(this.ACTIVATE_RECTANGLE_SELECT);
-                        this.drawActive(true);
-                    }
-                    this.rectangleSelectionActive(!stateBeforeClear);
-                },
-                clearRectangleDraw: function () {
-                    this.rectangleSelectionActive(false);
-                },
+                 toggleRectangleResultsSelection: function () {
+                 var stateBeforeClear = this.rectangleSelectionActive();
+                 this.emit(this.CLEAR_DRAW);
+                 if (!stateBeforeClear) {
+                 this.emit(this.ACTIVATE_RECTANGLE_SELECT);
+                 this.drawActive(true);
+                 }
+                 this.rectangleSelectionActive(!stateBeforeClear);
+                 },
+                 clearRectangleDraw: function () {
+                 this.rectangleSelectionActive(false);
+                 },
 
-                clearAllDraw: function () {
-                    this.clearRectangleDraw();
-                    this.drawActive(false);
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS);
+                 clearAllDraw: function () {
+                 this.clearRectangleDraw();
+                 this.drawActive(false);
+                 topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS);
 
-                },
-                clearHighlights: function () {
-                    this.emit(this.CLEAR_DRAW);
-                }
-                */
+                 },
+                 clearHighlights: function () {
+                 this.emit(this.CLEAR_DRAW);
+                 }
+                 */
             });
     });

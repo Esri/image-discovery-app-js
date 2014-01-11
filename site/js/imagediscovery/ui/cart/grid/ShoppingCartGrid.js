@@ -69,6 +69,7 @@ define([
                  */
                 removeItemFromCart: function (resultId) {
                     this.store.remove(resultId);
+                    this.refresh();
                 },
                 /**
                  * generates the columns to add to the shopping cart grid
@@ -95,7 +96,7 @@ define([
                 cartRenderHeaderCell: function (node) {
                     var cartDiv = domConstruct.create("div", {
                         title: "Remove all from cart",
-                        className: "imageResultsGridCartHeaderIcon commonIcons16 shoppingCartAdded"});
+                        className: "imageResultsGridCartHeaderIcon commonIcons16 remove"});
 
                     on(cartDiv, "click", lang.hitch(this, this.handleRemoveAllCartItems));
                     domConstruct.place(cartDiv, node);
@@ -124,7 +125,7 @@ define([
                     //handle removing item from the shopping cart
                     if (item.showFootprint) {
                         //hide the footprint since it is visible
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIDE_FOOTPRINT, item);
+                     //   topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIDE_FOOTPRINT, item);
                     }
                     var itemId = item[this.storeIdField];
                     this.removeItemFromCart(itemId);

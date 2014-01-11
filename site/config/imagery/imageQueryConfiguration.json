@@ -2,8 +2,28 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Toronto/ImageServer",
-            "label": "Portland",
+            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_PanSharpened/ImageServer",
+            "label": "Landsat8_PanSharpened",
+            "queryWhereClauseAppend": "Category = 1",
+            "fieldMapping": {
+                "AcquisitionDate": "AcquisitionAlias",
+                "LowPS": "LowPSAlias"
+            },
+            "supportsThumbnails": true
+        },
+        {
+            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_Views/ImageServer",
+            "label": "Landsat8_Views",
+            "queryWhereClauseAppend": "Category = 1",
+            "fieldMapping": {
+                "AcquisitionDate": "AcquisitionAlias",
+                "LowPS": "LowPSAlias"
+            },
+            "supportsThumbnails": true
+        },
+        {
+            "url": "http://landsatlook.usgs.gov/arcgis/rest/services/LandsatLook/ImageServer",
+            "label": "LandsatLook",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
                 "AcquisitionDate": "AcquisitionAlias",
@@ -34,7 +54,7 @@
             "field": "Name",
             "label": "Name",
             "filter": {
-                "enable": true
+                "enable": false
             },
             "style": {
                 "color": "blue",
@@ -59,7 +79,7 @@
             "field": "ProductName",
             "label": "Product",
             "filter": {
-                "enable": false
+                "enable": true
             }
         },
         {
@@ -104,7 +124,7 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        "maxQueryResults": 200,
+        "maxQueryResults": 2000,
         "allowCheckAllSearchResultThumbnails": false,
         "footprintZoomLevelStart": 0,
         "useHeatmap": false

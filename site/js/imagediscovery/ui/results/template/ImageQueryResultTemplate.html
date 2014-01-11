@@ -8,12 +8,11 @@
             </div>
             <span class="cartCheckoutContainer fivePixelBorderRadius"
                   data-dojo-attach-event="onclick:handleCheckoutCartClick" data-bind="visible: cart">Checkout</span>
-
-            <div class="queryResultsCountContainer"
+          <!--  <div class="queryResultsCountContainer"
                  data-bind="visible:results"><span>(</span><span data-bind="text: resultCount"></span><span
                     style="margin-left:2px">Result</span><span
                     data-bind="text: resultAppend"></span><span>)</span>
-            </div>
+            </div>    -->
             <div class="expandResultsIcon commonIcons16 upWithBar" title="Toggle Grid Height"
                  data-bind="click: toggleExpand, css: {downWithBar: expanded}"></div>
             <div class="clearResultsIcon commonIcons16 trash" title="Clear Results"
@@ -42,24 +41,6 @@
                   data-dojo-attach-event="onclick:_toggleActiveSourcesTooltip">
                 Toggle Active Sources
             </span>
-            <!--
-            <div data-bind="visible:toolsActive" class="toolsActiveContainer">
-                <div class="resultGeometryActionsContainer" data-bind="visible:resultsVisibleAndHasResults">
-                    <div class="annotationOptionButton rectangleUnselected"
-                         data-bind="click: toggleRectangleResultsSelection, css:{rectangleSelected: rectangleSelectionActive}"
-                         title="Identify Images"></div>
-                    <div class="identifyOptionsContainer" data-bind="visible: drawActive">
-                        <input type="radio" title="Contains" value="identifyContains" name="identifyRadioBtns"
-                               data-dojo-attach-point="identifyContainsRadioBtn">
-                        <span>Contains</span>
-                        <input type="radio" title="Intersects" value="identifyIntersects" checked name="identifyRadioBtns"
-                               data-dojo-attach-point="identifyIntersectsRadioBtn">
-                        <span>Intersects</span>
-                    </div>
-                </div>
-            </div>
-            -->
-
         </div>
         <div>
             <div data-dojo-attach-point="shoppingCartGridContainer" data-bind="visible:cart"

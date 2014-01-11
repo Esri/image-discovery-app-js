@@ -1,3 +1,21 @@
+.imageDiscoveryInProgressContainer {
+    margin: auto;
+    text-align: center;
+    height: 59px;
+}
+
+.imageDiscoveryThrobber {
+    float: left;
+    margin-left: 70px;
+}
+
+.imageDiscoveryThrobberText {
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    font-size: 12pt;
+}
+
 .discoveryStepIcon {
     background: url(../assets/images/stepArrow.png);
     height: 22px;

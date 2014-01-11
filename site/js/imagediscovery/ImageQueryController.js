@@ -5,7 +5,7 @@ define([
     "dojo/_base/lang",
     "esriviewer/map/base/LayerQueryParameters"
 ],
-    function (declare, on, topic,  lang, LayerQueryParameters) {
+    function (declare, on, topic, lang, LayerQueryParameters) {
         return declare(
             [],
             {
@@ -14,6 +14,7 @@ define([
                 currentServicesToQueryCount: 0,
                 constructor: function (params) {
                     lang.mixin(this, params || {});
+                    this.queryResults = [];
                     this.lockRasterLookup = {};
                     this.loadViewerConfigurationData();
                     var mapRef;
@@ -82,7 +83,9 @@ define([
                 },
                 //inner function that executes the image query
                 handlePerformQuery: function (imageQueryControllerQueryParams) {
-                    topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.BLOCK_HIDE);
+                    console.log("handlePerformQuery");
+                    topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.DISABLE);
+                    this.queryResults = [];
                     this.resultFeaturesCount = 0;
                     this.queryResponseCount = 0;
                     this.currentServicesToQueryCount = imageQueryControllerQueryParams.queryLayerControllers.length;
@@ -202,7 +205,7 @@ define([
                  * handles the image service query response
                  */
                 handleQueryResponseComplete: function (queryLayerController, response) {
-
+                    console.log("handleQueryResponseComplete");
                     if (this.maxQueryResults != null && (this.resultFeaturesCount >= this.maxQueryResults)) {
                         return;
                     }
@@ -212,24 +215,31 @@ define([
                     }
                     var resultsString;
                     this.resultFeaturesCount += response.features.length;
+                    console.log("results count: " + this.resultFeaturesCount);
                     if (this.maxQueryResults != null && (this.resultFeaturesCount > this.maxQueryResults)) {
                         resultsString = "Maximum results encountered (" + this.maxQueryResults + "). Please narrow your search.";
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, resultsString);
                         response.features.splice(this.maxQueryResults, this.resultFeaturesCount - this.maxQueryResults);
                         maxResultsHit = true;
+                        console.log("max results hit");
                     }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, response, queryLayerController);
+                    this.queryResults.push({response: response, queryLayerController: queryLayerController});
                     if (maxResultsHit || (++this.queryResponseCount == this.currentServicesToQueryCount)) {
                         resultsString = "Query Complete (" + this.resultFeaturesCount + " " + (this.resultFeaturesCount == 1 ? "Result" : "Results") + ")";
                         if (!maxResultsHit) {
                             topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, resultsString);
                         }
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE);
-                        topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.RELEASE_HIDE_BLOCK);
+                        console.log("query complete");
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, this.queryResults);
+                        console.log("fired query complete");
+                        topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.ENABLE);
 
                     }
                 },
                 handleLayerIdsQueryError: function (queryLayerController, err) {
+                    console.log("query error");
+                    console.dir(queryLayerController);
                 }
             });
 

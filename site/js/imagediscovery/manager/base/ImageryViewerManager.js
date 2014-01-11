@@ -13,7 +13,6 @@ define([
     "../../ui/discover/ImageDiscoveryWidget",
     "../../ImageQueryController",
     "../../ImageQueryLayerController",
-    //"../../ui/info/ImageInfoWindow",
     "esri/layers/ArcGISImageServiceLayer",
     "./ImageryWebMapTemplateConfigurationUtil",
     "dijit/form/ToggleButton",
@@ -22,7 +21,7 @@ define([
     "esriviewer/ui/toolbar/base/button/Button"
 
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup,Button) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController,  ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup,Button) {
         return declare(
             [ViewerManager],
             {
@@ -73,7 +72,7 @@ define([
                     //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
                     this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
-                    this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber"});
+                    this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber loadingSpinnerThrobber"});
                     domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
                     domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
                     //add to the dom
@@ -81,8 +80,12 @@ define([
                 },
                 initListeners: function () {
                     this.inherited(arguments);
+
+                    //listen for query complete
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE,lang.hitch(this, this.handleImageQueryResultsResponse));
+
                     //add search result to the application
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
+                  //todo  topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
                     //get all of the search catalog layers
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, lang.hitch(this, this.handleGetCatalogLayers));
                     //get configuration object
@@ -177,16 +180,6 @@ define([
                         this.imageQueryController = new ImageQueryController();
                     }
                 },
-                /**
-                 *  creates the image info widget
-                 */
-                /*
-                 createImageInfoWidget: function () {
-                 if (this.imageInfoWidget == null) {
-                 this.imageInfoWidget = new ImageInfoWindow();
-                 }
-                 },
-                 */
                 /**
                  * overridden in ImageryViewerManagerWindow
                  */
@@ -295,7 +288,8 @@ define([
                  * @param response  query response object
                  * @param queryLayerController controller that the response is associated with
                  */
-                handleImageQueryResultsResponse: function (response, queryLayerController) {
+             //todo   handleImageQueryResultsResponse: function (response, queryLayerController) {
+                handleImageQueryResultsResponse: function (queryResults) {
                     //expand the footer to show the results grid
                     topic.publish(VIEWER_GLOBALS.EVENTS.FOOTER.EXPAND);
                     //create the query results widget if it doesn't exist
@@ -303,7 +297,8 @@ define([
                         this.createImageQueryResultsWidget();
                     }
                     //set the results on the grid
-                    this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
+                  //  this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
+                    this.imageryQueryResultsWidget.addQueryResults(queryResults);
                 },
                 /**
                  *  called when the base viewer configuration has been loaded
