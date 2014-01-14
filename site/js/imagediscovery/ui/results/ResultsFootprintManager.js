@@ -20,7 +20,7 @@ define([
                     this.initListeners();
 
                     //cache that stores all the footprints on the map (so that we can change symbology when highlighting)
-                    this.footprintGraphicsCache = {};
+                    //todo:      this.footprintGraphicsCache = {};
                     //cache that stores all footprints that are currently highlighted (so that we can remember to
                     //re-highlight them when zoomed back to appropriate level)
                     this.highlightedFootprintsCache = {};
@@ -28,12 +28,9 @@ define([
                 initListeners: function () {
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.moveLayerToTop));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.clearResults));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleFilterApplied));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, this.handleFootprintsLayerVisible));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_TRANSPARENT, lang.hitch(this, this.handleSetLayerTransparent));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.SET_FOOTPRINTS_LAYER_OPAQUE, lang.hitch(this, this.handleSetLayerOpaque));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, lang.hitch(this, this.highlightFootprint));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, lang.hitch(this, this.unhighlightFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CENTER_AND_FLASH_FOOTPRINT, lang.hitch(this, this.centerAndFlashFootprint));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.REFRESH_FOOTPRINTS_LAYER, lang.hitch(this, this.reloadLayer));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_GRAPHICS_LAYER_CREATED, lang.hitch(this, this.moveLayerToTop));
@@ -152,64 +149,107 @@ define([
                  */
                 reloadLayer: function () {
                     this.clearResults();
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, this.getVisibleFootprintsHandler);
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES_GROUPED_BY_QUERY_CONTROLLER, this.getVisibleFootprintsHandler);
                 },
                 /**
                  * called when the shopping cart toggles back to the footprints result view
                  */
-                _getVisibleFootprintsHandler: function (footprintFeatures) {
+                _getVisibleFootprintsHandler: function (queryControllersWithResultsLookup) {
+                    //    return;
+                    var cachedGraphicsCount = 0;
                     var currentGeometry;
                     var currentFeature;
-                    for (var i = 0; i < footprintFeatures.length; i++) {
-                        currentFeature = footprintFeatures[i];
-                        currentGeometry = currentFeature.geometry;
-                        var graphic = new Graphic(currentGeometry, this.footprintPolygonSymbol);
-                        graphic.attributes = currentFeature;
-                        this.footprintsLayer.add(graphic);
+                    var currentQueryLayerController;
+                    var results;
+                    var graphicsToLoad = {};
+                    for (var key in queryControllersWithResultsLookup) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, key, function (queryLayerCont) {
+                            currentQueryLayerController = queryLayerCont;
+                        });
+                        results = queryControllersWithResultsLookup[key];
+                        for (var i = 0; i < results.length; i++) {
+                            currentFeature = results[i];
+                            currentGeometry = currentFeature.geometry;
+                            if (currentGeometry) {
+                                cachedGraphicsCount++;
+                                var graphic = new Graphic(currentGeometry, this.footprintPolygonSymbol);
+                                graphic.attributes = currentFeature;
+                                this.footprintsLayer.add(graphic);
 
-                        //add footprint to cache
-                        var oid = currentFeature.OBJECTID;
-                        this.footprintGraphicsCache[oid] = graphic;
-
-                        //re-highlight footprint if needed
-                        if (this.highlightedFootprintsCache[oid] &&
-                            this.highlightedFootprintsCache[oid] == true) {
-                            this.highlightFootprint(oid);
+                                //add footprint to cache
+                                //todo:    var oid = currentFeature.OBJECTID;
+                                //todo:   this.footprintGraphicsCache[oid] = graphic;
+                            }
+                            else {
+                                var addToObj = graphicsToLoad[key];
+                                if (addToObj == null) {
+                                    addToObj = {results: [], queryLayerController: currentQueryLayerController, objectIds: [] };
+                                    graphicsToLoad[key] = addToObj;
+                                }
+                                //    addArr.push(currentFeature[currentQueryLayerController.layer.objectIdField]);
+                                addToObj.objectIds.push(currentFeature[currentQueryLayerController.layer.objectIdField]);
+                                addToObj.results.push(currentFeature);
+                            }
                         }
                     }
+                    this._loadServerSideGeometries(graphicsToLoad);
                 },
-                /**
-                 * highlights a single footprint (the footprint should be visible already)
-                 * @param featureObjID
-                 */
-                highlightFootprint: function (featureObjID) {
-                    if (this.footprintGraphicsCache[featureObjID]) {
-                        this.footprintGraphicsCache[featureObjID].symbol = this.highlightedFootprintPolygonSymbol;
-                        this.highlightedFootprintsCache[featureObjID] = true;
-                        this.footprintsLayer.redraw();
+                _loadServerSideGeometries: function (resultsByQueryControllerId) {
+                    var currentQueryLayerController;
+                    var currentResults;
+                    var currentObjectIds;
+                    for (var key in resultsByQueryControllerId) {
+                        currentQueryLayerController = resultsByQueryControllerId[key].queryLayerController;
+                        currentResults = resultsByQueryControllerId[key].results;
+                        currentObjectIds = resultsByQueryControllerId[key].objectIds;
+                        currentQueryLayerController.queryForGeometriesFromObjectIds(currentObjectIds, lang.hitch(this, this.handleGeometriesResponse, currentResults, currentQueryLayerController))
+
                     }
                 },
-                /**
-                 * removes highlights a single footprint (the footprint should be visible already)
-                 * @param featureObjID
-                 */
-                unhighlightFootprint: function (featureObjID) {
-                    if (this.footprintGraphicsCache[featureObjID]) {
-                        this.footprintGraphicsCache[featureObjID].symbol = this.footprintPolygonSymbol;
-                        delete this.highlightedFootprintsCache[featureObjID];
-                        this.footprintsLayer.redraw();
+                handleGeometriesResponse: function (passedResults, queryLayerController, response) {
+                    if (response && response.features) {
+                        var processedResponseByObjectId = {};
+                        var currentFeature;
+                        var i;
+                        //create a lookup of geometries by the features object id
+                        for (i = 0; i < response.features.length; i++) {
+                            currentFeature = response.features[i];
+                            processedResponseByObjectId[currentFeature.attributes[queryLayerController.layer.objectIdField]] = currentFeature.geometry;
+                        }
+                        //loop through the passed results and set the geometry on the result feature
+                        var currentResultObjectId;
+                        var currentGeometry;
+                        var addedGeometryCount = 0;
+                        for (i = 0; i < passedResults.length; i++) {
+                            currentResultObjectId = passedResults[i][queryLayerController.layer.objectIdField];
+                            if (processedResponseByObjectId[currentResultObjectId] != null) {
+                                passedResults[i].geometry = currentGeometry = processedResponseByObjectId[currentResultObjectId];
+                                //add the currentGeometry to the graphics layer
+                                addedGeometryCount++;
+                                var graphic = new Graphic(currentGeometry, this.footprintPolygonSymbol);
+                                graphic.attributes = passedResults[i];
+                                this.footprintsLayer.add(graphic);
+
+                                //add footprint to cache
+                                //todo: var oid = currentFeature.OBJECTID;
+                                //todo: this.footprintGraphicsCache[oid] = graphic;
+                            }
+                        }
                     }
                 },
                 /**
                  centers and flashes a result footprint on the footprints layer
                  */
                 centerAndFlashFootprint: function (resultEntry) {
-                    if (resultEntry != null) {
-                        var graphic = this.footprintGraphicsCache[resultEntry.OBJECTID];
-                        if (graphic) {
-                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH, graphic);
-                        }
-                    }
+                    return;
+                    /*
+                     if (resultEntry != null) {
+                     var graphic = this.footprintGraphicsCache[resultEntry.OBJECTID];
+                     if (graphic) {
+                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH, graphic);
+                     }
+                     }
+                     */
                 }
             });
     });

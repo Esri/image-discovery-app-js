@@ -10,7 +10,6 @@ define([
                 ignorePagingEvent: false,
                 constructor: function () {
                     this.onPageChangedHitched = lang.hitch(this, function () {
-
                         this._onPageChanged();
                     });
                 },
@@ -18,6 +17,8 @@ define([
                     var def = this.inherited(arguments);
                     if (!this.ignorePagingEvent) {
                         def.then(this.onPageChangedHitched);
+                    }
+                    else{
                     }
                     return def;
                 },

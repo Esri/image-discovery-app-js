@@ -8,15 +8,19 @@ define([
     "esri/layers/RasterFunction",
     "esri/graphic",
     "esri/layers/ImageServiceParameters",
-    "esri/layers/MosaicRule"
+    "esri/layers/MosaicRule",
+    "esriviewer/map/base/LayerQueryParameters"
 ],
-    function (declare, Evented, topic,  array, lang, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule) {
+    function (declare, Evented, topic, array, lang, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule, LayerQueryParameters) {
         return declare(
             [Evented],
             {
                 LOCK_RASTERS_CHANGED: "lockRastersChanged",
                 constructor: function (params) {
                     lang.mixin(this, params || {});
+                    if (this.layer) {
+                        this._createLayerFieldLookup();
+                    }
                     this.currentLockRasterIds = [];
                     this.id = VIEWER_UTILS.generateUUID();
                     this.currentMosaicOperation = MosaicRule.OPERATION_FIRST;
@@ -34,6 +38,14 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.showLayer));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.hideLayer));
 
+                },
+                _createLayerFieldLookup: function () {
+                    this.layerFieldsLookup = {};
+                    if (this.layer && this.layer.fields) {
+                        for (var i = 0; i < this.layer.fields.length; i++) {
+                            this.layerFieldsLookup[this.layer.fields[i].name] = this.layer.fields[i];
+                        }
+                    }
                 },
                 /**
                  * listener on IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP
@@ -238,6 +250,19 @@ define([
                 },
                 supportsThumbnail: function () {
                     return this.serviceConfiguration.supportsThumbnails != null && this.serviceConfiguration.supportsThumbnails == true;
+                },
+                queryForGeometriesFromObjectIds: function (objectIds, callback, errback) {
+                    var layerQueryParameters = new LayerQueryParameters({
+                        returnGeometry: true,
+                        outFields: [],
+                        callback: callback,
+                        layer: this.layer,
+                        objectIds: objectIds
+                    });
+                    if (errback != null && lang.isFunction(errback)) {
+                        layerQueryParameters.errback = errback;
+                    }
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.QUERY_LAYER, layerQueryParameters);
                 }
             });
     });

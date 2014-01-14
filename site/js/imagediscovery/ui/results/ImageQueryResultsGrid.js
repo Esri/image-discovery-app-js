@@ -28,7 +28,6 @@ define([
                     this.filterWidgetLookup = {};
                     //lookup for the filter icon in the grid header
                     this.filterIconLookup = {};
-                    this.responseFeatures = [];
 
                     //Need to keep this var at instance level so that
                     //we can update them based on external events
@@ -43,7 +42,6 @@ define([
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_SHOW_IMAGE, lang.hitch(this, this.handleToggleShowImage));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, lang.hitch(this, this.toggleShoppingCartItem));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT, lang.hitch(this, this.handleGetVisibleGridResultCount));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GRAY_OUT_RESULTS_BY_FUNCTION, lang.hitch(this, this.grayOutRowsByFunction));
                     //todo: this needs to be in a manager that keeps count of how many disable requests there are
@@ -54,6 +52,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADDED, lang.hitch(this, this.handleFilterAdded));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, lang.hitch(this, this.handleGetVisibleFootprintGeometries));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, lang.hitch(this, this.handleGetVisibleFootprintFeatures));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES_GROUPED_BY_QUERY_CONTROLLER, lang.hitch(this, this.handleGetVisibleFootprintFeaturesGroupedByQueryController));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.enableThumbnailToggle));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.disableThumbnailToggle));
 
@@ -86,7 +85,6 @@ define([
                     this.grid.on(mouseUtil.leaveRow, lang.hitch(this, this.handleRowMouseOut));
                     this.grid.on(".dgrid-row:click", lang.hitch(this, this.handleRowClick));
                     con.connect(this.grid, "onPageChanged", lang.hitch(this, this.handleRefreshComplete));
-                    on(this.grid.paginationSizeSelect, "change", lang.hitch(this, this.handleRefreshComplete));
 
                 },
                 handleRefreshComplete: function () {
@@ -145,23 +143,6 @@ define([
                     }
                 },
                 /**
-                 * clears highlighted results in the result grid
-                 */
-                clearHighlightedResults: function () {
-                    var row;
-                    var highlightedItems = this.store.query({isHighlighted: true});
-                    for (var i = 0; i < highlightedItems.length; i++) {
-                        row = this.grid.row(highlightedItems[i]);
-                        if (row && row.element) {
-                            this.grid.unhighlightYellowRow(row);
-                            highlightedItems[i].isHighlighted = false;
-
-                            //remove highlight of footprint
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, highlightedItems[i].OBJECTID);
-                        }
-                    }
-                },
-                /**
                  * returns visible footprints geometries in the result grid
                  * @param callback function to send the visible footprint geometries to
                  */
@@ -180,6 +161,9 @@ define([
                  * @param callback  function to send the visible footprint features to
                  */
                 handleGetVisibleFootprintFeatures: function (callback) {
+                    if (callback == null || !lang.isFunction(callback)) {
+                        return;
+                    }
                     var count = this.grid.rowsPerPage;
                     var start = (this.grid._currentPage - 1) * count;
                     var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false}, {sort: this.grid._sort, count: count, start: start});
@@ -189,6 +173,30 @@ define([
                     }
                     callback(features);
 
+                },
+                handleGetVisibleFootprintFeaturesGroupedByQueryController: function (callback) {
+                    var resultsByQueryControllerId = {};
+                    if (callback == null || !lang.isFunction(callback)) {
+                        return;
+                    }
+                    var visibleFeatures;
+                    this.handleGetVisibleFootprintFeatures(function (results) {
+                        visibleFeatures = results;
+                    });
+                    if (visibleFeatures) {
+                        for (var i = 0; i < visibleFeatures.length; i++) {
+                            var addArr;
+                            if (resultsByQueryControllerId[visibleFeatures[i].queryControllerId] == null) {
+                                addArr = [];
+                                resultsByQueryControllerId[visibleFeatures[i].queryControllerId] = addArr;
+                            }
+                            else {
+                                addArr = resultsByQueryControllerId[visibleFeatures[i].queryControllerId];
+                            }
+                            addArr.push(visibleFeatures[i]);
+                        }
+                    }
+                    callback(resultsByQueryControllerId);
                 },
                 /**
                  * toggles the thumbnail checkbox for the passed grid item
@@ -344,6 +352,7 @@ define([
                  * @param queryResults
                  */
                 populateQueryResults: function (queryResults) {
+                    this.grid.disablePaginationListener();
                     this.hideVisibleFilterPopup();
                     //get to the attributes of the results
                     var data = [];
@@ -356,7 +365,6 @@ define([
                         var newItem;
                         var currentAttributes;
                         //todo: need to make all of these added fields private so the column doesn't override
-                        console.log("populate start " + new Date());
                         for (var j = 0; j < results.features.length; j++) {
                             var newItemMixin = {
                                 __serviceLabel: queryLayerController.label,
@@ -396,8 +404,10 @@ define([
                         }
                     }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.RESULT_GRID_POPULATED, results.features.length);
+                    this.grid.enablePaginationListener();
+
                     this.createNewGridStoreFromData(data);
-                    this.refresh();
+
                     this._handleQueryComplete();
                 },
                 /**
@@ -721,7 +731,6 @@ define([
                  */
                 handleFooterCollapsed: function () {
                     this.hideVisibleFilterPopup();
-                    this.clearHighlightedResults();
                 },
                 /**
                  * hides the current visible filter popup

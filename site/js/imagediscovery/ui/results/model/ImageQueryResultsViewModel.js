@@ -82,29 +82,6 @@ define([
                 setFilterIconVisible: function () {
                     this.filterIcon(true);
                 }
-                /*
-                 toggleRectangleResultsSelection: function () {
-                 var stateBeforeClear = this.rectangleSelectionActive();
-                 this.emit(this.CLEAR_DRAW);
-                 if (!stateBeforeClear) {
-                 this.emit(this.ACTIVATE_RECTANGLE_SELECT);
-                 this.drawActive(true);
-                 }
-                 this.rectangleSelectionActive(!stateBeforeClear);
-                 },
-                 clearRectangleDraw: function () {
-                 this.rectangleSelectionActive(false);
-                 },
 
-                 clearAllDraw: function () {
-                 this.clearRectangleDraw();
-                 this.drawActive(false);
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS);
-
-                 },
-                 clearHighlights: function () {
-                 this.emit(this.CLEAR_DRAW);
-                 }
-                 */
             });
     });

@@ -8,7 +8,6 @@ define([
             [WebMapTemplateConfigurationUtil],
             {
                 displayFieldsParameter: "imageResultDisplayFields",
-                maxResultsParameter: "maxResults",
                 footprintsVisibilityParameter: "footprintVisibilityLevel",
                 whereClauseAppendParameter: "whereClauseAppend",
                 //portal configuration entries that are specifically for the discovery viewer
@@ -71,7 +70,6 @@ define([
                         imageQueryLayers: this.webMapQueryLayerItems,
                         imageQueryResultDisplayFields: [],
                         searchConfiguration: {
-                            "maxQueryResults": 100,
                             "allowCheckAllSearchResultThumbnails": false,
                             "footprintZoomLevelStart": 13
                         }
@@ -81,12 +79,6 @@ define([
                             var whereClauseAppend = this.appConfig[this.whereClauseAppendParameter] != null ? this.appConfig[this.whereClauseAppendParameter] : imageryDefaultConfiguration[key];
                             for (i = 0; i < this.webMapQueryLayerItems.length; i++) {
                                 this.webMapQueryLayerItems[i].queryWhereClauseAppend = whereClauseAppend;
-                            }
-                        }
-                        else if (key === this.maxResultsParameter) {
-                            var maxResults = this.appConfig[this.maxResultsParameter] != null ? this.appConfig[this.maxResultsParameter] : imageryDefaultConfiguration[key];
-                            if (maxResults != null) {
-                                imageryConfiguration.searchConfiguration.maxQueryResults = parseInt(maxResults, 10);
                             }
                         }
                         else if (key === this.footprintsVisibilityParameter) {

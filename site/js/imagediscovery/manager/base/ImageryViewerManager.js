@@ -21,7 +21,7 @@ define([
     "esriviewer/ui/toolbar/base/button/Button"
 
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController,  ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup,Button) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button) {
         return declare(
             [ViewerManager],
             {
@@ -82,10 +82,10 @@ define([
                     this.inherited(arguments);
 
                     //listen for query complete
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE,lang.hitch(this, this.handleImageQueryResultsResponse));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleImageQueryResultsResponse));
 
                     //add search result to the application
-                  //todo  topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
+                    //todo  topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
                     //get all of the search catalog layers
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, lang.hitch(this, this.handleGetCatalogLayers));
                     //get configuration object
@@ -235,11 +235,12 @@ define([
                     }
                     var layer = evt.layer;
                     //load the key properties
-                    this.catalogQueryControllers.push(new ImageQueryLayerController({
+                    var imageQueryLayerController = new ImageQueryLayerController({
                         layer: layer,
                         label: layer.searchServiceLabel,
                         serviceConfiguration: catalogServiceConfig
-                    }));
+                    });
+                    this.catalogQueryControllers.push(imageQueryLayerController);
                     VIEWER_UTILS.log("Loaded Catalog Service", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     IMAGERY_UTILS.loadKeyProperties(layer, lang.hitch(this, this.handleQueryImageServiceKeyPropertiesLoaded));
                 },
@@ -267,7 +268,7 @@ define([
                 /**
                  *  add discovery button and analysis button to the toolbar
                  */
-                createDiscoveryToolbarButtons: function(){
+                createDiscoveryToolbarButtons: function () {
                     var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
                         buttonText: "Discover",
@@ -288,7 +289,7 @@ define([
                  * @param response  query response object
                  * @param queryLayerController controller that the response is associated with
                  */
-             //todo   handleImageQueryResultsResponse: function (response, queryLayerController) {
+                //todo   handleImageQueryResultsResponse: function (response, queryLayerController) {
                 handleImageQueryResultsResponse: function (queryResults) {
                     //expand the footer to show the results grid
                     topic.publish(VIEWER_GLOBALS.EVENTS.FOOTER.EXPAND);
@@ -297,7 +298,7 @@ define([
                         this.createImageQueryResultsWidget();
                     }
                     //set the results on the grid
-                  //  this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
+                    //  this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
                     this.imageryQueryResultsWidget.addQueryResults(queryResults);
                 },
                 /**

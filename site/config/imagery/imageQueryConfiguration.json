@@ -2,35 +2,57 @@
     "userAddCatalogMode": false,
     "imageQueryLayers": [
         {
-            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_PanSharpened/ImageServer",
-            "label": "Landsat8_PanSharpened",
+            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_Views/ImageServer",
+            "label": "Landsat 8 Views",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
                 "AcquisitionDate": "AcquisitionAlias",
                 "LowPS": "LowPSAlias"
             },
-            "supportsThumbnails": true
+            "supportsThumbnails": false
         },
         {
-            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_Views/ImageServer",
-            "label": "Landsat8_Views",
+            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_Analytic/ImageServer",
+            "label": "Landsat 8 Analytic",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
                 "AcquisitionDate": "AcquisitionAlias",
                 "LowPS": "LowPSAlias"
             },
-            "supportsThumbnails": true
+            "supportsThumbnails": false
+        },
+        {
+            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_PanSharpened/ImageServer",
+            "label": "Landsat 8 Pansharpened",
+            "queryWhereClauseAppend": "Category = 1",
+            "fieldMapping": {
+                "AcquisitionDate": "AcquisitionAlias",
+                "LowPS": "LowPSAlias"
+            },
+            "supportsThumbnails": false
+        },
+        {
+            "url": "http://landsat.arcgis.com/arcgis/rest/services/Landsat8_Panchromatic/ImageServer",
+            "label": "Landsat 8 Panchromatic",
+            "queryWhereClauseAppend": "Category = 1",
+            "fieldMapping": {
+                "AcquisitionDate": "AcquisitionAlias",
+                "LowPS": "LowPSAlias"
+            },
+            "supportsThumbnails": false
         },
         {
             "url": "http://landsatlook.usgs.gov/arcgis/rest/services/LandsatLook/ImageServer",
-            "label": "LandsatLook",
+            "label": "Landsat Look",
             "queryWhereClauseAppend": "Category = 1",
             "fieldMapping": {
-                "AcquisitionDate": "AcquisitionAlias",
-                "LowPS": "LowPSAlias"
+                "acquisitionDate": "AcquisitionAlias",
+                "LowPS": "LowPSAlias",
+                "sensor": "SensorAlias"
             },
-            "supportsThumbnails": true
+            "supportsThumbnails": false
         }
+
     ],
     "imageQueryResultDisplayFields": [
         {
@@ -124,10 +146,7 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        "maxQueryResults": 2000,
-        "allowCheckAllSearchResultThumbnails": false,
-        "footprintZoomLevelStart": 0,
-        "useHeatmap": false
+        "allowCheckAllSearchResultThumbnails": false
 
     },
     "exportConfiguration": {

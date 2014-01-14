@@ -25,7 +25,7 @@ define([
         return declare(
             [UITemplatedWidget],
             {
-                footprintZoomLevelStart: 12,
+                footprintZoomLevelStart: 0,
                 bindingsApplied: false,
                 useHeatmap: false,
                 generateCSVEndpoint: "generateCSV",
