@@ -76,7 +76,7 @@
             "field": "Name",
             "label": "Name",
             "filter": {
-                "enable": false
+                "enable": true
             },
             "style": {
                 "color": "blue",
