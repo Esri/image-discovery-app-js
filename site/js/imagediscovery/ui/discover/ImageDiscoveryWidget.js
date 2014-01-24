@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageDiscoveryTemplate.html",
-    //  "xstyle/css!./theme/ImageDiscoveryTheme.css",
+    // "xstyle/css!./theme/ImageDiscoveryTheme.css",
     "dojo/topic",
     "dojo/has",
     'dijit/layout/ContentPane',
@@ -78,9 +78,9 @@ define([
                     this.on("show", lang.hitch(this, this.handleOnShow));
                     //listen for clear results
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleResultsCleared));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this,this.handleSearchComplete));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleSearchComplete));
                 },
-                handleSearchComplete: function(){
+                handleSearchComplete: function () {
                     this.viewModel.searchInProgress(false);
                 },
                 /**

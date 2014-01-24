@@ -20,7 +20,8 @@
     </div>
     <div class="imageDiscoveryByCoordinatesWrapperContainer" data-bind="visible: discoverByGeometryExpanded">
         <div class="imageDiscoveryByCoordinatesContainer">
-            <div class="discoveryDescriptionStepText" data-bind="text:selectToolText,visible: searchInProgress() != true"></div>
+            <div class="discoveryDescriptionStepText"
+                 data-bind="text:selectToolText,visible: searchInProgress() != true"></div>
             <div class="imageDiscoveryInProgressContainer" data-bind="visible: searchInProgress">
                 <div class="loadingSpinnerThrobber imageDiscoveryThrobber"></div>
                 <span class="imageDiscoveryThrobberText">Searching...</span>

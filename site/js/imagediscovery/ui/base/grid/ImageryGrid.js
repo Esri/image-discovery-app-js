@@ -345,7 +345,11 @@ define([
                  *  returns the object ids for visible items in the grid
                  * @return {Array}
                  */
-                getVisibleContentObjectIdArray: function () {
+                getVisibleContentObjectIdArray: function (params) {
+                    if (params == null) {
+                        params = {};
+                    }
+                    lang.mixin(params, {isFiltered: false});
                     var items = this.store.query({isFiltered: false});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
                     var queryLayerControllerObjectIdsArray = [];

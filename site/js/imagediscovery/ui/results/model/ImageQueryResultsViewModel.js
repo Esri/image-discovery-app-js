@@ -8,6 +8,7 @@ define([
             {
                 SHRINK_GRID: "shrinkGrid",
                 EXPAND_GRID: "expandGrid",
+                showOnlyCheckedFootprints: ko.observable(false),
                 cart: ko.observable(true),
                 results: ko.observable(true),
                 expanded: ko.observable(false),

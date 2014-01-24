@@ -31,7 +31,7 @@ define([
                     this.initListeners();
                 },
                 initListeners: function () {
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL, lang.hitch(this, this.clearLockIds));
+                //    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL, lang.hitch(this, this.clearLockIds));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.TRANSPARENCY.SET, lang.hitch(this, this.handleSetTransparency));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP, lang.hitch(this, this.handleClearLayerManipulations));
                     //we dont want to show imagery when the cluster layer is visible
@@ -149,14 +149,25 @@ define([
                  * @param entries
                  */
                 setLockIds: function (entries) {
-                    this.currentLockRasterIds = [];
                     var i;
+                    var newLockRasterIds = [];
                     for (i = 0; i < entries.length; i++) {
                         var currentObjectId = entries[i][this.layer.objectIdField];
-                        this.currentLockRasterIds.push(currentObjectId);
-                        //this._removeThumbnailByObjectId(currentObjectId);
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR);
+                        newLockRasterIds.push(currentObjectId);
                     }
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR);
+
+                    if (newLockRasterIds.length == this.currentLockRasterIds.length && this.currentLockRasterIds.length > 0) {
+                        // see if the arrays are the same
+                        var checkArray = this.currentLockRasterIds.slice(0);
+                        var newLockrasterIdsCheck = newLockRasterIds.slice(0);
+                        checkArray.sort();
+                        newLockrasterIdsCheck.sort();
+                        if (checkArray.join(",") == newLockrasterIdsCheck.join(",")) {
+                            return;
+                        }
+                    }
+                    this.currentLockRasterIds = newLockRasterIds;
                     this.updateMosaicRule();
                     this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
                     VIEWER_UTILS.debug("Set Lock Raster Ids");
@@ -168,9 +179,11 @@ define([
                     if (this.layer) {
                         this.layer.hide();
                     }
-                    this.currentLockRasterIds = [];
-                    this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
-                    VIEWER_UTILS.debug("Cleared Lock Raster Ids");
+                    if (this.currentLockRasterIds.length > 0) {
+                        this.currentLockRasterIds = [];
+                        this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
+                        VIEWER_UTILS.debug("Cleared Lock Raster Ids");
+                    }
                 },
                 /**
                  * gets the thumbnail for an image

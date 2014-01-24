@@ -18,13 +18,16 @@ define([
     "dijit/form/ToggleButton",
     "../../layers/thumbnail/ThumbnailManager",
     "../../ui/results/popup/ResultPopup",
-    "esriviewer/ui/toolbar/base/button/Button"
+    "esriviewer/ui/toolbar/base/button/Button",
+    "../../ui/results/popup/MapIdentifyPopupTooltip",
+    "esri/geometry/screenUtils"
 
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
         return declare(
             [ViewerManager],
             {
+                identifyEnabledZoomLevel: 1,
                 //base configuration url
                 configUrl: "config/imagery/imageryConfig.json",
                 //imagery configuration url
@@ -94,6 +97,13 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, lang.hitch(this, this.handleGetImageryConfigurationKey));
                     //get the layer controllers. layer controllers contain layer reference and metadata associated with layer
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, lang.hitch(this, this.handleGetQueryLayerControllers));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_DISPLAY_FIELDS_LOOKUP, lang.hitch(this, this.handleGetDisplayFieldsLookup));
+
+                },
+                handleGetDisplayFieldsLookup: function (callback) {
+                    if (callback != null && lang.isFunction(callback)) {
+                        callback(this.resultFieldNameToLabelLookup);
+                    }
                 },
                 /**
                  *  listener function for IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET
@@ -264,6 +274,28 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     this.viewerAccordion.show();
                     this.createDiscoveryToolbarButtons();
+
+                    //listen for map click to do an identify over all catalogs
+                    new MapIdentifyPopupTooltip();
+                    this.map.on("click", lang.hitch(this, function (evt) {
+                        var cartVisible = false;
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
+                            cartVisible = vis;
+                        });
+                        if (cartVisible || (this.identifyEnabledZoomLevel > this.map.getLevel())) {
+                            //not within the start zoom level
+                            return;
+                        }
+                        var screenCoordinates = screenUtils.toScreenGeometry(this.map.extent, this.map.width, this.map.height, evt.mapPoint);
+                        var clickHandler = lang.hitch(this, function (response) {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.ADD_RESULT, response);
+                        });
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.BY_POINT, evt.mapPoint, screenCoordinates, clickHandler, function () {
+                            }
+                        );
+                    }));
+
+
                 },
                 /**
                  *  add discovery button and analysis button to the toolbar
@@ -327,6 +359,21 @@ define([
                     //set the query config on the class instance
                     this.queryConfig = queryConfig;
                     //check configuration for manually adding catalog services. configured services in json are ignored if this flag is true
+                    this.resultFieldNameToLabelLookup = {};
+                    for (var i = 0; i < this.queryConfig.imageQueryResultDisplayFields.length; i++) {
+                        this.resultFieldNameToLabelLookup[this.queryConfig.imageQueryResultDisplayFields[i].field] = this.queryConfig.imageQueryResultDisplayFields[i].label;
+                    }
+                    if (this.queryConfig.identify != null) {
+                        if (this.queryConfig.identify.enabledZoomLevel != null) {
+                            try {
+                                this.identifyEnabledZoomLevel = parseInt(this.queryConfig.identify.enabledZoomLevel, 10);
+                            }
+                            catch (err) {
+
+                            }
+                        }
+
+                    }
                     if (this.queryConfig.userAddCatalogMode === true) {
                         this.initUserAddCatalogMode();
                     }

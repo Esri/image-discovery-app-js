@@ -9,7 +9,8 @@ define([
             [DataLoaderSupport],
             {
                 constructor: function () {
-                    this.queryControllerToIdLookup = {}
+                    this._fieldTypeLookupCache = {};
+                    this.queryControllerToIdLookup = {};
                 },
                 /**
                  * returns object with exists flag and fieldName. fieldName is the services true field name (if the field is aliased through config)
@@ -207,6 +208,57 @@ define([
                         hash[codedValues[i].code] = codedValues[i].name
                     }
                     return hash;
+                },
+                getObjectIdArrayForFeatures: function (objectIdField, featuresArray) {
+                    var objectIds = [];
+                    var currentId;
+                    for (var i = 0; i < featuresArray.length; i++) {
+                        currentId = featuresArray[i][objectIdField];
+                        if (currentId != null) {
+                            objectIds.push(currentId)
+                        }
+                    }
+                    return objectIds;
+                },
+                getFieldTypeLookup: function (queryLayerController) {
+                    if (this._fieldTypeLookupCache[queryLayerController.id] != null) {
+                        return this._fieldTypeLookupCache[queryLayerController.id];
+                    }
+                    var fieldTypeLookup = {
+                        dateLookup: {},
+                        doubleLookup: {},
+                        domainLookup: {}
+                    };
+                    var layer = queryLayerController.layer;
+                    var fieldMapping = {};
+                    if (queryLayerController.serviceConfiguration &&
+                        queryLayerController.serviceConfiguration.fieldMapping != null &&
+                        lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                        fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
+                    }
+                    if (layer && layer.fields) {
+                        //todo: put this in a hash
+                        var currentField;
+                        for (var i = 0; i < layer.fields.length; i++) {
+                            currentField = layer.fields[i];
+                            var mappedFieldName = currentField.name;
+                            if (fieldMapping[mappedFieldName] != null) {
+                                mappedFieldName = fieldMapping[mappedFieldName];
+                            }
+                            var fieldType = this.getFieldTypeFromQueryLayerController(currentField.name, queryLayerController);
+                            if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
+                                fieldTypeLookup.dateLookup[mappedFieldName] = currentField;
+                            }
+                            else if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE) {
+                                fieldTypeLookup.doubleLookup[mappedFieldName] = currentField;
+                            }
+                            else if (currentField.domain != null && layer.fields[i].domain.codedValues != null) {
+                                fieldTypeLookup.domainLookup[mappedFieldName] = currentField;
+                            }
+                        }
+                    }
+                    this._fieldTypeLookupCache[queryLayerController.id] = fieldTypeLookup;
+                    return fieldTypeLookup;
                 }
             });
     });

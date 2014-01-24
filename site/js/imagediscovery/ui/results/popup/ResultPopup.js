@@ -4,6 +4,7 @@ define([
     "dojo/_base/lang",
     "dojo/date/locale",
     "dojo/topic",
+    "dijit/popup",
     "dojo/dom-construct",
     "dojo/dom-class",
     "dojo/on",
@@ -11,7 +12,7 @@ define([
     "dojo/_base/array",
     "esri/geometry/screenUtils"
 ],
-    function (declare, TooltipDialog, lang, locale, topic, domConstruct, domClass, on, dojoWindow, array, screenUtils) {
+    function (declare, TooltipDialog, lang, locale, topic, popup, domConstruct, domClass, on, dojoWindow, array, screenUtils) {
         return declare(
             [],
             {
@@ -69,13 +70,14 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, hideCurrentPopupScoped);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP, lang.hitch(this, this.show));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.SHOW_POPUP_FROM_MAP_COORDINATES, lang.hitch(this, this.showFromMapCoordinates));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.REFRESH_FOOTPRINTS_LAYER, hideCurrentPopupScoped);
                 },
                 hidePopup: function () {
                     if (this.anchorDiv != null) {
                         domConstruct.destroy(this.anchorDiv);
                         this.anchorDiv = null;
                     }
-                    dijit.popup.close(this.popupTooltip);
+                    popup.close(this.popupTooltip);
 
                     this.currentToggleCartIcon = null;
                     this.currentImageInfoPopupObject = null;
@@ -104,8 +106,23 @@ define([
                     }
                 },
                 showFromMapCoordinates: function (itemInfo, mapPoint) {
-                    var screenCoordinates = screenUtils.toScreenGeometry(this.map.extent, this.map.width, this.map.height, mapPoint);
-                    this.show(itemInfo, screenCoordinates);
+                    if (mapPoint == null || mapPoint.spatialReference == null) {
+                        return;
+                    }
+                    if (mapPoint.spatialReference.wkid == this.map.spatialReference.wkid) {
+                        var screenCoordinates = screenUtils.toScreenGeometry(this.map.extent, this.map.width, this.map.height, mapPoint);
+                        this.show(itemInfo, screenCoordinates);
+                    }
+                    else {
+                        //project the point to the spatial reference of the map
+                        topic.publish(VIEWER_GLOBALS.EVENTS.GEOMETRY_SERVICE.TASKS.PROJECT_TO_MAP_SR, mapPoint, lang.hitch(this, function (projArray) {
+                            if (projArray && projArray[0] != null) {
+                                var screenCoordinates = screenUtils.toScreenGeometry(this.map.extent, this.map.width, this.map.height, projArray[0]);
+                                this.show(itemInfo, screenCoordinates);
+                            }
+                        }));
+                    }
+
                 },
                 show: function (itemInfo, displayPoint) {
                     this.hidePopup();
@@ -114,7 +131,7 @@ define([
                     this.currentImageInfoPopupObject = this.processImageInfo(itemInfo);
                     if (this.currentImageInfoPopupObject && this.currentImageInfoPopupObject.imageInfoAndLayer) {
                         this.popupTooltip.set("content", this.getHTML(this.currentImageInfoPopupObject));
-                        dijit.popup.open({
+                        popup.open({
                             popup: this.popupTooltip,
                             around: this.anchorDiv,
                             orient: ["above", "below"]
@@ -174,7 +191,7 @@ define([
                         reverseFieldMapping[fieldMapping[key]] = key;
                     }
                     var layer = queryLayerController.layer; //will be used to retrieve thumbnail
-                    var fieldTypeLookup = this.getFieldTypeLookup(queryLayerController);
+                    var fieldTypeLookup = IMAGERY_UTILS.getFieldTypeLookup(queryLayerController);
                     var attributesNVPArray = [];
                     for (var key in imageInfo) {
                         var isAddableField = this.popupDisplayFields != null ? (array.indexOf(this.popupDisplayFields, key) > -1) : true;
@@ -216,46 +233,11 @@ define([
                     return {attributes: attributesNVPArray, imageInfoAndLayer: {imageInfo: imageInfo, layer: layer, queryLayerController: queryLayerController}};
 
                 },
-                getFieldTypeLookup: function (queryLayerController) {
-                    var fieldTypeLookup = {
-                        dateLookup: {},
-                        doubleLookup: {},
-                        domainLookup: {}
-                    };
-                    var layer = queryLayerController.layer;
-                    var fieldMapping = {};
-                    if (queryLayerController.serviceConfiguration &&
-                        queryLayerController.serviceConfiguration.fieldMapping != null &&
-                        lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
-                        fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
-                    }
-                    if (layer && layer.fields) {
-                        //todo: put this in a hash
-                        var currentField;
-                        for (var i = 0; i < layer.fields.length; i++) {
-                            currentField = layer.fields[i];
-                            var mappedFieldName = currentField.name;
-                            if (fieldMapping[mappedFieldName] != null) {
-                                mappedFieldName = fieldMapping[mappedFieldName];
-                            }
-                            var fieldType = IMAGERY_UTILS.getFieldTypeFromQueryLayerController(currentField.name, queryLayerController);
-                            if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
-                                fieldTypeLookup.dateLookup[mappedFieldName] = currentField;
-                            }
-                            else if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE) {
-                                fieldTypeLookup.doubleLookup[mappedFieldName] = currentField;
-                            }
-                            else if (currentField.domain != null && layer.fields[i].domain.codedValues != null) {
-                                fieldTypeLookup.domainLookup[mappedFieldName] = currentField;
-                            }
-                        }
-                    }
-                    return fieldTypeLookup;
-                },
+
                 getFormattedDate: function (value) {
                     try {
                         var date = new Date(value);
-                        var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDateFormat;
+                        var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }
                     catch (err) {

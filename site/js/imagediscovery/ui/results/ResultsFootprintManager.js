@@ -112,7 +112,7 @@ define([
                  */
                 createFootprintsLayer: function () {
                     this.footprintsLayer = new GraphicsLayer({displayOnPan: false});
-                    this.footprintsLayer.on("click", lang.hitch(this, this.handleLayerClick));
+              //todo: removed to implement map click      this.footprintsLayer.on("click", lang.hitch(this, this.handleLayerClick));
                     // this.footprintsLayer.on("click",lang.hitch(this,this.handleLayerClick));
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD_EXTERNAL_MANAGED_LAYER, this.footprintsLayer);
                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.MOVE_LAYER_TO_TOP, this.footprintsLayer);

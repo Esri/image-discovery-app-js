@@ -120,13 +120,15 @@ define([
                  */
                 setSelectedThumbnailsSorted: function (sort) {
                     //todo: need to figure out how to clear for items not in the result set
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL);
+                    // topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL);
                     var items = this.store.query({showThumbNail: true, isFiltered: false, isGrayedOut: false}, {sort: sort});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
                     var currentQueryController;
                     var currentItemsForQueryController;
+                    var resultQueryControllerIds = [];
                     for (var i = 0; i < queryLayerControllerItemsArray.length; i++) {
                         currentQueryController = queryLayerControllerItemsArray[i].queryController;
+                        resultQueryControllerIds.push(currentQueryController.id);
                         currentItemsForQueryController = queryLayerControllerItemsArray[i].items;
                         if (currentItemsForQueryController.length === 0) {
                             currentQueryController.clearLockIds();
@@ -135,8 +137,8 @@ define([
                             currentQueryController.setLockIds(currentItemsForQueryController);
                         }
                     }
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ON_EXCLUDED_QUERY_CONTROLLERS, resultQueryControllerIds);
                 },
-
                 setSelectedThumbnails: function () {
                     var sort = this.grid.get("sort");
                     this.setSelectedThumbnailsSorted(sort);

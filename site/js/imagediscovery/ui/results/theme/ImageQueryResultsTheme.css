@@ -276,6 +276,7 @@
 }
 .imagePopupActionsContainer{
     height: 22px;
+    min-width: 150px;
 }
 .imagePopupCloseIcon{
     float: right;

@@ -1,12 +1,13 @@
 define([
     "dojo/_base/declare",
     "dojo/_base/lang",
+    "dijit/popup",
     "dijit/TooltipDialog",
     "./AddedFieldValuesToolipContents",
     "esriviewer/ui/base/UIWidget"
 
 ],
-    function (declare, lang, TooltipDialog, AddedFieldValuesToolipContents, UIWidget) {
+    function (declare, lang,popup, TooltipDialog, AddedFieldValuesToolipContents, UIWidget) {
         return declare(
             [UIWidget],
             {
@@ -45,7 +46,7 @@ define([
                     params.around = this.aroundNode;
 
                     if (this.tooltip) {
-                        dijit.popup.open(params);
+                        popup.open(params);
                         this.addedFieldValuesContent.show();
 
                         this.visible = true;
@@ -61,7 +62,7 @@ define([
                 },
                 hide: function () {
                     if (this.tooltip) {
-                        dijit.popup.close(this.tooltip);
+                        popup.close(this.tooltip);
                         this.visible = false;
                     }
                 },

@@ -40,6 +40,8 @@ define([
                 },
                 initListeners: function () {
                     this.inherited(arguments);
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.TOGGLE_ADD_TO_CART_BY_QUERY_CONTROLLER, lang.hitch(this, this.handleToggleShoppingCartByQueryController));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.TOGGLE_IMAGE_BY_QUERY_CONTROLLER, lang.hitch(this, this.handleToggleShowImageByQueryController));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_SHOW_IMAGE, lang.hitch(this, this.handleToggleShowImage));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, lang.hitch(this, this.toggleShoppingCartItem));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT, lang.hitch(this, this.handleGetVisibleGridResultCount));
@@ -198,6 +200,23 @@ define([
                     }
                     callback(resultsByQueryControllerId);
                 },
+
+                handleToggleShowImageByQueryController: function (queryLayerController, feature) {
+                    if (queryLayerController == null || feature == null) {
+                        return;
+                    }
+                    var attributes = (feature.attributes != null && lang.isObject(feature.attributes)) ? feature.attributes : feature;
+                    var objectIdField = queryLayerController.layer.objectIdField;
+                    var objectId = attributes[objectIdField];
+                    if (objectId != null) {
+                        var queryParams = {queryControllerId: queryLayerController.id};
+                        queryParams[objectIdField] = objectId;
+                        var items = this.store.query(queryParams);
+                        if (items.length > 0) {
+                            this.handleToggleShowImage(items[0]);
+                        }
+                    }
+                },
                 /**
                  * toggles the thumbnail checkbox for the passed grid item
                  * @param gridItem
@@ -213,6 +232,22 @@ define([
                         }
                         else {
                             currentCheckDijit.set("checked", true);
+                        }
+                    }
+                },
+                handleToggleShoppingCartByQueryController: function (queryLayerController, feature) {
+                    if (queryLayerController == null || feature == null) {
+                        return;
+                    }
+                    var attributes = (feature.attributes != null && lang.isObject(feature.attributes)) ? feature.attributes : feature;
+                    var objectIdField = queryLayerController.layer.objectIdField;
+                    var objectId = attributes[objectIdField];
+                    if (objectId != null) {
+                        var queryParams = {queryControllerId: queryLayerController.id};
+                        queryParams[objectIdField] = objectId;
+                        var items = this.store.query(queryParams);
+                        if (items.length > 0) {
+                            this.toggleShoppingCartItem(items[0]);
                         }
                     }
                 },

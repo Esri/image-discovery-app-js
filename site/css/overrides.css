@@ -5,3 +5,7 @@
     -o-user-select: none;
     user-select: none;
 }
+
+.commonIcons16.blank {
+    background: none;
+}

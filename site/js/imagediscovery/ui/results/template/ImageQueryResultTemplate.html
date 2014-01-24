@@ -8,11 +8,11 @@
             </div>
             <span class="cartCheckoutContainer fivePixelBorderRadius"
                   data-dojo-attach-event="onclick:handleCheckoutCartClick" data-bind="visible: cart">Checkout</span>
-          <!--  <div class="queryResultsCountContainer"
-                 data-bind="visible:results"><span>(</span><span data-bind="text: resultCount"></span><span
-                    style="margin-left:2px">Result</span><span
-                    data-bind="text: resultAppend"></span><span>)</span>
-            </div>    -->
+            <!--  <div class="queryResultsCountContainer"
+                   data-bind="visible:results"><span>(</span><span data-bind="text: resultCount"></span><span
+                      style="margin-left:2px">Result</span><span
+                      data-bind="text: resultAppend"></span><span>)</span>
+              </div>    -->
             <div class="expandResultsIcon commonIcons16 upWithBar" title="Toggle Grid Height"
                  data-bind="click: toggleExpand, css: {downWithBar: expanded}"></div>
             <div class="clearResultsIcon commonIcons16 trash" title="Clear Results"
@@ -40,6 +40,14 @@
                   data-dojo-attach-point="activeSourcesTooltipAnchor"
                   data-dojo-attach-event="onclick:_toggleActiveSourcesTooltip">
                 Toggle Active Sources
+            </span>
+               <span data-bind="visible:results"
+                     class="activeSourcesTooltipAnchor defaultBorder defaultTextColor threePixelBorderRadius"
+                     data-dojo-attach-event="onclick:_toggleShowItemsWithVisibleThumbnails"
+                     title="Display Only Rows That Have Imagery Added To The Map">
+                   <div data-bind="css: {success: showOnlyCheckedFootprints, delete: showOnlyCheckedFootprints() == false}"
+                        class="commonIcons16" style="float: left;margin-right: 3px"></div>
+                <span>On Map Only</span>
             </span>
         </div>
         <div>

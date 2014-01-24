@@ -3,6 +3,7 @@ define([
     "dojo/text!./template/ImageQueryResultTemplate.html",
     "xstyle/css!./theme/ImageQueryResultsTheme.css",
     "dojo/topic",
+    "dijit/popup",
     "dojo/_base/lang",
     "dojo/dom-construct",
     "dijit/form/Button",
@@ -21,7 +22,7 @@ define([
     "./ResultsFootprintManager",
     "../transparency/SearchLayersTransparencyWidget"
 ],
-    function (declare, template, theme, topic, lang, domConstruct, Button, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager, SearchLayersTransparencyWidget) {
+    function (declare, template, theme, topic, popup, lang, domConstruct, Button, UITemplatedWidget, ConfirmTooltip, ImageQueryResultsGrid, ShoppingCartGrid, ImageryTimeSliderWindowWidget, ImageQueryResultsViewModel, FilterFunctionManager, ShoppingCartCheckoutHandler, ActiveSourcesWidget, TooltipDialog, ResultsClusterManager, ResultsHeatmapManager, ResultsFootprintManager, SearchLayersTransparencyWidget) {
         return declare(
             [UITemplatedWidget],
             {
@@ -52,6 +53,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.HIDE_ICON, lang.hitch(this, this.hideTimeSliderIcon));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.TIME_SLIDER.SHOW_ICON, lang.hitch(this, this.showTimeSliderIcon));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LEVEL.CHANGED, lang.hitch(this, this.handleZoomLevelChange));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CHANGED, lang.hitch(this, this.handleLockRasterChanged));
                 },
                 postCreate: function () {
                     this.inherited(arguments);
@@ -64,6 +66,7 @@ define([
                     this.viewModel.results.subscribe(lang.hitch(this, this.handleResultsVisibilityChange));
                     this.viewModel.resultsVisible.subscribe(lang.hitch(this, this.handleFilterIconStateChange));
                     this.viewModel.setFilterIconHidden();
+                    this.itemHasVisibleThumbnailScoped = lang.hitch(this, this.itemThumbNailVisible);
 
 
                     //check to see if there are multiple sources
@@ -184,6 +187,27 @@ define([
                         this.bindingsApplied = true;
                     }
                 },
+                handleLockRasterChanged: function () {
+                    //if only displayed is checked we need to reload the filter function to refresh the results view
+                    if (this.viewModel.showOnlyCheckedFootprints()) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.RELOAD_FILTER_FUNCTION, this.itemHasVisibleThumbnailScoped);
+                    }
+
+                },
+                _toggleShowItemsWithVisibleThumbnails: function () {
+                    var curr = this.viewModel.showOnlyCheckedFootprints();
+                    if (curr) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_FILTER_FUNCTION, this.itemHasVisibleThumbnailScoped);
+                    }
+                    else {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADD_FILTER_FUNCTION, this.itemHasVisibleThumbnailScoped);
+                    }
+                    this.viewModel.showOnlyCheckedFootprints(!curr);
+                },
+                itemThumbNailVisible: function (item) {
+                    return item.showThumbNail;
+                },
+
                 /**
                  * creates the active sources with inside the result widget
                  */
@@ -191,7 +215,6 @@ define([
                     //active sources widget allows the user to toggle visibility of results for each services search results
                     if (this.activeSourcesWidget == null) {
                         this.activeSourcesWidget = new ActiveSourcesWidget();
-                        //      this.activeSourcesWidget.placeAt(this.activeServicesContainer);
 
                         this.activeSourcesTooltipVisible = false;
                         this.activeSourcesTooltip = new TooltipDialog({
@@ -212,7 +235,7 @@ define([
                 },
                 _hideActiveSourcesTooltip: function () {
                     if (this.activeSourcesTooltipVisible && this.activeSourcesTooltip) {
-                        dijit.popup.close(this.activeSourcesTooltip);
+                        popup.close(this.activeSourcesTooltip);
                         this.activeSourcesTooltipVisible = false;
                     }
                 },
@@ -223,7 +246,7 @@ define([
                             around: this.activeSourcesTooltipAnchor,
                             orient: ["above"]
                         };
-                        dijit.popup.open(params);
+                        popup.open(params);
                         this.activeSourcesTooltipVisible = true;
                     }
                 },
@@ -420,6 +443,12 @@ define([
                     }
                     this.viewModel.resultCount(0);
                     //   this.clearDraw();
+                    if (this.viewModel.showOnlyCheckedFootprints()) {
+                        this.viewModel.showOnlyCheckedFootprints(false);
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.REMOVE_FILTER_FUNCTION, this.itemHasVisibleThumbnailScoped);
+
+                    }
+
                     VIEWER_UTILS.debug("Cleared Results");
                 },
                 clearResults: function () {
@@ -625,20 +654,20 @@ define([
                             popup: this.layerTransparencyTooltip //content of popup is the TootipDialog
                         };
                         if (this.layerTransparencyTooltipVisible) {
-                            dijit.popup.close(this.layerTransparencyTooltip);
+                            popup.close(this.layerTransparencyTooltip);
                             this.layerTransparencyTooltipVisible = false;
                         }
                         else {
                             params.around = this.changeResultLayerTransparencyElement;
                             params.orient = ["above"];
-                            dijit.popup.open(params);
+                            popup.open(params);
                             this.layerTransparencyTooltipVisible = true;
                         }
                     }
                 },
                 hideResultLayerTransparencyPopup: function () {
                     if (this.layerTransparencyTooltipVisible && this.layerTransparencyTooltip) {
-                        dijit.popup.close(this.layerTransparencyTooltip);
+                        popup.close(this.layerTransparencyTooltip);
                         this.layerTransparencyTooltipVisible = false;
                     }
                 }

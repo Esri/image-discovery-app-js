@@ -4,9 +4,10 @@ define([
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/_base/array",
-    "esriviewer/map/base/LayerQueryParameters"
+    "esriviewer/map/base/LayerQueryParameters",
+    "esri/geometry/Point"
 ],
-    function (declare, on, topic, lang, array, LayerQueryParameters) {
+    function (declare, on, topic, lang, array, LayerQueryParameters, Point) {
         return declare(
             [],
             {
@@ -14,6 +15,7 @@ define([
                 currentServicesToQueryCount: 0,
                 constructor: function (params) {
                     lang.mixin(this, params || {});
+                    this.currentResultSetSearchControllers = [];
                     this.queryResults = [];
                     this.lockRasterLookup = {};
                     this.loadViewerConfigurationData();
@@ -35,12 +37,91 @@ define([
 
                 },
                 initListeners: function () {
+
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ON_EXCLUDED_QUERY_CONTROLLERS, lang.hitch(this, this.handleClearLockRasterOnExcludedQueryControllers));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_NO_SOURCES_LOCKED, lang.hitch(this, this.handleHasNoSourcesLocked));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_SINGLE_SOURCE_LOCKED, lang.hitch(this, this.handleHasSingleSourceLocked));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET_BY_ID, lang.hitch(this, this.handleGetQueryLayerControllerById));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, lang.hitch(this, this.handleSetQueryLayerControllers));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS, lang.hitch(this, this.handleQueryValuesForFields));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, lang.hitch(this, this.handleQueryByGeometry));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.IDENTIFY.BY_POINT, lang.hitch(this, this.handleIdentifyQueryLayersByPoint));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleQueryCleared));
+                },
+                handleQueryCleared: function () {
+                    this.currentResultSetSearchControllers = null;
+                    this.currentResultSetWhereClause = null;
+                    this.currentResultSetSearchGeometry = null;
+                },
+                /*
+                 _pointIntersectsSearchGeometry: function (point) {
+                 if (!(point instanceof Point) || this.currentResultSetSearchGeometry == null || this.currentResultSetSearchGeometry.contains == null) {
+                 return false;
+                 }
+                 return this.currentResultSetSearchGeometry.contains(point);
+
+                 },
+                 */
+                handleIdentifyQueryLayersByPoint: function (point, screenCoords, callback, errback) {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.CLEAR);
+                    //todo: check that point intersects the previous search
+                    if (point != null && this.currentResultSetSearchGeometry != null && this.currentResultSetSearchControllers != null && callback != null && lang.isFunction(callback)) {
+                        /*
+                         if (!this._pointIntersectsSearchGeometry(point)) {
+                         return;
+                         }
+                         */
+                        var identifyId = VIEWER_UTILS.generateUUID();
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.STARTED, identifyId, screenCoords);
+                        var visibleGridItemsByQueryController;
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES_GROUPED_BY_QUERY_CONTROLLER, function (visibleGridItemsLook) {
+                            visibleGridItemsByQueryController = visibleGridItemsLook;
+                        });
+                        for (var i = 0; i < this.currentResultSetSearchControllers.length; i++) {
+                            var currentQueryLayerController = this.currentResultSetSearchControllers[i];
+                            var featuresCurrentlyInGridForQueryLayerController = visibleGridItemsByQueryController[currentQueryLayerController.id];
+
+                            if (featuresCurrentlyInGridForQueryLayerController == null) {
+                                //no results visible in the grid
+                                continue;
+                            }
+                            var currentSearchWhereClause = this.currentResultSetWhereClause;
+                            if (currentSearchWhereClause != null && currentSearchWhereClause.length > 0) {
+                                if (currentQueryLayerController.layer.queryWhereClauseAppend != null) {
+                                    currentSearchWhereClause += " AND " + currentQueryLayerController.layer.queryWhereClauseAppend
+                                }
+                            }
+                            else {
+                                if (currentQueryLayerController.layer.queryWhereClauseAppend != null) {
+                                    currentSearchWhereClause = currentQueryLayerController.layer.queryWhereClauseAppend
+                                }
+                            }
+                            //append the IN clause for the Object ids in the current page of the grid
+                            var objectIdsToQueryOnArray = IMAGERY_UTILS.getObjectIdArrayForFeatures(currentQueryLayerController.layer.objectIdField, featuresCurrentlyInGridForQueryLayerController);
+                            var objectIdsQueryString = currentQueryLayerController.layer.objectIdField + " IN (" + objectIdsToQueryOnArray.join(",") + ")";
+                            if (currentSearchWhereClause == null || currentSearchWhereClause.length == 0) {
+                                currentSearchWhereClause = objectIdsQueryString
+                            }
+                            else {
+                                currentSearchWhereClause += " AND " + objectIdsQueryString;
+                            }
+                            var queryParamsForLayer = new LayerQueryParameters({
+                                whereClause: currentSearchWhereClause,
+                                returnGeometry: false,
+                                outFields: this.getQueryFieldsForQueryController(currentQueryLayerController),
+                                geometry: point,
+
+                                callback: lang.hitch(this, function (queryLayerController, resultIndex, result) {
+                                    if (result && result.features && result.features.length > 0) {
+                                        callback({queryLayerController: queryLayerController, features: result.features, resultIndex: resultIndex, identifyId: identifyId});
+                                    }
+                                }, currentQueryLayerController, i),
+                                errback: errback,
+                                layer: currentQueryLayerController.layer
+                            });
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.QUERY_LAYER, queryParamsForLayer);
+                        }
+                    }
                 },
                 handleQueryValuesForFields: function (layerQueryParameters) {
                     layerQueryParameters.whereClause = layerQueryParameters.layer.queryWhereClauseAppend ? layerQueryParameters.layer.queryWhereClauseAppend : "1 = 1";
@@ -85,6 +166,9 @@ define([
                     this.queryResults = [];
                     this.resultFeaturesCount = 0;
                     this.queryResponseCount = 0;
+                    this.currentResultSetSearchGeometry = imageQueryControllerQueryParams.geometry;
+                    this.currentResultSetWhereClause = imageQueryControllerQueryParams.whereClause;
+                    this.currentResultSetSearchControllers = imageQueryControllerQueryParams.queryLayerControllers;
                     this.currentServicesToQueryCount = imageQueryControllerQueryParams.queryLayerControllers.length;
                     for (var i = 0; i < imageQueryControllerQueryParams.queryLayerControllers.length; i++) {
                         var queryLayerController = imageQueryControllerQueryParams.queryLayerControllers[i];
@@ -127,6 +211,16 @@ define([
                     for (var i = 0; i < this.queryLayerControllers.length; i++) {
                         currentQueryController = this.queryLayerControllers[i];
                         on(currentQueryController, currentQueryController.LOCK_RASTERS_CHANGED, lang.hitch(this, this.handleLockRastersChanged, currentQueryController))
+                    }
+                },
+                handleClearLockRasterOnExcludedQueryControllers: function (queryControllerIdArray) {
+                    var currentQueryLayerController;
+                    for (var i = 0; i < this.queryLayerControllers.length; i++) {
+                        currentQueryLayerController =  this.queryLayerControllers[i];
+                        if (array.indexOf(queryControllerIdArray, currentQueryLayerController.id) < 0) {
+                            //clear
+                            currentQueryLayerController.clearLockIds();
+                        }
                     }
                 },
                 /**
@@ -199,7 +293,7 @@ define([
                     else {
                         topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.SINGLE_SOURCE_LOCKED, this.lockRasterLookup[queryController.id]);
                     }
-
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CHANGED);
                 },
                 /**
                  * handles the image service query response
