@@ -100,6 +100,24 @@ define([
                     if (discoveryQueryFields != null && lang.isArray(discoveryQueryFields)) {
                         this.discoveryQueryFields = discoveryQueryFields;
                     }
+
+                },
+                populateDefaultValues: function (queryLayerControllers, imageDiscoveryQueryFieldsUniqueValuesConfig) {
+                    var currentCatalogUrl;
+                    var queryLayerControllerId;
+                    for (var key in imageDiscoveryQueryFieldsUniqueValuesConfig) {
+                        queryLayerControllerId = null;
+                        currentCatalogUrl = key;
+                        for (var i = 0; i < queryLayerControllers.length; i++) {
+                            if (currentCatalogUrl == queryLayerControllers[i].layer.url) {
+                                queryLayerControllerId = queryLayerControllers[i].id;
+                                break;
+                            }
+                        }
+                        if (queryLayerControllerId) {
+                            this.queryFieldResponseCache[queryLayerControllerId] = imageDiscoveryQueryFieldsUniqueValuesConfig[key];
+                        }
+                    }
                 },
                 handleQueryFieldValuesError: function () {
                     this.onNoUniqueValuesReturned();

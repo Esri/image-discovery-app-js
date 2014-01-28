@@ -37,7 +37,6 @@ define([
 
                 },
                 initListeners: function () {
-
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ON_EXCLUDED_QUERY_CONTROLLERS, lang.hitch(this, this.handleClearLockRasterOnExcludedQueryControllers));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_NO_SOURCES_LOCKED, lang.hitch(this, this.handleHasNoSourcesLocked));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.HAS_SINGLE_SOURCE_LOCKED, lang.hitch(this, this.handleHasSingleSourceLocked));
@@ -53,24 +52,10 @@ define([
                     this.currentResultSetWhereClause = null;
                     this.currentResultSetSearchGeometry = null;
                 },
-                /*
-                 _pointIntersectsSearchGeometry: function (point) {
-                 if (!(point instanceof Point) || this.currentResultSetSearchGeometry == null || this.currentResultSetSearchGeometry.contains == null) {
-                 return false;
-                 }
-                 return this.currentResultSetSearchGeometry.contains(point);
-
-                 },
-                 */
                 handleIdentifyQueryLayersByPoint: function (point, screenCoords, callback, errback) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.CLEAR);
                     //todo: check that point intersects the previous search
                     if (point != null && this.currentResultSetSearchGeometry != null && this.currentResultSetSearchControllers != null && callback != null && lang.isFunction(callback)) {
-                        /*
-                         if (!this._pointIntersectsSearchGeometry(point)) {
-                         return;
-                         }
-                         */
                         var identifyId = VIEWER_UTILS.generateUUID();
                         topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.STARTED, identifyId, screenCoords);
                         var visibleGridItemsByQueryController;

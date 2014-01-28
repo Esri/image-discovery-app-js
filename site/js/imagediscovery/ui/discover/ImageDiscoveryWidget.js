@@ -107,6 +107,13 @@ define([
                     var currentQueryLayerController;
                     var currentQueryLayer;
                     this.queryLayerControllers = queryLayerControllers;
+                    var imageDiscoveryQueryFieldsUniqueValuesConfig = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageDiscoveryQueryFieldsUniqueValues", function (imageDiscoveryQueryFieldsUniqueValuesConf) {
+                        imageDiscoveryQueryFieldsUniqueValuesConfig = imageDiscoveryQueryFieldsUniqueValuesConf;
+                    });
+                    if (imageDiscoveryQueryFieldsUniqueValuesConfig != null && lang.isObject(imageDiscoveryQueryFieldsUniqueValuesConfig)) {
+                        this.imageQueryWidget.populateDefaultValues(queryLayerControllers,imageDiscoveryQueryFieldsUniqueValuesConfig);
+                    }
                     if (queryLayerControllers.length == 1) {
                         this.viewModel.selectSearchServiceVisible(false);
                         if (this.createQueryFieldsDiscoveryContent) {
@@ -155,6 +162,8 @@ define([
                     if (discoveryQueryFields != null && lang.isArray(discoveryQueryFields) && discoveryQueryFields.length > 0) {
                         this.createQueryFieldsDiscoveryContent = !(has("ie") == 7);
                     }
+
+
                 },
                 handleSearchByGeometryGeometryQueryError: function (msg) {
                     this.clearDraw();

@@ -36,7 +36,7 @@ define([
                 mensurationOperationParamName: "measureOperation",
                 fromGeometryParamName: "fromGeometry",
                 toGeometryParamName: "toGeometry",
-                noMensurationCapabilitiesStrings: ["None", "None,Basic", ""],
+                noMensurationCapabilitiesStrings: ["Basic","None", "None,Basic", ""],
                 templateString: template,
                 mensurationLineSymbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 255]), 3),
                 mensurationPointSymbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 1,
