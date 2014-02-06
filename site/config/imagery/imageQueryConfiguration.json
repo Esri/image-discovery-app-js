@@ -12,17 +12,96 @@
             "label": "DTED_CATALOG",
             "queryWhereClauseAppend": "Category = 1",
             "supportsThumbnails": true
-        }/*,
+        },
         {
             "url": "http://idmpsvr1:6080/arcgis/rest/services/MAPDATA_CATALOG/ImageServer",
             "label": "MAPDATA_CATALOG",
             "queryWhereClauseAppend": "Category = 1",
             "supportsThumbnails": true
-        }
-        */
-
+        },
+		        {
+            "url": "http://idmpsvr1/arcgis/rest/services/IDMP/MSI_ORTHO/ImageServer",
+            "label": "ADICS4 Level 3",
+            "queryWhereClauseAppend": "Category = 1",
+            "supportsThumbnails": true
+        } 
     ],
-    "imageQueryResultDisplayFields": [
+	"imageDiscoveryQueryFields": [
+        {
+            "field": "ProductName",
+            "label": "Product"
+        }
+    ],
+    "imageDiscoveryQueryFieldsUniqueValues": {
+        "http://gisehost01/arcgis/rest/services/ADICS4_CATALOG/ImageServer": {
+            "ProductName": [
+                "CIB: 1 meter resolution imagery",
+                "CIB: 10 meter resolution imagery",
+                "CIB: 5 meter resolution imagery"
+            ]
+        },
+        "http://gisehost01/arcgis/rest/services/CIB_CATALOG/ImageServer": {
+            "ProductName": [
+                "CIB: 1 meter resolution imagery",
+                "CIB: 10 meter resolution imagery",
+                "CIB: 5 meter resolution imagery"
+            ]
+        },
+        "http://gisehost01/arcgis/rest/services/DTED_CATALOG/ImageServer": {
+            "ProductName": [
+                "DTED Level 0",
+                "DTED Level 1",
+                "DTED Level 2",
+                "STRM Level 1",
+                "STRM Level 2"
+            ]
+        },
+        "http://gisehost01/arcgis/rest/services/MAP_DATA_CATALOG/ImageServer": {
+            "ProductName": [
+                "CADRG/ECRG: City Graphics (1:10,000)",
+                "CADRG/ECRG: City Graphics (1:10,560)",
+                "CADRG/ECRG: City Graphics (1:12,000)",
+                "CADRG/ECRG: City Graphics (1:12,500)",
+                "CADRG/ECRG: City Graphics (1:12,800)",
+                "CADRG/ECRG: City Graphics (1:12,800)",
+                "CADRG/ECRG: City Graphics (1:14,000)",
+                "CADRG/ECRG: City Graphics (1:15,000)",
+                "CADRG/ECRG: City Graphics (1:16,666)",
+                "CADRG/ECRG: City Graphics (1:17,000)",
+                "CADRG/ECRG: City Graphics (1:17,500)",
+                "CADRG/ECRG: City Graphics (1:18,000)",
+                "CADRG/ECRG: City Graphics (1:20,000)",
+                "CADRG/ECRG: City Graphics (1:21,120)",
+                "CADRG/ECRG: City Graphics (1:22,000)",
+                "CADRG/ECRG: City Graphics (1:25,000)",
+                "CADRG/ECRG: City Graphics (1:26,000)",
+                "CADRG/ECRG: City Graphics (1:35,000)",
+                "CADRG/ECRG: City Graphics (1:36,000)",
+                "CADRG/ECRG: Combat Charts",
+                "CADRG/ECRG: Combat Charts (1:10,000)",
+                "CADRG/ECRG: Combat Charts (1:25,000)",
+                "CADRG/ECRG: Combat Charts (1:50,000)",
+                "CADRG/ECRG: Global Navigation Chart",
+                "CADRG/ECRG: Jet Navigation Chart",
+                "CADRG/ECRG: Joint Operations Graphic - Air",
+                "CADRG/ECRG: Low Flying Chart (Day)",
+                "CADRG/ECRG: Low Flying Chart (Night)",
+                "CADRG/ECRG: Military Installation Maps",
+                "CADRG/ECRG: Military Installation Maps - 1",
+                "CADRG/ECRG: Miscellaneous Maps & Charts",
+                "CADRG/ECRG: Naval Range Operating Area Chart",
+                "CADRG/ECRG: Operational Navigation Chart",
+                "CADRG/ECRG: Tactical Pilotage Chart",
+                "CADRG/ECRG: Topographic Line Map (1:100,000)",
+                "CADRG/ECRG: Topographic Line Map (1:24,000)",
+                "CADRG/ECRG: Topographic Line Map (1:25,000)",
+                "CADRG/ECRG: Topographic Line Map (1:50,000)",
+                "CADRG/ECRG: Topographic Line Map (other 1:50,000)",
+                "CADRG/ECRG: Transit Flying Chart(Day)"
+            ]
+        }
+    },
+     "imageQueryResultDisplayFields": [
         {
             "field": "OBJECTID",
             "label": "id",
@@ -56,6 +135,16 @@
             },
             "style": {
                 "fontSize": "8pt"
+            },
+            "processing":{
+                "treatAsLink": true
+            }
+        },
+        {
+            "field": "ProductName",
+            "label": "Product",
+            "filter": {
+                "enable": true
             }
         },
         {

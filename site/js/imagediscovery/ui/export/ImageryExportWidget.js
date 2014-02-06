@@ -17,7 +17,7 @@ define([
     "esri/symbols/SimpleLineSymbol"
 ],
   //  function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
-    function (declare, template,  topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+    function (declare, template,  topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageryExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
         return declare(
             [ UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
             {
@@ -37,7 +37,7 @@ define([
                     new Color([255, 0, 0, .5])),
                 postCreate: function () {
                     this.inherited(arguments);
-                    this.viewModel = new ImageExportViewModel();
+                    this.viewModel = new ImageryExportViewModel();
                     this.viewModel.selectedExtractMode.subscribe(lang.hitch(this, this.handleExportTypeSelectChange));
                     this.viewModel.userDrawActive.subscribe(lang.hitch(this, this.handleUserDrawActiveChanged));
                     this.handleImageryDownloadErrorCallback = lang.hitch(this, this._imageryDownloadErrorCallback);
@@ -234,6 +234,7 @@ define([
                             if (currentRasterFile.rasterIds.length == 1) {
                                 currrentRasterFileRasterId = currentRasterFile.rasterIds[0];
                                 var addDownloadItem = {
+                                    id: currentRasterFile.id,
                                     url: (downloadUrl + "&rasterId=" + currrentRasterFileRasterId),
                                     label: fileName,
                                     serviceName: REG_EXP_UTILS.getServiceNameFromUrl(serviceUrl)

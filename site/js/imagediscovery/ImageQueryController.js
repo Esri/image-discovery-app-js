@@ -52,6 +52,14 @@ define([
                     this.currentResultSetWhereClause = null;
                     this.currentResultSetSearchGeometry = null;
                 },
+                /**
+                 * sends an identify query against all of the query controllers. This hits the server to load all features that intersect the point click.
+                 * these results are not synched up with the result grid, you should use the query controller id and the object id of the result to synch up with the results grid manually.
+                 * @param point
+                 * @param screenCoords
+                 * @param callback
+                 * @param errback
+                 */
                 handleIdentifyQueryLayersByPoint: function (point, screenCoords, callback, errback) {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.CLEAR);
                     //todo: check that point intersects the previous search
@@ -146,8 +154,13 @@ define([
 
                 },
                 //inner function that executes the image query
+                /**
+                 * publishes a topic to the base viewer to query an Image service. For the discovery viewer all queries are geometries with an optional where clause
+                 * @param imageQueryControllerQueryParams
+                 */
                 handlePerformQuery: function (imageQueryControllerQueryParams) {
-                    topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.DISABLE);
+                 //   topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.DISABLE);
+                    topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.SHOW);
                     this.queryResults = [];
                     this.resultFeaturesCount = 0;
                     this.queryResponseCount = 0;
@@ -293,7 +306,11 @@ define([
                         resultsString = "Query Complete (" + this.resultFeaturesCount + " " + (this.resultFeaturesCount == 1 ? "Result" : "Results") + ")";
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, resultsString);
                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, this.queryResults);
-                        topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.ENABLE);
+                   //     topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.ENABLE);
+                        topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.HIDE);
+                    }
+                    else{
+                        topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.SHOW);
                     }
 
                 },

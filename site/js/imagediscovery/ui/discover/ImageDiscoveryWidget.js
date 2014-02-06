@@ -81,7 +81,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleSearchComplete));
                 },
                 handleSearchComplete: function () {
-                    this.viewModel.searchInProgress(false);
+                   //todo: this.viewModel.searchInProgress(false);
                 },
                 /**
                  * called when the search service has changed in the service select box
@@ -276,7 +276,7 @@ define([
                             searchGraphic = graphic;
                         }
                     }
-                    this.viewModel.searchInProgress(true);
+                 //todo:   this.viewModel.searchInProgress(true);
                     imageQueryParameters.geometry = searchGraphic.geometry;
                     imageQueryParameters.errback = this.searchByGeometryGeometryQueryErrorback;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, imageQueryParameters);
