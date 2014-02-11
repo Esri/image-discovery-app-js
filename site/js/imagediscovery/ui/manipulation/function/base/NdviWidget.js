@@ -7,11 +7,11 @@ define([
     "esri/layers/RasterFunction",
     "dijit/form/Button"
 ],
-    function (declare, template, BaseRasterFunctionWidget, lang, Select, RasterFunction,Button) {
+    function (declare, template, BaseRasterFunctionWidget, lang, Select, RasterFunction, Button) {
         return declare(
             [BaseRasterFunctionWidget],
             {
-                hasParameters:true,
+                hasParameters: true,
                 label: "NDVI",
                 redRegexp: new RegExp(/red/i),
                 infraredRegexp: new RegExp(/infrared/i),
@@ -73,8 +73,9 @@ define([
                                     bandLbl = i + 1;
                                 }
                                 bandValue = "" + (i);
-                                redBandOption = {label: bandLbl, value: bandValue};
-                                nirBandOption = {label: bandLbl, value: bandValue};
+                                var lblAsString = bandLbl.toString();
+                                redBandOption = {label: lblAsString, value: bandValue};
+                                nirBandOption = {label: lblAsString, value: bandValue};
                                 this.redBandSelectInput.addOption(redBandOption);
                                 this.nirBandSelectInput.addOption(nirBandOption);
                                 this.labelToBandIdLookup[bandLbl] = bandValue;

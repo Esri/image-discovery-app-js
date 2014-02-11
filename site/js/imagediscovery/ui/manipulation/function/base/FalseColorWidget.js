@@ -59,9 +59,10 @@ define([
                                 bandLbl = i + 1;
                             }
                             var bandValue = "" + (i);
-                            var redBandOption = {label: bandLbl, value: bandValue};
-                            var nirBandOption = {label: bandLbl, value: bandValue};
-                            var greenBandOption = {label: bandLbl, value: bandValue};
+                            var lblAsString = bandLbl.toString();
+                            var redBandOption = {label: lblAsString, value: bandValue};
+                            var nirBandOption = {label: lblAsString, value: bandValue};
+                            var greenBandOption = {label: lblAsString, value: bandValue};
                             this.redBandSelectInput.addOption(redBandOption);
                             this.nirBandSelectInput.addOption(nirBandOption);
                             this.greenBandSelectInput.addOption(greenBandOption);
