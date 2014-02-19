@@ -27,6 +27,7 @@ define([
         return declare(
             [ViewerManager],
             {
+                applicationDrawInProgress: false,
                 identifyEnabledZoomLevel: 1,
                 //base configuration url
                 configUrl: "config/imagery/imageryConfig.json",
@@ -99,7 +100,20 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, lang.hitch(this, this.handleGetQueryLayerControllers));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_DISPLAY_FIELDS_LOOKUP, lang.hitch(this, this.handleGetDisplayFieldsLookup));
 
+
+                    //listen for drawing. if there is drawing active we don't want the identify on map click for search results
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_STARTED, lang.hitch(this, this.handleApplicationDrawStart));
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_COMPLETE, lang.hitch(this, this.handleApplicationDrawEnd));
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_CANCELLED, lang.hitch(this, this.handleApplicationDrawEnd));
+
                 },
+                handleApplicationDrawStart: function () {
+                    this.applicationDrawInProgress = true;
+                },
+                handleApplicationDrawEnd: function () {
+                    this.applicationDrawInProgress = false;
+                },
+
                 handleGetDisplayFieldsLookup: function (callback) {
                     if (callback != null && lang.isFunction(callback)) {
                         callback(this.resultFieldNameToLabelLookup);
@@ -278,6 +292,9 @@ define([
                     //listen for map click to do an identify over all catalogs
                     new MapIdentifyPopupTooltip();
                     this.map.on("click", lang.hitch(this, function (evt) {
+                        if (this.applicationDrawInProgress) {
+                            return;
+                        }
                         var cartVisible = false;
                         topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
                             cartVisible = vis;
