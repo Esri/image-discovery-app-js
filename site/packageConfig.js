@@ -3,5 +3,4 @@ window.djConfig = {ioPublish: true, isDebug: true, disableFlashStorage: true, de
     {name: "imagediscovery", location: jsPath + "js/imagediscovery"},
 //   {name: "esriviewer", location: jsPath + "js/lib/viewerbase"},
         {name: "esriviewer", location: "http://rrivera2.esri.com/JavaScriptViewerDebug/js/esriviewer"},
-    {name: "dgrid", location: jsPath + "js/lib/dgrid"}
-]};
+    {name: "dgrid", location: jsPath + "js/lib/dgrid"} ]};
