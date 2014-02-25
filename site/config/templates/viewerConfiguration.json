@@ -15,6 +15,10 @@
         },
         //useBasemapGallery: when true will use the esri core javascript basemap gallery instead of the built in gallery
         "useBasemapGallery": false,
+		//if "useBasemapGallery" is true "basemapGalleryDefault" can be used to specify the loaded basemap from arcgis.com
+        //possible values (may change) are:
+        // "Oceans", "National Geographic", "Light Gray Canvas", "Terrain with Labels", "Topographic" ,"Streets", "Imagery with Labels","Imagery"
+        "basemapGalleryDefault": "Streets",
         "basemaps": {
             //json object. key need to be a unique string
             //label: string label displayed on mouse over in base map widget

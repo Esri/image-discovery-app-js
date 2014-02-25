@@ -8,15 +8,19 @@ define([
     "esri/layers/RasterFunction",
     "esri/graphic",
     "esri/layers/ImageServiceParameters",
-    "esri/layers/MosaicRule"
+    "esri/layers/MosaicRule",
+    "esriviewer/map/base/LayerQueryParameters"
 ],
-    function (declare, Evented, topic,  array, lang, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule) {
+    function (declare, Evented, topic, array, lang, GraphicsLayer, RasterFunction, Graphic, ImageServiceParameters, MosaicRule, LayerQueryParameters) {
         return declare(
             [Evented],
             {
                 LOCK_RASTERS_CHANGED: "lockRastersChanged",
                 constructor: function (params) {
                     lang.mixin(this, params || {});
+                    if (this.layer) {
+                        this._createLayerFieldLookup();
+                    }
                     this.currentLockRasterIds = [];
                     this.id = VIEWER_UTILS.generateUUID();
                     this.currentMosaicOperation = MosaicRule.OPERATION_FIRST;
@@ -27,13 +31,20 @@ define([
                     this.initListeners();
                 },
                 initListeners: function () {
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LOCK_RASTER.CLEAR_ALL, lang.hitch(this, this.clearLockIds));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.TRANSPARENCY.SET, lang.hitch(this, this.handleSetTransparency));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP, lang.hitch(this, this.handleClearLayerManipulations));
                     //we dont want to show imagery when the cluster layer is visible
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.showLayer));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.hideLayer));
 
+                },
+                _createLayerFieldLookup: function () {
+                    this.layerFieldsLookup = {};
+                    if (this.layer && this.layer.fields) {
+                        for (var i = 0; i < this.layer.fields.length; i++) {
+                            this.layerFieldsLookup[this.layer.fields[i].name] = this.layer.fields[i];
+                        }
+                    }
                 },
                 /**
                  * listener on IMAGERY_GLOBALS.EVENTS.MANIPULATION.STOP
@@ -137,14 +148,25 @@ define([
                  * @param entries
                  */
                 setLockIds: function (entries) {
-                    this.currentLockRasterIds = [];
                     var i;
+                    var newLockRasterIds = [];
                     for (i = 0; i < entries.length; i++) {
                         var currentObjectId = entries[i][this.layer.objectIdField];
-                        this.currentLockRasterIds.push(currentObjectId);
-                        //this._removeThumbnailByObjectId(currentObjectId);
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR);
+                        newLockRasterIds.push(currentObjectId);
                     }
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.CLEAR);
+
+                    if (newLockRasterIds.length == this.currentLockRasterIds.length && this.currentLockRasterIds.length > 0) {
+                        // see if the arrays are the same
+                        var checkArray = this.currentLockRasterIds.slice(0);
+                        var newLockrasterIdsCheck = newLockRasterIds.slice(0);
+                        checkArray.sort();
+                        newLockrasterIdsCheck.sort();
+                        if (checkArray.join(",") == newLockrasterIdsCheck.join(",")) {
+                            return;
+                        }
+                    }
+                    this.currentLockRasterIds = newLockRasterIds;
                     this.updateMosaicRule();
                     this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
                     VIEWER_UTILS.debug("Set Lock Raster Ids");
@@ -156,9 +178,11 @@ define([
                     if (this.layer) {
                         this.layer.hide();
                     }
-                    this.currentLockRasterIds = [];
-                    this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
-                    VIEWER_UTILS.debug("Cleared Lock Raster Ids");
+                    if (this.currentLockRasterIds.length > 0) {
+                        this.currentLockRasterIds = [];
+                        this.emit(this.LOCK_RASTERS_CHANGED, this.currentLockRasterIds);
+                        VIEWER_UTILS.debug("Cleared Lock Raster Ids");
+                    }
                 },
                 /**
                  * gets the thumbnail for an image
@@ -238,6 +262,19 @@ define([
                 },
                 supportsThumbnail: function () {
                     return this.serviceConfiguration.supportsThumbnails != null && this.serviceConfiguration.supportsThumbnails == true;
+                },
+                queryForGeometriesFromObjectIds: function (objectIds, callback, errback) {
+                    var layerQueryParameters = new LayerQueryParameters({
+                        returnGeometry: true,
+                        outFields: [],
+                        callback: callback,
+                        layer: this.layer,
+                        objectIds: objectIds
+                    });
+                    if (errback != null && lang.isFunction(errback)) {
+                        layerQueryParameters.errback = errback;
+                    }
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.QUERY_LAYER, layerQueryParameters);
                 }
             });
     });

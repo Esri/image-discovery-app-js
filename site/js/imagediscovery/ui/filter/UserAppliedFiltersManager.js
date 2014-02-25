@@ -39,12 +39,16 @@ define([
                     this.startupFilterWidgets();
                 },
                 _initListeners: function () {
+                    //clear filter on results cleared
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleClearQueryResult));
+                    //listen for disable request
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.USER_DISABLE, lang.hitch(this, this.disableFilters));
+                    //listen for enable request
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.USER_ENABLE, lang.hitch(this, this.enableUserFilters));
                 },
                 loadViewerConfigurationData: function () {
                     var displayFieldsConfig;
+                    //get the display fields to check for filters that will be enabled
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryResultDisplayFields", function (displayFieldsConf) {
                         displayFieldsConfig = displayFieldsConf;
                     });
@@ -88,14 +92,17 @@ define([
                             if (currentFilterConfig.filter.unitsLabel != null && currentFilterConfig.filter.unitsLabel != "") {
                                 currentWidgetParams.unitsLabel = currentFilterConfig.filter.unitsLabel;
                             }
+                            //this field will use the number range filter
                             newWidget = new ImageFilterNumberRangeWidget(currentWidgetParams);
                             this.numberWidgets.push(newWidget);
                         }
                         if (array.indexOf(this.stringListTypes, fieldType) > -1) {
+                            //this field will use the string filter
                             newWidget = new ImageFilterStringFilteringSelectWidget(currentWidgetParams);
                             this.stringListWidgets.push(newWidget);
                         }
                         if (array.indexOf(this.dateTypes, fieldType) > -1) {
+                            //this field will use the date filter
                             newWidget = new ImageFilterDateRangeWidget(currentWidgetParams);
                             this.dateRangeWidgets.push(newWidget);
                         }
@@ -161,6 +168,7 @@ define([
                  * called when query results are cleared. All filter functions are removed from the current application state
                  */
                 handleClearQueryResult: function () {
+                    //this resets all of the filters on query clear
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.BEFORE_CLEAR);
                     //hide all the filter widgets
                     for (var i = 0; i < this.queryWidgets.length; i++) {
@@ -189,6 +197,7 @@ define([
                  * initializes the filter ranges for all filters
                  */
                 initializeFilterRanges: function () {
+                    //this will query the result grid, retrieving the unique field value for each field that has filtering enabled
                     this.blockFilterChanges = true;
                     this.clearAllFilters();
                     //get the unique values for each filter column
@@ -209,6 +218,7 @@ define([
                     //populate slider min/max/current
                     var currentWidget;
                     var currentRangeLookupArray;
+                    //loop through the number filter widgets and set the range
                     for (i = 0; i < this.numberWidgets.length; i++) {
                         currentWidget = this.numberWidgets[i];
                         currentRangeLookupArray = uniqueValuesLookup[currentWidget.queryField];
@@ -243,7 +253,7 @@ define([
                         }
                     }
                     var currentStringListArray;
-                    //populate string list widgets
+                    //populate string list widgets from the unique values
                     for (i = 0; i < this.stringListWidgets.length; i++) {
                         currentWidget = this.stringListWidgets[i];
                         currentStringListArray = uniqueValuesLookup[currentWidget.queryField];
@@ -262,7 +272,7 @@ define([
                             currentWidget.hide();
                         }
                     }
-                    //populate date range widgets
+                    //populate date range widgets from the unique values
                     for (i = 0; i < this.dateRangeWidgets.length; i++) {
                         currentWidget = this.dateRangeWidgets[i];
                         currentRangeLookupArray = uniqueValuesLookup[currentWidget.queryField];
@@ -318,6 +328,7 @@ define([
                  * @param filterFxn
                  */
                 handleFilterApply: function (target, filterFxn) {
+                    //called when the filter need to be applied
                     if (!this.blockFilterChanges) {
                         this.activeFilterFunctionLookup[target] = filterFxn;
                         this.updateQueryFilter();
@@ -328,6 +339,7 @@ define([
                  * @param target
                  */
                 handleClearFilter: function (target) {
+                    //clears the filter
                     if (!this.blockFilterChanges) {
                         if (this.activeFilterFunctionLookup[target]) {
                             delete this.activeFilterFunctionLookup[target];
@@ -339,6 +351,7 @@ define([
                  * when called, fires an event to reload the current filter function
                  */
                 updateQueryFilter: function () {
+                    //this tells the result grid that it needs to reload the grid based on filter changes
                     if (!this.blockFilterApplyPublish) {
                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.RELOAD_FILTER_FUNCTION, this.processQueryFilterCallback);
                     }
@@ -367,6 +380,7 @@ define([
                  * @return {string}
                  */
                 getWhereClause: function () {
+                    //this returns a where clause that is build from all the current states of the filters
                     var where = [];
                     for (var i = 0; i < this.queryWidgets.length; i++) {
                         var queryWidgetWhereClauses = this.queryWidgets[i].getQueryArray();

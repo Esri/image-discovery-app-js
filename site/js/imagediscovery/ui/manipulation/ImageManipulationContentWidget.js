@@ -153,15 +153,15 @@ define([
                     }
                     this.selectNextVisibleTab();
                 },
-                /*
-                 hideRendererTab: function () {
-                 domStyle.set(this.rendererTab, "display", "none");
-                 this.selectNextVisibleTab();
-                 },
-                 showRendererTab: function () {
-                 domStyle.set(this.rendererTab, "display", "inline");
-                 },
-                 */
+
+                hideRendererTab: function () {
+                    domStyle.set(this.rendererTab, "display", "none");
+                    this.selectNextVisibleTab();
+                },
+                showRendererTab: function () {
+                    domStyle.set(this.rendererTab, "display", "inline");
+                },
+
                 hideMensurationTab: function () {
                     domStyle.set(this.mensurationTab, "display", "none");
                     this.selectNextVisibleTab();

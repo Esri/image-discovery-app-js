@@ -1,2 +1,166 @@
-//>>built
-define("dgrid/CellSelection",["dojo/_base/declare","./Selection","dojo/on","put-selector/put","dojo/has"],function(_1,_2,_3,_4,_5){return _1(_2,{selectionDelegate:".dgrid-cell",select:function(_6,_7,_8){var i,id;if(_8===undefined){_8=true;}if(typeof _6!="object"||!("element" in _6)){_6=this.cell(_6);}else{if(!_6.row){for(id in _8){this.select(this.cell(_6.id,id),null,_8[id]);}return;}}if(this.allowSelect(_6)){var _9=this.selection,_a=_6.row.id,_b=_9[_a];if(!_6.column){for(i in this.columns){this.select(this.cell(_a,i),null,_8);}return;}var _c=_b&&_b[_6.column.id];if(_8===null){_8=!_c;}var _d=_6.element;_b=_b||{};_b[_6.column.id]=_8;this.selection[_a]=_b;var _e=false;for(i in _b){if(_b[i]===true){_e=true;break;}}if(!_e){delete this.selection[_a];}if(_d){if(_8){_4(_d,".dgrid-selected.ui-state-active");}else{_4(_d,"!dgrid-selected!ui-state-active");}}if(_8!=_c&&_d){this._selectionEventQueue(_8,"cells").push(_6);}if(_7){if(!_7.element){_7=this.cell(_7);}var _f=_7.element;var _10=_6.element;var _11=(_f&&(_f.compareDocumentPosition?_f.compareDocumentPosition(_10)==2:_f.sourceIndex>_10.sourceIndex))?"nextSibling":"previousSibling";var _12=_6.column.id,_13=_7.column.id,_14,_15=[];for(id in this.columns){if(_14){_15.push(id);}if(id==_12&&(_12=_15)||id==_13&&(_13=_15)){_15.push(id);if(_14||(_12==_15&&id==_13)){break;}_14=true;}}var row=_6.row,_16=row.element;_f=_7.row.element;do{for(i=0;i<_15.length;i++){_6=this.cell(_16,_15[i]);this.select(_6);}if(_16==_f){break;}}while((_16=_6.row.element[_11]));}}},isSelected:function(_17,_18){if(!_17){return false;}if(!_17.element){_17=this.cell(_17,_18);}return this.selection[_17.row.id]&&!!this.selection[_17.row.id][_17.column.id];},clearSelection:function(_19){_19=false;this.inherited(arguments);}});});
+define([
+	"dojo/_base/declare",
+	"dojo/aspect",
+	"dojo/on",
+	"dojo/has",
+	"./Selection",
+	"put-selector/put"
+], function(declare, aspect, listen, has, Selection, put){
+
+return declare(Selection, {
+	// summary:
+	//		Add cell level selection capabilities to a grid. The grid will have a selection property and
+	//		fire "dgrid-select" and "dgrid-deselect" events.
+	
+	// ensure we don't select when an individual cell is not identifiable
+	selectionDelegate: ".dgrid-cell",
+	
+	_selectionTargetType: "cells",
+	
+	_select: function(cell, toCell, value){
+		var i, id;
+		if(typeof value === "undefined"){
+			// default to true
+			value = true;
+		}
+		if(typeof cell != "object" || !("element" in cell)){
+			cell = this.cell(cell);
+		}else if(!cell.row){
+			// Row object was passed instead of cell
+			if(value && typeof value === "object"){
+				// value is a hash of true/false values
+				for(id in value){
+					this._select(this.cell(cell.id, id), null, value[id]);
+				}
+			}else{
+				// Select/deselect all columns in row
+				for(id in this.columns){
+					this._select(this.cell(cell.id, id), null, value);
+				}
+			}
+			return;
+		}
+		if(this.allowSelect(cell)){
+			var selection = this.selection,
+				rowId = cell.row.id,
+				previousRow = selection[rowId];
+			if(!cell.column){
+				for(i in this.columns){
+					this._select(this.cell(rowId, i), null, value);
+				}
+				return;
+			}
+			var previous = previousRow && previousRow[cell.column.id];
+			if(value === null){
+				// indicates a toggle
+				value = !previous;
+			}
+			var element = cell.element;
+			previousRow = previousRow || {};
+			previousRow[cell.column.id] = value;
+			this.selection[rowId] = previousRow;
+			
+			// Check for all-false objects to see if it can be deleted.
+			// This prevents build-up of unnecessary iterations later.
+			var hasSelected = false;
+			for(i in previousRow){
+				if(previousRow[i] === true){
+					hasSelected = true;
+					break;
+				}
+			}
+			if(!hasSelected){ delete this.selection[rowId]; }
+			
+			if(element){
+				// add or remove classes as appropriate
+				if(value){
+					put(element, ".dgrid-selected.ui-state-active");
+				}else{
+					put(element, "!dgrid-selected!ui-state-active");
+				}
+			}
+			if(value != previous && element){
+				this._selectionEventQueues[(value ? "" : "de") + "select"].push(cell);
+			}
+			if(toCell){
+				if(!toCell.element){
+					toCell = this.cell(toCell);
+				}
+				
+				if(!toCell || !toCell.row){
+					this._lastSelected = element;
+					console.warn("The selection range has been reset because the " +
+						"beginning of the selection is no longer in the DOM. " +
+						"If you are using OnDemandList, you may wish to increase " +
+						"farOffRemoval to avoid this, but note that keeping more nodes " +
+						"in the DOM may impact performance.");
+					return;
+				}
+				
+				var toElement = toCell.element;
+				var fromElement = cell.element;
+				// find if it is earlier or later in the DOM
+				var traverser = (toElement && (toElement.compareDocumentPosition ? 
+					toElement.compareDocumentPosition(fromElement) == 2 :
+					toElement.sourceIndex > fromElement.sourceIndex)) ? "nextSibling" : "previousSibling";
+				// now we determine which columns are in the range 
+				var idFrom = cell.column.id, idTo = toCell.column.id, started, columnIds = [];
+				for(id in this.columns){
+					if(started){
+						columnIds.push(id);				
+					}
+					if(id == idFrom && (idFrom = columnIds) || // once found, we mark it off so we don't hit it again
+						id == idTo && (idTo = columnIds)){
+						columnIds.push(id);
+						if(started || // last id, we are done 
+							(idFrom == columnIds && id == idTo)){ // the ids are the same, we are done
+							break;
+						}
+						started = true;
+					}
+				}
+				// now we iterate over rows
+				var row = cell.row, nextNode = row.element;
+				toElement = toCell.row.element;
+				do{
+					// looping through each row..
+					// and now loop through each column to be selected
+					for(i = 0; i < columnIds.length; i++){
+						cell = this.cell(nextNode, columnIds[i]);
+						this._select(cell, null, value);
+					}
+					if(nextNode == toElement){
+						break;
+					}
+				}while((nextNode = cell.row.element[traverser]));
+			}
+		}
+	},
+	isSelected: function(object, columnId){
+		// summary:
+		//		Returns true if the indicated cell is selected.
+		
+		if(typeof object === "undefined" || object === null){
+			return false;
+		}
+		if(!object.element){
+			object = this.cell(object, columnId);
+		}
+		
+		// First check whether the given cell is indicated in the selection hash;
+		// failing that, check if allSelected is true (testing against the
+		// allowSelect method if possible)
+		var rowId = object.row.id;
+		if(rowId in this.selection){
+			return !!this.selection[rowId][object.column.id];
+		}else{
+			return this.allSelected && (!object.row.data || this.allowSelect(object));
+		}
+	},
+	clearSelection: function(exceptId){
+		// disable exceptId in cell selection, since it would require double parameters
+		exceptId = false;
+		this.inherited(arguments);
+	}
+});
+});

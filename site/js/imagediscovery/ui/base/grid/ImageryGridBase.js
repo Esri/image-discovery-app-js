@@ -1,7 +1,8 @@
 define([
     "dojo/_base/declare",
     "xstyle/css!./theme/baseGridTheme.css",
-    "dgrid/OnDemandGrid",
+    "dgrid/Grid",
+    "./Pagination",
     "dgrid/extensions/ColumnHider",
     "dojo/dom-class",
     "dojo/dom-style",
@@ -10,10 +11,16 @@ define([
     "dijit/registry"
 ],
     //base class for imagery grid. The grid is extended quite a bit so it was broken into two classes for size.
-    function (declare, theme, OnDemandGrid, ColumnHider, domClass, domStyle, lang, query, registry) {
+    function (declare, theme, Grid, Pagination, ColumnHider, domClass, domStyle, lang, query, registry) {
         return declare(
-            [OnDemandGrid, ColumnHider],
+            [Grid, Pagination, ColumnHider],
             {
+                pagingLinks: false,
+                pagingTextBox: true,
+                firstLastArrows: true,
+                minRowsPerPage: 100,
+                rowsPerPage: 100,
+                pageSizeOptions: [100,200,300,400,500],
                 //when true, the thumbnail checkboxes are disabled
                 thumbnailToggleDisabled: false,
                 //height of the grid

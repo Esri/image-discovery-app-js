@@ -1,2 +1,197 @@
-//>>built
-define("dgrid/selector",["dojo/_base/kernel","dojo/_base/array","dojo/on","dojo/aspect","dojo/_base/sniff","put-selector/put"],function(_1,_2,on,_3,_4,_5){return function(_6,_7){var _8=[],_9,_a;if(!_6){_6={};}if(_6.type){_6.selectorType=_6.type;_1.deprecated("columndef.type","use columndef.selectorType instead","dgrid 1.0");}_6.selectorType=_7=_7||_6.selectorType||"checkbox";_6.sortable=false;function _b(_c){return function(_d){var _e=_d.rows,_f=_e.length,_10="false",_11,_12,i;for(i=0;i<_f;i++){var _13=_9.cell(_e[i],_6.id).element;if(!_13){continue;}_13=(_13.contents||_13).input;if(!_13.disabled){_13.checked=_c;_13.setAttribute("aria-checked",_c);}}if(_a.type=="checkbox"){_11=_9.selection;_12=false;for(i in _11){if(_11[i]!=_9.allSelected){_12=true;break;}}_a.indeterminate=_12;_a.checked=_9.allSelected;if(_12){_10="mixed";}else{if(_9.allSelected){_10="true";}}_a.setAttribute("aria-checked",_10);}};};function _14(_15){if(_15.type=="click"||_15.keyCode==32||(!_4("opera")&&_15.keyCode==13)||_15.keyCode===0){var row=_9.row(_15),_16=_9._lastSelected&&_9.row(_9._lastSelected);_9._selectionTriggerEvent=_15;if(_7=="radio"){if(!_16||_16.id!=row.id){_9.clearSelection();_9.select(row,null,true);_9._lastSelected=row.element;}}else{if(row){if(_15.shiftKey){_b(true)({rows:[row]});}else{_16=null;}_16=_15.shiftKey?_16:null;_9.select(_16||row,row,_16?undefined:null);_9._lastSelected=row.element;}else{_5(this,(_9.allSelected?"!":".")+"dgrid-select-all");_9[_9.allSelected?"clearSelection":"selectAll"]();}}_9._selectionTriggerEvent=null;}};function _17(){_9._hasSelectorInputListener=true;_8.push(_3.before(_9,"_initSelectionEvents",function(){this.on(".dgrid-selector:click,.dgrid-selector:keydown",_14);}));var _18=_9._handleSelect;_9._handleSelect=function(_19){if(this.cell(_19).column!=_6){_18.apply(this,arguments);}};if(typeof _6.disabled=="function"){var _1a=_9.allowSelect;_9.allowSelect=function(row){return _1a.call(this,row)&&!_6.disabled(row.data);};}_8.push(_9.on("dgrid-select",_b(true)));_8.push(_9.on("dgrid-deselect",_b(false)));};var _1b=_6.disabled;var _1c=typeof _7=="function"?_7:function(_1d,_1e,_1f){var _20=_1e.parentNode;_5(_20&&_20.contents?_20:_1e,".dgrid-selector");var _21=_1e.input||(_1e.input=_5(_1e,"input[type="+_7+"]",{tabIndex:isNaN(_6.tabIndex)?-1:_6.tabIndex,disabled:_1b&&(typeof _1b=="function"?_1b(_1f):_1b),checked:_1d}));_21.setAttribute("aria-checked",!!_1d);if(!_9._hasSelectorInputListener){_17();}return _21;};_3.after(_6,"init",function(){_9=_6.grid;});_3.after(_6,"destroy",function(){_2.forEach(_8,function(l){l.remove();});_9._hasSelectorInputListener=false;});_6.renderCell=function(_22,_23,_24,_25,_26){var row=_22&&_9.row(_22);_23=row&&_9.selection[row.id];_1c(_23,_24,_22);};_6.renderHeaderCell=function(th){var _27=_6.label||_6.field||"";if(_7=="radio"||!_9.allowSelectAll){th.appendChild(document.createTextNode(_27));if(!_9._hasSelectorInputListener){_17();}}else{_1c(false,th,{});}_a=th.lastChild;};return _6;};});
+define(["dojo/_base/kernel", "dojo/_base/array", "dojo/on", "dojo/aspect", "dojo/_base/sniff", "put-selector/put"],
+function(kernel, arrayUtil, on, aspect, has, put){
+	return function(column, type){
+		
+		var listeners = [],
+			grid, headerCheckbox;
+		
+		if(!column){ column = {}; }
+		
+		if(column.type){
+			column.selectorType = column.type;
+			kernel.deprecated("columndef.type", "use columndef.selectorType instead", "dgrid 0.4");
+		}
+		// accept type as argument to Selector function, or from column def
+		column.selectorType = type = type || column.selectorType || "checkbox";
+		column.sortable = false;
+
+		function disabled(item) {
+			return !grid.allowSelect(grid.row(item));
+		}
+		
+		function changeInput(value){
+			// creates a function that modifies the input on an event
+			return function(event){
+				var rows = event.rows,
+					len = rows.length,
+					state = "false",
+					selection, mixed, i;
+				
+				for(i = 0; i < len; i++){
+					var element = grid.cell(rows[i], column.id).element;
+					if(!element){ continue; } // skip if row has been entirely removed
+					element = (element.contents || element).input;
+					if(element && !element.disabled){
+						// only change the value if it is not disabled
+						element.checked = value;
+						element.setAttribute("aria-checked", value);
+					}
+				}
+				if(headerCheckbox.type == "checkbox"){
+					selection = grid.selection;
+					mixed = false;
+					// see if the header checkbox needs to be indeterminate
+					for(i in selection){
+						// if there is anything in the selection, than it is indeterminate
+						if(selection[i] != grid.allSelected){
+							mixed = true;
+							break;
+						}
+					}
+					headerCheckbox.indeterminate = mixed;
+					headerCheckbox.checked = grid.allSelected;
+					if (mixed) {
+						state = "mixed";
+					} else if (grid.allSelected) {
+						state = "true";
+					}
+					headerCheckbox.setAttribute("aria-checked", state);
+				}
+			};
+		}
+		
+		function onSelect(event){
+			// we would really only care about click, since other input sources, like spacebar
+			// trigger a click, but the click event doesn't provide access to the shift key in firefox, so
+			// listen for keydown's as well to get an event in firefox that we can properly retrieve
+			// the shiftKey property from
+			if(event.type == "click" || event.keyCode == 32 || (!has("opera") && event.keyCode == 13) || event.keyCode === 0){
+				var row = grid.row(event),
+					lastRow = grid._lastSelected && grid.row(grid._lastSelected);
+
+				grid._selectionTriggerEvent = event;
+				
+				if(type == "radio"){
+					if(!lastRow || lastRow.id != row.id){
+						grid.clearSelection();
+						grid.select(row, null, true);
+						grid._lastSelected = row.element;
+					}
+				}else{
+					if(row){
+						if(event.shiftKey){
+							// make sure the last input always ends up checked for shift key 
+							changeInput(true)({rows: [row]});
+						}else{
+							// no shift key, so no range selection
+							lastRow = null;
+						}
+						lastRow = event.shiftKey ? lastRow : null;
+						grid.select(lastRow || row, row, lastRow ? undefined : null);
+						grid._lastSelected = row.element;
+					}else{
+						// No row resolved; must be the select-all checkbox.
+						put(this, (grid.allSelected ? "!" : ".") + "dgrid-select-all");
+						grid[grid.allSelected ? "clearSelection" : "selectAll"]();
+					}
+				}
+				grid._selectionTriggerEvent = null;
+			}
+		}
+		
+		function setupSelectionEvents(){
+			// register one listener at the top level that receives events delegated
+			grid._hasSelectorInputListener = true;
+			listeners.push(grid.on(".dgrid-selector:click,.dgrid-selector:keydown", onSelect));
+			var handleSelect = grid._handleSelect;
+			grid._handleSelect = function(event){
+				// ignore the default select handler for events that originate from the selector column
+				if(this.cell(event).column != column){
+					handleSelect.apply(this, arguments);
+				}
+			};
+			
+			// Set up disabled and grid.allowSelect to match each other's behaviors
+			if(typeof column.disabled == "function"){
+				var originalAllowSelect = grid.allowSelect,
+					originalDisabled = column.disabled;
+
+				// Wrap allowSelect to consult both the original allowSelect and disabled
+				grid.allowSelect = function(row){
+					var allow = originalAllowSelect.call(this, row);
+
+					if (originalDisabled === disabled) {
+						return allow;
+					} else {
+						return allow && !originalDisabled.call(column, row.data);
+					}
+				};
+
+				// Then wrap disabled to simply call the new allowSelect
+				column.disabled = disabled;
+			}else{
+				// If no disabled function was specified, institute a default one
+				// which honors allowSelect
+				column.disabled = disabled;
+			}
+			// register listeners to the select and deselect events to change the input checked value
+			listeners.push(grid.on("dgrid-select", changeInput(true)));
+			listeners.push(grid.on("dgrid-deselect", changeInput(false)));
+		}
+		
+		var renderInput = typeof type == "function" ? type : function(value, cell, object){
+			var parent = cell.parentNode,
+				disabled;
+			
+			if(!grid._hasSelectorInputListener){
+				setupSelectionEvents();
+			}
+			
+			// column.disabled gets initialized or wrapped in setupSelectionEvents
+			disabled = column.disabled;
+
+			// must set the class name on the outer cell in IE for keystrokes to be intercepted
+			put(parent && parent.contents ? parent : cell, ".dgrid-selector");
+			var input = cell.input || (cell.input = put(cell, "input[type="+type + "]", {
+				tabIndex: isNaN(column.tabIndex) ? -1 : column.tabIndex,
+				disabled: disabled && (typeof disabled == "function" ?
+					disabled.call(column, object) : disabled),
+				checked: value
+			}));
+			input.setAttribute("aria-checked", !!value);
+			
+			return input;
+		};
+		
+		aspect.after(column, "init", function(){
+			grid = column.grid;
+		});
+		
+		aspect.after(column, "destroy", function(){
+			arrayUtil.forEach(listeners, function(l){ l.remove(); });
+			grid._hasSelectorInputListener = false;
+		});
+		
+		column.renderCell = function(object, value, cell, options, header){
+			var row = object && grid.row(object);
+			value = row && grid.selection[row.id];
+			renderInput(value, cell, object);
+		};
+		column.renderHeaderCell = function(th){
+			var label = "label" in column ? column.label :
+				column.field || "";
+			
+			if(type == "radio" || !grid.allowSelectAll){
+				th.appendChild(document.createTextNode(label));
+				if(!grid._hasSelectorInputListener){
+					setupSelectionEvents();
+				}
+			}else{
+				renderInput(false, th, {});
+			}
+			headerCheckbox = th.lastChild;
+		};
+		
+		return column;
+	};
+});

@@ -1,6 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/topic",
+    "dojo/_base/connect",
     "dojo/on",
     "dijit/registry",
     "dojo/query",
@@ -9,14 +10,13 @@ define([
     "dojo/dom-class",
     "dojo/dom-style",
     "dijit/form/Button",
-    "dijit/form/CheckBox",
     "../base/grid/ImageryGrid",
     "dijit/TooltipDialog",
     "../filter/UserAppliedFiltersManager",
     "dgrid/util/mouse"
 
 ],
-    function (declare,  topic, on, registry, query, lang, domConstruct, domClass, domStyle,   Button, CheckBox, ImageryGrid, TooltipDialog, UserAppliedFiltersManager, mouseUtil) {
+    function (declare, topic, con, on, registry, query, lang, domConstruct, domClass, domStyle, Button, ImageryGrid, TooltipDialog, UserAppliedFiltersManager, mouseUtil) {
         return declare(
             [ImageryGrid],
             {
@@ -28,7 +28,6 @@ define([
                     this.filterWidgetLookup = {};
                     //lookup for the filter icon in the grid header
                     this.filterIconLookup = {};
-                    this.responseFeatures = [];
 
                     //Need to keep this var at instance level so that
                     //we can update them based on external events
@@ -41,11 +40,10 @@ define([
                 },
                 initListeners: function () {
                     this.inherited(arguments);
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleQueryComplete));
-                    //  topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT, lang.hitch(this, this.highlightResultsFromRectangleIntersect));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.TOGGLE_ADD_TO_CART_BY_QUERY_CONTROLLER, lang.hitch(this, this.handleToggleShoppingCartByQueryController));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.TOGGLE_IMAGE_BY_QUERY_CONTROLLER, lang.hitch(this, this.handleToggleShowImageByQueryController));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_SHOW_IMAGE, lang.hitch(this, this.handleToggleShowImage));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.TOGGLE_ADD_IMAGE_TO_SHOPPING_CART, lang.hitch(this, this.toggleShoppingCartItem));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR_HIGHLIGHTED_RESULTS, lang.hitch(this, this.clearHighlightedResults));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_GRID_RESULT_COUNT, lang.hitch(this, this.handleGetVisibleGridResultCount));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GRAY_OUT_RESULTS_BY_FUNCTION, lang.hitch(this, this.grayOutRowsByFunction));
                     //todo: this needs to be in a manager that keeps count of how many disable requests there are
@@ -56,6 +54,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.ADDED, lang.hitch(this, this.handleFilterAdded));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_GEOMETRIES, lang.hitch(this, this.handleGetVisibleFootprintGeometries));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES, lang.hitch(this, this.handleGetVisibleFootprintFeatures));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.GET_VISIBLE_FOOTPRINT_FEATURES_GROUPED_BY_QUERY_CONTROLLER, lang.hitch(this, this.handleGetVisibleFootprintFeaturesGroupedByQueryController));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.enableThumbnailToggle));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.disableThumbnailToggle));
 
@@ -63,15 +62,35 @@ define([
                     this.setFilterResultsHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.SET, lang.hitch(this, this.handleApplyFilter));
                     this.itemRemovedFromCartHandle = topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, lang.hitch(this, this.handleItemRemovedFromCart));
 
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.FILTER.APPLIED, lang.hitch(this, this.handleUpdateToggleAllCartItemsButton));
+                },
+                loadViewerConfigurationData: function () {
+                    this.inherited(arguments);
+                    var searchConfiguration = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "searchConfiguration", function (searchConf) {
+                        searchConfiguration = searchConf;
+                    });
+                    if (searchConfiguration != null && lang.isObject(searchConfiguration)) {
+                        if (searchConfiguration.allowCheckAllSearchResultThumbnails != null) {
+                            this.allowCheckAllThumbnails = searchConfiguration.allowCheckAllSearchResultThumbnails;
+                        }
+                    }
+
+                },
+                startup: function () {
+                    this.grid.disablePaginationListener();
+                    this.inherited(arguments);
+                    this.grid.enablePaginationListener();
                 },
                 createGrid: function () {
                     this.inherited(arguments);
                     this.grid.on(mouseUtil.enterRow, lang.hitch(this, this.handleRowMouseOver));
                     this.grid.on(mouseUtil.leaveRow, lang.hitch(this, this.handleRowMouseOut));
                     this.grid.on(".dgrid-row:click", lang.hitch(this, this.handleRowClick));
+                    con.connect(this.grid, "onPageChanged", lang.hitch(this, this.handleRefreshComplete));
+
+                },
+                handleRefreshComplete: function () {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.REFRESH_FOOTPRINTS_LAYER);
                 },
 
                 handleRowClick: function (evt) {
@@ -126,86 +145,13 @@ define([
                     }
                 },
                 /**
-                 * clears highlighted results in the result grid
-                 */
-                clearHighlightedResults: function () {
-                    var row;
-                    var highlightedItems = this.store.query({isHighlighted: true});
-                    for (var i = 0; i < highlightedItems.length; i++) {
-                        row = this.grid.row(highlightedItems[i]);
-                        if (row && row.element) {
-                            this.grid.unhighlightYellowRow(row);
-                            highlightedItems[i].isHighlighted = false;
-
-                            //remove highlight of footprint
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, highlightedItems[i].OBJECTID);
-                        }
-                    }
-                },
-                /**
-                 * highlights rows in yellow that are intersecting the passed envelope
-                 * @param envelope envelope to test
-                 * @param containsFlag flag for contains/intersects
-                 */
-                /*
-                 highlightResultsFromRectangleIntersect: function (envelope, containsFlag) {
-                 var scrolledIntoView = false;
-                 var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
-                 var currentVisibleItem;
-                 var currentGeometry;
-                 var row;
-                 var imageAttrsAndQueryLayerControllerArray = [];
-                 for (var i = 0; i < unfilteredResults.length; i++) {
-                 currentVisibleItem = unfilteredResults[i];
-                 currentGeometry = currentVisibleItem.geometry;
-                 row = this.grid.row(currentVisibleItem);
-                 var match;
-                 if (containsFlag) {
-                 match = envelope.contains(currentGeometry.getExtent());
-                 }
-                 else {
-                 match = envelope.intersects(currentGeometry);
-                 }
-                 if (match) {
-                 if (row && row.element) {
-                 this.grid.highlightRowYellow(row);
-                 if (!scrolledIntoView) {
-                 var geom = {y: row.element.offsetTop};
-                 this.grid.scrollTo(geom);
-                 scrolledIntoView = true;
-                 }
-                 currentVisibleItem.isHighlighted = true;
-
-                 //highlight footprint
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-
-                 //gather image info and associated layer info
-                 var queryLayerController = IMAGERY_UTILS.getQueryLayerControllerFromItem(currentVisibleItem);
-                 var imageAttrsAndQueryLayerController = {imageInfo: currentVisibleItem, queryLayerController: queryLayerController};
-                 imageAttrsAndQueryLayerControllerArray.push(imageAttrsAndQueryLayerController);
-                 }
-                 }
-                 else {
-                 if (row && row.element && domClass.contains(row.element, "yellowGridRow")) {
-                 this.grid.unhighlightYellowRow(row);
-                 currentVisibleItem.isHighlighted = false;
-
-                 //remove highlight on footprint
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.UNHIGHLIGHT_FOOTPRINT, currentVisibleItem.OBJECTID);
-                 }
-                 }
-                 }//end for loop
-
-                 //show image info popup
-                 topic.publish(IMAGERY_GLOBALS.EVENTS.IMAGE.INFO.SET_CONTENT_AND_SHOW, imageAttrsAndQueryLayerControllerArray);
-                 },
-                 */
-                /**
                  * returns visible footprints geometries in the result grid
                  * @param callback function to send the visible footprint geometries to
                  */
                 handleGetVisibleFootprintGeometries: function (callback) {
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
+                    var count = this.grid.rowsPerPage;
+                    var start = (this.grid._currentPage - 1) * count;
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false}, {sort: this.grid._sort, count: count, start: start});
                     var geometries = [];
                     for (var i = 0; i < unfilteredResults.length; i++) {
                         geometries.push(unfilteredResults[i].geometry);
@@ -217,12 +163,59 @@ define([
                  * @param callback  function to send the visible footprint features to
                  */
                 handleGetVisibleFootprintFeatures: function (callback) {
-                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false});
+                    if (callback == null || !lang.isFunction(callback)) {
+                        return;
+                    }
+                    var count = this.grid.rowsPerPage;
+                    var start = (this.grid._currentPage - 1) * count;
+                    var unfilteredResults = this.store.query({isGrayedOut: false, isFiltered: false}, {sort: this.grid._sort, count: count, start: start});
                     var features = [];
                     for (var i = 0; i < unfilteredResults.length; i++) {
                         features.push(unfilteredResults[i]);
                     }
                     callback(features);
+
+                },
+                handleGetVisibleFootprintFeaturesGroupedByQueryController: function (callback) {
+                    var resultsByQueryControllerId = {};
+                    if (callback == null || !lang.isFunction(callback)) {
+                        return;
+                    }
+                    var visibleFeatures;
+                    this.handleGetVisibleFootprintFeatures(function (results) {
+                        visibleFeatures = results;
+                    });
+                    if (visibleFeatures) {
+                        for (var i = 0; i < visibleFeatures.length; i++) {
+                            var addArr;
+                            if (resultsByQueryControllerId[visibleFeatures[i].queryControllerId] == null) {
+                                addArr = [];
+                                resultsByQueryControllerId[visibleFeatures[i].queryControllerId] = addArr;
+                            }
+                            else {
+                                addArr = resultsByQueryControllerId[visibleFeatures[i].queryControllerId];
+                            }
+                            addArr.push(visibleFeatures[i]);
+                        }
+                    }
+                    callback(resultsByQueryControllerId);
+                },
+
+                handleToggleShowImageByQueryController: function (queryLayerController, feature) {
+                    if (queryLayerController == null || feature == null) {
+                        return;
+                    }
+                    var attributes = (feature.attributes != null && lang.isObject(feature.attributes)) ? feature.attributes : feature;
+                    var objectIdField = queryLayerController.layer.objectIdField;
+                    var objectId = attributes[objectIdField];
+                    if (objectId != null) {
+                        var queryParams = {queryControllerId: queryLayerController.id};
+                        queryParams[objectIdField] = objectId;
+                        var items = this.store.query(queryParams);
+                        if (items.length > 0) {
+                            this.handleToggleShowImage(items[0]);
+                        }
+                    }
                 },
                 /**
                  * toggles the thumbnail checkbox for the passed grid item
@@ -239,6 +232,22 @@ define([
                         }
                         else {
                             currentCheckDijit.set("checked", true);
+                        }
+                    }
+                },
+                handleToggleShoppingCartByQueryController: function (queryLayerController, feature) {
+                    if (queryLayerController == null || feature == null) {
+                        return;
+                    }
+                    var attributes = (feature.attributes != null && lang.isObject(feature.attributes)) ? feature.attributes : feature;
+                    var objectIdField = queryLayerController.layer.objectIdField;
+                    var objectId = attributes[objectIdField];
+                    if (objectId != null) {
+                        var queryParams = {queryControllerId: queryLayerController.id};
+                        queryParams[objectIdField] = objectId;
+                        var items = this.store.query(queryParams);
+                        if (items.length > 0) {
+                            this.toggleShoppingCartItem(items[0]);
                         }
                     }
                 },
@@ -273,9 +282,11 @@ define([
                     this.inherited(arguments);
                     this.hideAllFilterIcons();
                     this.onHideFilterResetIcon();
-                    if (domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded")) {
-                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
-                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                    if (this.toggleAllCartItemsHeaderIconDiv) {
+                        if (domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded")) {
+                            domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
+                            domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
+                        }
                     }
                 },
                 /**
@@ -355,7 +366,8 @@ define([
                 /**
                  * called when a query in the discovery application is complete
                  */
-                handleQueryComplete: function () {
+
+                _handleQueryComplete: function () {
                     //send the results to the user applied filter manager
                     this.userAppliedFiltersManager.initializeFilterRanges();
                     this.onShowFilterResetIcon();
@@ -372,58 +384,66 @@ define([
                 },
                 /**
                  * adds query results to the result grid
-                 * @param results
-                 * @param queryLayerController
+                 * @param queryResults
                  */
-                populateQueryResults: function (results, queryLayerController) {
-                    if (this.store == null) {
-                        this.createNewStore();
-                    }
+                populateQueryResults: function (queryResults) {
+                    this.grid.disablePaginationListener();
                     this.hideVisibleFilterPopup();
                     //get to the attributes of the results
-                    var newItem;
-                    var currentAttributes;
-                    //todo: need to make all of these added fields private so the column doesn't override
-                    for (var i = 0; i < results.features.length; i++) {
-                        var newItemMixin = {
-                            __serviceLabel: queryLayerController.label,
-                            queryControllerId: queryLayerController.id,
-                            isHighlighted: false,
-                            addedToCart: false,
-                            geometry: results.features[i].geometry,
-                            id: i,
-                            isGrayedOut: false,
-                            isFiltered: false,
-                            showThumbNail: false,
-                            showFootprint: false
-                        };
-                        newItemMixin[this.storeIdField] = VIEWER_UTILS.generateUUID();
-                        currentAttributes = results.features[i].attributes;
+                    var data = [];
+                    for (var i = 0; i < queryResults.length; i++) {
+                        var results = queryResults[i].response;
+                        var queryLayerController = queryResults[i].queryLayerController;
+                        if (results == null || queryLayerController == null) {
+                            continue;
+                        }
+                        var newItem;
+                        var currentAttributes;
+                        //todo: need to make all of these added fields private so the column doesn't override
+                        for (var j = 0; j < results.features.length; j++) {
+                            var newItemMixin = {
+                                __serviceLabel: queryLayerController.label,
+                                queryControllerId: queryLayerController.id,
+                                isHighlighted: false,
+                                addedToCart: false,
+                                geometry: results.features[j].geometry,
+                                id: j,
+                                isGrayedOut: false,
+                                isFiltered: false,
+                                showThumbNail: false,
+                                showFootprint: false
+                            };
+                            newItemMixin[this.storeIdField] = VIEWER_UTILS.generateUUID();
+                            currentAttributes = results.features[j].attributes;
 
-                        if (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping != null && lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
-                            //perform field mappings on the result
-                            var fieldMappings = queryLayerController.serviceConfiguration.fieldMapping;
-                            for (var key in fieldMappings) {
-                                var mappingValue = fieldMappings[key];
-                                if (currentAttributes[key] == null) {
-                                    currentAttributes[mappingValue] = "";
-                                }
-                                else {
-                                    currentAttributes[mappingValue] = currentAttributes[key];
-                                    delete currentAttributes[key];
+                            if (queryLayerController.serviceConfiguration && queryLayerController.serviceConfiguration.fieldMapping != null && lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
+                                //perform field mappings on the result
+                                var fieldMappings = queryLayerController.serviceConfiguration.fieldMapping;
+                                for (var key in fieldMappings) {
+                                    var mappingValue = fieldMappings[key];
+                                    if (currentAttributes[key] == null) {
+                                        currentAttributes[mappingValue] = "";
+                                    }
+                                    else {
+                                        currentAttributes[mappingValue] = currentAttributes[key];
+                                        delete currentAttributes[key];
+                                    }
                                 }
                             }
-                        }
-                        for (var j = 0; j < this.resultFields.length; j++) {
-                            if (currentAttributes[this.resultFields[j].field] == null) {
-                                currentAttributes[this.resultFields[j].field] = "";
+                            for (var k = 0; k < this.resultFields.length; k++) {
+                                if (currentAttributes[this.resultFields[k].field] == null) {
+                                    currentAttributes[this.resultFields[k].field] = "";
+                                }
                             }
+                            data.push(lang.mixin(currentAttributes, newItemMixin));
                         }
-                        newItem = lang.mixin(currentAttributes, newItemMixin);
-                        this.store.add(newItem);
                     }
-
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.RESULT_GRID_POPULATED, results.features.length);
+                    this.grid.enablePaginationListener();
+
+                    this.createNewGridStoreFromData(data);
+
+                    this._handleQueryComplete();
                 },
                 /**
                  * generates the manipulation columns for the result grid
@@ -476,12 +496,14 @@ define([
                     return layerColumns;
                 },
                 cartRenderHeaderCell: function (node) {
-                    this.toggleAllCartItemsHeaderIconDiv = domConstruct.create("div", {
-                        title: "Add all or remove all from cart",
-                        className: "imageResultsGridCartHeaderIcon commonIcons16 shoppingCartEmpty"});
+                    /*
+                     this.toggleAllCartItemsHeaderIconDiv = domConstruct.create("div", {
+                     title: "Add all items on page",
+                     className: "imageResultsGridCartHeaderIcon commonIcons16 add"});
 
-                    on(this.toggleAllCartItemsHeaderIconDiv, "click", lang.hitch(this, this.handleToggleAllCartItems));
-                    domConstruct.place(this.toggleAllCartItemsHeaderIconDiv, node);
+                     on(this.toggleAllCartItemsHeaderIconDiv, "click", lang.hitch(this, this.handleAddAllItemsToCart));
+                     domConstruct.place(this.toggleAllCartItemsHeaderIconDiv, node);
+                     */
                 },
 
                 /**
@@ -505,68 +527,22 @@ define([
                  * @param cartHeaderCheckbox
                  * @param cartIconDiv
                  */
-                handleToggleAllCartItems: function () {
-                    var addAllItems = false;
-                    if (domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty")) {
-                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
-                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
-                        addAllItems = true;
-                    }
-                    else {
-                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
-                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
-                    }
-
-                    var items = this.store.query({ isFiltered: false});
-                    if (items.length > 0) {
-                        for (var i = 0; i < items.length; i++) {
-                            var row = this.grid.row(items[i]);
-                            var toggleShoppingCartInput = query("input[name=toggleAddToShoppingCart]", row.element);
+                handleAddAllItemsToCart: function () {
+                    var count = this.grid.rowsPerPage;
+                    var start = (this.grid._currentPage - 1) * count;
+                    var items = this.store.query({ isFiltered: false, addedToCart: false}, {sort: this.grid._sort, count: count, start: start});
+                    for (var i = 0; i < items.length; i++) {
+                        var row = this.grid.row(items[i]);
+                        var toggleShoppingCartInput = query("input[name=toggleAddToShoppingCart]", row.element);
+                        if (toggleShoppingCartInput != null && toggleShoppingCartInput.length > 0) {
                             var toggleShoppingCartInputDijit = registry.getEnclosingWidget(toggleShoppingCartInput[0]);
                             if (toggleShoppingCartInputDijit) {
-                                if (addAllItems &&
-                                    domClass.contains(toggleShoppingCartInputDijit.iconNode, "shoppingCartEmpty")) {
+                                if (domClass.contains(toggleShoppingCartInputDijit.iconNode, "shoppingCartEmpty")) {
                                     this.addCartItem(items[i], toggleShoppingCartInputDijit);
-                                }
-                                else if (!addAllItems &&
-                                    domClass.contains(toggleShoppingCartInputDijit.iconNode, "shoppingCartAdded")) {
-                                    this.removeCartItem(items[i], toggleShoppingCartInputDijit);
                                 }
                             }
                         }
                     }
-                },
-                /**
-                 * Determine whether or not need to update the add/remove all cart
-                 * items button.
-                 */
-                handleUpdateToggleAllCartItemsButton: function () {
-                    var cartItemIconEmpty = domClass.contains(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty") ?
-                        true : false;
-
-                    //Any items visible in results grid?
-                    var unfilteredItems = this.store.query({isFiltered: false});
-                    if (unfilteredItems.length == 0) {
-                        if (!cartItemIconEmpty) {
-                            domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
-                            domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
-                        }
-                        return;
-                    }
-
-                    //Items that are visible in grid AND not added to cart
-                    var items = this.store.query({ addedToCart: false, isFiltered: false});
-                    if (items.length == 0 && cartItemIconEmpty) {
-                        //no items NOT in cart => all items in cart
-                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
-                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
-                    }
-                    else if (items.length > 0 && !cartItemIconEmpty) {
-                        //at least one item not in cart
-                        domClass.remove(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartAdded");
-                        domClass.add(this.toggleAllCartItemsHeaderIconDiv, "shoppingCartEmpty");
-                    }
-
                 },
 
                 /**
@@ -589,15 +565,16 @@ define([
                  * @param cartButton
                  */
                 addCartItem: function (entry, cartButton) {
-                    domClass.remove(cartButton.iconNode, "shoppingCartEmpty");
-                    domClass.add(cartButton.iconNode, "shoppingCartAdded");
+                    if (cartButton) {
+                        domClass.remove(cartButton.iconNode, "shoppingCartEmpty");
+                        domClass.add(cartButton.iconNode, "shoppingCartAdded");
+                    }
                     entry.addedToCart = true;
                     var clonedCartItem = lang.clone(entry);
                     //show the thumbnail by default
                     clonedCartItem.showThumbNail = true;
                     //    clonedCartItem.showFootprint = false;
                     clonedCartItem.isFiltered = false;
-
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.ADD_TO, clonedCartItem);
                 },
                 /**
@@ -615,6 +592,7 @@ define([
                         this._removeAddedToCartIcon(cartButton);
                     }
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, entry[this.storeIdField], entry);
+
 
                 },
                 _removeAddedToCartIcon: function (cartButton) {
@@ -788,7 +766,6 @@ define([
                  */
                 handleFooterCollapsed: function () {
                     this.hideVisibleFilterPopup();
-                    this.clearHighlightedResults();
                 },
                 /**
                  * hides the current visible filter popup
@@ -835,5 +812,7 @@ define([
                     });
                     this.inherited(arguments);
                 }
+
             });
-    });
+    })
+;

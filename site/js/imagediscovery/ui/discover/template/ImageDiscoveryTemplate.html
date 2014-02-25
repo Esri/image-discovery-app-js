@@ -20,8 +20,13 @@
     </div>
     <div class="imageDiscoveryByCoordinatesWrapperContainer" data-bind="visible: discoverByGeometryExpanded">
         <div class="imageDiscoveryByCoordinatesContainer">
-            <div class="discoveryDescriptionStepText" data-bind="text:selectToolText"></div>
-            <div class="imageDiscoverySelectActions">
+            <div class="discoveryDescriptionStepText"
+                 data-bind="text:selectToolText,visible: searchInProgress() != true"></div>
+            <div class="imageDiscoveryInProgressContainer" data-bind="visible: searchInProgress">
+                <div class="loadingSpinnerThrobber imageDiscoveryThrobber"></div>
+                <span class="imageDiscoveryThrobberText">Searching...</span>
+            </div>
+            <div class="imageDiscoverySelectActions" data-bind="visible: searchInProgress() != true">
                 <div class="discoveryIcon"
                      data-bind="click:searchByExtentClick"
                      title="Search in Current Extent"></div>
@@ -33,7 +38,7 @@
                      title="Search By Rectangle"></div>
 
                 <div class="discoveryIcon byBoundsUnselected"
-                     data-bind="click: toggleSearchByBounds, css: {byBoundsSelected: isCurrentView(views.bounds) }"
+                     data-bind="click: toggleSearchByBounds, css: {byBoundsSelected: isCurrentView(views.bounds)}"
                      title="Search By Bounds"></div>
                 <div class="discoveryIcon byUploadUnselected"
                      data-bind="click: toggleGeometryUploadContent, visible:searchByGeometryButtonVisible,css: {byUploadSelected: isCurrentView(views.upload)}"

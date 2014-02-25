@@ -38,6 +38,7 @@ define([
                 searchByGeometryButtonVisible: ko.observable(true),
                 constructor: function () {
                     var self = this;
+                    this.searchInProgress = ko.observable(false);
                     this.selectSearchServiceVisible = ko.observable(false);
                     this.discoveryServicesList = ko.observableArray();
                     this.selectedDiscoveryService = ko.observable(null);
@@ -45,7 +46,7 @@ define([
                     this.discoverByFieldsExpanded = ko.observable(false);
                     this.discoverByGeometryExpanded = ko.observable(true);
                     this.currentView = ko.observable(this.views.none);
-                    this.showPointAdvancedOptions = ko.observable(false);
+                    this.showPointAdvancedOptions = ko.observable(true);
                 },
                 togglePointAdvancedOptions: function () {
                     this.showPointAdvancedOptions(!this.showPointAdvancedOptions());

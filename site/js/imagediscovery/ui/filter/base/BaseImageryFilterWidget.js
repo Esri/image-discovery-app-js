@@ -7,6 +7,7 @@ define([
     "dojo/_base/connect",
     "esriviewer/ui/base/UITemplatedWidget"
 ],
+    //base widget that is used by all filters
     function (declare, template, domConstruct,  domStyle,  lang, con, UITemplatedWidget) {
         return declare(
             [UITemplatedWidget],

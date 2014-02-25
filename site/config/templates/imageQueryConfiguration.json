@@ -81,8 +81,6 @@
         "isAsync": true
     },
     "searchConfiguration": {
-        //maxQueryResults: the max number of results displays in the results grid
-        "maxQueryResults": 2
     },
     "exportConfiguration": {
         //image: contains a height and width that is used for export image download capability

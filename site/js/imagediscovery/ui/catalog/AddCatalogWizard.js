@@ -14,7 +14,7 @@ define([
     "./base/AddedCatalogsListWidget"
 ],
    // function (declare, template, theme, topic, query, nodeTraverse, domConstruct, domAttr, lang, UITemplatedWidget, AddCatalogViewModel, AddedCatalogsLocalStorageMixin, AddedCatalogsList) {
-    function (declare, template,  topic, query, nodeTraverse, domConstruct, domAttr, lang, UITemplatedWidget, AddCatalogViewModel, AddedCatalogsLocalStorageMixin, AddedCatalogsList) {
+    function (declare, template,  topic, query, nodeTraverse, domConstruct, domAttr, lang, UITemplatedWidget, AddCatalogViewModel, AddedCatalogsLocalStorageMixin, AddedCatalogsListWidget) {
         return declare(
             [ UITemplatedWidget, AddedCatalogsLocalStorageMixin],
             {
@@ -37,7 +37,7 @@ define([
                 },
                 createPersistedCatalogListWidget: function () {
                     if (this.catalogListWidget == null) {
-                        this.catalogListWidget = new AddedCatalogsList();
+                        this.catalogListWidget = new AddedCatalogsListWidget();
                         this.catalogListWidget.placeAt(this.persistedCatalogsContainer);
                         this.catalogListWidget.on("removePersistedCatalog", lang.hitch(this, this.removePersistedCatalog));
                         this.catalogListWidget.on("addPersistedCatalog", lang.hitch(this, this.deployUserPersistedCatalog));

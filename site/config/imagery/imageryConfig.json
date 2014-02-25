@@ -41,12 +41,14 @@
                 "type": "dynamic",
                 "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer"
             }
+
+
         ],
         "legend": {
             "create": false
         },
         "display": {
-            "showScaleBar": true,
+            "showScaleBar": false,
             "showMGRS": false,
             "showUTM": false,
             "showScale": false
@@ -89,7 +91,7 @@
         }
     },
     "configureWidget": {
-        "create": false
+        "create": true
     },
     "bookmarks": {
         "url": "config/bookmarks.json"

@@ -1,2 +1,78 @@
-//>>built
-define("dgrid/util/has-css3",["dojo/has","xstyle/css!../css/has-transforms3d.css"],function(_1){var _2=["ms","O","Moz","Webkit"];_1.add("css-transitions",function(_3,_4,_5){var _6=_5.style,i;if(_6.transitionProperty!==undefined){return true;}for(i=_2.length;i--;){if(_6[_2[i]+"TransitionProperty"]!==undefined){return _2[i];}}return false;});_1.add("transitionend",function(){var _7=_1("css-transitions");if(!_7){return false;}if(_7===true){return "transitionend";}return {ms:"MSTransitionEnd",O:"oTransitionEnd",Moz:"transitionend",Webkit:"webkitTransitionEnd"}[_7];});_1.add("css-transforms",function(_8,_9,_a){var _b=_a.style,i;if(_b.transformProperty!==undefined){return true;}for(i=_2.length;i--;){if(_b[_2[i]+"Transform"]!==undefined){return _2[i];}}return false;});_1.add("css-transforms3d",function(_c,_d,_e){var _f,_10;_e.className="has-csstransforms3d";document.body.appendChild(_e);_f=_e.offsetLeft;if(_f===9){return true;}else{if(_f>9){_10=_2[_f-10];return _10||false;}}document.body.removeChild(_e);_e.className="";return false;});return _1;});
+define(["dojo/has", "xstyle/css!../css/has-transforms3d.css"],
+function(has){
+	// This module defines feature tests for CSS3 features such as transitions.
+	// The css-transitions, css-transforms, and css-transforms3d has-features
+	// can report either boolean or string:
+	// * false indicates no support
+	// * true indicates prefix-less support
+	// * string indicates the vendor prefix under which the feature is supported
+
+	var cssPrefixes = ["ms", "O", "Moz", "Webkit"];
+	
+	has.add("css-transitions", function(global, doc, element){
+		var style = element.style,
+			i;
+		
+		if(style.transitionProperty !== undefined){ // standard, no vendor prefix
+			return true;
+		}
+		for (i = cssPrefixes.length; i--;) {
+			if (style[cssPrefixes[i] + "TransitionProperty"] !== undefined) {
+				return cssPrefixes[i]; // vendor-specific css property prefix
+			}
+		}
+		
+		return false; // otherwise, not supported
+	});
+	
+	has.add("transitionend", function(){
+		// Infer transitionend event name based on CSS transitions has-feature.
+		var tpfx = has("css-transitions");
+		if(!tpfx){ return false; }
+		if(tpfx === true){ return "transitionend"; }
+		return {
+			ms: "MSTransitionEnd",
+			O: "oTransitionEnd",
+			Moz: "transitionend",
+			Webkit: "webkitTransitionEnd"
+		}[tpfx];
+	});
+	
+	has.add("css-transforms", function(global, doc, element){
+		var style = element.style, i;
+		if (style.transformProperty !== undefined) {
+			return true; // standard, no vendor prefix
+		}
+		for (i = cssPrefixes.length; i--;) {
+			if (style[cssPrefixes[i] + "Transform"] !== undefined) {
+				return cssPrefixes[i];
+			}
+		}
+		
+		return false; // otherwise, not supported
+	});
+	
+	has.add("css-transforms3d", function(global, doc, element){
+		var left,
+			result = false;
+		
+		// Apply csstransforms3d class to test transform-3d media queries.
+		element.className = "has-csstransforms3d";
+		// Add to body to allow measurement.
+		document.body.appendChild(element);
+		left = element.offsetLeft;
+		
+		if (left === 9) {
+			result = true; // standard, no prefix
+		} else if (left > 9){
+			// Matched one of the vendor prefixes; offset indicates which.
+			result = cssPrefixes[left - 10] || false;
+		}
+		document.body.removeChild(element);
+		element.className = "";
+		
+		return result;
+	});
+	
+	return has;
+});

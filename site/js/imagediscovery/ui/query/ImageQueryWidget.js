@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageQueryWidgetTemplate.html",
- //   "xstyle/css!./theme/ImageQueryWidgetTheme.css",
+    //   "xstyle/css!./theme/ImageQueryWidgetTheme.css",
     "dojo/topic",
     "dojo/_base/array",
     "dojo/on",
@@ -17,7 +17,7 @@ define([
     "esriviewer/map/base/DistinctValuesQueryParameters"
 ],
     //  function (declare, template, theme, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters) {
-    function (declare, template, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters,DistinctValuesQueryParameters) {
+    function (declare, template, topic, array, on, domConstruct, domStyle, FilteringSelect, Memory, ContentPane, lang, UITemplatedWidget, AddedFieldValuesTooltip, LayerQueryParameters, DistinctValuesQueryParameters) {
         return declare(
             [ContentPane, UITemplatedWidget],
             {
@@ -75,20 +75,19 @@ define([
 
                             topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GET_VALUES_FOR_FIELDS, queryParamsForLayer);
                         }
-                        else{
-                            
-                           for(i = 0; i < this.queryFields.length;i++){
-                               var distinctParameters = new DistinctValuesQueryParameters({
-                               });
-                               topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.GET_DISTINCT_FIELD_VALUES, {
-                                   callback: lang.hitch(this, this.handleQueryFieldValuesResponse, currentQueryLayerController),
-                                   errback: lang.hitch(this, this.handleQueryFieldValuesError),
-                                   layer: currentQueryLayerController.layer,
-                                   distinctField: this.queryFields[i],
-                                   processResponse: false
+                        else {
 
-                               });
-                           }
+                            for (i = 0; i < this.queryFields.length; i++) {
+                                var distinctParameters = new DistinctValuesQueryParameters({});
+                                topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.GET_DISTINCT_FIELD_VALUES, {
+                                    callback: lang.hitch(this, this.handleQueryFieldValuesResponse, currentQueryLayerController),
+                                    errback: lang.hitch(this, this.handleQueryFieldValuesError),
+                                    layer: currentQueryLayerController.layer,
+                                    distinctField: this.queryFields[i],
+                                    processResponse: false
+
+                                });
+                            }
                         }
                     }
                 },
@@ -100,6 +99,24 @@ define([
                     });
                     if (discoveryQueryFields != null && lang.isArray(discoveryQueryFields)) {
                         this.discoveryQueryFields = discoveryQueryFields;
+                    }
+
+                },
+                populateDefaultValues: function (queryLayerControllers, imageDiscoveryQueryFieldsUniqueValuesConfig) {
+                    var currentCatalogUrl;
+                    var queryLayerControllerId;
+                    for (var key in imageDiscoveryQueryFieldsUniqueValuesConfig) {
+                        queryLayerControllerId = null;
+                        currentCatalogUrl = key;
+                        for (var i = 0; i < queryLayerControllers.length; i++) {
+                            if (currentCatalogUrl == queryLayerControllers[i].layer.url) {
+                                queryLayerControllerId = queryLayerControllers[i].id;
+                                break;
+                            }
+                        }
+                        if (queryLayerControllerId) {
+                            this.queryFieldResponseCache[queryLayerControllerId] = imageDiscoveryQueryFieldsUniqueValuesConfig[key];
+                        }
                     }
                 },
                 handleQueryFieldValuesError: function () {
@@ -191,7 +208,6 @@ define([
 
                     var addIcon = domConstruct.create("div", {title: "Add Value", className: "commonIcons16 add imageDiscoveryQueryAddFieldValueIcon"});
                     on(addIcon, "click", lang.hitch(this, this.addFieldValueToQueryList, fieldName));
-
 
                     domConstruct.place(queryFilterLabel, queryFilterEntryContainer);
                     domConstruct.place(addIcon, queryFilterEntryContainer);

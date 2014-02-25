@@ -1,15 +1,15 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageInfoTabContainerTemplate.html",
-  //  "xstyle/css!./theme/ImageInfoTheme.css",
+    //  "xstyle/css!./theme/ImageInfoTheme.css",
     "dojo/topic",
     "dojo/date/locale",
     "dojo/_base/lang",
     "esriviewer/ui/base/UITemplatedWidget",
     "./model/ImageInfoViewModel"
 ],
- //   function (declare, template, theme, topic, locale, lang,   UITemplatedWidget, ImageInfoViewModel) {
-    function (declare, template,  topic, locale, lang,   UITemplatedWidget, ImageInfoViewModel) {
+    //   function (declare, template, theme, topic, locale, lang,   UITemplatedWidget, ImageInfoViewModel) {
+    function (declare, template, topic, locale, lang, UITemplatedWidget, ImageInfoViewModel) {
         return declare(
             [UITemplatedWidget],
             {
@@ -70,46 +70,11 @@ define([
                         }
                     }
                 },
-                getFieldTypeLookup: function (queryLayerController) {
-                    var fieldTypeLookup = {
-                        dateLookup: {},
-                        doubleLookup: {},
-                        domainLookup: {}
-                    };
-                    var layer = queryLayerController.layer;
-                    var fieldMapping = {};
-                    if (queryLayerController.serviceConfiguration &&
-                        queryLayerController.serviceConfiguration.fieldMapping != null &&
-                        lang.isObject(queryLayerController.serviceConfiguration.fieldMapping)) {
-                        fieldMapping = queryLayerController.serviceConfiguration.fieldMapping;
-                    }
-                    if (layer && layer.fields) {
-                        //todo: put this in a hash
-                        var currentField;
-                        for (var i = 0; i < layer.fields.length; i++) {
-                            currentField = layer.fields[i];
-                            var mappedFieldName = currentField.name;
-                            if (fieldMapping[mappedFieldName] != null) {
-                                mappedFieldName = fieldMapping[mappedFieldName];
-                            }
-                            var fieldType = IMAGERY_UTILS.getFieldTypeFromQueryLayerController(currentField.name, queryLayerController);
-                            if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
-                                fieldTypeLookup.dateLookup[mappedFieldName] = currentField;
-                            }
-                            else if (fieldType === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE) {
-                                fieldTypeLookup.doubleLookup[mappedFieldName] = currentField;
-                            }
-                            else if (currentField.domain != null && layer.fields[i].domain.codedValues != null) {
-                                fieldTypeLookup.domainLookup[mappedFieldName] = currentField;
-                            }
-                        }
-                    }
-                    return fieldTypeLookup;
-                },
+
                 getFormattedDate: function (value) {
                     try {
                         var date = new Date(value);
-                        var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDateFormat;
+                        var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }
                     catch (err) {
@@ -171,7 +136,7 @@ define([
                             reverseFieldMapping[fieldMapping[key]] = key;
                         }
                         var layer = queryLayerController.layer; //will be used to retrieve thumbnail
-                        var fieldTypeLookup = this.getFieldTypeLookup(queryLayerController);
+                        var fieldTypeLookup = IMAGERY_UTILS.getFieldTypeLookup(queryLayerController);
                         var attributesNVPArray = [];
                         for (var key in imageInfo) {
                             if (this.defaultHideFields[key] != null) {

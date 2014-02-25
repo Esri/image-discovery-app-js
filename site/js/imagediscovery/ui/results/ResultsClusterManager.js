@@ -40,14 +40,19 @@ define([
                  * @return {*}
                  */
                 isVisible: function () {
-                    return this.clusterLayer.visible;
+                    if (this.clusterLayer) {
+                        return this.clusterLayer.visible;
+                    }
+                    return false;
                 },
                 /**
                  hides the cluster layer
 
                  */
                 hideLayer: function () {
-                    this.clusterLayer.hide();
+                    if (this.clusterLayer) {
+                        this.clusterLayer.hide();
+                    }
                 },
                 /**
                  * displays the cluster layer on the map
@@ -61,8 +66,10 @@ define([
                  * called when a discovery viewer query is complete
                  */
                 handleQueryComplete: function () {
-                    this.clusterLayer.clear();
-                    this.clusterLayer._clusterGraphics();
+                    if (this.clusterLayer) {
+                        this.clusterLayer.clear();
+                        this.clusterLayer._clusterGraphics();
+                    }
                 },
                 /**
                  * called when results are cleared. destroys the cluster layer

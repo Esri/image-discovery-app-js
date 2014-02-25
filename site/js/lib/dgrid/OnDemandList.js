@@ -1,2 +1,633 @@
-//>>built
-define("dgrid/OnDemandList",["./List","./_StoreMixin","dojo/_base/declare","dojo/_base/lang","dojo/_base/Deferred","dojo/on","./util/misc","put-selector/put"],function(_1,_2,_3,_4,_5,_6,_7,_8){return _3([_1,_2],{minRowsPerPage:25,maxRowsPerPage:250,maxEmptySpace:Infinity,bufferRows:10,farOffRemoval:2000,rowHeight:22,queryRowsOverlap:1,pagingDelay:_7.defaultDelay,postCreate:function(){this.inherited(arguments);var _9=this;_6(this.bodyNode,"scroll",_7.throttleDelayed(function(_a){_9._processScroll(_a);},null,this.pagingDelay));},renderQuery:function(_b,_c,_d){var _e={query:_b,count:0,node:_c,options:_d};if(!_c){var _f=true;var _10={node:_8(this.contentNode,"div.dgrid-preload",{rowIndex:0}),count:0,query:_b,next:_e,options:_d};_e.node=_c=_8(this.contentNode,"div.dgrid-preload");_e.previous=_10;}_c.rowIndex=this.minRowsPerPage;var _11=this.preload;if(_11){if((_e.next=_11.next)&&this.bodyNode.scrollTop>=_11.node.offsetTop){_e.previous=_11;}else{_e.next=_11;_e.previous=_11.previous;}_e.previous.next=_e;_e.next.previous=_e;}else{this.preload=_e;}var _12=_8(_c,"-div.dgrid-loading"),_13=_8(_12,"div.dgrid-below");_13.innerHTML=this.loadingMessage;_d=_4.mixin(this.get("queryOptions"),_d,{start:0,count:this.minRowsPerPage,query:_b});var _14=_b(_d);var _15=this;_5.when(this.renderArray(_14,_c,_d),function(trs){return _5.when(_14.total||_14.length,function(_16){_8(_12,"!");var _17=trs.length;_16=_16||_17;if(!_16){_15.noDataNode=_8(_15.contentNode,"div.dgrid-no-data");_15.noDataNode.innerHTML=_15.noDataMessage;}var _18=0;for(var i=0;i<_17;i++){_18+=_15._calcRowHeight(trs[i]);}if(_17&&_18){_15.rowHeight=_18/_17;}_16-=_17;_e.count=_16;_c.rowIndex=_17;if(_16){_c.style.height=Math.min(_16*_15.rowHeight,_15.maxEmptySpace)+"px";}else{_c.style.display="none";}_15._processScroll();return trs;});});return _14;},refresh:function(){this.inherited(arguments);if(this.store){var _19=this;this._trackError(function(){return _19.renderQuery(function(_1a){return _19.store.query(_19.query,_1a);});});}},_calcRowHeight:function(_1b){var _1c=_1b.previousSibling;return _1c&&_1c.offsetTop!=_1b.offsetTop?_1b.offsetHeight:0;},lastScrollTop:0,_processScroll:function(evt){var _1d=this,_1e=_1d.bodyNode,_1f=(evt&&evt.scrollTop)||_1e.scrollTop,_20=_1e.offsetHeight+_1f,_21,_22,_23=_1d.preload,_24=_1d.lastScrollTop,_25=_1d.bufferRows*_1d.rowHeight,_26=_25-_1d.rowHeight;var _27=1;_1d.lastScrollTop=_1f;function _28(_29,_2a,_2b,_2c){var _2d=_1d.farOffRemoval,_22=_29.node;if(_2a>2*_2d){var row,_2e=_22[_2b];var _2f=0;var _30=0;var _31=[];while((row=_2e)){var _32=_1d._calcRowHeight(row);if(_2f+_32+_2d>_2a||(_2e.className.indexOf("dgrid-row")<0&&_2e.className.indexOf("dgrid-loading")<0)){break;}var _2e=row[_2b];var _33,_34=row.observerIndex;if(_34!=_33&&_33>-1){var _35=_1d.observers;var _36=_35[_33];_36&&_36.cancel();_35[_33]=0;}_2f+=_32;_30+=row.count||1;_33=_34;_1d.removeRow(row,true);_31.push(row);}_29.count+=_30;if(_2c){_22.rowIndex-=_30;_37(_29);}else{_22.style.height=(_22.offsetHeight+_2f)+"px";}var _38=_8("div");for(var i=0;i<_31.length;i++){_8(_38,_31[i]);}setTimeout(function(){_8(_38,"!");},1);}};function _37(_39,_3a){_39.node.style.height=Math.min(_39.count*_1d.rowHeight,_3a?Infinity:_1d.maxEmptySpace)+"px";};while(_23&&!_23.node.offsetWidth){_23=_23.previous;}while(_23&&_23!=_21){_21=_1d.preload;_1d.preload=_23;_22=_23.node;var _3b=_22.offsetTop;var _3c;if(_20+_27+_26<_3b){do{_23=_23.previous;}while(_23&&!_23.node.offsetWidth);}else{if(_1f-_27-_26>(_3b+(_3c=_22.offsetHeight))){do{_23=_23.next;}while(_23&&!_23.node.offsetWidth);}else{var _3d=((_22.rowIndex?_1f-_25:_20)-_3b)/_1d.rowHeight;var _3e=(_20-_1f+2*_25)/_1d.rowHeight;var _3f=Math.max(Math.min((_1f-_24)*_1d.rowHeight,_1d.maxRowsPerPage/2),_1d.maxRowsPerPage/-2);_3e+=Math.min(Math.abs(_3f),10);if(_22.rowIndex==0){_3d-=_3e;}_3d=Math.max(_3d,0);if(_3d<10&&_3d>0&&_3e+_3d<_1d.maxRowsPerPage){_3e+=Math.max(0,_3d);_3d=0;}_3e=Math.min(Math.max(_3e,_1d.minRowsPerPage),_1d.maxRowsPerPage,_23.count);if(_3e==0){return;}_3e=Math.ceil(_3e);_3d=Math.min(Math.floor(_3d),_23.count-_3e);var _40=_4.mixin(_1d.get("queryOptions"),_23.options);_23.count-=_3e;var _41=_22,_42,_43=_1d.queryRowsOverlap,_44=_22.rowIndex>0&&_23;if(_44){var _45=_23.previous;if(_45){_28(_45,_1f-(_45.node.offsetTop+_45.node.offsetHeight),"nextSibling");if(_3d>0&&_45.node==_22.previousSibling){_3d=Math.min(_23.count,_3d);_23.previous.count+=_3d;_37(_23.previous,true);_23.count-=_3d;_22.rowIndex+=_3d;_43=0;}else{_3e+=_3d;}}_40.start=_22.rowIndex-_43;_22.rowIndex+=_3e;}else{if(_23.next){_28(_23.next,_23.next.node.offsetTop-_20,"previousSibling",true);var _41=_22.nextSibling;if(_41==_23.next.node){_23.next.count+=_23.count-_3d;_23.next.node.rowIndex=_3d+_3e;_37(_23.next);_23.count=_3d;_43=0;}else{_42=true;}}_40.start=_23.count;}_40.count=Math.min(_3e+_43,_1d.maxRowsPerPage);if(_42){_42=_41.offsetTop;}_37(_23);var _46=_8(_41,"-div.dgrid-loading[style=height:"+_3e*_1d.rowHeight+"px]"),_47=_8(_46,"div.dgrid-"+(_44?"below":"above"));_47.innerHTML=_1d.loadingMessage;_46.count=_3e;_40.query=_23.query;var _48=_23.query(_40),_49=_1d._trackError(function(){return _48;});if(_49===undefined){return;}(function(_4a,_4b,_4c,_4d,_4e){_5.when(_1d.renderArray(_4e,_4a,_40),function(){_41=_4a.nextSibling;_8(_4a,"!");if(_4d&&_41){var pos=_1d.getScrollPosition();_1d.scrollTo({x:pos.x,y:pos.y+_41.offsetTop-_4d,preserveMomentum:true});}if(_4c){_5.when(_4e.total||_4e.length,function(_4f){_4c.count=_4f-_4c.node.rowIndex;_37(_4c);});}_1d._processScroll();});}).call(this,_46,_1e,_44,_42,_48);_23=_23.previous;}}}}});});
+define(["./List", "./_StoreMixin", "dojo/_base/declare", "dojo/_base/lang", "dojo/_base/Deferred", "dojo/on", "./util/misc", "put-selector/put"],
+function(List, _StoreMixin, declare, lang, Deferred, listen, miscUtil, put){
+
+return declare([List, _StoreMixin], {
+	// summary:
+	//		Extends List to include virtual scrolling functionality, querying a
+	//		dojo/store instance for the appropriate range when the user scrolls.
+	
+	// minRowsPerPage: Integer
+	//		The minimum number of rows to request at one time.
+	minRowsPerPage: 25,
+	
+	// maxRowsPerPage: Integer
+	//		The maximum number of rows to request at one time.
+	maxRowsPerPage: 250,
+	
+	// maxEmptySpace: Integer
+	//		Defines the maximum size (in pixels) of unrendered space below the
+	//		currently-rendered rows. Setting this to less than Infinity can be useful if you
+	//		wish to limit the initial vertical scrolling of the grid so that the scrolling is
+	// 		not excessively sensitive. With very large grids of data this may make scrolling
+	//		easier to use, albiet it can limit the ability to instantly scroll to the end.
+	maxEmptySpace: Infinity,	
+	
+	// bufferRows: Integer
+	//	  The number of rows to keep ready on each side of the viewport area so that the user can
+	//	  perform local scrolling without seeing the grid being built. Increasing this number can
+	//	  improve perceived performance when the data is being retrieved over a slow network.
+	bufferRows: 10,
+	
+	// farOffRemoval: Integer
+	//		Defines the minimum distance (in pixels) from the visible viewport area
+	//		rows must be in order to be removed.  Setting to Infinity causes rows
+	//		to never be removed.
+	farOffRemoval: 2000,
+	
+	// queryRowsOverlap: Integer
+	//		Indicates the number of rows to overlap queries. This helps keep
+	//		continuous data when underlying data changes (and thus pages don't
+	//		exactly align)
+	queryRowsOverlap: 0,
+	
+	// pagingMethod: String
+	//		Method (from dgrid/util/misc) to use to either throttle or debounce
+	//		requests.  Default is "debounce" which will cause the grid to wait until
+	//		the user pauses scrolling before firing any requests; can be set to
+	//		"throttleDelayed" instead to progressively request as the user scrolls,
+	//		which generally incurs more overhead but might appear more responsive.
+	pagingMethod: "debounce",
+	
+	// pagingDelay: Integer
+	//		Indicates the delay (in milliseconds) imposed upon pagingMethod, to wait
+	//		before paging in more data on scroll events. This can be increased to
+	//		reduce client-side overhead or the number of requests sent to a server.
+	pagingDelay: miscUtil.defaultDelay,
+	
+	// keepScrollPosition: Boolean
+	//		When refreshing the list, controls whether the scroll position is
+	//		preserved, or reset to the top.  This can also be overridden for
+	//		specific calls to refresh.
+	keepScrollPosition: false,
+	
+	rowHeight: 22,
+	
+	postCreate: function(){
+		this.inherited(arguments);
+		var self = this;
+		// check visibility on scroll events
+		listen(this.bodyNode, "scroll",
+			miscUtil[this.pagingMethod](function(event){ self._processScroll(event); },
+				null, this.pagingDelay));
+	},
+	
+	renderQuery: function(query, preloadNode, options){
+		// summary:
+		//		Creates a preload node for rendering a query into, and executes the query
+		//		for the first page of data. Subsequent data will be downloaded as it comes
+		//		into view.
+		var self = this,
+			preload = {
+				query: query,
+				count: 0,
+				node: preloadNode,
+				options: options
+			},
+			priorPreload = this.preload,
+			results;
+		
+		if(!preloadNode){
+			// Initial query; set up top and bottom preload nodes
+			var topPreload = {
+				node: put(this.contentNode, "div.dgrid-preload", {
+					rowIndex: 0
+				}),
+				count: 0,
+				query: query,
+				next: preload,
+				options: options
+			};
+			topPreload.node.style.height = "0";
+			preload.node = preloadNode = put(this.contentNode, "div.dgrid-preload");
+			preload.previous = topPreload;
+		}
+		// this preload node is used to represent the area of the grid that hasn't been
+		// downloaded yet
+		preloadNode.rowIndex = this.minRowsPerPage;
+
+		if(priorPreload){
+			// the preload nodes (if there are multiple) are represented as a linked list, need to insert it
+			if((preload.next = priorPreload.next) && 
+					// check to make sure that the current scroll position is below this preload
+					this.bodyNode.scrollTop >= priorPreload.node.offsetTop){ 
+				// the prior preload is above/before in the linked list
+				preload.previous = priorPreload;
+			}else{
+				// the prior preload is below/after in the linked list
+				preload.next = priorPreload;
+				preload.previous = priorPreload.previous;
+			}
+			// adjust the previous and next links so the linked list is proper
+			preload.previous.next = preload;
+			preload.next.previous = preload; 
+		}else{
+			this.preload = preload;
+		}
+		
+		var loadingNode = put(preloadNode, "-div.dgrid-loading"),
+			innerNode = put(loadingNode, "div.dgrid-below");
+		innerNode.innerHTML = this.loadingMessage;
+
+		function errback(err) {
+			// Used as errback for when calls;
+			// remove the loadingNode and re-throw if an error was passed
+			put(loadingNode, "!");
+			
+			if(err){
+				if(self._refreshDeferred){
+					self._refreshDeferred.reject(err);
+					delete self._refreshDeferred;
+				}
+				throw err;
+			}
+		}
+
+		// Establish query options, mixing in our own.
+		// (The getter returns a delegated object, so simply using mixin is safe.)
+		options = lang.mixin(this.get("queryOptions"), options, 
+			{ start: 0, count: this.minRowsPerPage },
+			"level" in query ? { queryLevel: query.level } : null);
+		
+		// Protect the query within a _trackError call, but return the QueryResults
+		this._trackError(function(){ return results = query(options); });
+		
+		if(typeof results === "undefined"){
+			// Synchronous error occurred (but was caught by _trackError)
+			errback();
+			return;
+		}
+		
+		// Render the result set
+		Deferred.when(self.renderArray(results, preloadNode, options), function(trs){
+			var total = typeof results.total === "undefined" ?
+				results.length : results.total;
+			return Deferred.when(total, function(total){
+				var trCount = trs.length,
+					parentNode = preloadNode.parentNode,
+					noDataNode = self.noDataNode;
+				
+				put(loadingNode, "!");
+				if(!("queryLevel" in options)){
+					self._total = total;
+				}
+				// now we need to adjust the height and total count based on the first result set
+				if(total === 0){
+					if(noDataNode){
+						put(noDataNode, "!");
+						delete self.noDataNode;
+					}
+					self.noDataNode = noDataNode = put("div.dgrid-no-data");
+					parentNode.insertBefore(noDataNode, self._getFirstRowSibling(parentNode));
+					noDataNode.innerHTML = self.noDataMessage;
+				}
+				var height = 0;
+				for(var i = 0; i < trCount; i++){
+					height += self._calcRowHeight(trs[i]);
+				}
+				// only update rowHeight if we actually got results and are visible
+				if(trCount && height){ self.rowHeight = height / trCount; }
+				
+				total -= trCount;
+				preload.count = total;
+				preloadNode.rowIndex = trCount;
+				if(total){
+					preloadNode.style.height = Math.min(total * self.rowHeight, self.maxEmptySpace) + "px";
+				}else{
+					// if total is 0, IE quirks mode can't handle 0px height for some reason, I don't know why, but we are setting display: none for now
+					preloadNode.style.display = "none";
+				}
+				
+				if (self._previousScrollPosition) {
+					// Restore position after a refresh operation w/ keepScrollPosition
+					self.scrollTo(self._previousScrollPosition);
+					delete self._previousScrollPosition;
+				}
+				
+				// Redo scroll processing in case the query didn't fill the screen,
+				// or in case scroll position was restored
+				self._processScroll();
+				
+				// If _refreshDeferred is still defined after calling _processScroll,
+				// resolve it now (_processScroll will remove it and resolve it itself
+				// otherwise)
+				if(self._refreshDeferred){
+					self._refreshDeferred.resolve(results);
+					delete self._refreshDeferred;
+				}
+				
+				return trs;
+			}, errback);
+		}, errback);
+		
+		return results;
+	},
+	
+	refresh: function(options){
+		// summary:
+		//		Refreshes the contents of the grid.
+		// options: Object?
+		//		Optional object, supporting the following parameters:
+		//		* keepScrollPosition: like the keepScrollPosition instance property;
+		//			specifying it in the options here will override the instance
+		//			property's value for this specific refresh call only.
+		
+		var self = this,
+			keep = (options && options.keepScrollPosition),
+			dfd, results;
+		
+		// Fall back to instance property if option is not defined
+		if(typeof keep === "undefined"){ keep = this.keepScrollPosition; }
+		
+		// Store scroll position to be restored after new total is received
+		if(keep){ this._previousScrollPosition = this.getScrollPosition(); }
+		
+		this.inherited(arguments);
+		if(this.store){
+			// render the query
+			dfd = this._refreshDeferred = new Deferred();
+			
+			// renderQuery calls _trackError internally
+			results = self.renderQuery(function(queryOptions){
+				return self.store.query(self.query, queryOptions);
+			});
+			if(typeof results === "undefined"){
+				// Synchronous error occurred; reject the refresh promise.
+				dfd.reject();
+			}
+			
+			// Internally, _refreshDeferred will always be resolved with an object
+			// containing `results` (QueryResults) and `rows` (the rendered rows);
+			// externally the promise will resolve simply with the QueryResults, but
+			// the event will be emitted with both under respective properties.
+			return dfd.then(function(results){
+				// Emit on a separate turn to enable event to be used consistently for
+				// initial render, regardless of whether the backing store is async
+				setTimeout(function() {
+					listen.emit(self.domNode, "dgrid-refresh-complete", {
+						bubbles: true,
+						cancelable: false,
+						grid: self,
+						results: results // QueryResults object (may be a wrapped promise)
+					});
+				}, 0);
+				
+				// Delete the Deferred immediately so nothing tries to re-resolve
+				delete self._refreshDeferred;
+				
+				// Resolve externally with just the QueryResults
+				return results;
+			}, function(err){
+				delete self._refreshDeferred;
+				throw err;
+			});
+		}
+	},
+	
+	resize: function(){
+		this.inherited(arguments);
+		this._processScroll();
+	},
+
+	_getFirstRowSibling: function(container){
+		// summary:
+		//		Returns the DOM node that a new row should be inserted before
+		//		when there are no other rows in the current result set.
+		//		In the case of OnDemandList, this will always be the last child
+		//		of the container (which will be a trailing preload node).
+		return container.lastChild;
+	},
+	
+	_calcRowHeight: function(rowElement){
+		// summary:
+		//		Calculate the height of a row. This is a method so it can be overriden for
+		//		plugins that add connected elements to a row, like the tree
+		
+		var sibling = rowElement.previousSibling;
+		sibling = sibling && !/\bdgrid-preload\b/.test(sibling.className) && sibling;
+		
+		// If a previous row exists, compare the top of this row with the
+		// previous one (in case "rows" are actually rendering side-by-side).
+		// If no previous row exists, this is either the first or only row,
+		// in which case we count its own height.
+		return sibling ? rowElement.offsetTop - sibling.offsetTop :
+			rowElement.offsetHeight;
+	},
+	
+	lastScrollTop: 0,
+	_processScroll: function(evt){
+		// summary:
+		//		Checks to make sure that everything in the viewable area has been
+		//		downloaded, and triggering a request for the necessary data when needed.
+		var grid = this,
+			scrollNode = grid.bodyNode,
+			// grab current visible top from event if provided, otherwise from node
+			visibleTop = (evt && evt.scrollTop) || this.getScrollPosition().y,
+			visibleBottom = scrollNode.offsetHeight + visibleTop,
+			priorPreload, preloadNode, preload = grid.preload,
+			lastScrollTop = grid.lastScrollTop,
+			requestBuffer = grid.bufferRows * grid.rowHeight,
+			searchBuffer = requestBuffer - grid.rowHeight, // Avoid rounding causing multiple queries
+			// References related to emitting dgrid-refresh-complete if applicable
+			refreshDfd,
+			lastResults,
+			lastRows,
+			preloadSearchNext = true;
+		
+		// XXX: I do not know why this happens.
+		// munging the actual location of the viewport relative to the preload node by a few pixels in either
+		// direction is necessary because at least WebKit on Windows seems to have an error that causes it to
+		// not quite get the entire element being focused in the viewport during keyboard navigation,
+		// which means it becomes impossible to load more data using keyboard navigation because there is
+		// no more data to scroll to to trigger the fetch.
+		// 1 is arbitrary and just gets it to work correctly with our current test cases; don’t wanna go
+		// crazy and set it to a big number without understanding more about what is going on.
+		// wondering if it has to do with border-box or something, but changing the border widths does not
+		// seem to make it break more or less, so I do not know…
+		var mungeAmount = 1;
+		
+		grid.lastScrollTop = visibleTop;
+
+		function removeDistantNodes(preload, distanceOff, traversal, below){
+			// we check to see the the nodes are "far off"
+			var farOffRemoval = grid.farOffRemoval,
+				preloadNode = preload.node;
+			// by checking to see if it is the farOffRemoval distance away
+			if(distanceOff > 2 * farOffRemoval){
+				// ok, there is preloadNode that is far off, let's remove rows until we get to in the current viewpoint
+				var row, nextRow = preloadNode[traversal];
+				var reclaimedHeight = 0;
+				var count = 0;
+				var toDelete = [];
+				while((row = nextRow)){
+					var rowHeight = grid._calcRowHeight(row);
+					if(reclaimedHeight + rowHeight + farOffRemoval > distanceOff || (nextRow.className.indexOf("dgrid-row") < 0 && nextRow.className.indexOf("dgrid-loading") < 0)){
+						// we have reclaimed enough rows or we have gone beyond grid rows, let's call it good
+						break;
+					}
+					var nextRow = row[traversal]; // have to do this before removing it
+					reclaimedHeight += rowHeight;
+					count += row.count || 1;
+					// we just do cleanup here, as we will do a more efficient node destruction in the setTimeout below
+					grid.removeRow(row, true);
+					toDelete.push(row);
+				}
+				// now adjust the preloadNode based on the reclaimed space
+				preload.count += count;
+				if(below){
+					preloadNode.rowIndex -= count;
+					adjustHeight(preload);
+				}else{
+					// if it is above, we can calculate the change in exact row changes, which we must do to not mess with the scrolling
+					preloadNode.style.height = (preloadNode.offsetHeight + reclaimedHeight) + "px";
+				}
+				// we remove the elements after expanding the preload node so that the contraction doesn't alter the scroll position
+				var trashBin = put("div", toDelete);
+				setTimeout(function(){
+					// we can defer the destruction until later
+					put(trashBin, "!");
+				},1);
+			}
+		}
+		
+		function adjustHeight(preload, noMax){
+			preload.node.style.height = Math.min(preload.count * grid.rowHeight, noMax ? Infinity : grid.maxEmptySpace) + "px";
+		}
+		function traversePreload(preload, moveNext){
+			do{
+				preload = moveNext ? preload.next : preload.previous;
+			}while(preload && !preload.node.offsetWidth);// skip past preloads that are not currently connected
+			return preload;
+		}
+		while(preload && !preload.node.offsetWidth){
+			// skip past preloads that are not currently connected
+			preload = preload.previous;
+		}
+		// there can be multiple preloadNodes (if they split, or multiple queries are created),
+		//	so we can traverse them until we find whatever is in the current viewport, making
+		//	sure we don't backtrack
+		while(preload && preload != priorPreload){
+			priorPreload = grid.preload;
+			grid.preload = preload;
+			preloadNode = preload.node;
+			var preloadTop = preloadNode.offsetTop;
+			var preloadHeight;
+			
+			if(visibleBottom + mungeAmount + searchBuffer < preloadTop){
+				// the preload is below the line of sight
+				preload = traversePreload(preload, (preloadSearchNext = false));
+			}else if(visibleTop - mungeAmount - searchBuffer > (preloadTop + (preloadHeight = preloadNode.offsetHeight))){
+				// the preload is above the line of sight
+				preload = traversePreload(preload, (preloadSearchNext = true));
+			}else{
+				// the preload node is visible, or close to visible, better show it
+				var offset = ((preloadNode.rowIndex ? visibleTop - requestBuffer : visibleBottom) - preloadTop) / grid.rowHeight;
+				var count = (visibleBottom - visibleTop + 2 * requestBuffer) / grid.rowHeight;
+				// utilize momentum for predictions
+				var momentum = Math.max(Math.min((visibleTop - lastScrollTop) * grid.rowHeight, grid.maxRowsPerPage/2), grid.maxRowsPerPage/-2);
+				count += Math.min(Math.abs(momentum), 10);
+				if(preloadNode.rowIndex == 0){
+					// at the top, adjust from bottom to top
+					offset -= count;
+				}
+				offset = Math.max(offset, 0);
+				if(offset < 10 && offset > 0 && count + offset < grid.maxRowsPerPage){
+					// connect to the top of the preloadNode if possible to avoid excessive adjustments
+					count += Math.max(0, offset);
+					offset = 0;
+				}
+				count = Math.min(Math.max(count, grid.minRowsPerPage),
+									grid.maxRowsPerPage, preload.count);
+				
+				if(count == 0){
+					preload = traversePreload(preload, preloadSearchNext);
+					continue;
+				}
+				
+				count = Math.ceil(count);
+				offset = Math.min(Math.floor(offset), preload.count - count);
+				var options = lang.mixin(grid.get("queryOptions"), preload.options);
+				preload.count -= count;
+				var beforeNode = preloadNode,
+					keepScrollTo, queryRowsOverlap = grid.queryRowsOverlap,
+					below = preloadNode.rowIndex > 0 && preload; 
+				if(below){
+					// add new rows below
+					var previous = preload.previous;
+					if(previous){
+						removeDistantNodes(previous, visibleTop - (previous.node.offsetTop + previous.node.offsetHeight), 'nextSibling');
+						if(offset > 0 && previous.node == preloadNode.previousSibling){
+							// all of the nodes above were removed
+							offset = Math.min(preload.count, offset);
+							preload.previous.count += offset;
+							adjustHeight(preload.previous, true);
+							preloadNode.rowIndex += offset;
+							queryRowsOverlap = 0;
+						}else{
+							count += offset;
+						}
+						preload.count -= offset;
+					}
+					options.start = preloadNode.rowIndex - queryRowsOverlap;
+					options.count = Math.min(count + queryRowsOverlap, grid.maxRowsPerPage);
+					preloadNode.rowIndex = options.start + options.count;
+				}else{
+					// add new rows above
+					if(preload.next){
+						// remove out of sight nodes first
+						removeDistantNodes(preload.next, preload.next.node.offsetTop - visibleBottom, 'previousSibling', true);
+						var beforeNode = preloadNode.nextSibling;
+						if(beforeNode == preload.next.node){
+							// all of the nodes were removed, can position wherever we want
+							preload.next.count += preload.count - offset;
+							preload.next.node.rowIndex = offset + count;
+							adjustHeight(preload.next);
+							preload.count = offset;
+							queryRowsOverlap = 0;
+						}else{
+							keepScrollTo = true;
+						}
+						
+					}
+					options.start = preload.count;
+					options.count = Math.min(count + queryRowsOverlap, grid.maxRowsPerPage);
+				}
+				if(keepScrollTo && beforeNode && beforeNode.offsetWidth){
+					keepScrollTo = beforeNode.offsetTop;
+				}
+
+				adjustHeight(preload);
+				// create a loading node as a placeholder while the data is loaded
+				var loadingNode = put(beforeNode, "-div.dgrid-loading[style=height:" + count * grid.rowHeight + "px]"),
+					innerNode = put(loadingNode, "div.dgrid-" + (below ? "below" : "above"));
+				innerNode.innerHTML = grid.loadingMessage;
+				loadingNode.count = count;
+				// use the query associated with the preload node to get the next "page"
+				if("level" in preload.query){
+					options.queryLevel = preload.query.level;
+				}
+				
+				// Avoid spurious queries (ideally this should be unnecessary...)
+				if(!("queryLevel" in options) && (options.start > grid._total || options.count < 0)){
+					continue;
+				}
+				
+				// Query now to fill in these rows.
+				// Keep _trackError-wrapped results separate, since if results is a
+				// promise, it will lose QueryResults functions when chained by `when`
+				var results = preload.query(options),
+					trackedResults = grid._trackError(function(){ return results; });
+				
+				if(trackedResults === undefined){
+					// Sync query failed
+					put(loadingNode, "!");
+					return;
+				}
+
+				// Isolate the variables in case we make multiple requests
+				// (which can happen if we need to render on both sides of an island of already-rendered rows)
+				(function(loadingNode, scrollNode, below, keepScrollTo, results){
+					lastRows = Deferred.when(grid.renderArray(results, loadingNode, options), function(rows){
+						lastResults = results;
+						
+						// can remove the loading node now
+						beforeNode = loadingNode.nextSibling;
+						put(loadingNode, "!");
+						if(keepScrollTo && beforeNode && beforeNode.offsetWidth){ // beforeNode may have been removed if the query results loading node was a removed as a distant node before rendering 
+							// if the preload area above the nodes is approximated based on average
+							// row height, we may need to adjust the scroll once they are filled in
+							// so we don't "jump" in the scrolling position
+							var pos = grid.getScrollPosition();
+							grid.scrollTo({
+								// Since we already had to query the scroll position,
+								// include x to avoid TouchScroll querying it again on its end.
+								x: pos.x,
+								y: pos.y + beforeNode.offsetTop - keepScrollTo,
+								// Don't kill momentum mid-scroll (for TouchScroll only).
+								preserveMomentum: true
+							});
+						}
+						
+						Deferred.when(results.total || results.length, function(total){
+							if(!("queryLevel" in options)){
+								grid._total = total;
+							}
+							if(below){
+								// if it is below, we will use the total from the results to update
+								// the count of the last preload in case the total changes as later pages are retrieved
+								// (not uncommon when total counts are estimated for db perf reasons)
+								
+								// recalculate the count
+								below.count = total - below.node.rowIndex;
+								// check to see if we are on the last page
+								if(below.count === 0){
+									// This is a hack to get Observable to recognize that this is the
+									// last page; if the count doesn't match results.length, Observable
+									// will think this is the last page and properly handle additions to the bottom
+									options.count++;
+								}
+								// readjust the height
+								adjustHeight(below);
+							}
+						});
+						
+						// make sure we have covered the visible area
+						grid._processScroll();
+						return rows;
+					}, function (e) {
+						put(loadingNode, "!");
+						throw e;
+					});
+				}).call(this, loadingNode, scrollNode, below, keepScrollTo, results);
+				preload = preload.previous;
+			}
+		}
+		
+		// After iterating, if additional requests have been made mid-refresh,
+		// resolve the refresh promise based on the latest results obtained
+		if (lastRows && (refreshDfd = this._refreshDeferred)) {
+			delete this._refreshDeferred;
+			Deferred.when(lastRows, function() {
+				refreshDfd.resolve(lastResults);
+			});
+		}
+	},
+
+	removeRow: function(rowElement, justCleanup){
+		function chooseIndex(index1, index2){
+			return index1 != null ? index1 : index2;
+		}
+
+		if(rowElement){
+			// Clean up observers that need to be cleaned up.
+			var previousNode = rowElement.previousSibling,
+				nextNode = rowElement.nextSibling,
+				prevIndex = previousNode && chooseIndex(previousNode.observerIndex, previousNode.previousObserverIndex),
+				nextIndex = nextNode && chooseIndex(nextNode.observerIndex, nextNode.nextObserverIndex),
+				thisIndex = rowElement.observerIndex;
+
+			// Clear the observerIndex on the node being removed so it will not be considered any longer.
+			rowElement.observerIndex = undefined;
+			if(justCleanup){
+				// Save the indexes from the siblings for future calls to removeRow.
+				rowElement.nextObserverIndex = nextIndex;
+				rowElement.previousObserverIndex = prevIndex;
+			}
+
+			// Is this row's observer index different than those on either side?
+			if(this.cleanEmptyObservers && thisIndex > -1 && thisIndex !== prevIndex && thisIndex !== nextIndex){
+				// This is the last row that references the observer index.  Cancel the observer.
+				var observers = this.observers;
+				var observer = observers[thisIndex];
+				if(observer){
+					observer.cancel();
+					this._numObservers--;
+					observers[thisIndex] = 0; // remove it so we don't call cancel twice
+				}
+			}
+		}
+		// Finish the row removal.
+		this.inherited(arguments);
+	}
+});
+
+});

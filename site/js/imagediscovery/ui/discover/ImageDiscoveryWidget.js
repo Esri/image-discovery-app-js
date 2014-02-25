@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageDiscoveryTemplate.html",
-    //  "xstyle/css!./theme/ImageDiscoveryTheme.css",
+    // "xstyle/css!./theme/ImageDiscoveryTheme.css",
     "dojo/topic",
     "dojo/has",
     'dijit/layout/ContentPane',
@@ -78,6 +78,10 @@ define([
                     this.on("show", lang.hitch(this, this.handleOnShow));
                     //listen for clear results
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleResultsCleared));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleSearchComplete));
+                },
+                handleSearchComplete: function () {
+                   //todo: this.viewModel.searchInProgress(false);
                 },
                 /**
                  * called when the search service has changed in the service select box
@@ -103,6 +107,13 @@ define([
                     var currentQueryLayerController;
                     var currentQueryLayer;
                     this.queryLayerControllers = queryLayerControllers;
+                    var imageDiscoveryQueryFieldsUniqueValuesConfig = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageDiscoveryQueryFieldsUniqueValues", function (imageDiscoveryQueryFieldsUniqueValuesConf) {
+                        imageDiscoveryQueryFieldsUniqueValuesConfig = imageDiscoveryQueryFieldsUniqueValuesConf;
+                    });
+                    if (imageDiscoveryQueryFieldsUniqueValuesConfig != null && lang.isObject(imageDiscoveryQueryFieldsUniqueValuesConfig)) {
+                        this.imageQueryWidget.populateDefaultValues(queryLayerControllers,imageDiscoveryQueryFieldsUniqueValuesConfig);
+                    }
                     if (queryLayerControllers.length == 1) {
                         this.viewModel.selectSearchServiceVisible(false);
                         if (this.createQueryFieldsDiscoveryContent) {
@@ -151,6 +162,8 @@ define([
                     if (discoveryQueryFields != null && lang.isArray(discoveryQueryFields) && discoveryQueryFields.length > 0) {
                         this.createQueryFieldsDiscoveryContent = !(has("ie") == 7);
                     }
+
+
                 },
                 handleSearchByGeometryGeometryQueryError: function (msg) {
                     this.clearDraw();
@@ -263,6 +276,7 @@ define([
                             searchGraphic = graphic;
                         }
                     }
+                 //todo:   this.viewModel.searchInProgress(true);
                     imageQueryParameters.geometry = searchGraphic.geometry;
                     imageQueryParameters.errback = this.searchByGeometryGeometryQueryErrorback;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, imageQueryParameters);

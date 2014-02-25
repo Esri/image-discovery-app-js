@@ -9,7 +9,7 @@ define([
     "dijit/form/CheckBox"
 ],
     //this class returns formatted elements for fields in the grid
-    function (declare, lang, domConstruct, domAttr, domStyle, on,  locale, CheckBox) {
+    function (declare, lang, domConstruct, domAttr, domStyle, on, locale, CheckBox) {
         return declare(
             [],
             {
@@ -97,33 +97,42 @@ define([
                 definedResultFieldFormatter: function (fieldName, object, value, node, option) {
                     var formatters = this.fieldsFormattersByQueryControllerId[object.queryControllerId];
                     var formatter;
-                    var nodeStyle = this.getNodeStyleFromFieldName(fieldName);
+                    var nodeRendering = this.getNodeRenderingFromFieldName(fieldName);
+                    var formattedValue = value;
                     if (formatters && (formatter = formatters[fieldName]) != null && lang.isFunction(formatters[fieldName])) {
-                        var val = formatter(value);
-                        domAttr.set(node, "innerHTML", val);
+                        formattedValue = formatter(value);
                     }
-                    else {
-                        domAttr.set(node, "innerHTML", value);
+                    var treatAsLink = false;
+                    if (nodeRendering) {
+                        if (nodeRendering.style) {
+                            domStyle.set(node, nodeRendering.style);
+                        }
+                        if (nodeRendering.processing) {
+                            treatAsLink = (nodeRendering.processing.treatAsLink != null) ? nodeRendering.processing.treatAsLink : false;
+                        }
                     }
-                    if (nodeStyle) {
-                        domStyle.set(node, nodeStyle);
+                    if(treatAsLink){
+                        formattedValue = "<a href='" + formattedValue + "'>" + formattedValue + "</a>";
                     }
+                    domAttr.set(node, "innerHTML", formattedValue);
+
                 },
                 /**
                  * gets the css style from configuration for a field
                  * @param fieldName field to retrieve the css style for
                  * @return Object css style for field. Null if there is no style
                  */
-                getNodeStyleFromFieldName: function (fieldName) {
+                getNodeRenderingFromFieldName: function (fieldName) {
                     var style = null;
+                    var processing = null;
                     for (var i = 0; i < this.resultFields.length; i++) {
-                        if (this.resultFields[i].field === fieldName && this.resultFields[i].style != null) {
+                        if (this.resultFields[i].field === fieldName) {
                             style = this.resultFields[i].style;
+                            processing = this.resultFields[i].processing;
                             break;
-
                         }
                     }
-                    return style;
+                    return {style: style, processing: processing};
                 }
             });
     });

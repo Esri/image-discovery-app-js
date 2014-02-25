@@ -5,6 +5,14 @@ define([
         return declare(
             [], {
                 EVENTS: {
+                    IDENTIFY: {
+                        //performs a server side identify on all query layer controllers that were used in the current search
+                        BY_POINT: "identifyqueryLyr:byPoint",
+                        ADD_RESULT: "identifyqueryLyr:addResult",
+                        CLEAR: "identifyqueryLyr:clear",
+                        STARTED: "identifyqueryLyr:started"
+                    },
+
                     QUERY: {
                         //fires when a query is complete
                         COMPLETE: "query:complete",
@@ -37,16 +45,14 @@ define([
                             DISABLE_THUMBNAIL_CHECKBOXES: "imgQuery:disableFootprintCheckboxes",
                             //enable the thumbnail checkboxes in the grid
                             ENABLE_THUMBNAIL_CHECKBOXES: "imgQuery:enableFootprintCheckboxes",
-                            //highlights rasters and grid results based on passed rectangle
-                            HIGHLIGHT_RESULTS_FOM_RECTANGLE_INTERSECT: "imgQuery:highlightResultsFromRectangleIntersect",
-                            //clears highlighted results
-                            CLEAR_HIGHLIGHTED_RESULTS: "imgQuery:clearHighlightedResults",
+
                             //get the the count of visible grid results
                             GET_VISIBLE_GRID_RESULT_COUNT: "imgQuery:visGrRsCnt",
                             //fired when the result grid has been populated with results
                             RESULT_GRID_POPULATED: "imgQuery:rsGrPopulated",
                             GET_VISIBLE_FOOTPRINT_GEOMETRIES: "imgQuery:getVsFtPtGeoms",
-                            GET_VISIBLE_FOOTPRINT_FEATURES: "imgQuery:getVsFtPtFeatures"
+                            GET_VISIBLE_FOOTPRINT_FEATURES: "imgQuery:getVsFtPtFeatures",
+                            GET_VISIBLE_FOOTPRINT_FEATURES_GROUPED_BY_QUERY_CONTROLLER: "imgQuery:getVsFtPtFeaturesByQueryCont"
                         },
                         THUMBNAIL: {
                             SHOW: "thumbnail:show",
@@ -91,6 +97,7 @@ define([
                         REMOVE_FROM_CART: "cart:rmResFromCt",
                         ADD_TO: "cart:addTo",
                         GET_ADDED_OBJECT_IDS: "cart:gAddedObjIds",
+                        GET_ADDED_OBJECT_IDS_FOR_QUERY_CONTROLLER: "cart:gAddedObjIdsForQueryController",
                         DISPLAYED: "cart:displayed",
                         HIDDEN: "cart:hidden",
                         IS_VISIBLE: "cart:isVisible",
@@ -114,20 +121,24 @@ define([
                         FOOTPRINTS_LAYER_VISIBLE: "lyr:ftPrintsLyrVisible",
                         SET_FOOTPRINTS_LAYER_TRANSPARENT: "lys:ftPrintsLyrTrans",
                         SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq",
-                        HIGHLIGHT_FOOTPRINT: "lyr:highlightFtPrint",
-                        UNHIGHLIGHT_FOOTPRINT: "lyr:unhighlightFtPrint",
-                        CENTER_AND_FLASH_FOOTPRINT: "lyr:centerAndFlashFtPrint"
+                        CENTER_AND_FLASH_FOOTPRINT: "lyr:centerAndFlashFtPrint",
+                        REFRESH_FOOTPRINTS_LAYER: "lyr:refreshFootprintsLayer"
                     },
                     LOCK_RASTER: {
-                        CLEAR_ALL: "lRaster:clearIds",
+                    //    CLEAR_ALL: "lRaster:clearIds",
                         HAS_NO_SOURCES_LOCKED: "lRaster:hasNoSrcLocked",
                         HAS_SINGLE_SOURCE_LOCKED: "lRaster:hasSgleSrcLocked",
                         MULTIPLE_SOURCES_LOCKED: "lRaster:multiSrcLocked",
                         NO_SOURCES_LOCKED: "lRaster:noSrcLocked",
-                        SINGLE_SOURCE_LOCKED: "lRaster:singleSrcLocked"//,
+                        CHANGED: "lRaster:changed",
+                        SINGLE_SOURCE_LOCKED: "lRaster:singleSrcLocked",
+                        CLEAR_ON_EXCLUDED_QUERY_CONTROLLERS:  "lRster:clearExcludeQueryConts"
                         //   CART_SOURCE_LOCKED:  "lRaster:cartSrcLocked"
                     },
                     IMAGE: {
+
+                        TOGGLE_IMAGE_BY_QUERY_CONTROLLER: "imgInfo:toggleImgByQueryCont",
+                        TOGGLE_ADD_TO_CART_BY_QUERY_CONTROLLER: "imgInfo:toggleToCartByQueryCont",
                         //***deprecated do not use*****/
                         INFO: {
                             //shows the image info window
@@ -169,7 +180,8 @@ define([
                     },
                     CONFIGURATION: {
                         GET: "imgConfig:get",
-                        GET_ENTRY: "imgConfig:getEntry"
+                        GET_ENTRY: "imgConfig:getEntry",
+                        GET_DISPLAY_FIELDS_LOOKUP: "imgConfig:getDispFieldsLookup"
                     },
                     DOWNLOAD: {
                         WINDOW: {

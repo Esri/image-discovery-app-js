@@ -8,6 +8,7 @@ define([
     "./BaseImageryFilterWidget",
     "./ImageFilterDateTextBox"
 ],
+    //date range filter widget
     function (declare, template, topic, lang, locale, domConstruct, BaseImageryFilterWidget, ImageFilterDateTextBox) {
         return declare(
             [BaseImageryFilterWidget],

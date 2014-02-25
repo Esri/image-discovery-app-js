@@ -13,19 +13,22 @@ define([
     "../../ui/discover/ImageDiscoveryWidget",
     "../../ImageQueryController",
     "../../ImageQueryLayerController",
-    //"../../ui/info/ImageInfoWindow",
     "esri/layers/ArcGISImageServiceLayer",
     "./ImageryWebMapTemplateConfigurationUtil",
     "dijit/form/ToggleButton",
     "../../layers/thumbnail/ThumbnailManager",
     "../../ui/results/popup/ResultPopup",
-    "esriviewer/ui/toolbar/base/button/Button"
+    "esriviewer/ui/toolbar/base/button/Button",
+    "../../ui/results/popup/MapIdentifyPopupTooltip",
+    "esri/geometry/screenUtils"
 
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, /*ImageInfoWindow, */ ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup,Button) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
         return declare(
             [ViewerManager],
             {
+                applicationDrawInProgress: false,
+                identifyEnabledZoomLevel: 1,
                 //base configuration url
                 configUrl: "config/imagery/imageryConfig.json",
                 //imagery configuration url
@@ -73,7 +76,7 @@ define([
                     //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
                     this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
-                    this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber"});
+                    this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber loadingSpinnerThrobber"});
                     domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
                     domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
                     //add to the dom
@@ -81,8 +84,12 @@ define([
                 },
                 initListeners: function () {
                     this.inherited(arguments);
+
+                    //listen for query complete
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleImageQueryResultsResponse));
+
                     //add search result to the application
-                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
+                    //todo  topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.ADD, lang.hitch(this, this.handleImageQueryResultsResponse));
                     //get all of the search catalog layers
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.GET_CATALOG_LAYERS, lang.hitch(this, this.handleGetCatalogLayers));
                     //get configuration object
@@ -91,6 +98,26 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, lang.hitch(this, this.handleGetImageryConfigurationKey));
                     //get the layer controllers. layer controllers contain layer reference and metadata associated with layer
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, lang.hitch(this, this.handleGetQueryLayerControllers));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_DISPLAY_FIELDS_LOOKUP, lang.hitch(this, this.handleGetDisplayFieldsLookup));
+
+
+                    //listen for drawing. if there is drawing active we don't want the identify on map click for search results
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_STARTED, lang.hitch(this, this.handleApplicationDrawStart));
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_COMPLETE, lang.hitch(this, this.handleApplicationDrawEnd));
+                    topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_CANCELLED, lang.hitch(this, this.handleApplicationDrawEnd));
+
+                },
+                handleApplicationDrawStart: function () {
+                    this.applicationDrawInProgress = true;
+                },
+                handleApplicationDrawEnd: function () {
+                    this.applicationDrawInProgress = false;
+                },
+
+                handleGetDisplayFieldsLookup: function (callback) {
+                    if (callback != null && lang.isFunction(callback)) {
+                        callback(this.resultFieldNameToLabelLookup);
+                    }
                 },
                 /**
                  *  listener function for IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET
@@ -178,16 +205,6 @@ define([
                     }
                 },
                 /**
-                 *  creates the image info widget
-                 */
-                /*
-                 createImageInfoWidget: function () {
-                 if (this.imageInfoWidget == null) {
-                 this.imageInfoWidget = new ImageInfoWindow();
-                 }
-                 },
-                 */
-                /**
                  * overridden in ImageryViewerManagerWindow
                  */
                 createImageManipulationWidget: function () {
@@ -242,11 +259,12 @@ define([
                     }
                     var layer = evt.layer;
                     //load the key properties
-                    this.catalogQueryControllers.push(new ImageQueryLayerController({
+                    var imageQueryLayerController = new ImageQueryLayerController({
                         layer: layer,
                         label: layer.searchServiceLabel,
                         serviceConfiguration: catalogServiceConfig
-                    }));
+                    });
+                    this.catalogQueryControllers.push(imageQueryLayerController);
                     VIEWER_UTILS.log("Loaded Catalog Service", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     IMAGERY_UTILS.loadKeyProperties(layer, lang.hitch(this, this.handleQueryImageServiceKeyPropertiesLoaded));
                 },
@@ -270,11 +288,36 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     this.viewerAccordion.show();
                     this.createDiscoveryToolbarButtons();
+
+                    //listen for map click to do an identify over all catalogs
+                    new MapIdentifyPopupTooltip();
+                    this.map.on("click", lang.hitch(this, function (evt) {
+                        if (this.applicationDrawInProgress) {
+                            return;
+                        }
+                        var cartVisible = false;
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.CART.IS_VISIBLE, function (vis) {
+                            cartVisible = vis;
+                        });
+                        if (cartVisible || (this.identifyEnabledZoomLevel > this.map.getLevel())) {
+                            //not within the start zoom level
+                            return;
+                        }
+                        var screenCoordinates = screenUtils.toScreenGeometry(this.map.extent, this.map.width, this.map.height, evt.mapPoint);
+                        var clickHandler = lang.hitch(this, function (response) {
+                            topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.ADD_RESULT, response);
+                        });
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.IDENTIFY.BY_POINT, evt.mapPoint, screenCoordinates, clickHandler, function () {
+                            }
+                        );
+                    }));
+
+
                 },
                 /**
                  *  add discovery button and analysis button to the toolbar
                  */
-                createDiscoveryToolbarButtons: function(){
+                createDiscoveryToolbarButtons: function () {
                     var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
                         buttonText: "Discover",
@@ -295,7 +338,8 @@ define([
                  * @param response  query response object
                  * @param queryLayerController controller that the response is associated with
                  */
-                handleImageQueryResultsResponse: function (response, queryLayerController) {
+                //todo   handleImageQueryResultsResponse: function (response, queryLayerController) {
+                handleImageQueryResultsResponse: function (queryResults) {
                     //expand the footer to show the results grid
                     topic.publish(VIEWER_GLOBALS.EVENTS.FOOTER.EXPAND);
                     //create the query results widget if it doesn't exist
@@ -303,7 +347,8 @@ define([
                         this.createImageQueryResultsWidget();
                     }
                     //set the results on the grid
-                    this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
+                    //  this.imageryQueryResultsWidget.addQueryResults(response, queryLayerController);
+                    this.imageryQueryResultsWidget.addQueryResults(queryResults);
                 },
                 /**
                  *  called when the base viewer configuration has been loaded
@@ -331,6 +376,21 @@ define([
                     //set the query config on the class instance
                     this.queryConfig = queryConfig;
                     //check configuration for manually adding catalog services. configured services in json are ignored if this flag is true
+                    this.resultFieldNameToLabelLookup = {};
+                    for (var i = 0; i < this.queryConfig.imageQueryResultDisplayFields.length; i++) {
+                        this.resultFieldNameToLabelLookup[this.queryConfig.imageQueryResultDisplayFields[i].field] = this.queryConfig.imageQueryResultDisplayFields[i].label;
+                    }
+                    if (this.queryConfig.identify != null) {
+                        if (this.queryConfig.identify.enabledZoomLevel != null) {
+                            try {
+                                this.identifyEnabledZoomLevel = parseInt(this.queryConfig.identify.enabledZoomLevel, 10);
+                            }
+                            catch (err) {
+
+                            }
+                        }
+
+                    }
                     if (this.queryConfig.userAddCatalogMode === true) {
                         this.initUserAddCatalogMode();
                     }

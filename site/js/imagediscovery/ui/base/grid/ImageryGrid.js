@@ -3,16 +3,16 @@ define([
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/dom-construct",
-    "dojo/store/Observable",
     "esriviewer/ui/base/UIWidget",
     "dojo/store/Memory",
     "dijit/form/CheckBox",
     "./ImageryGridBase",
     "./GridFormattersMixin",
-    "./RowActionsMixin"
+    "./RowActionsMixin",
+    "dojo/store/Observable"
 ],
     //this is the class to extend if you need an image discovery grid
-    function (declare, topic, lang, domConstruct, Observable, UIWidget, Memory, CheckBox, ImageryGridBase, GridFormattersMixin, RowActionsMixin) {
+    function (declare, topic, lang, domConstruct, UIWidget, Memory, CheckBox, ImageryGridBase, GridFormattersMixin, RowActionsMixin, Observable) {
         return declare(
             [UIWidget, GridFormattersMixin, RowActionsMixin],
             {
@@ -117,7 +117,13 @@ define([
                  * creates a new store for the grid
                  */
                 createNewStore: function () {
+                    //sets the store of the grid to an empty store. this is called when results are to be cleared
                     this.store = new Observable(new Memory({ data: [], idProperty: this.storeIdField}));
+                    this.grid.set("store", this.store);
+                },
+                createNewGridStoreFromData: function (data) {
+                    //taking in an array of items this will create and set a store for the grid. this is much fast than the previous method of adding items one by one to the grid
+                    this.store = new Observable(new Memory({ data: data, idProperty: this.storeIdField}));
                     this.grid.set("store", this.store);
                 },
                 /**
@@ -204,6 +210,7 @@ define([
                     var currentResultField;
                     var currentFormatter;
                     var queryControllers;
+                    //get all of the query controllers
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, function (queryConts) {
                         queryControllers = queryConts;
                     });
@@ -211,11 +218,13 @@ define([
                         var currentQueryCont;
                         var currentLayer;
                         var currentField;
+                        //loops through the controllers to set up field aliases for each controller
                         for (i = 0; i < queryControllers.length; i++) {
                             currentQueryCont = queryControllers[i];
                             var controllerFormatterLookup = {};
                             this.fieldsFormattersByQueryControllerId[currentQueryCont.id] = controllerFormatterLookup;
                             currentLayer = currentQueryCont.layer;
+                            //loop through the fields of the query layer controller
                             if (currentLayer && currentLayer.fields) {
                                 for (j = 0; j < currentLayer.fields.length; j++) {
                                     currentFormatter = null;
@@ -283,6 +292,12 @@ define([
                     }
                     return layerColumns;
                 },
+                refresh: function () {
+                    if (this.grid) {
+                        this.grid.refresh();
+                    }
+
+                },
                 /**
                  * creates the inner grid
                  */
@@ -330,7 +345,11 @@ define([
                  *  returns the object ids for visible items in the grid
                  * @return {Array}
                  */
-                getVisibleContentObjectIdArray: function () {
+                getVisibleContentObjectIdArray: function (params) {
+                    if (params == null) {
+                        params = {};
+                    }
+                    lang.mixin(params, {isFiltered: false});
                     var items = this.store.query({isFiltered: false});
                     var queryLayerControllerItemsArray = IMAGERY_UTILS.sortItemsIntoQueryControllerArray(items);
                     var queryLayerControllerObjectIdsArray = [];

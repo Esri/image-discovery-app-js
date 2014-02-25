@@ -9,7 +9,7 @@ define([
     "../../base/grid/ImageryGrid",
     "dojo/_base/array"
 ],
-    function (declare, topic, on, lang, domConstruct, domClass,   Button, ImageryGrid, array) {
+    function (declare, topic, on, lang, domConstruct, domClass, Button, ImageryGrid, array) {
         return declare(
             [ImageryGrid],
             {
@@ -24,6 +24,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.REMOVE_FROM_CART, lang.hitch(this, this.removeItemFromCart));
                     //listen for request of object ids in the cart
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.GET_ADDED_OBJECT_IDS, lang.hitch(this, this.getAddedCartItemIds));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.GET_ADDED_OBJECT_IDS_FOR_QUERY_CONTROLLER, lang.hitch(this, this.getAddedCartItemIdsForQueryController));
                     //returns visible cart field names
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.CART.GET_VISIBLE_FIELD_NAMES, lang.hitch(this, this.getVisibleCartFieldsNames));
                 },
@@ -69,6 +70,7 @@ define([
                  */
                 removeItemFromCart: function (resultId) {
                     this.store.remove(resultId);
+                    this.refresh();
                 },
                 /**
                  * generates the columns to add to the shopping cart grid
@@ -95,7 +97,7 @@ define([
                 cartRenderHeaderCell: function (node) {
                     var cartDiv = domConstruct.create("div", {
                         title: "Remove all from cart",
-                        className: "imageResultsGridCartHeaderIcon commonIcons16 shoppingCartAdded"});
+                        className: "imageResultsGridCartHeaderIcon commonIcons16 remove"});
 
                     on(cartDiv, "click", lang.hitch(this, this.handleRemoveAllCartItems));
                     domConstruct.place(cartDiv, node);
@@ -124,13 +126,30 @@ define([
                     //handle removing item from the shopping cart
                     if (item.showFootprint) {
                         //hide the footprint since it is visible
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIDE_FOOTPRINT, item);
+                        //   topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.HIDE_FOOTPRINT, item);
                     }
                     var itemId = item[this.storeIdField];
                     this.removeItemFromCart(itemId);
                     //fire event alerting other classes that an item has been removed from the cart
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CART.REMOVED_FROM_CART, itemId, item);
                     this.setSelectedThumbnails();
+                },
+                getAddedCartItemIdsForQueryController: function (queryLayerControllerId, callback) {
+                    var result = this.getVisibleContentObjectIdArray({queryControllerId: queryLayerControllerId});
+                    if (result != null && result.length > 0 && result[0].objectIds != null) {
+                        result = result[0].objectIds;
+
+                    }
+                    else {
+                        result = [];
+                    }
+                    if (callback != null && lang.isFunction(callback)) {
+                        callback(result);
+                        return null;
+                    }
+                    else {
+                        return result;
+                    }
                 },
                 /**
                  * returns all item ids for items in the shopping cart

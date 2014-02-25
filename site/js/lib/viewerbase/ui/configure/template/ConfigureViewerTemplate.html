@@ -1,9 +1,18 @@
 <div class="configureViewerContainer">
     <div class="defaultTabContainer" data-bind="visible: persistedViewEnabled">
-        <span  data-bind="click:showAddEntriesView, css: {selectedTab: addEntriesVisible}">Add Data</span>
         <span data-bind="click:showPersistedEntriesView, css: {selectedTab: persistedEntriesVisible}">Saved Data</span>
+        <span data-bind="click:showAddEntriesView, css: {selectedTab: addEntriesVisible}">Add Data</span>
     </div>
+
     <div data-dojo-attach-point="persistedEntriesContainer" data-bind="visible: persistedEntriesVisible">
+        <div class="configureViewerEntry fivePixelBorderRadius defaultBackground defaultBorder blueBoxShadow ">
+            <div class="configurePersistedViewerEntryLabel">Stored data (requires reload)</div>
+            <div class="configureClearDataLbl" data-bind="click:clearPortalToken">Clear Portal Token
+            </div>
+            <div class="configureClearDataLbl" data-bind="click:clearBookmarks">Clear Saved Bookmarks</div>
+            <div class="configureClearDataLbl" data-bind="click:clearSavedLayers">Clear Saved layers</div>
+            <!--<div class="configureClearDataLbl" data-bind="click:clearSavedGraphics">Clear Saved Graphics</div>-->
+        </div>
     </div>
     <div data-dojo-attach-point="addConfigurationEntriesContainer" data-bind="visible: addEntriesVisible">
         <div data-bind="visible: showBasemapsConfiguration"

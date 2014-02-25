@@ -1,7 +1,7 @@
 define([
     "dojo/_base/declare",
     "dojo/text!./template/ImageFilterStringFilteringSelectWidgetTemplate.html",
- //   "xstyle/css!./theme/ImageFilterStringFilteringSelectTheme.css",
+    //   "xstyle/css!./theme/ImageFilterStringFilteringSelectTheme.css",
     "dojo/_base/lang",
     "dojo/dom-construct",
     "./BaseImageryFilterWidget",
@@ -9,8 +9,8 @@ define([
     "dojo/store/Memory",
     "./model/ImageFilterStringFilteringSelectViewModel"
 ],
- //   function (declare, template, cssTheme, lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
-    function (declare, template,  lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
+    //   function (declare, template, cssTheme, lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
+    function (declare, template, lang, domConstruct, BaseImageryFilterWidget, FilteringSelect, Memory, ImageFilterStringFilteringSelectViewModel) {
         return declare(
             [BaseImageryFilterWidget],
             {
@@ -32,7 +32,6 @@ define([
                     this.viewModel.on(this.viewModel.APPLY_FILTER, lang.hitch(this, this.handleViewModelApplyFilter));
                     ko.applyBindings(this.viewModel, this.domNode);
                     this._createFilteringSelect();
-
                 },
                 _createFilteringSelect: function () {
                     this.stringFilteringSelect = new FilteringSelect({
@@ -43,7 +42,6 @@ define([
                         }),
                         maxHeight: this.maxSelectHeight
                     });
-
                     domConstruct.place(this.stringFilteringSelect.domNode, this.stringFilteringSelectContainer);
                 },
                 handleViewModelApplyFilter: function (obj) {
@@ -70,10 +68,10 @@ define([
                 },
                 addEntryToIncludeList: function () {
                     var currentValue = this.stringFilteringSelect.get("value");
-                    if (currentValue && this.viewModel.includeStrings.indexOf(currentValue) < 0) {
+                    if (currentValue && currentValue != "" && this.viewModel.includeStrings.indexOf(currentValue) < 0) {
                         this.viewModel.includeStrings.push(currentValue);
+                        this.applyFilterFunctionChange();
                     }
-                    this.applyFilterFunctionChange();
                 },
                 stringListCreated: function () {
                     this.clearFilterFunction();
@@ -89,7 +87,6 @@ define([
                     var mode = this.viewModel.getMode();
                     if (mode == this.viewModel.INCLUDE) {
                         return this.viewModel.includeStrings.indexOf(val) > -1;
-
                     }
                     else {
                         return this.viewModel.includeStrings.indexOf(val) < 0;
@@ -113,7 +110,7 @@ define([
                         if (mode == this.viewModel.INCLUDE) {
                             operator = " = ";
                         }
-                        else{
+                        else {
                             //exclude
                             operator = " <> ";
                         }
