@@ -20,10 +20,11 @@ define([
     "../../ui/results/popup/ResultPopup",
     "esriviewer/ui/toolbar/base/button/Button",
     "../../ui/results/popup/MapIdentifyPopupTooltip",
-    "esri/geometry/screenUtils"
+    "esri/geometry/screenUtils"/*,
+   "../../ui/searcher/GeometrySearcherWidget"    */
 
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils/*, GeometrySearcherWidget */) {
         return declare(
             [ViewerManager],
             {
@@ -184,10 +185,18 @@ define([
                     // this.createImageInfoWidget();
                     //image discovery widget allows the user to locate and discover imagery
                     this.createImageDiscoveryWidget();
+
+                   // this.createSearcherWidget();
                     //query controller handles all requests to query catalog services.
                     this.createImageQueryController();
                     this.inherited(arguments);
                 },
+                /*
+                createSearcherWidget: function () {
+                    this.searcherWidget = new GeometrySearcherWidget();
+
+                },
+                */
                 /**
                  *  creates the image discovery widget
                  */
@@ -480,6 +489,7 @@ define([
                 finalizeUILoad: function () {
                     this.inherited(arguments);
                     this._loadImageryUIAddons();
+                   // this._placeSearchersWidget();
                     this._placeImageDiscoveryWidget();
                 },
                 /**
@@ -511,6 +521,11 @@ define([
                 _placeImageDiscoveryWidget: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
                 },
+                _placeSearchersWidget: function () {
+                    console.log("create search widget");
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.SEARCHER_WIDGET, this.searcherWidget, this.searcherWidget.title);
+                },
+
                 /**
                  * called when finalize UI load is complete
                  */
