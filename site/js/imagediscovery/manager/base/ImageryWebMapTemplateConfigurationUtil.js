@@ -8,10 +8,9 @@ define([
             [WebMapTemplateConfigurationUtil],
             {
                 displayFieldsParameter: "imageResultDisplayFields",
-                footprintsVisibilityParameter: "footprintVisibilityLevel",
                 whereClauseAppendParameter: "whereClauseAppend",
                 //portal configuration entries that are specifically for the discovery viewer
-                imageryParameters: [ "imageResultDisplayFields", "maxResults", "whereClauseAppend", "imageryViewer","footprintVisibilityLevel"],
+                imageryParameters: [ "imageResultDisplayFields", "whereClauseAppend", "imageryViewer"],
 
                 constructor: function () {
                     //add the imagery viewer specific widgets
@@ -28,6 +27,8 @@ define([
                     this.viewerConfiguration.footerTogglerWidget = {
                         create: true
                     };
+                    this.viewerConfiguration.toolsBar.showExtentActions = false;
+
                     this.deferred.resolve({viewerConfig: this.viewerConfiguration, imageryConfig: this.imageryConfiguration});
                 },
                 _createImageryConfig: function () {
@@ -52,7 +53,7 @@ define([
                                         currServiceType = VIEWER_UTILS.getServiceTypeFromUrl(currOpLayer.url);
                                         if (currServiceType === VIEWER_GLOBALS.SERVICE_TYPES.IMAGE_SERVER) {
                                             //this is the search image service
-                                            this.webMapQueryLayerItems.push({label: currOpLayer.title, url: currOpLayer.url});
+                                            this.webMapQueryLayerItems.push({label: currOpLayer.title, url: currOpLayer.url, supportsThumbnails: true});
                                             addedSearchServiceUrls[currentOpLayerUrlLower] = currOpLayer.url;
                                         }
                                     }
@@ -81,12 +82,7 @@ define([
                                 this.webMapQueryLayerItems[i].queryWhereClauseAppend = whereClauseAppend;
                             }
                         }
-                        else if (key === this.footprintsVisibilityParameter) {
-                            var footprintZoomLevelStart = this.appConfig[this.footprintsVisibilityParameter] != null ? this.appConfig[this.footprintsVisibilityParameter] : imageryDefaultConfiguration[key];
-                            if (footprintZoomLevelStart != null) {
-                                imageryConfiguration.searchConfiguration.footprintZoomLevelStart = parseInt(footprintZoomLevelStart, 10);
-                            }
-                        }
+
                         else if (key === this.displayFieldsParameter) {
                             var displayFieldsString = this.appConfig[this.displayFieldsParameter] != null ? this.appConfig[this.displayFieldsParameter] : imageryDefaultConfiguration[key];
                             var displayFieldsArray = displayFieldsString.replace(/\s+/g, "").split(",");

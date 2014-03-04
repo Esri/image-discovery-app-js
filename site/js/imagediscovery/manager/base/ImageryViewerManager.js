@@ -21,7 +21,7 @@ define([
     "esriviewer/ui/toolbar/base/button/Button",
     "../../ui/results/popup/MapIdentifyPopupTooltip",
     "esri/geometry/screenUtils"/*,
-   "../../ui/searcher/GeometrySearcherWidget"    */
+     "../../ui/searcher/GeometrySearcherWidget"    */
 
 ],
     function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils/*, GeometrySearcherWidget */) {
@@ -186,17 +186,17 @@ define([
                     //image discovery widget allows the user to locate and discover imagery
                     this.createImageDiscoveryWidget();
 
-                   // this.createSearcherWidget();
+                    // this.createSearcherWidget();
                     //query controller handles all requests to query catalog services.
                     this.createImageQueryController();
                     this.inherited(arguments);
                 },
                 /*
-                createSearcherWidget: function () {
-                    this.searcherWidget = new GeometrySearcherWidget();
+                 createSearcherWidget: function () {
+                 this.searcherWidget = new GeometrySearcherWidget();
 
-                },
-                */
+                 },
+                 */
                 /**
                  *  creates the image discovery widget
                  */
@@ -489,7 +489,7 @@ define([
                 finalizeUILoad: function () {
                     this.inherited(arguments);
                     this._loadImageryUIAddons();
-                   // this._placeSearchersWidget();
+                    // this._placeSearchersWidget();
                     this._placeImageDiscoveryWidget();
                 },
                 /**

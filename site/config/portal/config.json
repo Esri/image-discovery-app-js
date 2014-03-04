@@ -169,10 +169,8 @@
             }
         ],
         "whereClauseAppend": "Category = 1",
-        "maxResults": 100,
-        "footprintVisibilityLevel": 10,
         "imageResultDisplayFields": "Name,Sensor",
-        "swipeWidget": true,
+        "swipeWidget": false,
         "zoomToWidget": false,
         "portalSearchWidget": false,
         "pointUploadWidget": false,
@@ -189,7 +187,8 @@
         "drawWidget": true,
         "showHeader": false,
         "portalConfiguration": {
-            "url": "//afmcomstaging.esri.com/arcgis",
+            //   "url": "//afmcomstaging.esri.com/arcgis",
+            "url": "http://diagram2.esri.com/arcgis",
             "itemsPath": "sharing/rest/content/items"
         },
         "baseViewer": {
@@ -206,7 +205,9 @@
             "zoomToWidgetConfiguration": {
                 "stateJson": "config/data/coordinates/states_web_merc.json",
                 "countyJson": "config/data/coordinates/counties_web_merc.json"
-            }
+            },
+            "showLocator": true
+
         },
         "imageryViewer": {
             "discoverGeometryUploadTask": {
@@ -231,6 +232,14 @@
                         "outputUrlParameter": "Report_URL",
                         "isAsync": true
                     }
+                },
+                "imageryDownload": {
+                    "task": {
+                        "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/DiscoveryDownloader",
+                        "downloadItemInputParameter": "inputJson",
+                        "outputUrlParameter": "outputZip",
+                        "isAsync": true
+                    }
                 }
             },
             "utmLookup": {
@@ -246,6 +255,18 @@
                     "date": "dd-MM-yyyy"
                 },
                 "floatPrecision": 1
+            },
+            "searchConfiguration": {
+                "allowCheckAllSearchResultThumbnails": false
+
+            },
+            "popupConfiguration": {
+                "displayFields": [
+                    "ProductName",
+                    "Name"
+
+
+                ]
             }
         }
     }
