@@ -145,7 +145,6 @@
         "geometryServiceUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
         "locators": [
             {
-                //    "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
                 "url": "//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
             }
         ],

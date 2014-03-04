@@ -20,11 +20,10 @@ define([
     "../../ui/results/popup/ResultPopup",
     "esriviewer/ui/toolbar/base/button/Button",
     "../../ui/results/popup/MapIdentifyPopupTooltip",
-    "esri/geometry/screenUtils"/*,
-     "../../ui/searcher/GeometrySearcherWidget"    */
+    "esri/geometry/screenUtils"
 
 ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils/*, GeometrySearcherWidget */) {
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
         return declare(
             [ViewerManager],
             {
@@ -326,6 +325,7 @@ define([
                 /**
                  *  add discovery button and analysis button to the toolbar
                  */
+
                 processNavigationToolbarAddons: function () {
                     var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
@@ -342,6 +342,7 @@ define([
                     accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
                     analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
                 },
+
                 /**
                  * called when a query result has been received from ArcGIS Server
                  * @param response  query response object
@@ -554,8 +555,7 @@ define([
                  *     extend the function to add the footprints toggle button
                  *     @private
                  */
-                _createViewerMainToolbar: function () {
-                    this.inherited(arguments);
+                tweakMainToolbar: function () {
                     var toggleFootprintsButton = new ToggleButton({
                         showLabel: true,
                         checked: true,
