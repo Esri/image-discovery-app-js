@@ -296,7 +296,7 @@ define([
                     VIEWER_UTILS.log("Publishing catalog layer to widgets", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     this.viewerAccordion.show();
-                    this.createDiscoveryToolbarButtons();
+                    //  this.createDiscoveryToolbarButtons();
 
                     //listen for map click to do an identify over all catalogs
                     new MapIdentifyPopupTooltip();
@@ -326,7 +326,7 @@ define([
                 /**
                  *  add discovery button and analysis button to the toolbar
                  */
-                createDiscoveryToolbarButtons: function () {
+                processNavigationToolbarAddons: function () {
                     var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
                         buttonText: "Discover",
@@ -522,7 +522,6 @@ define([
                     topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
                 },
                 _placeSearchersWidget: function () {
-                    console.log("create search widget");
                     topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.SEARCHER_WIDGET, this.searcherWidget, this.searcherWidget.title);
                 },
 
@@ -532,12 +531,22 @@ define([
                 handleFinalizeUILoadComplete: function () {
                     //move the throbber and the messaging widget if the header is displayed
                     if (this.viewerConfig.header != null && lang.isObject(this.viewerConfig.header) &&
-                        this.viewerConfig.header.display && !this.viewerConfig.header.small) {
-                        if (this.loadingThrobber) {
-                            domStyle.set(this.loadingThrobber.domNode, "left", "35%");
+                        this.viewerConfig.header.display) {
+                        if (this.viewerConfig.header.small) {
+                            if (this.loadingThrobber) {
+                                domStyle.set(this.loadingThrobber.domNode, "left", "20%");
+                            }
+                            if (this.messagingWidget) {
+                                domStyle.set(this.messagingWidget.domNode, "left", "25%");
+                            }
                         }
-                        if (this.messagingWidget) {
-                            domStyle.set(this.messagingWidget.domNode, "left", "45%");
+                        else {
+                            if (this.loadingThrobber) {
+                                domStyle.set(this.loadingThrobber.domNode, "left", "35%");
+                            }
+                            if (this.messagingWidget) {
+                                domStyle.set(this.messagingWidget.domNode, "left", "45%");
+                            }
                         }
                     }
                 },
