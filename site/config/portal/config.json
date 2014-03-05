@@ -132,26 +132,6 @@
                     "stringFieldOption": "textbox"
                 },
                 {
-                    "type": "number",
-                    "fieldName": "footprintVisibilityLevel",
-                    "label": "Visible Footprint Zoom Level:",
-                    "tooltip": "Zoom level to display footprints/imagery on the map",
-                    "constraints": {
-                        "min": 1,
-                        "max": 20
-                    }
-                },
-                {
-                    "type": "number",
-                    "fieldName": "maxResults",
-                    "label": "Max Results:",
-                    "tooltip": "Max Results",
-                    "constraints": {
-                        "min": 1,
-                        "max": 1000
-                    }
-                },
-                {
                     "type": "string",
                     "fieldName": "whereClauseAppend",
                     "tooltip": "Where Clause Append",
@@ -165,14 +145,12 @@
         "geometryServiceUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Utilities/Geometry/GeometryServer",
         "locators": [
             {
-                "url": "//afmcomstaging.esri.com/arcgis/rest/services/Locators/Geonames/GeocodeServer"
+                "url": "//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
             }
         ],
         "whereClauseAppend": "Category = 1",
-        "maxResults": 100,
-        "footprintVisibilityLevel": 10,
         "imageResultDisplayFields": "Name,Sensor",
-        "swipeWidget": true,
+        "swipeWidget": false,
         "zoomToWidget": false,
         "portalSearchWidget": false,
         "pointUploadWidget": false,
@@ -189,7 +167,7 @@
         "drawWidget": true,
         "showHeader": false,
         "portalConfiguration": {
-            "url": "//afmcomstaging.esri.com/arcgis",
+               "url": "//afmcomstaging.esri.com/arcgis",
             "itemsPath": "sharing/rest/content/items"
         },
         "baseViewer": {
@@ -200,18 +178,20 @@
                 "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
             },
             "printWidgetConfiguration": {
-                "printTaskUrl": "//sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+                "printTaskUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
 
             },
             "zoomToWidgetConfiguration": {
                 "stateJson": "config/data/coordinates/states_web_merc.json",
                 "countyJson": "config/data/coordinates/counties_web_merc.json"
-            }
+            },
+            "showLocator": true
+
         },
         "imageryViewer": {
             "discoverGeometryUploadTask": {
                 "uploadUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
-                "geoprocessingTaskUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/FileToFeatures",
+                "geoprocessingTaskUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/fileToFeatures",
                 "uploadSHPFileParameterName": "uploadSHPFile",
                 "uploadKMLFileParameterName": "uploadKMLFile",
                 "uploadKMZFileParameterName": "uploadKMZFile",
@@ -226,9 +206,17 @@
                 },
                 "footprints": {
                     "task": {
-                        "url": "https://afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                        "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
                         "featureInputParameter": "Input_JSON_String",
                         "outputUrlParameter": "Report_URL",
+                        "isAsync": true
+                    }
+                },
+                "imageryDownload": {
+                    "task": {
+                        "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/DiscoveryDownloader",
+                        "downloadItemInputParameter": "inputJson",
+                        "outputUrlParameter": "outputZip",
                         "isAsync": true
                     }
                 }
@@ -246,6 +234,18 @@
                     "date": "dd-MM-yyyy"
                 },
                 "floatPrecision": 1
+            },
+            "searchConfiguration": {
+                "allowCheckAllSearchResultThumbnails": false
+
+            },
+            "popupConfiguration": {
+                "displayFields": [
+                    "ProductName",
+                    "Name"
+
+
+                ]
             }
         }
     }

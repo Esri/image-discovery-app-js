@@ -6,20 +6,14 @@ define([
     "esriviewer/manager/ViewerManagerWindow",
     "../ui/manipulation/ImageManipulationWindowWidget",
     "../ui/swipe/SwipeWindowWidget",
+
     "dijit/MenuItem"
 ],
-    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem) {
+    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget,  MenuItem) {
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
-                /**
-                 * places the discovery widget
-                 * @param discoveryWidget widget instance to place
-                 */
-                placeDiscoveryWidget: function (discoveryWidget) {
-                    //fire event telling the loader to place the discovery widget
-                    topic.publish(VIEWER_GLOBALS.EVENTS.TOOLS.ACCORDION.ADD_ITEM, discoveryWidget);
-                },
+
                 /**
                  * creates the image manipulation widget window
                  */

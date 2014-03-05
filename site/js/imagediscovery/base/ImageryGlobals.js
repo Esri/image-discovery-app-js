@@ -125,14 +125,14 @@ define([
                         REFRESH_FOOTPRINTS_LAYER: "lyr:refreshFootprintsLayer"
                     },
                     LOCK_RASTER: {
-                    //    CLEAR_ALL: "lRaster:clearIds",
+                        //    CLEAR_ALL: "lRaster:clearIds",
                         HAS_NO_SOURCES_LOCKED: "lRaster:hasNoSrcLocked",
                         HAS_SINGLE_SOURCE_LOCKED: "lRaster:hasSgleSrcLocked",
                         MULTIPLE_SOURCES_LOCKED: "lRaster:multiSrcLocked",
                         NO_SOURCES_LOCKED: "lRaster:noSrcLocked",
                         CHANGED: "lRaster:changed",
                         SINGLE_SOURCE_LOCKED: "lRaster:singleSrcLocked",
-                        CLEAR_ON_EXCLUDED_QUERY_CONTROLLERS:  "lRster:clearExcludeQueryConts"
+                        CLEAR_ON_EXCLUDED_QUERY_CONTROLLERS: "lRster:clearExcludeQueryConts"
                         //   CART_SOURCE_LOCKED:  "lRaster:cartSrcLocked"
                     },
                     IMAGE: {
@@ -203,7 +203,8 @@ define([
                     PLACEMENT: {
                         GLOBAL: {
                             PLACE: {
-                                DISCOVERY_WIDGET: "place:discoveryWidg"
+                                DISCOVERY_WIDGET: "place:discoveryWidg",
+                                SEARCHER_WIDGET: "place:searcherWidg"
                             }
                         },
                         WINDOWLESS: {

@@ -184,10 +184,18 @@ define([
                     // this.createImageInfoWidget();
                     //image discovery widget allows the user to locate and discover imagery
                     this.createImageDiscoveryWidget();
+
+                    // this.createSearcherWidget();
                     //query controller handles all requests to query catalog services.
                     this.createImageQueryController();
                     this.inherited(arguments);
                 },
+                /*
+                 createSearcherWidget: function () {
+                 this.searcherWidget = new GeometrySearcherWidget();
+
+                 },
+                 */
                 /**
                  *  creates the image discovery widget
                  */
@@ -287,7 +295,7 @@ define([
                     VIEWER_UTILS.log("Publishing catalog layer to widgets", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     this.viewerAccordion.show();
-                    this.createDiscoveryToolbarButtons();
+                    //  this.createDiscoveryToolbarButtons();
 
                     //listen for map click to do an identify over all catalogs
                     new MapIdentifyPopupTooltip();
@@ -317,7 +325,8 @@ define([
                 /**
                  *  add discovery button and analysis button to the toolbar
                  */
-                createDiscoveryToolbarButtons: function () {
+
+                processNavigationToolbarAddons: function () {
                     var accordionButton = new Button({
                         buttonClass: "commonIcons16 binoculars",
                         buttonText: "Discover",
@@ -333,6 +342,7 @@ define([
                     accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
                     analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
                 },
+
                 /**
                  * called when a query result has been received from ArcGIS Server
                  * @param response  query response object
@@ -480,6 +490,7 @@ define([
                 finalizeUILoad: function () {
                     this.inherited(arguments);
                     this._loadImageryUIAddons();
+                    // this._placeSearchersWidget();
                     this._placeImageDiscoveryWidget();
                 },
                 /**
@@ -511,18 +522,32 @@ define([
                 _placeImageDiscoveryWidget: function () {
                     topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
                 },
+                _placeSearchersWidget: function () {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.SEARCHER_WIDGET, this.searcherWidget, this.searcherWidget.title);
+                },
+
                 /**
                  * called when finalize UI load is complete
                  */
                 handleFinalizeUILoadComplete: function () {
                     //move the throbber and the messaging widget if the header is displayed
                     if (this.viewerConfig.header != null && lang.isObject(this.viewerConfig.header) &&
-                        this.viewerConfig.header.display && !this.viewerConfig.header.small) {
-                        if (this.loadingThrobber) {
-                            domStyle.set(this.loadingThrobber.domNode, "left", "35%");
+                        this.viewerConfig.header.display) {
+                        if (this.viewerConfig.header.small) {
+                            if (this.loadingThrobber) {
+                                domStyle.set(this.loadingThrobber.domNode, "left", "20%");
+                            }
+                            if (this.messagingWidget) {
+                                domStyle.set(this.messagingWidget.domNode, "left", "25%");
+                            }
                         }
-                        if (this.messagingWidget) {
-                            domStyle.set(this.messagingWidget.domNode, "left", "45%");
+                        else {
+                            if (this.loadingThrobber) {
+                                domStyle.set(this.loadingThrobber.domNode, "left", "35%");
+                            }
+                            if (this.messagingWidget) {
+                                domStyle.set(this.messagingWidget.domNode, "left", "45%");
+                            }
                         }
                     }
                 },
@@ -530,8 +555,7 @@ define([
                  *     extend the function to add the footprints toggle button
                  *     @private
                  */
-                _createViewerMainToolbar: function () {
-                    this.inherited(arguments);
+                tweakMainToolbar: function () {
                     var toggleFootprintsButton = new ToggleButton({
                         showLabel: true,
                         checked: true,

@@ -1,7 +1,21 @@
 {
-    "windowTitle": "Image Discovery Application",
+    "windowTitle": "Base Configuration Application",
     "portal": {
         "url": "http://www.arcgis.com"
+    },
+    "header": {
+        "small": false,
+        "display": true,
+        "headerText": "Esri Viewer 2",
+        "headerImage": "images/logoSmall.png",
+        "contact": {
+            "label": "Contact Esri",
+            "url": "http://www.esri.com/about-esri/contact"
+        },
+        "help": {
+            "label": "Help",
+            "url": "http://support.esri.com/en/"
+        }
     },
     "map": {
         "initializationParameters": {
@@ -10,60 +24,60 @@
             "navigationMode": "classic",
             "logo": false
         },
-        "useBasemapGallery": true,
-        "useConfiguredPortalBasemaps": false,
-        "initialExtent": {
-            "xmin": -15763011.9579604,
-            "ymin": 574569.2653014706,
-            "xmax": -3239569.243720453,
-            "ymax": 9967151.300981432,
-            "spatialReference": {
-                "wkid": 102100
-            }
+        "overview": {
+            "create": false
         },
+        "useBasemapGallery": true,
+        "basemapGalleryDefault": "Streets",
+        "configuredPortalBasemapsGroupId": "eab708d46fbb44c39a07e30f1bfe2345",
+        "useConfiguredPortalBasemaps": false,
         "basemaps": {
+
             "topo": {
-                "label": "World Topographic",
-                "icon": "./images/thumbs/worldTopo.png",
-                "url": "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/"
+                "label": "Topographic",
+                "icon": "./images/thumbs/topographic.jpg",
+                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
             },
+
             "worldStreets": {
                 "label": "World Streets",
                 "icon": "./images/thumbs/worldStreet.png",
                 "url": "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"
             }
         },
-        "operationalLayers": [
-
-        ],
         "referenceLayers": [
             {
                 "type": "dynamic",
-                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer"
+                "url": "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer"
             }
-
-
+        ],
+        "operationalLayers": [
+            {
+                "type": "feature",
+                "url": "http://taylor2:6080/arcgis/rest/services/PGE/features/MapServer/9",
+                "mapLabel": {
+                    "field": "name",
+                    "color": "#0000FF",
+                    "fontSize": "10pt",
+                    "fontFamily": "arial"
+                }
+            }
         ],
         "legend": {
-            "create": false
+            "create": true
         },
         "display": {
-            "showScaleBar": false,
+            "showScaleBar": true,
             "showMGRS": false,
             "showUTM": false,
             "showScale": false
-        },
-        "overview": {
-            "create": false
         }
     },
-    "geometryServiceUrl": "http://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
-
+    "geometryService": "http://servicesbeta.esri.com/ArcGIS/rest/services/Geometry/GeometryServer",
     "locators": [
         {
             "url": "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
         }
-
     ],
     "queryBuilder": {
         "create": true,
@@ -73,79 +87,58 @@
 
         }
     },
+    "timeSliderWidget": {
+        "create": true
+    },
     "toolsAccordion": {
         "create": true,
         "showTabInNavigation": false
     },
-    "header": {
-        "display": false,
-        "headerText": "Discovery Application",
-        "headerImage": "images/logo.png",
-        "contact": {
-            "label": "Contact Us",
-            "url": "http://www.esri.com"
-        },
-        "help": {
-            "label": "Help",
-            "url": "http://www.esri.com"
-        }
+    "bookmarks": {
+        "url": "config/bookmarks.json"
+    },
+    "measureWidget": {
+        "create": true
+    },
+    "layersWidget": {
+        "allowAddLayers": true,
+        "showWKIDInAddLayers": false,
+        "visible": true
     },
     "configureWidget": {
         "create": true
     },
-    "bookmarks": {
-        "url": "config/bookmarks.json"
-    },
     "footerTogglerWidget": {
+        "create": true
+    },
+    "identifyWidget": {
+        "create": true,
+        "maxResults": 10
+    },
+    "layersTransparencyWidget": {
+        "create": true
+    },
+    "pointUploadWidget": {
+        "create": true
+    },
+    "drawWidget": {
+        "create": true
+    },
+    "reverseGeocodeWidget": {
         "create": true
     },
     "portalSearchWidget": {
         "create": true
     },
     "reflectivityWidget": {
-        "create": false,
+        "create": true,
         "configurationUrl": "config/widgets/ReflectivityWidgetConfig.json"
     },
     "weatherWidget": {
-        "create": false,
+        "create": true,
         "configurationUrl": "config/widgets/WeatherWidgetConfig.json"
     },
-    "socialMediaWidget": {
-        "create": false,
-        "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
-    },
-    "measureWidget": {
-        "create": true
-    },
-    "drawWidget": {
-        "create": true
-    },
-    "swipeWidget": {
-        "create": true
-    },
-    "pointUploadWidget": {
-        "create": false
-    },
-    "layersWidget": {
-        "allowAddLayers": true,
-        "showWKIDInAddLayers": true
-    },
-    "toolsBar": {
-        "showToolsDropdown": true,
-        "showLayersButton": true,
-        "showConfigureLocatorsIcon": false,
-        "showBookmarksButton": true,
-        "showExtentActions": false,
-        "showLocator": true
-    },
-    "printWidget": {
-        "create": true,
-        "printTaskUrl": "http://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
-    },
-    "reverseGeocodeWidget": {
-        "create": false
-    },
-    "identifyWidget": {
+    "zoomToUserLocationWidget": {
         "create": true
     },
     "zoomToWidget": {
@@ -153,14 +146,43 @@
         "stateJson": "config/data/coordinates/states_web_merc.json",
         "countyJson": "config/data/coordinates/counties_web_merc.json"
     },
-    "logging": {
+    "socialMediaWidget": {
+        "create": true,
+        "configurationUrl": "config/widgets/SocialMediaWidgetConfig.json"
+    },
+    "portalPublisher": {
         "window": {
-            "create": false
+            "create": true
+        },
+        "pointIconUrl": "http://static.arcgis.com/images/Symbols/Basic/GreenStickpin.png",
+        "publishVersion": "1.8",
+        "webMapProperties": {
+            "accessInformation": "",
+            "licenseInfo": ""
         }
     },
     "plottingWidget": {
         "create": true,
         "symbolUrl": "images/symbols/plotPin.png"
     },
+    "printWidget": {
+        "create": true,
+        "printTaskUrl": "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+    },
+    "logging": {
+        "window": {
+            "create": true
+        }
+    },
+    "toolsBar": {
+        "display": true,
+        "showToolsDropdown": true,
+        "showLayersButton": true,
+        "showConfigureLocatorsIcon": false,
+        "showBookmarksButton": true,
+        "showExtentActions": false,
+        "showLocator": true
+    },
+    "geometryServiceUrl": "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
     "animationsEnabled": true
 }
