@@ -60,7 +60,7 @@ define([
                     this.createClusterManager();
                     this.createFootprintManager();
                     this.filterFunctionManager = new FilterFunctionManager();
-                    this.viewModel = new ImageQueryResultsViewModel();
+                    this.viewModel = this.createViewModel();
                     this.viewModel.expanded.subscribe(lang.hitch(this, this.toggleGrid));
                     this.viewModel.cart.subscribe(lang.hitch(this, this.handleCartVisibilityChange));
                     this.viewModel.results.subscribe(lang.hitch(this, this.handleResultsVisibilityChange));
@@ -86,6 +86,9 @@ define([
                     if (!singleSourceMode) {
                         this.createActiveSourcesWidget();
                     }
+                },
+                createViewModel: function () {
+                    return new ImageQueryResultsViewModel();
                 },
                 handleFooterCollapsed: function () {
                     this._hideActiveSourcesTooltip();

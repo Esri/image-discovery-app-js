@@ -179,7 +179,9 @@ define([
                  *  initializes controllers used be the discovery application. inherited function from base viewer
                  */
                 loadControllers: function () {
-                    this.createImageManipulationWidget();
+                    if (this.queryConfig.createAnalysisWidget == null || this.queryConfig.createAnalysisWidget != false) {
+                        this.createImageManipulationWidget();
+                    }
                     //image info widget displays a results thumbnail and attributes
                     // this.createImageInfoWidget();
                     //image discovery widget allows the user to locate and discover imagery
@@ -200,8 +202,10 @@ define([
                  *  creates the image discovery widget
                  */
                 createImageDiscoveryWidget: function () {
-                    if (this.imageDiscoveryWidget == null) {
-                        this.imageDiscoveryWidget = new ImageDiscoveryWidget();
+                    if (this.queryConfig.createDiscoveryWidget == null || this.queryConfig.createDiscoveryWidget != false) {
+                        if (this.imageDiscoveryWidget == null) {
+                            this.imageDiscoveryWidget = new ImageDiscoveryWidget();
+                        }
                     }
                 },
                 /**
@@ -327,20 +331,25 @@ define([
                  */
 
                 processNavigationToolbarAddons: function () {
-                    var accordionButton = new Button({
-                        buttonClass: "commonIcons16 binoculars",
-                        buttonText: "Discover",
-                        onClick: lang.hitch(this, this.handleShowDiscovery)
-                    });
-                    var analysisButton = new Button({
-                        buttonClass: "imageryIcons analysis",
-                        buttonText: "Analysis",
-                        onClick: lang.hitch(this, function () {
-                            topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
-                        })
-                    });
-                    accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
-                    analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
+                    if (this.queryConfig.createDiscoveryWidget == null || this.queryConfig.createDiscoveryWidget != false) {
+                        var accordionButton = new Button({
+                            buttonClass: "commonIcons16 binoculars",
+                            buttonText: "Discover",
+                            onClick: lang.hitch(this, this.handleShowDiscovery)
+                        });
+                        accordionButton.placeAt(this.navigationToolbar.navigationToolbar);
+
+                    }
+                    if (this.queryConfig.createAnalysisWidget == null || this.queryConfig.createAnalysisWidget != false) {
+                        var analysisButton = new Button({
+                            buttonClass: "imageryIcons analysis",
+                            buttonText: "Analysis",
+                            onClick: lang.hitch(this, function () {
+                                topic.publish(IMAGERY_GLOBALS.EVENTS.MANIPULATION.WINDOW.TOGGLE);
+                            })
+                        });
+                        analysisButton.placeAt(this.navigationToolbar.navigationToolbar);
+                    }
                 },
 
                 /**
@@ -462,6 +471,9 @@ define([
                  * called when there is a request to show the discovery widget inside the bas viewer accordion
                  */
                 handleShowDiscovery: function () {
+                    if (this.viewerAccordion == null || this.imageDiscoveryWidget == null) {
+                        return;
+                    }
                     //toggles the discovery widget
                     if (!this.viewerAccordion.visible) {
                         this.viewerAccordion.show();
@@ -482,7 +494,9 @@ define([
                  */
                 _createViewerAccordion: function () {
                     this.inherited(arguments);
-                    this.viewerAccordion.hide();
+                    if (this.viewerAccordion) {
+                        this.viewerAccordion.hide();
+                    }
                 },
                 /**
                  * called by the base viewer after the UI elements for the base viewer are created
@@ -520,10 +534,14 @@ define([
                  * @private
                  */
                 _placeImageDiscoveryWidget: function () {
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
+                    if (this.imageDiscoveryWidget) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.DISCOVERY_WIDGET, this.imageDiscoveryWidget, this.imageDiscoveryWidget.title);
+                    }
                 },
                 _placeSearchersWidget: function () {
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.SEARCHER_WIDGET, this.searcherWidget, this.searcherWidget.title);
+                    if (this.searcherWidget) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.PLACEMENT.GLOBAL.PLACE.SEARCHER_WIDGET, this.searcherWidget, this.searcherWidget.title);
+                    }
                 },
 
                 /**
