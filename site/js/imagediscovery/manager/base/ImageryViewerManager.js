@@ -298,7 +298,9 @@ define([
                     domConstruct.destroy(this.serviceLoadingContainer);
                     VIEWER_UTILS.log("Publishing catalog layer to widgets", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
-                    this.viewerAccordion.show();
+                    if (this.viewerAccordion) {
+                        this.viewerAccordion.show();
+                    }
                     //  this.createDiscoveryToolbarButtons();
 
                     //listen for map click to do an identify over all catalogs

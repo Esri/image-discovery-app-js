@@ -6,7 +6,7 @@
             "label": "LandsatGLS",
             "queryWhereClauseAppend": "Category = 1",
             "supportsThumbnails": true
-        },
+        }
 
     ],
     "imageDiscoveryQueryFields": [
@@ -50,7 +50,7 @@
             "style": {
                 "fontSize": "8pt"
             },
-            "processing":{
+            "processing": {
                 "treatAsLink": true
             }
         },

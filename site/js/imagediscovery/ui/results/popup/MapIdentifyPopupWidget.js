@@ -10,7 +10,7 @@ define([
     "dojo/dom-class",
     "dojo/_base/array",
     "esriviewer/ui/base/UITemplatedWidget",
-    "dojo/on",
+    "dojo/on"
 ],
     function (declare, template, cssTheme, topic, locale, lang, domConstruct, domStyle, domClass, array, UITemplatedWidget, on) {
         return declare(
