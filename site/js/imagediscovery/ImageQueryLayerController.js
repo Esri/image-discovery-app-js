@@ -36,6 +36,7 @@ define([
                     //we dont want to show imagery when the cluster layer is visible
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.showLayer));
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.CLUSTER_LAYER_DISPLAYED, lang.hitch(this, this.hideLayer));
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.REORDER_BANDS, lang.hitch(this, this.handleBandReorder));
 
                 },
                 _createLayerFieldLookup: function () {
@@ -73,6 +74,13 @@ define([
                 hasLockRasters: function () {
                     return this.currentLockRasterIds.length > 0;
                 },
+                handleBandReorder: function(bandOrder,refresh){
+                    this.layer.setBandIds(bandOrder);
+                    if(refresh){
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Bands Reordered");
+                      this.layer.refresh();
+                    }
+                },
                 /**
                  * reorders the layers band ordering to the passed bands array
                  * @param bandsArray array of band ids to order on the layer
@@ -86,6 +94,7 @@ define([
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Bands Reordered");
 
                 },
+
                 /**
                  * updates the mosaic rule for the layer
                  */

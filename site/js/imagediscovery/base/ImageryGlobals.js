@@ -122,7 +122,8 @@ define([
                         SET_FOOTPRINTS_LAYER_TRANSPARENT: "lys:ftPrintsLyrTrans",
                         SET_FOOTPRINTS_LAYER_OPAQUE: "lys:ftPrintsLyrOpq",
                         CENTER_AND_FLASH_FOOTPRINT: "lyr:centerAndFlashFtPrint",
-                        REFRESH_FOOTPRINTS_LAYER: "lyr:refreshFootprintsLayer"
+                        REFRESH_FOOTPRINTS_LAYER: "lyr:refreshFootprintsLayer",
+                        REORDER_BANDS: "lyr:reorderBands"
                     },
                     LOCK_RASTER: {
                         //    CLEAR_ALL: "lRaster:clearIds",

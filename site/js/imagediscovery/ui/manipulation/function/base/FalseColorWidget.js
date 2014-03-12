@@ -171,7 +171,7 @@ define([
                         }
                     }
                     this.blockOnChange = false;
-                    this.handleBandChanged();
+                 //   this.handleBandChanged();
                 },
                 handleBandChanged: function () {
                     if (!this.blockOnChange) {

@@ -295,7 +295,9 @@ define([
                  * called when all of the catalog layers have been processed. this destroys the loading services container
                  */
                 finalizeQueryLayerLoad: function () {
-                    domConstruct.destroy(this.serviceLoadingContainer);
+                    if (this.serviceLoadingContainer) {
+                        domConstruct.destroy(this.serviceLoadingContainer);
+                    }
                     VIEWER_UTILS.log("Publishing catalog layer to widgets", VIEWER_GLOBALS.LOG_TYPE.INFO);
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.LOADED, this.catalogQueryControllers);
                     if (this.viewerAccordion) {
