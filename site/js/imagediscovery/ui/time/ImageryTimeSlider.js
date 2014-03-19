@@ -31,10 +31,11 @@ define([
                     this.viewModel.disabled.subscribe(lang.hitch(this, this.handleViewModelDisableStateChange));
                 },
                 handleReloadSliders: function () {
+                    this.disable();
                     this.applyBindings();
                     if (this.getInitialTimeSliderValues()) {
                         this.createTimeSlider();
-
+                        this.applyResultsLock();
                     }
                 },
 
