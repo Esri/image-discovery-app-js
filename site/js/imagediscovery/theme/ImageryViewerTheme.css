@@ -1006,6 +1006,10 @@ html, body {
     margin-top: -5px;
 }
 
+.pdfExportTitleEntry {
+    margin-bottom: 7px;
+}
+
 /* end reporting */
 
 /*swipe widget */

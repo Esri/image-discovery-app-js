@@ -251,7 +251,7 @@ define([
                     return currentBaseMap;
                 },
                 _generatePDFReport: function () {
-                    var layoutTemplate = this.viewModel.selectedReportFormat();
+                    var layoutTemplate = this.viewModel.selectedPdfTemplate();
                     if (layoutTemplate == null) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Invalid PDF Layout Template");
                         VIEWER_UTILS.log("Invalid PDF Layout Template", VIEWER_GLOBALS.LOG_TYPE.ERROR);
@@ -274,18 +274,18 @@ define([
                     printTemplate.format = "PDF";
 
                     printTemplate.layoutOptions = {};
-                    /*
+
                     var title = this.viewModel.pdfTitle();
                     if (title != null && title != "") {
                         printTemplate.layoutOptions.titleText = title;
                     }
-                    */
+
                     if (this.reportingConfiguration.pdf.layoutOptions) {
                         lang.mixin(printTemplate.layoutOptions, this.reportingConfiguration.pdf.layoutOptions || {});
                     }
 
-                    template.layout = layoutTemplate;
-                    template.preserveScale = this.reportingConfiguration.pdf.preserveMapScale == null ? false : this.reportingConfiguration.pdf.preserveMapScale;
+                    printTemplate.layout = layoutTemplate;
+                    printTemplate.preserveScale = this.reportingConfiguration.pdf.preserveMapScale == null ? false : this.reportingConfiguration.pdf.preserveMapScale;
                     var printParameters = new PrintParameters();
                     printParameters.template = printTemplate;
 

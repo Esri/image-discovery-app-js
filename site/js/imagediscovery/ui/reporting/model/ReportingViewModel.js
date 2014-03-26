@@ -23,8 +23,8 @@ define([
                     this.extractModes.push({label: "User Defined", value: this.draw});
                     this.selectedReportFormat = ko.observable("");
 
-//                    this.pdfTitleLabel =  ko.observable("Title:");
-//                    this.pdfTitle = ko.observable("");
+                    this.pdfTitleLabel =  ko.observable("Title:");
+                    this.pdfTitle = ko.observable("");
 
                     this.selectedPdfTemplate = ko.observable("");
 
