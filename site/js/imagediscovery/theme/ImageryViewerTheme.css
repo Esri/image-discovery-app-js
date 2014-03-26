@@ -58,7 +58,6 @@ html, body {
 
 }
 
-
 /*imagery sprite */
 .imageryIcons {
     background: url(./assets/images/imagerySprite.png);
@@ -1039,7 +1038,7 @@ html, body {
 }
 
 .transparencyWidgetPopupCloseIcon {
-    position:absolute;
+    position: absolute;
 }
 
 .layerTransparencySliderEntry {

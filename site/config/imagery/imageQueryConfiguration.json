@@ -74,8 +74,6 @@
             "NITF_RPF_ProductionDate",
             "ProductName",
             "Name"
-
-
         ]
     },
 
@@ -86,8 +84,8 @@
         "floatPrecision": 1
     },
     "discoverGeometryUploadTask": {
-        "uploadUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
-        "geoprocessingTaskUrl": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/fileToFeatures",
+        "uploadUrl": "//SERVER_NAME/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
+        "geoprocessingTaskUrl": "//SERVER_NAME/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/fileToFeatures",
         "uploadSHPFileParameterName": "uploadSHPFile",
         "uploadKMLFileParameterName": "uploadKMLFile",
         "uploadKMZFileParameterName": "uploadKMZFile",
@@ -106,7 +104,7 @@
         },
         "footprints": {
             "task": {
-                "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
+                "url": "//SERVER_NAME/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/reportGenerator",
                 "featureInputParameter": "Input_JSON_String",
                 "outputUrlParameter": "Report_URL",
                 "isAsync": true
@@ -114,7 +112,7 @@
         },
         "imageryDownload": {
             "task": {
-                "url": "//afmcomstaging.esri.com/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/DiscoveryDownloader",
+                "url": "//SERVER_NAME/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/DiscoveryDownloader",
                 "downloadItemInputParameter": "inputJson",
                 "outputUrlParameter": "outputZip",
                 "isAsync": true
@@ -127,6 +125,18 @@
     "reporting": {
         "html": {
             "templateURL": "templates/htmlReport.html"
+        },
+        "pdf": {
+            "exportWebMapTaskURL": null,
+            "mapSize": {
+                "height": 500,
+                "width": 500
+            },
+            "mapDPI": 96,
+            "preserveMapScale": false,
+            "layoutOptions": {
+                "showAttribution": false
+            }
         }
     }
 }
