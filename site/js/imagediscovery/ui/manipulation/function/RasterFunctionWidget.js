@@ -117,7 +117,7 @@ define([
                 },
                 clearBandReorder: function () {
                     if (this.hasBandReorderFunctionApplied) {
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.REORDER_BANDS, []);
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.REORDER_BANDS, [],false);
                         this.hasBandReorderFunctionApplied = false;
                     }
                 },
@@ -238,7 +238,7 @@ define([
                     }
                     else {
                         var rasterFunctionWidget = selectedRasterFunctionObject.widget;
-                        if (!rasterFunctionWidget.hasParameters || rasterFunctionWidget instanceof BaseBandReorderWidget) {
+                        if (!rasterFunctionWidget.hasParameters) {
                             this.applyFunction();
                         }
                     }

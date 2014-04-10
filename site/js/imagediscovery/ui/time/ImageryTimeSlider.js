@@ -31,10 +31,11 @@ define([
                     this.viewModel.disabled.subscribe(lang.hitch(this, this.handleViewModelDisableStateChange));
                 },
                 handleReloadSliders: function () {
+                    this.disable();
                     this.applyBindings();
                     if (this.getInitialTimeSliderValues()) {
                         this.createTimeSlider();
-
+                        this.applyResultsLock();
                     }
                 },
 
@@ -214,8 +215,8 @@ define([
                         }
                         this.queryControllerIdToTimeInfo[currentQueryLayerController.id] = currentLayer.timeInfo;
                         var fieldMapping = (currentQueryLayerController.serviceConfiguration && currentQueryLayerController.serviceConfiguration.fieldMapping) ? currentQueryLayerController.serviceConfiguration.fieldMapping : {};
-                        var startTimeField = fieldMapping[currentLayer.timeInfo.startTimeField] != null ? fieldMapping[currentLayer.timeInfo.startTimeField] : currentLayer.timeInfo.stendTimeFieldartTimeField;
-                        var endTimeField = fieldMapping[currentLayer.timeInfo.endTimeField] != null ? fieldMapping[currentLayer.timeInfo.endTimeField] : currentLayer.timeInfo.startTimeField;
+                        var startTimeField = fieldMapping[currentLayer.timeInfo.startTimeField] != null ? fieldMapping[currentLayer.timeInfo.startTimeField] : currentLayer.timeInfo.startTimeField;
+                        var endTimeField = fieldMapping[currentLayer.timeInfo.endTimeField] != null ? fieldMapping[currentLayer.timeInfo.endTimeField] : currentLayer.timeInfo.endTimeField;
                         var uniqueValuesParameters = [startTimeField];
                         if (startTimeField != endTimeField) {
                             uniqueValuesParameters.push(endTimeField);

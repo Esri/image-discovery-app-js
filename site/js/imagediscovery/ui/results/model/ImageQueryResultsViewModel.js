@@ -16,7 +16,6 @@ define([
                 timeSlider: ko.observable(true),
                 reportIcon: ko.observable(false),
                 filterIcon: ko.observable(false),
-                toolsActive: ko.observable(false),
                 resultCount: ko.observable(0),
                 drawActive: ko.observable(false),
                 forceSourceFilterHide: ko.observable(false),
@@ -27,7 +26,7 @@ define([
                     };
                     this.showTrashIcon = ko.computed(showTrashIconAnon);
                     var showTimeSliderAnon = function () {
-                        return self.results() && self.timeSlider()  && self.toolsActive();
+                        return self.results() && self.timeSlider()
                     };
                     this.showTimeSlider = ko.computed(showTimeSliderAnon);
 

@@ -58,7 +58,6 @@ html, body {
 
 }
 
-
 /*imagery sprite */
 .imageryIcons {
     background: url(./assets/images/imagerySprite.png);
@@ -1007,6 +1006,10 @@ html, body {
     margin-top: -5px;
 }
 
+.pdfExportTitleEntry {
+    margin-bottom: 7px;
+}
+
 /* end reporting */
 
 /*swipe widget */
@@ -1039,7 +1042,7 @@ html, body {
 }
 
 .transparencyWidgetPopupCloseIcon {
-    position:absolute;
+    position: absolute;
 }
 
 .layerTransparencySliderEntry {

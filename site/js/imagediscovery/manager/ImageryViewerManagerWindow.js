@@ -9,7 +9,7 @@ define([
 
     "dijit/MenuItem"
 ],
-    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget,  MenuItem) {
+    function (declare, lang, topic, ImageryViewerManager, ViewerManagerWindow, ImageManipulationWindowWidget, SwipeWindowWidget, MenuItem) {
         return  declare(
             [ImageryViewerManager, ViewerManagerWindow],
             {
@@ -20,6 +20,7 @@ define([
                 createImageManipulationWidget: function () {
                     //create the image manipulation widget.
                     this.imageManipulationWidget = new ImageManipulationWindowWidget();
+
                 },
                 /**
                  * creates the swipe widget

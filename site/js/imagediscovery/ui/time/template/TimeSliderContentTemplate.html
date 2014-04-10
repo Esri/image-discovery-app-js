@@ -1,8 +1,8 @@
 <div>
     <div class="timeSliderContentDisabled" data-bind="visible: isDisabled, text:disabledTimeSliderText"></div>
     <div class="timeSliderContent" data-bind="visible: isEnabled">
-        <div class="timeSliderCurrentValuesAndActionsContainer">
-            <div data-bind="css:{timeSliderDayOnlyMode: dayOnlyMode}"
+        <div class="timeSliderCurrentValuesAndActionsContainer" style="width:60%">
+            <div style="width: 100%" data-bind="css:{timeSliderDayOnlyMode: dayOnlyMode}"
                  class="timeSliderCurrentValueDisplay">
                 <div class="timeSliderCurrentValueLabel">Current Time Extent:</div>
                 <div class="timeSliderCurrentValueValues">
@@ -17,16 +17,16 @@
                      data-dojo-attach-event="onclick:handleZoomToLayerExtent"></div>
             </div>
         </div>
-        <div class="timeSliderUseRangeContainer">
+        <div class="timeSliderUseRangeContainer" data-bind="visible:showRangeContainer">
             <span class="timeSliderUseRangeLabel" data-bind="text:useRangeLabel"></span>
             <input type="checkbox" data-bind="checked: useRangeSlider"/>
         </div>
         <div class="timeSliderInputsContainer">
                 <span class="timeSliderRangeBreaksContainer">
                     <span class="timeSliderRangeBreaksLabel" data-bind="text:intervalsLabel"></span>
-                    <select data-bind="options: intervals ,value:selectedInterval">
+                    <select data-bind=" options: intervals ,value:selectedInterval">
                     </select>
-                    <select data-bind="options: unitValue ,value:selectedUnits, optionsText: 'label', optionsValue: 'value'">
+                    <select data-bind="visible: showIntervalSelect,options: unitValue ,value:selectedUnits, optionsText: 'label', optionsValue: 'value'">
                     </select>
                 </span>
 

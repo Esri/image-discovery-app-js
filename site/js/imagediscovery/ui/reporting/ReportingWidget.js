@@ -16,10 +16,13 @@ define([
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol" ,
     "esri/tasks/QueryTask",
-    "esri/tasks/query"
+    "esri/tasks/query",
+    "esri/tasks/PrintTemplate",
+    "esri/tasks/PrintParameters",
+    "esri/tasks/PrintTask"
 ],
     //   function (declare, locale, topic, array, lang,  Color, theme, template, MapDrawSupport, UITemplatedWidget, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query) {
-    function (declare, locale, topic, array, lang,  Color, template, UITemplatedWidget, MapDrawSupport, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query) {
+    function (declare, locale, topic, array, lang, Color, template, UITemplatedWidget, MapDrawSupport, ReportingViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, PrintTemplate, PrintParameters, PrintTask) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
             {
@@ -53,6 +56,11 @@ define([
                         }
                     }
                     this.viewModel = new ReportingViewModel();
+
+                    if (this.reportingConfiguration && this.reportingConfiguration.pdf && this.reportingConfiguration.pdf.exportWebMapTaskURL) {
+                        this.viewModel.reportFormat.push({label: this.viewModel.PDF, value: this.viewModel.PDF});
+                    }
+
                     this.viewModel.selectedExtractMode.subscribe(lang.hitch(this, this.handleExportTypeSelectChange));
                     this.viewModel.userDrawActive.subscribe(lang.hitch(this, this.handleUserDrawActiveChanged));
                     ko.applyBindings(this.viewModel, this.domNode);
@@ -141,14 +149,21 @@ define([
                  * @private
                  */
                 _generateReport: function () {
-                    if (this.viewModel.selectedExtractMode() === this.viewModel.draw && this.currentDrawGraphic == null) {
-                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Clip extent required");
-                        VIEWER_UTILS.log("Could not generate report. A Clip extent is required", VIEWER_GLOBALS.LOG_TYPE.WARNING);
-                        return;
-                    }
                     if (this.viewModel.selectedReportFormat() == this.viewModel.HTML) {
-                        //server side report
+                        if (this.viewModel.selectedExtractMode() === this.viewModel.draw && this.currentDrawGraphic == null) {
+                            topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Clip extent required");
+                            VIEWER_UTILS.log("Could not generate report. A Clip extent is required", VIEWER_GLOBALS.LOG_TYPE.WARNING);
+                            return;
+                        }
                         this._generateHTMLReport();
+                    }
+                    else if (this.viewModel.selectedReportFormat() == this.viewModel.PDF) {
+                        this._generatePDFReport();
+                    }
+                    else {
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Invalid Reporting Mode");
+                        VIEWER_UTILS.log("Invalid Reporting Mode", VIEWER_GLOBALS.LOG_TYPE.ERROR);
+                        return;
                     }
                     VIEWER_UTILS.log("Generating Report", VIEWER_GLOBALS.LOG_TYPE.INFO);
                 },
@@ -234,6 +249,70 @@ define([
                         return null;
                     }
                     return currentBaseMap;
+                },
+                _generatePDFReport: function () {
+                    var layoutTemplate = this.viewModel.selectedPdfTemplate();
+                    if (layoutTemplate == null) {
+                        topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Invalid PDF Layout Template");
+                        VIEWER_UTILS.log("Invalid PDF Layout Template", VIEWER_GLOBALS.LOG_TYPE.ERROR);
+                        return;
+                    }
+                    var printTemplate = new PrintTemplate();
+
+                    var mapSize = this.reportingConfiguration.pdf.mapSize;
+                    if (mapSize == null) {
+                        mapSize = {height: 500, width: 500}
+                    }
+                    var dpi = this.reportingConfiguration.pdf.mapDPI;
+                    if (dpi == null) {
+                        dpi = 96;
+                    }
+                    printTemplate.exportOptions = {};
+                    printTemplate.exportOptions.width = mapSize.width;
+                    printTemplate.exportOptions.height = mapSize.height;
+                    printTemplate.exportOptions.dpi = dpi;
+                    printTemplate.format = "PDF";
+
+                    printTemplate.layoutOptions = {};
+
+                    var title = this.viewModel.pdfTitle();
+                    if (title != null && title != "") {
+                        printTemplate.layoutOptions.titleText = title;
+                    }
+
+                    if (this.reportingConfiguration.pdf.layoutOptions) {
+                        lang.mixin(printTemplate.layoutOptions, this.reportingConfiguration.pdf.layoutOptions || {});
+                    }
+
+                    printTemplate.layout = layoutTemplate;
+                    printTemplate.preserveScale = this.reportingConfiguration.pdf.preserveMapScale == null ? false : this.reportingConfiguration.pdf.preserveMapScale;
+                    var printParameters = new PrintParameters();
+                    printParameters.template = printTemplate;
+
+                    var mapRef;
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GET, function (responseMap) {
+                        mapRef = responseMap;
+                    });
+                    printParameters.map = mapRef;
+                    if (this._printTask == null) {
+                        this._printTask = new PrintTask(this.reportingConfiguration.pdf.exportWebMapTaskURL)
+                    }
+                    VIEWER_UTILS.log("Generating PDF", VIEWER_GLOBALS.LOG_TYPE.INFO);
+                    this._printTask.execute(printParameters, lang.hitch(this, this._handlePDFExportResponse), lang.hitch(this, this._handlePDFExportError));
+                },
+                _handlePDFExportResponse: function (response) {
+                    if (response && response.url) {
+                        window.open(response.url);
+                    }
+                    else {
+                        this._handlePDFExportError();
+                    }
+                },
+                _handlePDFExportError: function (err) {
+                    console.log("_handlePDFExportError");
+                    console.dir(err);
+                    topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not generate PDF report. Web Map export task failed.");
+                    VIEWER_UTILS.log("Could not generate PDF report. Web Map export task failed.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                 },
                 /**
                  * generate the html report
