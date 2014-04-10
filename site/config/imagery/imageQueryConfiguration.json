@@ -127,7 +127,7 @@
             "templateURL": "templates/htmlReport.html"
         },
         "pdf": {
-            "exportWebMapTaskURL": "http://rickyr.esri.com:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+            "exportWebMapTaskURL": "http://SERVER_NAME/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
             "mapSize": {
                 "height": 500,
                 "width": 500
