@@ -14,7 +14,6 @@ define([
     "dijit/TooltipDialog",
     "../filter/UserAppliedFiltersManager",
     "dgrid/util/mouse"
-
 ],
     function (declare, topic, con, on, registry, query, lang, domConstruct, domClass, domStyle, Button, ImageryGrid, TooltipDialog, UserAppliedFiltersManager, mouseUtil) {
         return declare(
