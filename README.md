@@ -139,5 +139,5 @@ limitations under the License.
 
 A copy of the license is available in the repository's [license.txt](license.txt) file.
 
-[](Esri Tags: Image Discovery ArcGIS for Defense and Intelligence)
+[](Esri Tags: Image Discovery ArcGIS for Defense and Intelligence Military)
 [](Esri Language: JavaScript)
