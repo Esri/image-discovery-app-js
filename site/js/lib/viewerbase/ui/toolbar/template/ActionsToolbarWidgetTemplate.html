@@ -43,7 +43,7 @@
                  data-dojo-attach-event="onclick:toggleConfigureLocatorTooltip" title="Configure Locate"
                  class="defaultBorder configureLocate configureButtonIcon"></div>
         </div>
-        <div class="extentActionsToolbar" data-bind="visible:showExtentActionsToolbar">
+        <div data-bind="visible:showExtentActionsToolbar" data-dojo-attach-point="extentActionsToolbar">
             <div class="smallActionsToolbarButton">
                 <div data-dojo-attach-point="initialExtentButton" title="Initial Extent"
                      class="commonIcons16 firstItem"

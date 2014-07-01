@@ -5,7 +5,7 @@
     },
     "header": {
         "small": false,
-        "display": true,
+        "display": false,
         "headerText": "Esri Viewer 2",
         "headerImage": "images/logoSmall.png",
         "contact": {
@@ -181,8 +181,9 @@
         "showLayersButton": true,
         "showConfigureLocatorsIcon": false,
         "showBookmarksButton": true,
-        "showExtentActions": false,
-        "showLocator": true
+        "showExtentActions": true,
+        "showLocator": true,
+        "showExtentActionsOnMap": true
     },
     "geometryServiceUrl": "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
     "animationsEnabled": true
