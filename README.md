@@ -1,6 +1,6 @@
 # image-discovery-app-js
 
-The Image Discovery Application enables users to search, discover, filter, and manipulate imagery through an easy to use web application. Multiple ArcGIS Server Image Services can be added to the Image Discovery Application for quick search and discovery. The Image Discovery Application supports full configuration of result fields,result styling, map display, operational layers. and reference layers.
+The Image Discovery Application enables users to search, discover, filter, and manipulate imagery through an easy to use web application. Multiple ArcGIS Server Image Services can be added to the Image Discovery Application for quick search and discovery. The Image Discovery Application supports full configuration of result fields, result styling, map display, operational layers, and reference layers.
 
 
 
@@ -12,7 +12,7 @@ The Image Discovery Application enables users to search, discover, filter, and m
 * Search by: Map Extent, Point(buffer), Rectangle, Coordinates, KML/KMZ/SHP polygon upload
 * Configurable result fields
 * Filter results from fields
-* Imagery result manipulation (Raster Functions,Band Reordering)
+* Imagery result manipulation (Raster Functions, Band Reordering)
 * Supports time enabled maps.
 * Export results to Web Map,HTML,Shapefile,KML,CSV
 * Identify Results by point/rectangle
@@ -55,18 +55,18 @@ The Image Discovery Application enables users to search, discover, filter, and m
 
 These instructions assume that you have a Web server like [Internet Information Services(IIS)](http://www.iis.net/) installed and setup on your machine. If you are using another Web server the general installation steps will be the same but you will need to check your Web server's documentation for specific information on deploying and testing the application.
 
-1. Copy the contents of the zip file into your web server's root directory. In IIS, the default location for the web server's root folder is `c:\inetpub\wwwroot`
+1. Copy the contents of the 'site' subfolder of the zip file into the desired folder in your web server's root directory (this relative path is [DiscoveryApplicationPath]). In IIS, the default location for the web server's root folder is `c:\inetpub\wwwroot`
 2. In IIS, convert the folder to a "Web Application" and add .json (application/json) MIME type
 3. (Optional). If your application edits features in a feature service or generates requests that exceed 2000 characters you may need to setup and use a proxy page. Common situations where you may exceed the URL length are, using complex polygons as input to a task or specifying a spatial reference using well-known text (WKT). View the [Using the proxy page](http://help.arcgis.com/en/webapi/javascript/arcgis/jshelp/#ags_proxy) help topic for details on installing and configuring a proxy page.
-4. Test the page using the following URL: http://localhost/[DiscoveryApplicationPath]/index.html, where [DiscoveryApplicationPath] is the name of the folder where you extracted the zip contents.
+4. Test the page using the following URL: http://localhost/[DiscoveryApplicationPath]/index.html, where [DiscoveryApplicationPath] is as determined in step 1.
 5. For Shapefile/KML/KMZ polygon search support, fileToFeatures.gpk located in geoprocessing\discoveryGeometryUpload\release must be deployed to an ArcGIS Server instance. Upload must be enabled when publishing the geoprocessing service.
-6. for Shapefile/KML/CSV reporting reportGenerator.gpk located in geoprocessing\reporting\release must be deployed to an ArcGIS Server instance.
+6. For Shapefile/KML/CSV reporting reportGenerator.gpk located in geoprocessing\reporting\release must be deployed to an ArcGIS Server instance.
 
 #### Configure the application
 
 Now let's configure the application to point to an Search Image Service and set the result fields to display.
 
-1. Open `web\config\imagery\imageQueryConfiguration.json` in a text editor
+1. Open `config\imagery\imageQueryConfiguration.json` in a text editor
 2. In the entry imageQueryLayers, set the URL to an ArcGIS Server Image Service endpoint.
 3. Set the label parameter for your ArcGIS Server Image Service 
 4. In the entry imageQueryResultDisplayFields, set the result fields you would like to display in your result grid.
