@@ -164,13 +164,14 @@ define([
 
                     domConstruct.place(actionsContainer, featureContainer);
 
-
+                             /*
                     if (queryLayerController.supportsThumbnail()) {
                         var showThumb = domConstruct.create("div", {className: "commonIcons16 binoculars"});
-                        on(showThumb, "mouseover", lang.hitch(this, this.handleLayerMouseOver,attributes,queryLayerController));
+                        on(showThumb, "mouseover", lang.hitch(this, this.handleLayerMouseOver,feature,queryLayerController));
                         on(showThumb, "mouseout", lang.hitch(this, this.handleLayerMouseOut));
                         domConstruct.place(showThumb, actionsContainer);
                     }
+                    */
 
                     var toggleImage = domConstruct.create("div", {className: "showImageHeaderIcon", title: "Toggle Image"});
                     on(toggleImage, "click", lang.hitch(this, this.handleToggleShowImage, queryLayerController, feature));

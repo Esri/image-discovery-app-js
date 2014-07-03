@@ -264,13 +264,14 @@ define([
                     }
                 },
                 showThumbnail: function (resultEntry) {
-                    var objectId = resultEntry[this.layer.objectIdField];
-                    if (this.serviceConfiguration.supportsThumbnails && array.indexOf(this.currentLockRasterIds, objectId) < 0) {
-                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.SHOW, objectId, this.layer.url);
-                    }
+                   // var objectId = resultEntry[this.layer.objectIdField];
+                 //   if (this.serviceConfiguration.supportsThumbnails && array.indexOf(this.currentLockRasterIds, objectId) < 0) {
+                        topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.THUMBNAIL.SHOW, resultEntry, this.layer.url);
+                  //  }
                 },
                 supportsThumbnail: function () {
-                    return this.serviceConfiguration.supportsThumbnails != null && this.serviceConfiguration.supportsThumbnails == true;
+                 //   return this.serviceConfiguration.supportsThumbnails != null && this.serviceConfiguration.supportsThumbnails == true;
+                    return true;
                 },
                 queryForGeometriesFromObjectIds: function (objectIds, callback, errback) {
                     var layerQueryParameters = new LayerQueryParameters({

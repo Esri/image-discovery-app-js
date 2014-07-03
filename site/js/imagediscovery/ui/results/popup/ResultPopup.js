@@ -157,6 +157,8 @@ define([
                     on(toggleCart, "click", lang.hitch(this, this.handleToggleAddToCart));
                     domConstruct.place(toggleCart, actionsContainer);
 
+
+                    /*
                     if (currentImageInfoPopupObject.imageInfoAndLayer.queryLayerController.supportsThumbnail()) {
 
                         var showThumb = domConstruct.create("div", {className: "commonIcons16 binoculars"});
@@ -164,6 +166,7 @@ define([
                         on(showThumb, "mouseout", lang.hitch(this, this.handleLayerMouseOut));
                         domConstruct.place(showThumb, actionsContainer);
                     }
+                    */
 
                     var currentAttributeObj;
                     for (var i = 0; i < currentImageInfoPopupObject.attributes.length; i++) {

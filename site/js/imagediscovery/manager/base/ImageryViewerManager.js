@@ -1,29 +1,29 @@
 define([
-    "dojo/_base/declare",
-    "dojo/dom-style",
-    "dojo/topic",
-    "dojo/on",
-    "dojo/_base/window",
-    "dojo/_base/connect",
-    "dojo/_base/lang",
-    "dojo/dom-construct",
-    "dojo/dom-class",
-    "esriviewer/manager/base/ViewerManager",
-    "../../ui/results/ImageQueryResultsWidget",
-    "../../ui/discover/ImageDiscoveryWidget",
-    "../../ImageQueryController",
-    "../../ImageQueryLayerController",
-    "esri/layers/ArcGISImageServiceLayer",
-    "./ImageryWebMapTemplateConfigurationUtil",
-    "dijit/form/ToggleButton",
-    "../../layers/thumbnail/ThumbnailManager",
-    "../../ui/results/popup/ResultPopup",
-    "esriviewer/ui/toolbar/base/button/Button",
-    "../../ui/results/popup/MapIdentifyPopupTooltip",
-    "esri/geometry/screenUtils"
+        "dojo/_base/declare",
+        "dojo/dom-style",
+        "dojo/topic",
+        "dojo/on",
+        "dojo/_base/window",
+        "dojo/_base/connect",
+        "dojo/_base/lang",
+        "dojo/dom-construct",
+        "dojo/dom-class",
+        "esriviewer/manager/base/ViewerManager",
+        "../../ui/results/ImageQueryResultsWidget",
+        "../../ui/discover/ImageDiscoveryWidget",
+        "../../ImageQueryController",
+        "../../ImageQueryLayerController",
+        "esri/layers/ArcGISImageServiceLayer",
+        "./ImageryWebMapTemplateConfigurationUtil",
+        "dijit/form/ToggleButton",
+        "../../layers/thumbnail/ShadedThumbnailManager",
+        "../../ui/results/popup/ResultPopup",
+        "esriviewer/ui/toolbar/base/button/Button",
+        "../../ui/results/popup/MapIdentifyPopupTooltip",
+        "esri/geometry/screenUtils"
 
-],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
+    ],
+    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ShadedThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
         return declare(
             [ViewerManager],
             {
@@ -246,7 +246,7 @@ define([
                         }
                     }
                     map.resize();
-                    new ThumbnailManager();
+                    new ShadedThumbnailManager();
                     new ResultPopup();
 
                 },
@@ -569,6 +569,16 @@ define([
                             }
                             if (this.messagingWidget) {
                                 domStyle.set(this.messagingWidget.domNode, "left", "45%");
+                            }
+                        }
+                    }
+                    else {
+                        if (this.viewerConfig.toolsBar && this.viewerConfig.toolsBar.showExtentActionsOnMap && this.viewerConfig.toolsBar.showExtentActions) {
+                            if (this.loadingThrobber) {
+                                domStyle.set(this.loadingThrobber.domNode, "left", "175px");
+                            }
+                            if (this.messagingWidget) {
+                                domStyle.set(this.messagingWidget.domNode, "left", "225px");
                             }
                         }
                     }
