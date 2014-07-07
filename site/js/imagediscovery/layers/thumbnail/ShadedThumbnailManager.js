@@ -2,18 +2,15 @@ define([
         "dojo/_base/declare",
         "dojo/topic",
         "dojo/_base/lang",
-        "esri/symbols/PictureMarkerSymbol",
         "esri/graphic",
-        "esri/geometry/Extent",
-        "esri/geometry/screenUtils",
         "esriviewer/base/DataLoaderSupport",
         "esri/layers/GraphicsLayer",
         "esri/symbols/SimpleFillSymbol",
         "esri/symbols/SimpleLineSymbol",
-        "dojo/_base/Color",
+        "dojo/_base/Color"
 
     ],
-    function (declare, topic, lang, PictureMarkerSymbol, Graphic, Extent, screenUtils, DataLoaderSupport, GraphicsLayer,SimpleFillSymbol,SimpleLineSymbol,Color) {
+    function (declare, topic, lang,  Graphic,   DataLoaderSupport, GraphicsLayer,SimpleFillSymbol,SimpleLineSymbol,Color) {
         return declare(
             [DataLoaderSupport],
             {

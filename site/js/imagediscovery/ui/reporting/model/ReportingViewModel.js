@@ -72,6 +72,6 @@ define([
                 },
                 isReportFormatImageExport: function () {
                     return array.indexOf(this.exportImageReportFormats, this.selectedReportFormat()) > -1;
-                },
+                }
             });
     });
