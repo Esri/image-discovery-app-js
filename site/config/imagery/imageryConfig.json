@@ -130,6 +130,9 @@
     "portalSearchWidget": {
         "create": true
     },
+    "swipeWidget": {
+        "create": true
+    },
     "reflectivityWidget": {
         "create": true,
         "configurationUrl": "config/widgets/ReflectivityWidgetConfig.json"
