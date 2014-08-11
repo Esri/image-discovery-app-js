@@ -1,24 +1,24 @@
 //borrowed from: https://github.com/Esri/swipe-map-storytelling-template-js
 
 define([
-    "dojo/_base/declare",
-    "dojo/text!./template/SwipeWidgetTemplate.html",
-    //  "xstyle/css!./theme/SwipeWidgetTheme.css",
-    "dojo/topic",
-    "dojo/_base/lang",
-    "dojo/sniff",
-    "dojo/dom",
-    "esriviewer/ui/base/UITemplatedWidget",
-    "./model/SwipeViewModel",
-    "dojo/dnd/move",
-    "dojo/_base/connect",
-    "dojo/dom-construct",
-    "dojo/_base/array",
-    "dojo/dom-style",
-    "dijit/form/Button"
-],
+        "dojo/_base/declare",
+        "dojo/text!./template/SwipeWidgetTemplate.html",
+        //  "xstyle/css!./theme/SwipeWidgetTheme.css",
+        "dojo/topic",
+        "dojo/_base/lang",
+        "dojo/sniff",
+        "dojo/dom",
+        "esriviewer/ui/base/UITemplatedWidget",
+        "./model/SwipeViewModel",
+        "dojo/dnd/move",
+        "dojo/_base/connect",
+        "dojo/dom-construct",
+        "dojo/_base/array",
+        "dojo/dom-style",
+        "dijit/form/Button"
+    ],
     //  function (declare, template, theme, topic, lang, sniff, dom,  UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
-    function (declare, template, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct,array, domStyle, Button) {
+    function (declare, template, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, array, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
