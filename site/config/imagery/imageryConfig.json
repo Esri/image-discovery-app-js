@@ -53,14 +53,9 @@
         ],
         "operationalLayers": [
             {
-                "type": "feature",
-                "url": "http://taylor2:6080/arcgis/rest/services/PGE/features/MapServer/9",
-                "mapLabel": {
-                    "field": "name",
-                    "color": "#0000FF",
-                    "fontSize": "10pt",
-                    "fontFamily": "arial"
-                }
+                "type": "image",
+                "url": "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/CaliforniaDEM/ImageServer"
+
             }
         ],
         "legend": {

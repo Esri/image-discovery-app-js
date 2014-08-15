@@ -4,6 +4,7 @@ define([
         "dojo/_base/declare",
         "dojo/text!./template/SwipeWidgetTemplate.html",
         //  "xstyle/css!./theme/SwipeWidgetTheme.css",
+        "esri/layers/ArcGISImageServiceLayer",
         "dojo/topic",
         "dojo/_base/lang",
         "dojo/sniff",
@@ -18,7 +19,7 @@ define([
         "dijit/form/Button"
     ],
     //  function (declare, template, theme, topic, lang, sniff, dom,  UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, domStyle, Button) {
-    function (declare, template, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, array, domStyle, Button) {
+    function (declare, template, ArcGISImageServiceLayer, topic, lang, sniff, dom, UITemplatedWidget, SwipeViewModel, Move, con, domConstruct, array, domStyle, Button) {
         return declare(
             [UITemplatedWidget],
             {
@@ -38,19 +39,10 @@ define([
                     this.currentlySelectedBasemapURL = null;
                     this.viewModel = new SwipeViewModel();
                     this.populateLayerList();
-                    this.checkForSwipeEnabled();
+                    this.handleImageryLayersVisible();
                     ko.applyBindings(this.viewModel, this.domNode);
                 },
-                checkForSwipeEnabled: function () {
-                    topic.publish(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_VISIBLE, lang.hitch(this, function (footprintsVis) {
-                        if (footprintsVis) {
-                            this.handleImageryLayersVisible();
-                        }
-                        else {
-                            this.handleImageryLayersHidden();
-                        }
-                    }));
-                },
+
                 initListeners: function () {
                     this.inherited(arguments);
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.FOOTPRINTS_LAYER_DISPLAYED, lang.hitch(this, this.handleImageryLayersVisible));
@@ -330,17 +322,39 @@ define([
                     }));
                 },
                 populateLayerList: function () {
+                    var i, currLayerId;
+                    var mapLayer;
+                    var addedLayerIds = {};
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.LAYER_CONTROLLERS.GET, lang.hitch(this, function (queryLayerControllers) {
                         var currLayer;
-                        for (var i = 0; i < queryLayerControllers.length; i++) {
+                        for (i = 0; i < queryLayerControllers.length; i++) {
                             currLayer = queryLayerControllers[i].layer;
                             var item = {
                                 label: currLayer.searchServiceLabel ? currLayer.searchServiceLabel : currLayer.name,
                                 id: currLayer.id
                             };
+                            addedLayerIds[currLayer.id] = true;
                             this.viewModel.swipeLayers.push(item);
                         }
                     }));
+                    if (this.map && this.map.layerIds) {
+                        for (i = 0; i < this.map.layerIds.length; i++) {
+                            currLayerId = this.map.layerIds[i];
+                            if (!addedLayerIds[currLayerId]) {
+                                mapLayer = this.map.getLayer(currLayerId);
+                                if (mapLayer instanceof ArcGISImageServiceLayer) {
+                                    addedLayerIds[currLayerId] = true;
+                                    var item = {
+                                        label: mapLayer.name,
+                                        id: currLayerId
+                                    };
+                                    this.viewModel.swipeLayers.push(item);
+                                }
+                            }
+                        }
+
+                    }
+
                 },
                 handleImageryLayersVisible: function () {
                     this.viewModel.swipeEnbled(true);
