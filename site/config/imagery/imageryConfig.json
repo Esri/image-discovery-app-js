@@ -161,7 +161,8 @@
     },
     "plottingWidget": {
         "create": true,
-        "symbolUrl": "images/symbols/plotPin.png"
+        "symbolUrl": "images/symbols/plotPin.png",
+		"showCAStatePlane": true
     },
     "printWidget": {
         "create": true,
