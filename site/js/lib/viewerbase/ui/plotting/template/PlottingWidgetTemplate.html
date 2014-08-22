@@ -4,6 +4,7 @@
         <span data-bind="click:showPlotDMS, css: {selectedTab: plotDMSVisible}">DMS</span>
         <span data-bind="click:showPlotUTM, css: {selectedTab: plotUTMVisible}">UTM</span>
         <span data-bind="click:showPlotMGRS, css: {selectedTab: plotMGRSVisible}">MGRS</span>
+        <span data-bind="visible:statePlaneEnabled, click:showPlotStatePlane, css: {selectedTab: plotStatePlaneVisible}">CSC</span>
     </div>
     <div data-bind="visible:hasPlottedPoints, click:showPlottedPoints" class="commonIcons16 list showPlottedPointsListIcon"
          title="Show Plotted Points"></div>
@@ -14,6 +15,8 @@
     <div data-bind="visible:plotUTMVisible" data-dojo-attach-point="plotUTMContainer">
     </div>
     <div data-bind="visible:plotMGRSVisible" data-dojo-attach-point="plotMGRSContainer">
+    </div>
+    <div data-bind="visible:plotStatePlaneVisible" data-dojo-attach-point="plotStatePlaneContainer">
     </div>
 
     <div class="plotPointsActionContainer" data-bind="visible:plotPointsActionsVisible">
