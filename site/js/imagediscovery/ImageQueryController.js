@@ -1,13 +1,15 @@
 define([
-    "dojo/_base/declare",
-    "dojo/on",
-    "dojo/topic",
-    "dojo/_base/lang",
-    "dojo/_base/array",
-    "esriviewer/map/base/LayerQueryParameters",
-    "esri/geometry/Point"
-],
-    function (declare, on, topic, lang, array, LayerQueryParameters, Point) {
+        "dojo/_base/declare",
+        "dojo/on",
+        "dojo/topic",
+        "dojo/_base/lang",
+        "dojo/_base/array",
+        "esriviewer/map/base/LayerQueryParameters",
+        "esri/geometry/Point",
+        "esri/geometry/Polyline",
+        "esri/tasks/query"
+    ],
+    function (declare, on, topic, lang, array, LayerQueryParameters, Point, Polyline, Query) {
         return declare(
             [],
             {
@@ -159,7 +161,7 @@ define([
                  * @param imageQueryControllerQueryParams
                  */
                 handlePerformQuery: function (imageQueryControllerQueryParams) {
-                 //   topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.DISABLE);
+                    //   topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.DISABLE);
                     topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.SHOW);
                     this.queryResults = [];
                     this.resultFeaturesCount = 0;
@@ -214,7 +216,7 @@ define([
                 handleClearLockRasterOnExcludedQueryControllers: function (queryControllerIdArray) {
                     var currentQueryLayerController;
                     for (var i = 0; i < this.queryLayerControllers.length; i++) {
-                        currentQueryLayerController =  this.queryLayerControllers[i];
+                        currentQueryLayerController = this.queryLayerControllers[i];
                         if (array.indexOf(queryControllerIdArray, currentQueryLayerController.id) < 0) {
                             //clear
                             currentQueryLayerController.clearLockIds();
@@ -306,10 +308,10 @@ define([
                         resultsString = "Query Complete (" + this.resultFeaturesCount + " " + (this.resultFeaturesCount == 1 ? "Result" : "Results") + ")";
                         topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, resultsString);
                         topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, this.queryResults);
-                   //     topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.ENABLE);
+                        //     topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.ENABLE);
                         topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.HIDE);
                     }
-                    else{
+                    else {
                         topic.publish(VIEWER_GLOBALS.EVENTS.THROBBER.SHOW);
                     }
 

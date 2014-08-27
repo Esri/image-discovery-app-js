@@ -1,82 +1,92 @@
 <div class="imageDiscoveryContainer">
-    <div data-bind="visible: selectSearchServiceVisible" class="discoveryServiceSelectOuterContainer">
-        <div class="discoveryStepContainer discoveryServiceSelectContainer">
-            Search Service
-            <div class="discoveryStepIcon"></div>
-        </div>
-        <div>
-            <select class="discoveryServiceSelect"
-                    data-bind="optionsCaption: '*Search All*' ,options: discoveryServicesList ,value:selectedDiscoveryService, optionsText: 'label', optionsValue: 'value'"></select>
-        </div>
-    </div>
-    <div class="imageDiscoveryByQueryExpanderContainer"
-         data-bind="click:toggleDiscoverByFields, visible: discoverByFieldsHeaderVisible">
-        <div class="commonIcons16 up imageDiscoveryExpanderIcon"
-             data-bind="css: {down: discoverByFieldsExpanded() == true}"></div>
-        <span class="imageDiscoveryExpanderLabel">Limit Results By Fields</span>
-    </div>
-    <div class="imageDiscoveryByQueryContainer" data-bind="visible: discoverByFieldsExpanded"
-         data-dojo-attach-point="imageDiscoveryByQueryContainer">
-    </div>
-    <div class="imageDiscoveryByCoordinatesWrapperContainer" data-bind="visible: discoverByGeometryExpanded">
-        <div class="imageDiscoveryByCoordinatesContainer">
-            <div class="discoveryDescriptionStepText"
-                 data-bind="text:selectToolText,visible: searchInProgress() != true"></div>
-            <div class="imageDiscoveryInProgressContainer" data-bind="visible: searchInProgress">
-                <div class="loadingSpinnerThrobber imageDiscoveryThrobber"></div>
-                <span class="imageDiscoveryThrobberText">Searching...</span>
-            </div>
-            <div class="imageDiscoverySelectActions" data-bind="visible: searchInProgress() != true">
-                <div class="discoveryIcon"
-                     data-bind="click:searchByExtentClick"
-                     title="Search in Current Extent"></div>
-                <div class="discoveryIcon byPointUnselected"
-                     data-bind="click: toggleSearchAtPoint, css: {byPointSelected: isCurrentView(views.point)}"
-                     title="Search at Point"></div>
-                <div class="discoveryIcon byRectangleUnselected"
-                     data-bind="click:toggleSearchByRectangle,css: {byRectangleSelected: isCurrentView(views.rectangle)}"
-                     title="Search By Rectangle"></div>
 
-                <div class="discoveryIcon byBoundsUnselected"
-                     data-bind="click: toggleSearchByBounds, css: {byBoundsSelected: isCurrentView(views.bounds)}"
-                     title="Search By Bounds"></div>
-                <div class="discoveryIcon byUploadUnselected"
-                     data-bind="click: toggleGeometryUploadContent, visible:searchByGeometryButtonVisible,css: {byUploadSelected: isCurrentView(views.upload)}"
-                     title="Upload Polygon Geometry"></div>
+    <div data-bind="visible: metadataSearchEnabled" class="defaultTabContainer" style="text-align: left;margin-top:-5px">
+        <span data-bind="click:showSpatial, css: {selectedTab: spatialVisible}">By Geometry</span>
+        <span data-bind="click:showMetadata, css: {selectedTab: metadataVisible}">By Metadata</span>
+    </div>
+    <div data-bind="visible: metadataVisible" data-dojo-attach-point="metadataSearchContainer">
+
+    </div>
+    <div data-bind="visible: spatialVisible">
+        <div data-bind="visible: selectSearchServiceVisible" class="discoveryServiceSelectOuterContainer">
+            <div class="discoveryStepContainer discoveryServiceSelectContainer">
+                Search Service
+                <div class="discoveryStepIcon"></div>
             </div>
-            <div class="imageDiscoveryActionContent">
-                <div data-dojo-attach-point="imageDiscoveryDescriptionContent">
+            <div>
+                <select class="discoveryServiceSelect"
+                        data-bind="optionsCaption: '*Search All*' ,options: discoveryServicesList ,value:selectedDiscoveryService, optionsText: 'label', optionsValue: 'value'"></select>
+            </div>
+        </div>
+        <div class="imageDiscoveryByQueryExpanderContainer"
+             data-bind="click:toggleDiscoverByFields, visible: discoverByFieldsHeaderVisible">
+            <div class="commonIcons16 up imageDiscoveryExpanderIcon"
+                 data-bind="css: {down: discoverByFieldsExpanded() == true}"></div>
+            <span class="imageDiscoveryExpanderLabel">Limit Results By Fields</span>
+        </div>
+        <div class="imageDiscoveryByQueryContainer" data-bind="visible: discoverByFieldsExpanded"
+             data-dojo-attach-point="imageDiscoveryByQueryContainer">
+        </div>
+        <div class="imageDiscoveryByCoordinatesWrapperContainer" data-bind="visible: discoverByGeometryExpanded">
+            <div class="imageDiscoveryByCoordinatesContainer">
+                <div class="discoveryDescriptionStepText"
+                     data-bind="text:selectToolText,visible: searchInProgress() != true"></div>
+                <div class="imageDiscoveryInProgressContainer" data-bind="visible: searchInProgress">
+                    <div class="loadingSpinnerThrobber imageDiscoveryThrobber"></div>
+                    <span class="imageDiscoveryThrobberText">Searching...</span>
                 </div>
-                <div data-bind="visible: isCurrentView(views.point)">
-                    <div class="discoveryPointAdvancedToggleContainer" data-bind="click:togglePointAdvancedOptions">
-                        <div style="float: left" class="commonIcons16 up"
-                             data-bind="css: {down: showPointAdvancedOptions}"></div>
-                        <div style="float:left">Advanced Options</div>
+                <div class="imageDiscoverySelectActions" data-bind="visible: searchInProgress() != true">
+                    <div class="discoveryIcon"
+                         data-bind="click:searchByExtentClick"
+                         title="Search in Current Extent"></div>
+                    <div class="discoveryIcon byPointUnselected"
+                         data-bind="click: toggleSearchAtPoint, css: {byPointSelected: isCurrentView(views.point)}"
+                         title="Search at Point"></div>
+                    <div class="discoveryIcon byRectangleUnselected"
+                         data-bind="click:toggleSearchByRectangle,css: {byRectangleSelected: isCurrentView(views.rectangle)}"
+                         title="Search By Rectangle"></div>
+
+                    <div class="discoveryIcon byBoundsUnselected"
+                         data-bind="click: toggleSearchByBounds, css: {byBoundsSelected: isCurrentView(views.bounds)}"
+                         title="Search By Bounds"></div>
+                    <div class="discoveryIcon byUploadUnselected"
+                         data-bind="click: toggleGeometryUploadContent, visible:searchByGeometryButtonVisible,css: {byUploadSelected: isCurrentView(views.upload)}"
+                         title="Upload Polygon Geometry"></div>
+                </div>
+                <div class="imageDiscoveryActionContent">
+                    <div data-dojo-attach-point="imageDiscoveryDescriptionContent">
                     </div>
-                    <div data-bind="visible:showPointAdvancedOptions">
-                        <div class="pointBufferHeaderLbl">Point Buffer (optional)</div>
-                        <div class="searchByPointDistanceContainer">
-                            <span>Distance:</span>
+                    <div data-bind="visible: isCurrentView(views.point)">
+                        <div class="discoveryPointAdvancedToggleContainer" data-bind="click:togglePointAdvancedOptions">
+                            <div style="float: left" class="commonIcons16 up"
+                                 data-bind="css: {down: showPointAdvancedOptions}"></div>
+                            <div style="float:left">Advanced Options</div>
+                        </div>
+                        <div data-bind="visible:showPointAdvancedOptions">
+                            <div class="pointBufferHeaderLbl">Point Buffer (optional)</div>
+                            <div class="searchByPointDistanceContainer">
+                                <span>Distance:</span>
                         <span data-dojo-type="dijit/form/NumberTextBox" style="width: 5em"
                               data-dojo-attach-point="pointDrawBufferValue"></span>
+                            </div>
+                            <span>Units:</span>
+                            <select class="searchByPointUnitsSelect"
+                                    data-bind="options: pointGeometryUnits ,value:selectedPointUnits, optionsText: 'label', optionsValue: 'value'"
+                                    ></select>
                         </div>
-                        <span>Units:</span>
-                        <select class="searchByPointUnitsSelect"
-                                data-bind="options: pointGeometryUnits ,value:selectedPointUnits, optionsText: 'label', optionsValue: 'value'"
-                                ></select>
                     </div>
-                </div>
-                <div data-bind="visible: isCurrentView(views.upload)"
-                     data-dojo-attach-point="geometryUploadWidgetContainer">
-                    <!-- upload widget is placed here -->
-                </div>
-                <div data-bind="visible: isCurrentView(views.rectangle)">
-                    Drag a rectangle on the map
-                </div>
-                <div data-bind="visible: isCurrentView(views.extent)">
-                </div>
-                <div data-dojo-attach-point="imageDiscoverySearchByBoundsContainer"
-                     data-bind="visible: isCurrentView(views.bounds)">
+                    <div data-bind="visible: isCurrentView(views.upload)"
+                         data-dojo-attach-point="geometryUploadWidgetContainer">
+                        <!-- upload widget is placed here -->
+                    </div>
+                    <div data-bind="visible: isCurrentView(views.rectangle)">
+                        Drag a rectangle on the map
+                    </div>
+                    <div data-bind="visible: isCurrentView(views.extent)">
+                    </div>
+                    <div data-dojo-attach-point="imageDiscoverySearchByBoundsContainer"
+                         data-bind="visible: isCurrentView(views.bounds)">
+                    </div>
                 </div>
             </div>
         </div>

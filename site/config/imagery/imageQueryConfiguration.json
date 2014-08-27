@@ -10,10 +10,7 @@
 
     ],
     "imageDiscoveryQueryFields": [
-        {
-            "field": "ProductName",
-            "label": "Product"
-        }
+
     ],
     "imageQueryResultDisplayFields": [
         {
@@ -69,6 +66,11 @@
             }
         }
     ],
+    "imageQueryMetadataConfiguration": {
+        "url": "config/data/metadata/discoveryMetadata.json",
+        "enabled": true,
+        "metadataDetailsLabel": "Search by T-Line"
+    },
     "popupConfiguration": {
         "displayFields": [
             "NITF_RPF_ProductionDate",

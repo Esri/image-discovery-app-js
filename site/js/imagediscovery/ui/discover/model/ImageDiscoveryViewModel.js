@@ -1,13 +1,14 @@
 define([
-    "dojo/_base/declare" ,
-    "dojo/Evented" ,
-    "esri/tasks/GeometryService"
-],
+        "dojo/_base/declare" ,
+        "dojo/Evented" ,
+        "esri/tasks/GeometryService"
+    ],
     function (declare, Evented, GeometryService) {
         return declare(
             [Evented],
             {
 
+                metadataSearchEnabled: ko.observable(false),
                 VIEW_CHANGE: "viewChange",
                 stepArrowIcon: require.toUrl("imagery/ui/discover/assets/images/stepArrow.png"),
                 firstSearchByBoundsDisplay: true,
@@ -19,6 +20,8 @@ define([
                     upload: "upload",
                     none: "none"
                 },
+                spatialVisible: ko.observable(true),
+                metadataVisible: ko.observable(false),
                 selectToolText: ko.observable("Select a tool to discover imagery"),
                 selectedPointUnits: ko.observable(""),
 
@@ -79,6 +82,14 @@ define([
 
                     }
                     this._toggleView(this.views.bounds);
+                },
+                showSpatial: function () {
+                    this.spatialVisible(true);
+                    this.metadataVisible(false)
+                },
+                showMetadata: function () {
+                    this.spatialVisible(false);
+                    this.metadataVisible(true)
                 },
                 _toggleView: function (view) {
                     var oldView = this.currentView();

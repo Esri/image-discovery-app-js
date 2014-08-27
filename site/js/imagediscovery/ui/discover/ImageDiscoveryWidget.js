@@ -1,34 +1,37 @@
 define([
-    "dojo/_base/declare",
-    "dojo/text!./template/ImageDiscoveryTemplate.html",
-    // "xstyle/css!./theme/ImageDiscoveryTheme.css",
-    "dojo/topic",
-    "dojo/has",
-    'dijit/layout/ContentPane',
-    "dojo/_base/lang",
-    "esriviewer/ui/base/UITemplatedWidget",
-    "esriviewer/ui/draw/base/MapDrawSupport",
-    "dojo/_base/Color",
-    "../discover/upload/GeometryUploadWidget",
-    "./SearchByBoundsWidget",
-    "../query/ImageQueryWidget",
-    "./model/ImageDiscoveryViewModel",
-    "dijit/form/NumberTextBox",
-    "esri/symbols/SimpleFillSymbol",
-    "esri/symbols/SimpleMarkerSymbol",
-    "esri/symbols/SimpleLineSymbol",
-    "esri/graphic",
-    "esri/geometry/Geometry",
-    "esri/geometry/Point",
-    "esri/geometry/Polygon",
-    "esri/geometry/Extent",
-    "../../base/ImageQueryLayerControllerQueryParameters"
-],
+        "dojo/_base/declare",
+        "dojo/text!./template/ImageDiscoveryTemplate.html",
+        // "xstyle/css!./theme/ImageDiscoveryTheme.css",
+        "dojo/topic",
+        "dojo/has",
+        'dijit/layout/ContentPane',
+        "dojo/_base/lang",
+        "esriviewer/ui/base/UITemplatedWidget",
+        "esriviewer/ui/draw/base/MapDrawSupport",
+        "dojo/_base/Color",
+        "../discover/upload/GeometryUploadWidget",
+        "./SearchByBoundsWidget",
+        "../query/ImageQueryWidget",
+        "./model/ImageDiscoveryViewModel",
+        "dijit/form/NumberTextBox",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/graphic",
+        "esri/geometry/Geometry",
+        "esri/geometry/Point",
+        "esri/geometry/Polygon",
+        "esri/geometry/Polyline",
+        "esri/geometry/Extent",
+        "../../base/ImageQueryLayerControllerQueryParameters",
+        "./base/SearchByMetadata"
+    ],
     //  function (declare, template, theme, topic, has, ContentPane, lang,   UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
-    function (declare, template, topic, has, ContentPane, lang, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Extent, ImageQueryLayerControllerQueryParameters) {
+    function (declare, template, topic, has, ContentPane, lang, UITemplatedWidget, MapDrawSupport, Color, GeometryUploadWidget, SearchByBoundsWidget, ImageQueryWidget, ImageDiscoveryViewModel, NumberTextBox, SimpleFillSymbol, SimpleMarkerSymbol, SimpleLineSymbol, Graphic, Geometry, Point, Polygon, Polyline, Extent, ImageQueryLayerControllerQueryParameters, SearchByMetadata) {
         return declare(
             [ContentPane, UITemplatedWidget, MapDrawSupport],
             {
+                metadataSearchEnabled: false,
                 createQueryFieldsDiscoveryContent: false,
                 title: "Discover",
                 templateString: template,
@@ -37,11 +40,10 @@ define([
                 },
                 postCreate: function () {
                     this.inherited(arguments);
-
-
                     this.searchByGeometryGeometryQueryErrorback = lang.hitch(this, this.handleSearchByGeometryGeometryQueryError);
                     this.performSearchCallback = lang.hitch(this, this.performSearch);
                     this.viewModel = new ImageDiscoveryViewModel();
+                    this.viewModel.metadataSearchEnabled(this.metadataSearchEnabled);
                     this.viewModel.on("firstBoundsDisplay", lang.hitch(this, this.createBoundsView));
                     this.viewModel.on("viewChange", lang.hitch(this, this.handleViewChanged));
                     this.viewModel.discoverByFieldsExpanded.subscribe(lang.hitch(this, this.handleDiscoveryByFieldsToggle));
@@ -59,6 +61,11 @@ define([
                     if (this.createQueryFieldsDiscoveryContent) {
                         this.createQueryView();
                     }
+
+                    this.metadataSearch = new SearchByMetadata();
+                    this.metadataSearch.on("searchByGeometry", lang.hitch(this, this.searchByMetadataGeometry));
+                    this.metadataSearch.placeAt(this.metadataSearchContainer);
+
                 },
                 /**
                  * toggle the view for searching by field value in the discovery widget
@@ -81,7 +88,7 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.COMPLETE, lang.hitch(this, this.handleSearchComplete));
                 },
                 handleSearchComplete: function () {
-                   //todo: this.viewModel.searchInProgress(false);
+                    //todo: this.viewModel.searchInProgress(false);
                 },
                 /**
                  * called when the search service has changed in the service select box
@@ -112,7 +119,7 @@ define([
                         imageDiscoveryQueryFieldsUniqueValuesConfig = imageDiscoveryQueryFieldsUniqueValuesConf;
                     });
                     if (imageDiscoveryQueryFieldsUniqueValuesConfig != null && lang.isObject(imageDiscoveryQueryFieldsUniqueValuesConfig)) {
-                        this.imageQueryWidget.populateDefaultValues(queryLayerControllers,imageDiscoveryQueryFieldsUniqueValuesConfig);
+                        this.imageQueryWidget.populateDefaultValues(queryLayerControllers, imageDiscoveryQueryFieldsUniqueValuesConfig);
                     }
                     if (queryLayerControllers.length == 1) {
                         this.viewModel.selectSearchServiceVisible(false);
@@ -155,6 +162,13 @@ define([
                     if (discoveryGeometryUploadConfiguration != null && lang.isObject(discoveryGeometryUploadConfiguration)) {
                         this.discoverGeometryUploadTaskConfiguration = discoveryGeometryUploadConfiguration;
                     }
+                    var metadataSearchConfig = null;
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageQueryMetadataConfiguration", function (metadataSearchConf) {
+                        metadataSearchConfig = metadataSearchConf;
+                    });
+                    this.metadataSearchEnabled = (metadataSearchConfig && metadataSearchConfig.enabled);
+
+
                     var discoveryQueryFields = null;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "imageDiscoveryQueryFields", function (discoveryQueryFieldsConf) {
                         discoveryQueryFields = discoveryQueryFieldsConf;
@@ -181,6 +195,8 @@ define([
                     this.pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_X, 1,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                             new Color("blue")));
+                    this.polylineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+                        new Color([0, 0, 255]), 1);
 
                     this.envelopeSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
@@ -218,6 +234,9 @@ define([
                         return;
                     }
                     this.performSearch(mapExtent, false);
+                },
+                searchByMetadataGeometry: function (geometry) {
+                    this.performSearch(geometry, false);
                 },
                 /**
                  * performs a search based on the current selected discovery widget
@@ -269,6 +288,9 @@ define([
                         else if (searchObject instanceof Polygon) {
                             graphic = new Graphic(searchObject, this.polygonSymbol);
                         }
+                        else if (searchObject instanceof Polyline) {
+                            graphic = new Graphic(searchObject, this.polylineSymbol);
+                        }
                         else if (searchObject instanceof Extent) {
                             graphic = new Graphic(searchObject, this.polygonSymbol);
                         }
@@ -276,7 +298,7 @@ define([
                             searchGraphic = graphic;
                         }
                     }
-                 //todo:   this.viewModel.searchInProgress(true);
+                    //todo:   this.viewModel.searchInProgress(true);
                     imageQueryParameters.geometry = searchGraphic.geometry;
                     imageQueryParameters.errback = this.searchByGeometryGeometryQueryErrorback;
                     topic.publish(IMAGERY_GLOBALS.EVENTS.QUERY.SEARCH.GEOMETRY, imageQueryParameters);

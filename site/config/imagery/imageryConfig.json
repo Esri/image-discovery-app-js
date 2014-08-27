@@ -52,11 +52,6 @@
             }
         ],
         "operationalLayers": [
-            {
-                "type": "image",
-                "url": "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/CaliforniaDEM/ImageServer"
-
-            }
         ],
         "legend": {
             "create": true

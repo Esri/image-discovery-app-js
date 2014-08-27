@@ -1,0 +1,10 @@
+{
+    "searchService":{
+        "url": "http://someServer/arcgis/rest/services/Name/MapServer/0"
+    },
+    "queryField": "SomeQueryField",
+    "data":[
+        {"name":"1"},
+        {"name":"2"}
+
+]}
