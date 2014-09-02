@@ -1,10 +1,4263 @@
 {
-    "searchService":{
-        "url": "http://someServer/arcgis/rest/services/Name/MapServer/0"
-    },
-    "queryField": "SomeQueryField",
-    "data":[
-        {"name":"1"},
-        {"name":"2"}
-
-]}
+    "metadataLayers": [
+        {
+            "layerUrl": "http://rickyr.esri.com:6080/arcgis/rest/services/Tline2/MapServer/0",
+            "label": "Overhead",
+            "queryField": "TLINE_NM",
+            "data": [
+                {
+                    "name": "00000 SPARE T-LINE RECORD"
+                },
+                {
+                    "name": "00000 SPARE TLINE RECORD"
+                },
+                {
+                    "name": "10404 WHISMAN-MONTA VISTA+"
+                },
+                {
+                    "name": "60017 CARIBOU-PLUMAS JCT"
+                },
+                {
+                    "name": "60095 HAMILTON BRANCH-CHESTER"
+                },
+                {
+                    "name": "60107 HUMBOLDT-EUREKA"
+                },
+                {
+                    "name": "60137 LOCKEFORD-INDUSTRIAL"
+                },
+                {
+                    "name": "60195 SAN RAMON-RADUM+"
+                },
+                {
+                    "name": "60409 DEL MONTE-FORT ORD #1+ (NO FLY)"
+                },
+                {
+                    "name": "60410 DEL MONTE-FT ORD #2 (NO FLY)"
+                },
+                {
+                    "name": "60413 CLAY-MARTEL"
+                },
+                {
+                    "name": "7TH STANDARD-KERN"
+                },
+                {
+                    "name": "ADOBE SW STA-LAMONT"
+                },
+                {
+                    "name": "AEC SITE #1 TAP+"
+                },
+                {
+                    "name": "AEC SITE #2 TAP+"
+                },
+                {
+                    "name": "AGNEW TAP (IDLE)"
+                },
+                {
+                    "name": "AIR PRODUCTS TAP"
+                },
+                {
+                    "name": "ALMADEN-LOS GATOS"
+                },
+                {
+                    "name": "ALMENDRA JCT-NICOLAUS+"
+                },
+                {
+                    "name": "AMD TAP"
+                },
+                {
+                    "name": "AMERIGAS TAP"
+                },
+                {
+                    "name": "AMES DISTRIBUTION-AMES+"
+                },
+                {
+                    "name": "AMFOR TAP"
+                },
+                {
+                    "name": "ANTELOPE TAP"
+                },
+                {
+                    "name": "APPLE HILL #1 TAP"
+                },
+                {
+                    "name": "APPLE HILL #2 TAP"
+                },
+                {
+                    "name": "APPLIED MATERIALS-BRITTON+"
+                },
+                {
+                    "name": "ARBUCKLE TAP"
+                },
+                {
+                    "name": "ARBURUA TAP"
+                },
+                {
+                    "name": "ARCATA-HUMBOLDT"
+                },
+                {
+                    "name": "ARCO-CARNERAS"
+                },
+                {
+                    "name": "ARCO-CHOLAME"
+                },
+                {
+                    "name": "ARCO-MIDWAY"
+                },
+                {
+                    "name": "ARCO-POLONIO PASS PP"
+                },
+                {
+                    "name": "ARCO-TULARE LAKE"
+                },
+                {
+                    "name": "ARCO-TWISSELMAN"
+                },
+                {
+                    "name": "ARMSTRONG TAP"
+                },
+                {
+                    "name": "ARVIN-EDISON TAP"
+                },
+                {
+                    "name": "ATASCADERO-CAYUCOS"
+                },
+                {
+                    "name": "ATASCADERO-SAN LUIS OBISPO+"
+                },
+                {
+                    "name": "ATLANTIC-GOLD HILL+"
+                },
+                {
+                    "name": "ATLANTIC-PLEASANT GROVE #1"
+                },
+                {
+                    "name": "ATLANTIC-PLEASANT GROVE #2"
+                },
+                {
+                    "name": "ATWATER-CRESSEY"
+                },
+                {
+                    "name": "ATWATER-EL CAPITAN+"
+                },
+                {
+                    "name": "ATWATER-MERCED+"
+                },
+                {
+                    "name": "AUBERRY TAP"
+                },
+                {
+                    "name": "AUBURN TAP"
+                },
+                {
+                    "name": "AVENAL TAP"
+                },
+                {
+                    "name": "BADGER CREEK (PSE) TAP"
+                },
+                {
+                    "name": "BADGER HILL TAP"
+                },
+                {
+                    "name": "BAHIA-MORAGA+"
+                },
+                {
+                    "name": "BAIR-BELMONT"
+                },
+                {
+                    "name": "BAIR-COOLEY LANDING #1"
+                },
+                {
+                    "name": "BAIR-COOLEY LANDING #2"
+                },
+                {
+                    "name": "BAKERSFIELD #1 TAP+"
+                },
+                {
+                    "name": "BAKERSFIELD #2 TAP+"
+                },
+                {
+                    "name": "BALCH-MCCALL"
+                },
+                {
+                    "name": "BALCH-SANGER"
+                },
+                {
+                    "name": "BARKER SLOUGH TAP"
+                },
+                {
+                    "name": "BARTON-AIRWAYS-SANGER+"
+                },
+                {
+                    "name": "BASALT #1 TAP"
+                },
+                {
+                    "name": "BEALE AFB (WAPA) #1 TAP"
+                },
+                {
+                    "name": "BEALE AFB (WAPA) #2 TAP"
+                },
+                {
+                    "name": "BEAR MTN TAP"
+                },
+                {
+                    "name": "BEARDSLEY TAP"
+                },
+                {
+                    "name": "BELDEN TAP"
+                },
+                {
+                    "name": "BELL-PLACER+"
+                },
+                {
+                    "name": "BELLE HAVEN #1 TAP"
+                },
+                {
+                    "name": "BELLE HAVEN #2 TAP"
+                },
+                {
+                    "name": "BELLOTA-COTTLE"
+                },
+                {
+                    "name": "BELLOTA-RIVERBANK-MELONES SW STA+"
+                },
+                {
+                    "name": "BELLOTA-RIVERBANK+"
+                },
+                {
+                    "name": "BELLOTA-TESLA #2"
+                },
+                {
+                    "name": "BELLOTA-WARNERVILLE+"
+                },
+                {
+                    "name": "BELLOTA-WEBER+"
+                },
+                {
+                    "name": "BELRIDGE TAP"
+                },
+                {
+                    "name": "BERRENDA A TAP"
+                },
+                {
+                    "name": "BERRENDA C TAP"
+                },
+                {
+                    "name": "BIG BEND-CLAYTON #1 (IDLE)"
+                },
+                {
+                    "name": "BIG BEND-CLAYTON #2 (IDLE)"
+                },
+                {
+                    "name": "BIRDS LANDING SW STA-CONTRA COSTA PP"
+                },
+                {
+                    "name": "BIRDS LANDING SW STA-CONTRA COSTA SUB"
+                },
+                {
+                    "name": "BIRDS LANDING SW STA-RUSSELL"
+                },
+                {
+                    "name": "BIRDS LANDING SW STA-SHILOH"
+                },
+                {
+                    "name": "BIXLER TAP"
+                },
+                {
+                    "name": "BLACK TAP+"
+                },
+                {
+                    "name": "BLUE CHIP MILLING TAP"
+                },
+                {
+                    "name": "BLUE LAKE TAP+"
+                },
+                {
+                    "name": "BOGUE-RIO OSO+"
+                },
+                {
+                    "name": "BOLLMAN #1 TAP"
+                },
+                {
+                    "name": "BOLLMAN #2 TAP"
+                },
+                {
+                    "name": "BOLTHOUSE FARMS TAP"
+                },
+                {
+                    "name": "BONITA TAP"
+                },
+                {
+                    "name": "BORDEN-COPPERMINE"
+                },
+                {
+                    "name": "BORDEN-GLASS"
+                },
+                {
+                    "name": "BORDEN-GREGG+"
+                },
+                {
+                    "name": "BORDEN-MADERA #1"
+                },
+                {
+                    "name": "BORDEN-MADERA #2"
+                },
+                {
+                    "name": "BOSWELL TAP"
+                },
+                {
+                    "name": "BOTTLE ROCK TAP D.W.R."
+                },
+                {
+                    "name": "BRENTWOOD-KELSO+"
+                },
+                {
+                    "name": "BRICEBURG JCT-MARIPOSA TAP+"
+                },
+                {
+                    "name": "BRIDGEVILLE-COTTONWOOD+"
+                },
+                {
+                    "name": "BRIDGEVILLE-GARBERVILLE"
+                },
+                {
+                    "name": "BRIGHTON-BELLOTA+"
+                },
+                {
+                    "name": "BRIGHTON-CLAYTON #1 (IDLE)"
+                },
+                {
+                    "name": "BRIGHTON-CLAYTON #2 (IDLE)"
+                },
+                {
+                    "name": "BRIGHTON-DAVIS"
+                },
+                {
+                    "name": "BRIGHTON-DAVIS (IDLE)"
+                },
+                {
+                    "name": "BRIGHTON-GRAND ISLAND #1+"
+                },
+                {
+                    "name": "BRIGHTON-GRAND ISLAND #2+"
+                },
+                {
+                    "name": "BRIGHTON-OLEUM JCT (IDLE)"
+                },
+                {
+                    "name": "BRIONES TAP"
+                },
+                {
+                    "name": "BRITTON-MONTA VISTA+"
+                },
+                {
+                    "name": "BRUNSWICK #1 TAP"
+                },
+                {
+                    "name": "BRUNSWICK #2 TAP"
+                },
+                {
+                    "name": "BUCKS CREEK-ROCK CREEK-CRESTA+"
+                },
+                {
+                    "name": "BUELLTON TAP"
+                },
+                {
+                    "name": "BUENA VISTA BIOMASS POWER TAP"
+                },
+                {
+                    "name": "BUENA VISTA PUMPING PLANT #1 TAP"
+                },
+                {
+                    "name": "BUENA VISTA PUMPING PLANT #2 TAP"
+                },
+                {
+                    "name": "BURNEY FOREST PRODUCTS TAP"
+                },
+                {
+                    "name": "BURNEY TAP"
+                },
+                {
+                    "name": "BURNS-LONE STAR #1"
+                },
+                {
+                    "name": "BURNS-LONE STAR #2"
+                },
+                {
+                    "name": "BUTT VALLEY-CARIBOU"
+                },
+                {
+                    "name": "BUTTE-CHICO #1"
+                },
+                {
+                    "name": "BUTTE-CHICO #2"
+                },
+                {
+                    "name": "BUTTE-ESQUON+"
+                },
+                {
+                    "name": "BUTTE-SYCAMORE CREEK+"
+                },
+                {
+                    "name": "CABRILLO-SANTA YNEZ SW STA"
+                },
+                {
+                    "name": "CACHE SLOUGH TAP"
+                },
+                {
+                    "name": "CADET TAP"
+                },
+                {
+                    "name": "CAL PEAK-VACA"
+                },
+                {
+                    "name": "CAL WATER TAP"
+                },
+                {
+                    "name": "CALIENTE SW STA-MIDWAY #1"
+                },
+                {
+                    "name": "CALIENTE SW STA-MIDWAY #2"
+                },
+                {
+                    "name": "CALIF AVE-KEARNEY"
+                },
+                {
+                    "name": "CALIFORNIA AVE-MCCALL"
+                },
+                {
+                    "name": "CALLENDAR SW STA-MESA+"
+                },
+                {
+                    "name": "CALPINE-DELTA ENERGY CENTER (CALPINE)"
+                },
+                {
+                    "name": "CALVO TAP"
+                },
+                {
+                    "name": "CAMANCHE PUMPING PLANT TAP"
+                },
+                {
+                    "name": "CAMANCHE TAP"
+                },
+                {
+                    "name": "CAMDEN-KINGSBURG"
+                },
+                {
+                    "name": "CAMP EVERS-PAUL SWEET"
+                },
+                {
+                    "name": "CANANDAIGUA WINERY TAP"
+                },
+                {
+                    "name": "CANTUA TAP"
+                },
+                {
+                    "name": "CAPE HORN TAP"
+                },
+                {
+                    "name": "CARBERRY SW STA-ROUND MTN"
+                },
+                {
+                    "name": "CARBONA #2 TAP"
+                },
+                {
+                    "name": "CARIBOU-PALERMO+"
+                },
+                {
+                    "name": "CARIBOU-PLUMAS JCT+"
+                },
+                {
+                    "name": "CARIBOU-TABLE MOUNTAIN"
+                },
+                {
+                    "name": "CARIBOU-WESTWOOD"
+                },
+                {
+                    "name": "CARIBOU #2+"
+                },
+                {
+                    "name": "CARNATION TAP"
+                },
+                {
+                    "name": "CARNERAS-TAFT"
+                },
+                {
+                    "name": "CARQUINEZ #1 TAP"
+                },
+                {
+                    "name": "CARQUINEZ #2 TAP"
+                },
+                {
+                    "name": "CARRIZO PLAINS TAP"
+                },
+                {
+                    "name": "CARUTHERS-LEMOORE NAS-CAMDEN"
+                },
+                {
+                    "name": "CASCADE-BENTON-DESCHUTES+"
+                },
+                {
+                    "name": "CASCADE-COTTONWOOD+"
+                },
+                {
+                    "name": "CASTAIC TAP"
+                },
+                {
+                    "name": "CASTRO VALLEY-NEWARK+"
+                },
+                {
+                    "name": "CAWELO B TAP"
+                },
+                {
+                    "name": "CAWELO C TAP"
+                },
+                {
+                    "name": "CAYUCOS-CAMBRIA"
+                },
+                {
+                    "name": "CELERON TAP"
+                },
+                {
+                    "name": "CENTERVILLE-TABLE MTN-OROVILLE+"
+                },
+                {
+                    "name": "CENTERVILLE-TABLE MTN+"
+                },
+                {
+                    "name": "CERTAINTEED TAP"
+                },
+                {
+                    "name": "CHARCA-FAMOSO"
+                },
+                {
+                    "name": "CHENEY #1 TAP"
+                },
+                {
+                    "name": "CHENEY #2 TAP"
+                },
+                {
+                    "name": "CHEVRON (LOST HILLS) TAP+"
+                },
+                {
+                    "name": "CHEVRON PIPELINE KETTLEMAN TAP"
+                },
+                {
+                    "name": "CHICO A-DAYTON ROAD (IDLE)"
+                },
+                {
+                    "name": "CHINESE CAMP (ULTRA POWER) TAP"
+                },
+                {
+                    "name": "CHOWCHILLA-KERCKHOFF+"
+                },
+                {
+                    "name": "CHOWCHILLA #1 TAP+"
+                },
+                {
+                    "name": "CHRISTIE-FRANKLIN #1+"
+                },
+                {
+                    "name": "CHRISTIE-FRANKLIN #2+"
+                },
+                {
+                    "name": "CHRISTIE-SOBRANTE+"
+                },
+                {
+                    "name": "CHRISTIE-WILLOW PASS+"
+                },
+                {
+                    "name": "CHUALAR TAP (IDLE)"
+                },
+                {
+                    "name": "CIC TAP"
+                },
+                {
+                    "name": "CISCO GROVE TAP"
+                },
+                {
+                    "name": "CITY #1 TAP"
+                },
+                {
+                    "name": "CITY #2 TAP"
+                },
+                {
+                    "name": "CLAY-MARTEL"
+                },
+                {
+                    "name": "CLAYTON-MEADOW LANE"
+                },
+                {
+                    "name": "CLEAR LAKE-HOPLAND+"
+                },
+                {
+                    "name": "CLEAR LAKE-KONOCTI"
+                },
+                {
+                    "name": "CLOVER CREEK TAP"
+                },
+                {
+                    "name": "COALINGA #1-COALINGA #2"
+                },
+                {
+                    "name": "COALINGA #1-SAN MIGUEL+"
+                },
+                {
+                    "name": "COALINGA COGEN TAP"
+                },
+                {
+                    "name": "COBURN-BASIC ENERGY"
+                },
+                {
+                    "name": "COBURN-OILFIELDS #1"
+                },
+                {
+                    "name": "COBURN-OILFIELDS #2"
+                },
+                {
+                    "name": "COBURN-PANOCHE+"
+                },
+                {
+                    "name": "COGENERATION NATIONAL TAP"
+                },
+                {
+                    "name": "COLEMAN-COTTONWOOD"
+                },
+                {
+                    "name": "COLEMAN-RED BLUFF+"
+                },
+                {
+                    "name": "COLEMAN-SOUTH+"
+                },
+                {
+                    "name": "COLEMAN HATCHERY TAP"
+                },
+                {
+                    "name": "COLES LEVEE TAP"
+                },
+                {
+                    "name": "COLGATE-ALLEGHANY"
+                },
+                {
+                    "name": "COLGATE-CHALLENGE"
+                },
+                {
+                    "name": "COLGATE-GRASS VALLEY"
+                },
+                {
+                    "name": "COLGATE-PALERMO"
+                },
+                {
+                    "name": "COLGATE-RIO OSO+"
+                },
+                {
+                    "name": "COLGATE-SMARTVILLE #1"
+                },
+                {
+                    "name": "COLGATE-SMARTVILLE #2"
+                },
+                {
+                    "name": "COLGATE PH-COLGATE SW STA"
+                },
+                {
+                    "name": "COLLIERVILLE PH-BELLOTA #1 (NCPA)"
+                },
+                {
+                    "name": "COLLIERVILLE PH-BELLOTA #2 (NCPA)"
+                },
+                {
+                    "name": "COLLINS PINE TAP+"
+                },
+                {
+                    "name": "COLUSA JCT #1+"
+                },
+                {
+                    "name": "CONTRA COSTA-BALFOUR+"
+                },
+                {
+                    "name": "CONTRA COSTA-BRENTWOOD+"
+                },
+                {
+                    "name": "CONTRA COSTA-DELTA SWITCHING YARD+"
+                },
+                {
+                    "name": "CONTRA COSTA-DU PONT"
+                },
+                {
+                    "name": "CONTRA COSTA-LAS POSITAS+"
+                },
+                {
+                    "name": "CONTRA COSTA-LONE TREE"
+                },
+                {
+                    "name": "CONTRA COSTA-MORAGA #1+"
+                },
+                {
+                    "name": "CONTRA COSTA-MORAGA #2+"
+                },
+                {
+                    "name": "CONTRA COSTA-PITTSBURG"
+                },
+                {
+                    "name": "CONTRA COSTA-SHELL CHEMICAL #1 (IDLE)"
+                },
+                {
+                    "name": "CONTRA COSTA #1+"
+                },
+                {
+                    "name": "CONTRA COSTA #2+"
+                },
+                {
+                    "name": "CONTRA COSTA PP-CONTRA COSTA SUB"
+                },
+                {
+                    "name": "COOLEY LANDING-LOS ALTOS+"
+                },
+                {
+                    "name": "COOLEY LANDING-PALO ALTO"
+                },
+                {
+                    "name": "COOLEY LANDING-STANFORD"
+                },
+                {
+                    "name": "COPPERMINE-TIVY VALLEY+"
+                },
+                {
+                    "name": "COPUS-OLD RIVER"
+                },
+                {
+                    "name": "CORCORAN-ANGIOLA"
+                },
+                {
+                    "name": "CORCORAN-GUERNSEY+"
+                },
+                {
+                    "name": "CORCORAN-OLIVE SW STA"
+                },
+                {
+                    "name": "CORCORAN-SMYRNA+"
+                },
+                {
+                    "name": "CORDELIA #1 TAP"
+                },
+                {
+                    "name": "CORDELIA #2 TAP"
+                },
+                {
+                    "name": "CORDELIA INTERIM PUMPING PLANT TAP"
+                },
+                {
+                    "name": "CORONA-LAKEVILLE+"
+                },
+                {
+                    "name": "CORTINA-MENDOCINO #1"
+                },
+                {
+                    "name": "CORTINA-VACA+"
+                },
+                {
+                    "name": "CORTINA #1+"
+                },
+                {
+                    "name": "CORTINA #2+"
+                },
+                {
+                    "name": "CORTINA #3+"
+                },
+                {
+                    "name": "CORTINA #4+"
+                },
+                {
+                    "name": "COTTLE-MELONES"
+                },
+                {
+                    "name": "COTTONWOOD-BENTON #1"
+                },
+                {
+                    "name": "COTTONWOOD-BENTON #2"
+                },
+                {
+                    "name": "COTTONWOOD-DELEVAN #1"
+                },
+                {
+                    "name": "COTTONWOOD-DELEVAN #2"
+                },
+                {
+                    "name": "COTTONWOOD-GLENN+"
+                },
+                {
+                    "name": "COTTONWOOD-LOGAN CREEK+"
+                },
+                {
+                    "name": "COTTONWOOD-PANORAMA"
+                },
+                {
+                    "name": "COTTONWOOD-RED BLUFF+"
+                },
+                {
+                    "name": "COTTONWOOD #1+"
+                },
+                {
+                    "name": "COTTONWOOD #2+"
+                },
+                {
+                    "name": "COVE ROAD TAP"
+                },
+                {
+                    "name": "COYOTE SW STA-METCALF"
+                },
+                {
+                    "name": "CRAG VIEW-CASCADE+"
+                },
+                {
+                    "name": "CRESTA-RIO OSO+"
+                },
+                {
+                    "name": "CROWS LANDING TAP"
+                },
+                {
+                    "name": "CRUSHER TAP"
+                },
+                {
+                    "name": "CRYSTAL SPRINGS TAP"
+                },
+                {
+                    "name": "CYMRIC TAP"
+                },
+                {
+                    "name": "DAIRYLAND-MENDOTA"
+                },
+                {
+                    "name": "DANISH CREAMERY TAP"
+                },
+                {
+                    "name": "DE FRANCESCO TAP"
+                },
+                {
+                    "name": "DEAN FOODS TAP"
+                },
+                {
+                    "name": "DECOTO TAP (IDLE)"
+                },
+                {
+                    "name": "DEEPWATER #1 TAP"
+                },
+                {
+                    "name": "DEEPWATER #2 TAP"
+                },
+                {
+                    "name": "DEER CREEK-DRUM"
+                },
+                {
+                    "name": "DEL MAR-ATLANTIC #1"
+                },
+                {
+                    "name": "DEL MAR-ATLANTIC #2"
+                },
+                {
+                    "name": "DEL MONTE-FORT ORD #1"
+                },
+                {
+                    "name": "DEL MONTE-FORT ORD #2"
+                },
+                {
+                    "name": "DEL MONTE-MONTEREY"
+                },
+                {
+                    "name": "DEL MONTE-VIEJO+"
+                },
+                {
+                    "name": "DELEVAN-CORTINA"
+                },
+                {
+                    "name": "DELEVAN-VACA #1"
+                },
+                {
+                    "name": "DELEVAN-VACA #2"
+                },
+                {
+                    "name": "DELEVAN-VACA #3"
+                },
+                {
+                    "name": "DELTA-MOUNTAIN GATE JCT+"
+                },
+                {
+                    "name": "DELTA SWITCHING YARD-TESLA+"
+                },
+                {
+                    "name": "DERRICK TAP"
+                },
+                {
+                    "name": "DESABLA-CENTERVILLE+"
+                },
+                {
+                    "name": "DIABLO-GATES #1"
+                },
+                {
+                    "name": "DIABLO-MESA"
+                },
+                {
+                    "name": "DIABLO-MIDWAY #2"
+                },
+                {
+                    "name": "DIABLO-MIDWAY #3"
+                },
+                {
+                    "name": "DIABLO PP STARTUP"
+                },
+                {
+                    "name": "DIABLO UNIT #1"
+                },
+                {
+                    "name": "DIABLO UNIT #2"
+                },
+                {
+                    "name": "DINOSAUR POINT TAP"
+                },
+                {
+                    "name": "DINUBA-OROSI+"
+                },
+                {
+                    "name": "DINUBA ENERGY TAP"
+                },
+                {
+                    "name": "DISCOVERY TAP"
+                },
+                {
+                    "name": "DISTRICT 1001 TAP"
+                },
+                {
+                    "name": "DISTRICT 1500 TAP"
+                },
+                {
+                    "name": "DIVIDE-CABRILLO #1"
+                },
+                {
+                    "name": "DIVIDE-CABRILLO #2"
+                },
+                {
+                    "name": "DIVIDE-VANDENBERG #1"
+                },
+                {
+                    "name": "DIVIDE-VANDENBERG #2"
+                },
+                {
+                    "name": "DIVIDE-ZACA-LOMPOC"
+                },
+                {
+                    "name": "DIXON-VACA #1+"
+                },
+                {
+                    "name": "DIXON-VACA #2+"
+                },
+                {
+                    "name": "DIXON LANDING-MCKEE+"
+                },
+                {
+                    "name": "DOLAN ROAD #1 TAP"
+                },
+                {
+                    "name": "DOLAN ROAD #2 TAP"
+                },
+                {
+                    "name": "DONNELLS-CURTIS"
+                },
+                {
+                    "name": "DOS AMIGOS PUMPING PLANT-PANOCHE+"
+                },
+                {
+                    "name": "DOUBLE C (PSE) TAP"
+                },
+                {
+                    "name": "DRUM-GRASS VALLEY-WEIMAR+"
+                },
+                {
+                    "name": "DRUM-HIGGINS"
+                },
+                {
+                    "name": "DRUM-RIO OSO #1"
+                },
+                {
+                    "name": "DRUM-RIO OSO #2"
+                },
+                {
+                    "name": "DRUM-SPAULDING"
+                },
+                {
+                    "name": "DRUM-SUMMIT #1"
+                },
+                {
+                    "name": "DRUM-SUMMIT #2"
+                },
+                {
+                    "name": "DRUM PH #2 TAP"
+                },
+                {
+                    "name": "DU PONT TAP"
+                },
+                {
+                    "name": "DUMBARTON-NEWARK+"
+                },
+                {
+                    "name": "DUNLAP TAP"
+                },
+                {
+                    "name": "DUTCH FLAT PH #2 TAP"
+                },
+                {
+                    "name": "EAGLE ROCK-CORTINA+"
+                },
+                {
+                    "name": "EAGLE ROCK-FULTON-SILVERADO"
+                },
+                {
+                    "name": "EAGLE ROCK-REDBUD+"
+                },
+                {
+                    "name": "EAST GRAND-SAN MATEO+"
+                },
+                {
+                    "name": "EASTSHORE-CERBERUS"
+                },
+                {
+                    "name": "EASTSHORE-DUMBARTON+"
+                },
+                {
+                    "name": "EASTSHORE-MT EDEN #1+"
+                },
+                {
+                    "name": "EASTSHORE-MT EDEN #2+"
+                },
+                {
+                    "name": "EASTSHORE-SAN MATEO+"
+                },
+                {
+                    "name": "EBMUD TAP"
+                },
+                {
+                    "name": "EDES #1 TAP"
+                },
+                {
+                    "name": "EDES #2 TAP"
+                },
+                {
+                    "name": "EEL RIVER TAP"
+                },
+                {
+                    "name": "EIGHT MILE ROAD-STAGG+"
+                },
+                {
+                    "name": "EIGHT MILE ROAD-TESLA+"
+                },
+                {
+                    "name": "EISEN TAP"
+                },
+                {
+                    "name": "EL CAPITAN-WILSON+"
+                },
+                {
+                    "name": "EL DORADO-MISSOURI FLAT #1+"
+                },
+                {
+                    "name": "EL DORADO-MISSOURI FLAT #2+"
+                },
+                {
+                    "name": "EL PATIO-SAN JOSE A+"
+                },
+                {
+                    "name": "EL PECO TAP"
+                },
+                {
+                    "name": "ELECTRA-BELLOTA+"
+                },
+                {
+                    "name": "ELK-GUALALA+"
+                },
+                {
+                    "name": "ELK CREEK TAP"
+                },
+                {
+                    "name": "ELLIS TAP"
+                },
+                {
+                    "name": "EMIDIO TAP"
+                },
+                {
+                    "name": "ENCINAL TAP"
+                },
+                {
+                    "name": "ESSEX JCT-ARCATA-FAIRHAVEN+"
+                },
+                {
+                    "name": "ESSEX JCT-ORICK"
+                },
+                {
+                    "name": "EUREKA-STA A"
+                },
+                {
+                    "name": "EVERGREEN-ALMADEN"
+                },
+                {
+                    "name": "EVERGREEN-MABURY"
+                },
+                {
+                    "name": "EXCHEQUER-LE GRAND"
+                },
+                {
+                    "name": "EXCHEQUER-MARIPOSA"
+                },
+                {
+                    "name": "EXCHEQUER-YOSEMITE"
+                },
+                {
+                    "name": "FAIRHAVEN-HUMBOLDT+"
+                },
+                {
+                    "name": "FAIRHAVEN #1+"
+                },
+                {
+                    "name": "FAIRHAVEN POWER CO TAP"
+                },
+                {
+                    "name": "FAIRWAY #1 TAP"
+                },
+                {
+                    "name": "FAIRWAY #2 TAP"
+                },
+                {
+                    "name": "FELLOWS-MIDSUN+"
+                },
+                {
+                    "name": "FELLOWS-TAFT+"
+                },
+                {
+                    "name": "FIBREBOARD STANDARD TAP"
+                },
+                {
+                    "name": "FIBREBOARD TAP"
+                },
+                {
+                    "name": "FITCH MOUNTAIN #1 TAP"
+                },
+                {
+                    "name": "FITCH MOUNTAIN #2 TAP"
+                },
+                {
+                    "name": "FLINT TAP"
+                },
+                {
+                    "name": "FMC-SAN JOSE B"
+                },
+                {
+                    "name": "FORBESTOWN TAP"
+                },
+                {
+                    "name": "FORKS OF THE BUTTE TAP"
+                },
+                {
+                    "name": "FORT BRAGG-ELK"
+                },
+                {
+                    "name": "FORT SEWARD TAP"
+                },
+                {
+                    "name": "FREC-BOGUE"
+                },
+                {
+                    "name": "FRENCH MEADOWS-MIDDLE FORK"
+                },
+                {
+                    "name": "FRESH EXPRESS TAP"
+                },
+                {
+                    "name": "FRESNO CO-GEN (Agrico) TAP"
+                },
+                {
+                    "name": "FRIANT-COPPERMINE"
+                },
+                {
+                    "name": "FRITO LAY TAP"
+                },
+                {
+                    "name": "FROGTOWN #1 TAP"
+                },
+                {
+                    "name": "FROGTOWN #2 TAP"
+                },
+                {
+                    "name": "FRUITLAND TAP"
+                },
+                {
+                    "name": "FRUITVALE TAP"
+                },
+                {
+                    "name": "FULTON-CALISTOGA+"
+                },
+                {
+                    "name": "FULTON-HOPLAND+"
+                },
+                {
+                    "name": "FULTON-IGNACIO #1"
+                },
+                {
+                    "name": "FULTON-LAKEVILLE"
+                },
+                {
+                    "name": "FULTON-LAKEVILLE-IGNACIO (IDLE SECTION)"
+                },
+                {
+                    "name": "FULTON-MOLINO-COTATI+"
+                },
+                {
+                    "name": "FULTON-MOLINO-COTATI+ (IDLE)"
+                },
+                {
+                    "name": "FULTON-PUEBLO+"
+                },
+                {
+                    "name": "FULTON-SANTA ROSA #1"
+                },
+                {
+                    "name": "FULTON-SANTA ROSA #2"
+                },
+                {
+                    "name": "FULTON #1+"
+                },
+                {
+                    "name": "FULTON JCT-VACA+"
+                },
+                {
+                    "name": "GALLO TAP+"
+                },
+                {
+                    "name": "GARBERVILLE-LAYTONVILLE"
+                },
+                {
+                    "name": "GARCIA TAP"
+                },
+                {
+                    "name": "GARDNER TAP"
+                },
+                {
+                    "name": "GATES-ARCO+"
+                },
+                {
+                    "name": "GATES-COALINGA #1"
+                },
+                {
+                    "name": "GATES-COALINGA #2"
+                },
+                {
+                    "name": "GATES-GREGG"
+                },
+                {
+                    "name": "GATES-HURON"
+                },
+                {
+                    "name": "GATES-MCCALL"
+                },
+                {
+                    "name": "GATES-MIDWAY"
+                },
+                {
+                    "name": "GATES-MIDWAY+"
+                },
+                {
+                    "name": "GATES-PANOCHE #1"
+                },
+                {
+                    "name": "GATES-PANOCHE #2"
+                },
+                {
+                    "name": "GATES-TULARE LAKE"
+                },
+                {
+                    "name": "GEYSERS #11-EAGLE ROCK"
+                },
+                {
+                    "name": "GEYSERS #12-FULTON+"
+                },
+                {
+                    "name": "GEYSERS #13 TAP"
+                },
+                {
+                    "name": "GEYSERS #16 TAP"
+                },
+                {
+                    "name": "GEYSERS #17-FULTON+"
+                },
+                {
+                    "name": "GEYSERS #18 TAP"
+                },
+                {
+                    "name": "GEYSERS #20 TAP"
+                },
+                {
+                    "name": "GEYSERS #3-CLOVERDALE+"
+                },
+                {
+                    "name": "GEYSERS #3-EAGLE ROCK"
+                },
+                {
+                    "name": "GEYSERS #5-GEYSERS #3"
+                },
+                {
+                    "name": "GEYSERS #7-EAGLE ROCK"
+                },
+                {
+                    "name": "GEYSERS #9-LAKEVILLE+"
+                },
+                {
+                    "name": "GIFFEN TAP"
+                },
+                {
+                    "name": "GILL RANCH TAP"
+                },
+                {
+                    "name": "GILROY ENERGY TAP"
+                },
+                {
+                    "name": "GISH TAP (IDLE LINE)"
+                },
+                {
+                    "name": "GLASS-BIOLA-MADERA"
+                },
+                {
+                    "name": "GLENN-DELEVAN"
+                },
+                {
+                    "name": "GLENN #1+"
+                },
+                {
+                    "name": "GLENN #2+"
+                },
+                {
+                    "name": "GLENN #3+"
+                },
+                {
+                    "name": "GLENN #4+"
+                },
+                {
+                    "name": "GLENN #5+"
+                },
+                {
+                    "name": "GOLD HILL-BELLOTA-LOCKEFORD+"
+                },
+                {
+                    "name": "GOLD HILL-CLARKSVILLE"
+                },
+                {
+                    "name": "GOLD HILL-EIGHT MILE ROAD+"
+                },
+                {
+                    "name": "GOLD HILL-LODI STIG+"
+                },
+                {
+                    "name": "GOLD HILL #1+"
+                },
+                {
+                    "name": "GOLDEN VALLEY TAP"
+                },
+                {
+                    "name": "GOLDTREE TAP"
+                },
+                {
+                    "name": "GONZALES #1 TAP"
+                },
+                {
+                    "name": "GONZALES #2 TAP"
+                },
+                {
+                    "name": "GRANITE ROCK TAP"
+                },
+                {
+                    "name": "GRANT-EASTSHORE #1+"
+                },
+                {
+                    "name": "GRANT-EASTSHORE #2+"
+                },
+                {
+                    "name": "GRAPEVINE TAP"
+                },
+                {
+                    "name": "GREEN VALLEY-CAMP EVERS"
+                },
+                {
+                    "name": "GREEN VALLEY-LLAGAS+"
+                },
+                {
+                    "name": "GREEN VALLEY-PAUL SWEET"
+                },
+                {
+                    "name": "GREEN VALLEY-WATSONVILLE"
+                },
+                {
+                    "name": "GREENLEAF #1 TAP"
+                },
+                {
+                    "name": "GREENLEAF #2 TAP"
+                },
+                {
+                    "name": "GREGG-ASHLAN"
+                },
+                {
+                    "name": "GREGG-HERNDON #1"
+                },
+                {
+                    "name": "GREGG-HERNDON #2"
+                },
+                {
+                    "name": "GRIMMWAY-MALAGA TAP"
+                },
+                {
+                    "name": "GRIZZLY TAP (CITY OF SANTA CLARA)"
+                },
+                {
+                    "name": "GRIZZLY TAP (SVP)"
+                },
+                {
+                    "name": "GRONEMEYER TAP"
+                },
+                {
+                    "name": "GUALALA-MONTE RIO+"
+                },
+                {
+                    "name": "GUARDIAN #1 TAP"
+                },
+                {
+                    "name": "GUARDIAN #2 TAP"
+                },
+                {
+                    "name": "GUERNSEY-HENRIETTA+"
+                },
+                {
+                    "name": "GUSTINE #1 TAP"
+                },
+                {
+                    "name": "GUSTINE #2 TAP"
+                },
+                {
+                    "name": "GWF-HENRIETTA"
+                },
+                {
+                    "name": "GWF-KINGSBURG+"
+                },
+                {
+                    "name": "GWF #1 TAP"
+                },
+                {
+                    "name": "GWF #2 TAP"
+                },
+                {
+                    "name": "GWF #4 TAP"
+                },
+                {
+                    "name": "GWF HANFORD COGEN TAP"
+                },
+                {
+                    "name": "GWF TRACY-SCHULTE SW STA (GWF)"
+                },
+                {
+                    "name": "H-P #3"
+                },
+                {
+                    "name": "HAAS-MCCALL"
+                },
+                {
+                    "name": "HAAS-WOODCHUCK"
+                },
+                {
+                    "name": "HALSEY-PLACER+"
+                },
+                {
+                    "name": "HAMMER-COUNTRY CLUB+"
+                },
+                {
+                    "name": "HARDWICK TAP"
+                },
+                {
+                    "name": "HARRINGTON TAP"
+                },
+                {
+                    "name": "HARTLEY-CLEARLAKE"
+                },
+                {
+                    "name": "HAT CREEK #1-PIT #1"
+                },
+                {
+                    "name": "HAT CREEK #1-WESTWOOD"
+                },
+                {
+                    "name": "HEADGATE TAP"
+                },
+                {
+                    "name": "HEALDSBURG #1 TAP"
+                },
+                {
+                    "name": "HEALDSBURG #2 TAP"
+                },
+                {
+                    "name": "HEINZ TAP"
+                },
+                {
+                    "name": "HELM-KERMAN"
+                },
+                {
+                    "name": "HELM-MCCALL+"
+                },
+                {
+                    "name": "HELM-STROUD"
+                },
+                {
+                    "name": "HELM-STROUD SW STA+"
+                },
+                {
+                    "name": "HELMS-GREGG #1"
+                },
+                {
+                    "name": "HELMS-GREGG #2"
+                },
+                {
+                    "name": "HENRIETTA-GWF+"
+                },
+                {
+                    "name": "HENRIETTA-LEMOORE"
+                },
+                {
+                    "name": "HENRIETTA-LEMOORE NAS+"
+                },
+                {
+                    "name": "HENRIETTA-TULARE LAKE"
+                },
+                {
+                    "name": "HERDLYN-BALFOUR+"
+                },
+                {
+                    "name": "HERDLYN-TRACY+"
+                },
+                {
+                    "name": "HERNDON-ASHLAN"
+                },
+                {
+                    "name": "HERNDON-BARTON+"
+                },
+                {
+                    "name": "HERNDON-BULLARD #1"
+                },
+                {
+                    "name": "HERNDON-BULLARD #2"
+                },
+                {
+                    "name": "HERNDON-KEARNEY"
+                },
+                {
+                    "name": "HERNDON-MANCHESTER+"
+                },
+                {
+                    "name": "HERNDON-WOODWARD"
+                },
+                {
+                    "name": "HERSHEY TAP (IDLE)"
+                },
+                {
+                    "name": "HICKS-METCALF+"
+                },
+                {
+                    "name": "HIGGINS-BELL"
+                },
+                {
+                    "name": "HILLSDALE JCT-HALF MOON BAY"
+                },
+                {
+                    "name": "HOLLISTER TAP"
+                },
+                {
+                    "name": "HONCUT TAP"
+                },
+                {
+                    "name": "HOWLAND ROAD TAP+"
+                },
+                {
+                    "name": "HUMBOLDT-BRIDGEVILLE+"
+                },
+                {
+                    "name": "HUMBOLDT-MAPLE CREEK"
+                },
+                {
+                    "name": "HUMBOLDT-TRINITY+"
+                },
+                {
+                    "name": "HUMBOLDT #1"
+                },
+                {
+                    "name": "HUMBOLDT BAY-EUREKA"
+                },
+                {
+                    "name": "HUMBOLDT BAY-HUMBOLDT #1"
+                },
+                {
+                    "name": "HUMBOLDT BAY-HUMBOLDT #1+"
+                },
+                {
+                    "name": "HUMBOLDT BAY-HUMBOLDT #2"
+                },
+                {
+                    "name": "HUMBOLDT BAY-RIO DELL JCT+"
+                },
+                {
+                    "name": "HYAMPOM TAP (TPUD)"
+                },
+                {
+                    "name": "IBM BAILEY AVE TAP"
+                },
+                {
+                    "name": "IBM HARRY ROAD #1 TAP"
+                },
+                {
+                    "name": "IBM HARRY ROAD #2 TAP"
+                },
+                {
+                    "name": "IDLE LINE"
+                },
+                {
+                    "name": "IDLE LINE - NO DATA"
+                },
+                {
+                    "name": "IGNACIO-ALTO-SAUSALITO #1+"
+                },
+                {
+                    "name": "IGNACIO-ALTO-SAUSALITO #2+"
+                },
+                {
+                    "name": "IGNACIO-ALTO+"
+                },
+                {
+                    "name": "IGNACIO-BOLINAS #1+"
+                },
+                {
+                    "name": "IGNACIO-BOLINAS #2+"
+                },
+                {
+                    "name": "IGNACIO-MARE ISLAND #1+"
+                },
+                {
+                    "name": "IGNACIO-MARE ISLAND #2+"
+                },
+                {
+                    "name": "IGNACIO-SAN RAFAEL #1"
+                },
+                {
+                    "name": "IGNACIO-SAN RAFAEL #3"
+                },
+                {
+                    "name": "IGNACIO-SOBRANTE+"
+                },
+                {
+                    "name": "IMHOFF TAP"
+                },
+                {
+                    "name": "INDUSTRIAL TAP"
+                },
+                {
+                    "name": "INGRAM CREEK TAP"
+                },
+                {
+                    "name": "IONE TAP"
+                },
+                {
+                    "name": "IUKA TAP"
+                },
+                {
+                    "name": "J.R. WOOD #1 TAP"
+                },
+                {
+                    "name": "JAMESON CANYON PUMPING PLANT TAP"
+                },
+                {
+                    "name": "JANES CREEK TAP"
+                },
+                {
+                    "name": "JARVIS-CRYOGENICS"
+                },
+                {
+                    "name": "JEFFERSON-HILLSDALE JCT+"
+                },
+                {
+                    "name": "JEFFERSON-LAS PULGAS"
+                },
+                {
+                    "name": "JEFFERSON-MARTIN"
+                },
+                {
+                    "name": "JEFFERSON-STANFORD"
+                },
+                {
+                    "name": "JEFFERSON #1"
+                },
+                {
+                    "name": "JENNINGS TAP"
+                },
+                {
+                    "name": "JESSUP TAP"
+                },
+                {
+                    "name": "JOHNSON WAX TAP"
+                },
+                {
+                    "name": "JOLON TAP"
+                },
+                {
+                    "name": "KAMM TAP"
+                },
+                {
+                    "name": "KANAKA TAP"
+                },
+                {
+                    "name": "KASSON-BANTA #1"
+                },
+                {
+                    "name": "KASSON-CARBONA"
+                },
+                {
+                    "name": "KASSON-LOUISE"
+                },
+                {
+                    "name": "KASSON #1+"
+                },
+                {
+                    "name": "KEARNEY-BIOLA"
+                },
+                {
+                    "name": "KEARNEY-BOWLES"
+                },
+                {
+                    "name": "KEARNEY-CARUTHERS+"
+                },
+                {
+                    "name": "KEARNEY-KERMAN"
+                },
+                {
+                    "name": "KEARNEY ALTERNATE TIE"
+                },
+                {
+                    "name": "KEARNEY TIE"
+                },
+                {
+                    "name": "KELLEY TAP"
+                },
+                {
+                    "name": "KELSO-TESLA+"
+                },
+                {
+                    "name": "KERCKHOFF-CLOVIS-SANGER #1+"
+                },
+                {
+                    "name": "KERCKHOFF-CLOVIS-SANGER #2+"
+                },
+                {
+                    "name": "KERCKHOFF #1-KERCKHOFF #2"
+                },
+                {
+                    "name": "KERN-FRUITVALE"
+                },
+                {
+                    "name": "KERN-KERN FRONT"
+                },
+                {
+                    "name": "KERN-KERN OIL-FAMOSO"
+                },
+                {
+                    "name": "KERN-LIVE OAK+"
+                },
+                {
+                    "name": "KERN-MAGUNDEN-WITCO+"
+                },
+                {
+                    "name": "KERN-MAGUNDEN+"
+                },
+                {
+                    "name": "KERN-OLD RIVER #1+"
+                },
+                {
+                    "name": "KERN-OLD RIVER #2+"
+                },
+                {
+                    "name": "KERN-ROSEDALE"
+                },
+                {
+                    "name": "KERN-TEVIS-STOCKDALE"
+                },
+                {
+                    "name": "KERN-TEVIS-STOCKDALE-LAMONT"
+                },
+                {
+                    "name": "KERN-WESTPARK #1"
+                },
+                {
+                    "name": "KERN-WESTPARK #2"
+                },
+                {
+                    "name": "KERN CANYON-MAGUNDEN-WEEDPATCH"
+                },
+                {
+                    "name": "KERN OIL-DEXZEL"
+                },
+                {
+                    "name": "KERN OIL-WITCO+"
+                },
+                {
+                    "name": "KERNWATER TAP"
+                },
+                {
+                    "name": "KESWICK-CASCADE+"
+                },
+                {
+                    "name": "KESWICK-TRINITY"
+                },
+                {
+                    "name": "KETTLEMAN HILLS TAP"
+                },
+                {
+                    "name": "KIFER-FMC"
+                },
+                {
+                    "name": "KILARC-CEDAR CREEK"
+                },
+                {
+                    "name": "KILARC-DESCHUTES"
+                },
+                {
+                    "name": "KILARC-VOLTA TIE"
+                },
+                {
+                    "name": "KING CITY-COBURN #1+"
+                },
+                {
+                    "name": "KING CITY-COBURN #2+"
+                },
+                {
+                    "name": "KINGS RIVER-SANGER-REEDLEY+"
+                },
+                {
+                    "name": "KINGSBURG-CORCORAN #1+"
+                },
+                {
+                    "name": "KINGSBURG-LEMOORE+"
+                },
+                {
+                    "name": "KINGSBURG-WAUKENA SW STA"
+                },
+                {
+                    "name": "KINGSBURG COGEN TAP"
+                },
+                {
+                    "name": "KONOCTI-EAGLE ROCK"
+                },
+                {
+                    "name": "KONOCTI-MIDDLETOWN"
+                },
+                {
+                    "name": "KYOHO TAP"
+                },
+                {
+                    "name": "LAGUNA TAP"
+                },
+                {
+                    "name": "LAGUNITAS TAP"
+                },
+                {
+                    "name": "LAKEVILLE-IGNACIO #1+"
+                },
+                {
+                    "name": "LAKEVILLE-IGNACIO #2"
+                },
+                {
+                    "name": "LAKEVILLE-PETALUMA C"
+                },
+                {
+                    "name": "LAKEVILLE-SOBRANTE #2"
+                },
+                {
+                    "name": "LAKEVILLE-SONOMA #1"
+                },
+                {
+                    "name": "LAKEVILLE-SONOMA #2"
+                },
+                {
+                    "name": "LAKEVILLE-TULUCAY+"
+                },
+                {
+                    "name": "LAKEVILLE #1+"
+                },
+                {
+                    "name": "LAKEVILLE #2+"
+                },
+                {
+                    "name": "LAKEWOOD-CLAYTON+"
+                },
+                {
+                    "name": "LAKEWOOD-MEADOW LANE-CLAYTON+"
+                },
+                {
+                    "name": "LAMBIE SW STA-BIRDS LANDING SW STA"
+                },
+                {
+                    "name": "LAMMERS-KASSON"
+                },
+                {
+                    "name": "LAS PALMAS TAP"
+                },
+                {
+                    "name": "LAS PERILLAS TAP"
+                },
+                {
+                    "name": "LAS POSITAS-NEWARK+"
+                },
+                {
+                    "name": "LAS POSITAS-VASCO+"
+                },
+                {
+                    "name": "LAURELES-OTTER"
+                },
+                {
+                    "name": "LAWRENCE-MONTA VISTA+"
+                },
+                {
+                    "name": "LAWRENCE LIVERMORE LAB #1 TAP"
+                },
+                {
+                    "name": "LAWRENCE LIVERMORE LAB #2 TAP"
+                },
+                {
+                    "name": "LAYTONVILLE-COVELO"
+                },
+                {
+                    "name": "LAYTONVILLE-WILLITS"
+                },
+                {
+                    "name": "LE GRAND-CHOWCHILLA+"
+                },
+                {
+                    "name": "LE GRAND-DAIRYLAND"
+                },
+                {
+                    "name": "LECEF TAP"
+                },
+                {
+                    "name": "LEE TAP (IDLE)"
+                },
+                {
+                    "name": "LEPRINO FOODS (LEMOORE) TAP"
+                },
+                {
+                    "name": "LEPRINO FOODS (TRACY) TAP"
+                },
+                {
+                    "name": "LEPRINO TAP"
+                },
+                {
+                    "name": "LERDO-FAMOSO"
+                },
+                {
+                    "name": "LERDO-KERN OIL-7TH STANDARD"
+                },
+                {
+                    "name": "LIGHTNER TAP (IDLE)"
+                },
+                {
+                    "name": "LIMESTONE TAP"
+                },
+                {
+                    "name": "LINCOLN-PLEASANT GROVE+"
+                },
+                {
+                    "name": "LINDE TAP"
+                },
+                {
+                    "name": "LIVE OAK-KERN OIL+"
+                },
+                {
+                    "name": "LIVE OAK TAP"
+                },
+                {
+                    "name": "LIVERMORE-LAS POSITAS+"
+                },
+                {
+                    "name": "LIVINGSTON-LIVINGSTON JCT"
+                },
+                {
+                    "name": "LIVINGSTON TAP+"
+                },
+                {
+                    "name": "LLAGAS-GILROY FOODS"
+                },
+                {
+                    "name": "LLAGAS-HOLLISTER"
+                },
+                {
+                    "name": "LOCKEFORD-BELLOTA+"
+                },
+                {
+                    "name": "LOCKEFORD-LODI #1"
+                },
+                {
+                    "name": "LOCKEFORD-LODI #2"
+                },
+                {
+                    "name": "LOCKEFORD-LODI #3+"
+                },
+                {
+                    "name": "LOCKEFORD #1+"
+                },
+                {
+                    "name": "LOCKHEED #1 TAP"
+                },
+                {
+                    "name": "LOCKHEED #2 TAP"
+                },
+                {
+                    "name": "LODI-INDUSTRIAL+"
+                },
+                {
+                    "name": "LODI STIG-EIGHT MILE ROAD+"
+                },
+                {
+                    "name": "LOGAN CREEK-DELEVAN"
+                },
+                {
+                    "name": "LONE STAR TAP"
+                },
+                {
+                    "name": "LONE TREE-CAYETANO"
+                },
+                {
+                    "name": "LOS BANOS-CANAL-ORO LOMA+"
+                },
+                {
+                    "name": "LOS BANOS-DOS AMIGOS PUMPING PLANT+"
+                },
+                {
+                    "name": "LOS BANOS-GATES #1"
+                },
+                {
+                    "name": "LOS BANOS-GATES #3"
+                },
+                {
+                    "name": "LOS BANOS-GATES #3 (WAPA)"
+                },
+                {
+                    "name": "LOS BANOS-LIVINGSTON JCT-CANAL+"
+                },
+                {
+                    "name": "LOS BANOS-MIDWAY #2"
+                },
+                {
+                    "name": "LOS BANOS-O'NEILL PGP"
+                },
+                {
+                    "name": "LOS BANOS-PACHECO"
+                },
+                {
+                    "name": "LOS BANOS-PANOCHE #1+"
+                },
+                {
+                    "name": "LOS BANOS-PANOCHE #2+"
+                },
+                {
+                    "name": "LOS BANOS-SAN LUIS PGP #1"
+                },
+                {
+                    "name": "LOS BANOS-SAN LUIS PGP #2"
+                },
+                {
+                    "name": "LOS BANOS-WESTLEY"
+                },
+                {
+                    "name": "LOS COCHES TAP"
+                },
+                {
+                    "name": "LOS ESTEROS-AGNEW"
+                },
+                {
+                    "name": "LOS ESTEROS-METCALF"
+                },
+                {
+                    "name": "LOS ESTEROS-MONTAGUE"
+                },
+                {
+                    "name": "LOS ESTEROS-NORTECH"
+                },
+                {
+                    "name": "LOS ESTEROS-TRIMBLE"
+                },
+                {
+                    "name": "LOST HILLS TAP"
+                },
+                {
+                    "name": "LOUISIANA PACIFIC (OROVILLE) TAP"
+                },
+                {
+                    "name": "LOWER LAKE-HOMESTAKE"
+                },
+                {
+                    "name": "LP FLAKEBOARD (LP Particle Board) TAP"
+                },
+                {
+                    "name": "LUCERNE #1 TAP"
+                },
+                {
+                    "name": "LUCERNE #2 TAP"
+                },
+                {
+                    "name": "LYOTH TAP"
+                },
+                {
+                    "name": "MABURY TAP"
+                },
+                {
+                    "name": "MADISON-VACA+"
+                },
+                {
+                    "name": "MALACHA TAP+"
+                },
+                {
+                    "name": "MALAGA-KRCD"
+                },
+                {
+                    "name": "MALIN-ROUND MOUNTAIN #2"
+                },
+                {
+                    "name": "MALIN-ROUND MOUNTAIN #2 (PP&L)"
+                },
+                {
+                    "name": "MALIN_ROUND MOUNTAIN #1"
+                },
+                {
+                    "name": "MANCHESTER-AIRWAYS-SANGER+"
+                },
+                {
+                    "name": "MANTECA-LOUISE+"
+                },
+                {
+                    "name": "MANTECA-VIERRA+"
+                },
+                {
+                    "name": "MANTECA #1+"
+                },
+                {
+                    "name": "MANVILLE TAP"
+                },
+                {
+                    "name": "MAPLE CREEK-HOOPA"
+                },
+                {
+                    "name": "MARICOPA-COPUS"
+                },
+                {
+                    "name": "MARSH TAP"
+                },
+                {
+                    "name": "MARTIN-DALY CITY #1"
+                },
+                {
+                    "name": "MARTIN-DALY CITY #2"
+                },
+                {
+                    "name": "MARTIN-EAST GRAND+"
+                },
+                {
+                    "name": "MARTIN-MILLBRAE #1+"
+                },
+                {
+                    "name": "MARTIN-SF AIRPORT+"
+                },
+                {
+                    "name": "MARTIN-SNEATH LANE"
+                },
+                {
+                    "name": "MARTINEZ-SHELL #1"
+                },
+                {
+                    "name": "MARTINEZ-SHELL #2"
+                },
+                {
+                    "name": "MARTINEZ-SOBRANTE"
+                },
+                {
+                    "name": "MCCALL-KINGSBURG #1+"
+                },
+                {
+                    "name": "MCCALL-KINGSBURG #2+"
+                },
+                {
+                    "name": "MCCALL-MALAGA"
+                },
+                {
+                    "name": "MCCALL-REEDLEY"
+                },
+                {
+                    "name": "MCCALL-SANGER #1"
+                },
+                {
+                    "name": "MCCALL-SANGER #2"
+                },
+                {
+                    "name": "MCCALL-SANGER #3"
+                },
+                {
+                    "name": "MCCALL-WEST FRESNO #2"
+                },
+                {
+                    "name": "MCDONALD TAP"
+                },
+                {
+                    "name": "MCFARLAND TAP"
+                },
+                {
+                    "name": "MCKEE-PIERCY+"
+                },
+                {
+                    "name": "MCSWAIN TAP+"
+                },
+                {
+                    "name": "MELONES-CURTIS"
+                },
+                {
+                    "name": "MELONES-RACETRACK"
+                },
+                {
+                    "name": "MELONES-WILSON+"
+                },
+                {
+                    "name": "MENDOCINO-HARTLEY"
+                },
+                {
+                    "name": "MENDOCINO-PHILO JCT-HOPLAND+"
+                },
+                {
+                    "name": "MENDOCINO-REDBUD+"
+                },
+                {
+                    "name": "MENDOCINO-UKIAH"
+                },
+                {
+                    "name": "MENDOCINO-WILLITS"
+                },
+                {
+                    "name": "MENDOCINO-WILLITS-FORT BRAGG+"
+                },
+                {
+                    "name": "MENDOCINO #1+"
+                },
+                {
+                    "name": "MENDOTA-SAN JOAQUIN-HELM+"
+                },
+                {
+                    "name": "MENDOTA BIOMASS TAP"
+                },
+                {
+                    "name": "MENLO TAP"
+                },
+                {
+                    "name": "MERCED-MERCED FALLS"
+                },
+                {
+                    "name": "MERCED #1+"
+                },
+                {
+                    "name": "MERCED FALLS-EXCHEQUER"
+                },
+                {
+                    "name": "MESA-DIVIDE #1"
+                },
+                {
+                    "name": "MESA-DIVIDE #2"
+                },
+                {
+                    "name": "MESA-SANTA MARIA"
+                },
+                {
+                    "name": "MESA-SISQUOC"
+                },
+                {
+                    "name": "METCALF-COYOTE PUMPING PLANT"
+                },
+                {
+                    "name": "METCALF-EDENVALE #1"
+                },
+                {
+                    "name": "METCALF-EDENVALE #2"
+                },
+                {
+                    "name": "METCALF-EL PATIO #1"
+                },
+                {
+                    "name": "METCALF-EL PATIO #2"
+                },
+                {
+                    "name": "METCALF-EVERGREEN #1"
+                },
+                {
+                    "name": "METCALF-GREEN VALLEY+"
+                },
+                {
+                    "name": "METCALF-HICKS 1 & 2 (IDLE)"
+                },
+                {
+                    "name": "METCALF-MONTA VISTA #3"
+                },
+                {
+                    "name": "METCALF-MORGAN HILL"
+                },
+                {
+                    "name": "METCALF-MOSS LANDING #1"
+                },
+                {
+                    "name": "METCALF-MOSS LANDING #2"
+                },
+                {
+                    "name": "METCALF-SALINAS NO. 1 (IDLE)"
+                },
+                {
+                    "name": "METCALF-SALINAS NO. 2 (IDLE)"
+                },
+                {
+                    "name": "MIDDLE FORK-GOLD HILL"
+                },
+                {
+                    "name": "MIDDLE FORK #1+"
+                },
+                {
+                    "name": "MIDDLE RIVER TAP"
+                },
+                {
+                    "name": "MIDSET TAP"
+                },
+                {
+                    "name": "MIDSUN-MIDWAY+"
+                },
+                {
+                    "name": "MIDWAY-KERN #1+"
+                },
+                {
+                    "name": "MIDWAY-KERN #3"
+                },
+                {
+                    "name": "MIDWAY-KERN #4"
+                },
+                {
+                    "name": "MIDWAY-RENFRO-TUPMAN"
+                },
+                {
+                    "name": "MIDWAY-SANTA MARIA (IDLE LINE SECTION)"
+                },
+                {
+                    "name": "MIDWAY-SHAFTER+"
+                },
+                {
+                    "name": "MIDWAY-SUNSET"
+                },
+                {
+                    "name": "MIDWAY-TAFT"
+                },
+                {
+                    "name": "MIDWAY-TEMBLOR"
+                },
+                {
+                    "name": "MIDWAY-TUPMAN-RIO BRAVO-RENFRO"
+                },
+                {
+                    "name": "MIDWAY-VINCENT #1"
+                },
+                {
+                    "name": "MIDWAY-VINCENT #2"
+                },
+                {
+                    "name": "MIDWAY-WHEELER RIDGE #1"
+                },
+                {
+                    "name": "MIDWAY-WHEELER RIDGE #2"
+                },
+                {
+                    "name": "MIDWAY-WHIRLWIND"
+                },
+                {
+                    "name": "MILLBRAE-PACIFICA+"
+                },
+                {
+                    "name": "MILLBRAE-SAN MATEO #1+"
+                },
+                {
+                    "name": "MILLBRAE-SNEATH LANE"
+                },
+                {
+                    "name": "MILLER #1 TAP"
+                },
+                {
+                    "name": "MILLER #2 TAP"
+                },
+                {
+                    "name": "MILPITAS-SWIFT+"
+                },
+                {
+                    "name": "MISSION POWER TAP"
+                },
+                {
+                    "name": "MISSOURI FLAT-GOLD HILL #1+"
+                },
+                {
+                    "name": "MISSOURI FLAT-GOLD HILL #2+"
+                },
+                {
+                    "name": "MOBIL BELRIDGE SOUTH TAP (IDLE)"
+                },
+                {
+                    "name": "MOCO TAP"
+                },
+                {
+                    "name": "MODESTO ENERGY TAP"
+                },
+                {
+                    "name": "MOFFETT FIELD TAP"
+                },
+                {
+                    "name": "MONTA VISTA-BURNS"
+                },
+                {
+                    "name": "MONTA VISTA-COYOTE SW STA"
+                },
+                {
+                    "name": "MONTA VISTA-HICKS+"
+                },
+                {
+                    "name": "MONTA VISTA-JEFFERSON #1"
+                },
+                {
+                    "name": "MONTA VISTA-JEFFERSON #2"
+                },
+                {
+                    "name": "MONTA VISTA-LOS ALTOS+"
+                },
+                {
+                    "name": "MONTA VISTA-LOS GATOS"
+                },
+                {
+                    "name": "MONTA VISTA-PERMANENTE"
+                },
+                {
+                    "name": "MONTA VISTA-SARATOGA+"
+                },
+                {
+                    "name": "MONTA VISTA-WOLFE+"
+                },
+                {
+                    "name": "MONTAGUE-TRIMBLE"
+                },
+                {
+                    "name": "MONTE RIO-FULTON+"
+                },
+                {
+                    "name": "MONTEZUMA SW STA-BIRDS LANDING SW STA"
+                },
+                {
+                    "name": "MONTICELLO P.H. TAP"
+                },
+                {
+                    "name": "MORAGA-CASTRO VALLEY+"
+                },
+                {
+                    "name": "MORAGA-CLAREMONT #1"
+                },
+                {
+                    "name": "MORAGA-CLAREMONT #2"
+                },
+                {
+                    "name": "MORAGA-LAKEWOOD+"
+                },
+                {
+                    "name": "MORAGA-OAKLAND #1"
+                },
+                {
+                    "name": "MORAGA-OAKLAND #2"
+                },
+                {
+                    "name": "MORAGA-OAKLAND #3"
+                },
+                {
+                    "name": "MORAGA-OAKLAND #4"
+                },
+                {
+                    "name": "MORAGA-OAKLAND J+"
+                },
+                {
+                    "name": "MORAGA-SAN LEANDRO #1"
+                },
+                {
+                    "name": "MORAGA-SAN LEANDRO #2"
+                },
+                {
+                    "name": "MORAGA-SAN LEANDRO #3"
+                },
+                {
+                    "name": "MORGAN HILL-LLAGAS"
+                },
+                {
+                    "name": "MORRO BAY-DIABLO"
+                },
+                {
+                    "name": "MORRO BAY-GATES #2"
+                },
+                {
+                    "name": "MORRO BAY-MESA"
+                },
+                {
+                    "name": "MORRO BAY-SAN LUIS OBISPO #1"
+                },
+                {
+                    "name": "MORRO BAY-SAN LUIS OBISPO #2"
+                },
+                {
+                    "name": "MORRO BAY-SOLAR SW STA #1"
+                },
+                {
+                    "name": "MORRO BAY-SOLAR SW STA #2"
+                },
+                {
+                    "name": "MORRO BAY-TEMPLETON+"
+                },
+                {
+                    "name": "MOSS LANDING-COBURN+"
+                },
+                {
+                    "name": "MOSS LANDING-DEL MONTE #1"
+                },
+                {
+                    "name": "MOSS LANDING-DEL MONTE #2"
+                },
+                {
+                    "name": "MOSS LANDING-GREEN VALLEY #1"
+                },
+                {
+                    "name": "MOSS LANDING-GREEN VALLEY #2"
+                },
+                {
+                    "name": "MOSS LANDING-LOS BANOS"
+                },
+                {
+                    "name": "MOSS LANDING-METCALF"
+                },
+                {
+                    "name": "MOSS LANDING-PANOCHE #2"
+                },
+                {
+                    "name": "MOSS LANDING-SALINAS-SOLEDAD #1+"
+                },
+                {
+                    "name": "MOSS LANDING-SALINAS-SOLEDAD #2+"
+                },
+                {
+                    "name": "MOSS LANDING-SALINAS #1"
+                },
+                {
+                    "name": "MOSS LANDING-SALINAS #2"
+                },
+                {
+                    "name": "MOSS LANDING INTERPLANT 230"
+                },
+                {
+                    "name": "MOSS LNDG TX BK 1-230 SWITCHYARD"
+                },
+                {
+                    "name": "MOSS LNDG TX BK 2-230 SWITCHYARD"
+                },
+                {
+                    "name": "MOUNTAIN GATE JCT-CASCADE+"
+                },
+                {
+                    "name": "MOUNTAIN GATE TAP"
+                },
+                {
+                    "name": "MOUNTAIN QUARRIES TAP"
+                },
+                {
+                    "name": "MOUNTAIN VIEW-MONTA VISTA+"
+                },
+                {
+                    "name": "MUSTANG TAP"
+                },
+                {
+                    "name": "NARROWS #1 TAP+"
+                },
+                {
+                    "name": "NARROWS #2 TAP+"
+                },
+                {
+                    "name": "NAVY LAB TAP"
+                },
+                {
+                    "name": "NEW HOGAN TAP"
+                },
+                {
+                    "name": "NEWARK-AMES #1+"
+                },
+                {
+                    "name": "NEWARK-AMES #2+"
+                },
+                {
+                    "name": "NEWARK-AMES #3+"
+                },
+                {
+                    "name": "NEWARK-AMES DISTRIBUTION+"
+                },
+                {
+                    "name": "NEWARK-APPLIED MATERIALS+"
+                },
+                {
+                    "name": "NEWARK-DECOTO (IDLE)"
+                },
+                {
+                    "name": "NEWARK-DIXON LANDING+"
+                },
+                {
+                    "name": "NEWARK-FREMONT #1"
+                },
+                {
+                    "name": "NEWARK-FREMONT #2"
+                },
+                {
+                    "name": "NEWARK-JARVIS #1"
+                },
+                {
+                    "name": "NEWARK-JARVIS #2"
+                },
+                {
+                    "name": "NEWARK-KIFER"
+                },
+                {
+                    "name": "NEWARK-LAWRENCE LAB (IDLE)"
+                },
+                {
+                    "name": "NEWARK-LAWRENCE+"
+                },
+                {
+                    "name": "NEWARK-LIVERMORE"
+                },
+                {
+                    "name": "NEWARK-LOS ESTEROS"
+                },
+                {
+                    "name": "NEWARK-MILPITAS #1"
+                },
+                {
+                    "name": "NEWARK-MILPITAS #2"
+                },
+                {
+                    "name": "NEWARK-NORTHERN RECEIVING STATION #1+"
+                },
+                {
+                    "name": "NEWARK-NORTHERN RECEIVING STATION #2+"
+                },
+                {
+                    "name": "NEWARK-NUMMI+"
+                },
+                {
+                    "name": "NEWARK-RAVENSWOOD+"
+                },
+                {
+                    "name": "NEWARK-SIERRA PAPERBOARD TAP"
+                },
+                {
+                    "name": "NEWARK-TRIMBLE+"
+                },
+                {
+                    "name": "NEWARK-VALLECITOS+"
+                },
+                {
+                    "name": "NEWARK E-F BUS TIE+"
+                },
+                {
+                    "name": "NICOLAUS-CATLETT JCT+"
+                },
+                {
+                    "name": "NICOLAUS-MARYSVILLE"
+                },
+                {
+                    "name": "NICOLAUS-PLAINFIELD"
+                },
+                {
+                    "name": "NICOLAUS-PLAINFIELD JCT+"
+                },
+                {
+                    "name": "NICOLAUS-WILKINS SLOUGH+"
+                },
+                {
+                    "name": "NORTECH-NORTHERN RECEIVING STATION"
+                },
+                {
+                    "name": "NORTH DUBLIN-CAYETANO"
+                },
+                {
+                    "name": "NORTH DUBLIN-VINEYARD"
+                },
+                {
+                    "name": "NORTH TOWER-MARTINEZ JCT #1 (IDLE)"
+                },
+                {
+                    "name": "NORTHERN RECEIVING STATION-SCOTT #1+"
+                },
+                {
+                    "name": "NORTHERN RECEIVING STATION-SCOTT #2+"
+                },
+                {
+                    "name": "NOTRE DAME-BUTTE"
+                },
+                {
+                    "name": "OAK PARK TAP"
+                },
+                {
+                    "name": "OAKHURST TAP"
+                },
+                {
+                    "name": "OAKLAND C-MARITIME"
+                },
+                {
+                    "name": "OAKLAND C-TURBINES"
+                },
+                {
+                    "name": "OAKLAND J-GRANT+"
+                },
+                {
+                    "name": "OCEANO-CALLENDAR SW STA"
+                },
+                {
+                    "name": "OIL CITY TAP"
+                },
+                {
+                    "name": "OILFIELDS-SALINAS RIVER"
+                },
+                {
+                    "name": "OILFIELDS-SARGENT CANYON"
+                },
+                {
+                    "name": "OLEUM-G #1"
+                },
+                {
+                    "name": "OLEUM-G #2"
+                },
+                {
+                    "name": "OLEUM-MARTINEZ+"
+                },
+                {
+                    "name": "OLEUM-NORTH TOWER-CHRISTIE+"
+                },
+                {
+                    "name": "OLEUM-UNOCAL #1+"
+                },
+                {
+                    "name": "OLEUM-UNOCAL #2+"
+                },
+                {
+                    "name": "OLIVE SW STA-SMYRNA"
+                },
+                {
+                    "name": "ORO FINO TAP"
+                },
+                {
+                    "name": "ORO LOMA-CANAL #1"
+                },
+                {
+                    "name": "ORO LOMA-MENDOTA"
+                },
+                {
+                    "name": "OROVILLE-TABLE MTN (CDWR)"
+                },
+                {
+                    "name": "OROVILLE-THERMALITO-TABLE MTN #1 (CDWR)"
+                },
+                {
+                    "name": "OROVILLE-THERMALITO-TABLE MTN #3 (CDWR)"
+                },
+                {
+                    "name": "OWENS BROCKWAY TAP"
+                },
+                {
+                    "name": "OWENS ILLINOIS TAP"
+                },
+                {
+                    "name": "OXBOW TAP"
+                },
+                {
+                    "name": "OXFORD TAP"
+                },
+                {
+                    "name": "P-X #2"
+                },
+                {
+                    "name": "PACIFIC ETHANOL TAP"
+                },
+                {
+                    "name": "PACIFIC LUMBER  (SCOTIA) TAP"
+                },
+                {
+                    "name": "PACIFIC OROVILLE POWER TAP"
+                },
+                {
+                    "name": "PALERMO-BOGUE+"
+                },
+                {
+                    "name": "PALERMO-COLGATE+"
+                },
+                {
+                    "name": "PALERMO-NICOLAUS"
+                },
+                {
+                    "name": "PALERMO-OROVILLE #1+"
+                },
+                {
+                    "name": "PALERMO-OROVILLE #2+"
+                },
+                {
+                    "name": "PALERMO-PEASE+"
+                },
+                {
+                    "name": "PALERMO-WYANDOTTE+"
+                },
+                {
+                    "name": "PANOCHE-CAL PEAK-STARWOOD"
+                },
+                {
+                    "name": "PANOCHE-HELM+"
+                },
+                {
+                    "name": "PANOCHE-KEARNEY"
+                },
+                {
+                    "name": "PANOCHE-MENDOTA"
+                },
+                {
+                    "name": "PANOCHE-ORO LOMA"
+                },
+                {
+                    "name": "PANOCHE-PANOCHE ENERGY CENTER"
+                },
+                {
+                    "name": "PANOCHE-SCHINDLER #1"
+                },
+                {
+                    "name": "PANOCHE-SCHINDLER #2"
+                },
+                {
+                    "name": "PARADISE-BUTTE+"
+                },
+                {
+                    "name": "PARADISE-TABLE MTN+"
+                },
+                {
+                    "name": "PARDEE #1 TAP"
+                },
+                {
+                    "name": "PARDEE #2 TAP"
+                },
+                {
+                    "name": "PARKS TAP (IDLE)"
+                },
+                {
+                    "name": "PARKWAY-MORAGA+"
+                },
+                {
+                    "name": "PASO ROBLES-TEMPLETON+"
+                },
+                {
+                    "name": "PEABODY-BIRDS LANDING SW STA"
+                },
+                {
+                    "name": "PEACHTON-PEASE"
+                },
+                {
+                    "name": "PEASE-HARTER+"
+                },
+                {
+                    "name": "PEASE-MARYSVILLE-HARTER+"
+                },
+                {
+                    "name": "PEASE-RIO OSO+"
+                },
+                {
+                    "name": "PENN ZIER TAP+"
+                },
+                {
+                    "name": "PENNGROVE SUB TAP"
+                },
+                {
+                    "name": "PENTLAND TAP"
+                },
+                {
+                    "name": "PEORIA TAP"
+                },
+                {
+                    "name": "PERMANENTE #1 TAP"
+                },
+                {
+                    "name": "PERMANENTE #2 TAP"
+                },
+                {
+                    "name": "PHILO JCT-ELK"
+                },
+                {
+                    "name": "PIERCY-METCALF+"
+                },
+                {
+                    "name": "PINE FLAT PH TAP (CDWR)"
+                },
+                {
+                    "name": "PINE GROVE TAP+"
+                },
+                {
+                    "name": "PIT #1-COTTONWOOD+"
+                },
+                {
+                    "name": "PIT #1-HAT CREEK #2-BURNEY+"
+                },
+                {
+                    "name": "PIT #1-MCARTHUR"
+                },
+                {
+                    "name": "PIT #3-CARBERRY SW STA"
+                },
+                {
+                    "name": "PIT #3-PIT #1+"
+                },
+                {
+                    "name": "PIT #4 TAP+"
+                },
+                {
+                    "name": "PIT #5-ROUND MTN #1"
+                },
+                {
+                    "name": "PIT #5-ROUND MTN #2"
+                },
+                {
+                    "name": "PIT #6 JCT-ROUND MTN+"
+                },
+                {
+                    "name": "PIT #6 TAP+"
+                },
+                {
+                    "name": "PIT #7 TAP+"
+                },
+                {
+                    "name": "PITTSBURG-CLAYTON #1+"
+                },
+                {
+                    "name": "PITTSBURG-CLAYTON #3"
+                },
+                {
+                    "name": "PITTSBURG-CLAYTON #4"
+                },
+                {
+                    "name": "PITTSBURG-COLUMBIA STEEL+"
+                },
+                {
+                    "name": "PITTSBURG-EASTSHORE+"
+                },
+                {
+                    "name": "PITTSBURG-KIRKER-COLUMBIA STEEL+"
+                },
+                {
+                    "name": "PITTSBURG-LOS MEDANOS #1"
+                },
+                {
+                    "name": "PITTSBURG-LOS MEDANOS #2"
+                },
+                {
+                    "name": "PITTSBURG-MARTINEZ #1"
+                },
+                {
+                    "name": "PITTSBURG-MARTINEZ #2"
+                },
+                {
+                    "name": "PITTSBURG-SAN MATEO+"
+                },
+                {
+                    "name": "PITTSBURG-SAN RAMON+"
+                },
+                {
+                    "name": "PITTSBURG-TASSAJARA+"
+                },
+                {
+                    "name": "PITTSBURG-TESLA #1"
+                },
+                {
+                    "name": "PITTSBURG-TESLA #2"
+                },
+                {
+                    "name": "PITTSBURG-TESORO"
+                },
+                {
+                    "name": "PITTSBURG-TIDEWATER+"
+                },
+                {
+                    "name": "PITTSBURG #1 TAP (IDLE)"
+                },
+                {
+                    "name": "PITTSBURG #2 TAP"
+                },
+                {
+                    "name": "PLACER-DEL MAR+"
+                },
+                {
+                    "name": "PLACER-GOLD HILL #1+"
+                },
+                {
+                    "name": "PLACER-GOLD HILL #2+"
+                },
+                {
+                    "name": "PLUMAS-SIERRA TAP"
+                },
+                {
+                    "name": "POE-RIO OSO+"
+                },
+                {
+                    "name": "POINT PINOLE TAP"
+                },
+                {
+                    "name": "PORT COSTA BRICK TAP"
+                },
+                {
+                    "name": "POST OFFICE TAP"
+                },
+                {
+                    "name": "POTTER VALLEY-MENDOCINO"
+                },
+                {
+                    "name": "POTTER VALLEY-WILLITS"
+                },
+                {
+                    "name": "PSE MCKITTRICK TAP"
+                },
+                {
+                    "name": "QUEBEC TAP"
+                },
+                {
+                    "name": "RACETRACK TAP"
+                },
+                {
+                    "name": "RADUM-LIVERMORE"
+                },
+                {
+                    "name": "RADUM-VALLECITOS"
+                },
+                {
+                    "name": "RAINBOW TAP"
+                },
+                {
+                    "name": "RALPH TAP"
+                },
+                {
+                    "name": "RANCHERS COTTON TAP"
+                },
+                {
+                    "name": "RANCHO SECO-BELLOTA #1"
+                },
+                {
+                    "name": "RANCHO SECO-BELLOTA #2"
+                },
+                {
+                    "name": "RAVENSWOOD-AMES #1+"
+                },
+                {
+                    "name": "RAVENSWOOD-AMES #2+"
+                },
+                {
+                    "name": "RAVENSWOOD-BAIR #1"
+                },
+                {
+                    "name": "RAVENSWOOD-BAIR #2"
+                },
+                {
+                    "name": "RAVENSWOOD-COOLEY LANDING #1"
+                },
+                {
+                    "name": "RAVENSWOOD-COOLEY LANDING #2"
+                },
+                {
+                    "name": "RAVENSWOOD-PALO ALTO #1"
+                },
+                {
+                    "name": "RAVENSWOOD-PALO ALTO #2"
+                },
+                {
+                    "name": "RAVENSWOOD-SAN MATEO"
+                },
+                {
+                    "name": "RAVENSWOOD-SAN MATEO #1+"
+                },
+                {
+                    "name": "RAVENSWOOD-SAN MATEO #2+"
+                },
+                {
+                    "name": "RED BANK TAP"
+                },
+                {
+                    "name": "REEDLEY-DINUBA #1"
+                },
+                {
+                    "name": "REEDLEY-OROSI+"
+                },
+                {
+                    "name": "RESERVE OIL TAP"
+                },
+                {
+                    "name": "RINCON #1 TAP"
+                },
+                {
+                    "name": "RINCON #2 TAP"
+                },
+                {
+                    "name": "RIO BRAVO-KERN OIL (IDLE)"
+                },
+                {
+                    "name": "RIO BRAVO (Fresno) TAP"
+                },
+                {
+                    "name": "RIO BRAVO (Rocklin) TAP"
+                },
+                {
+                    "name": "RIO BRAVO HYDRO TAP"
+                },
+                {
+                    "name": "RIO BRAVO TOMATO TAP"
+                },
+                {
+                    "name": "RIO DELL JCT-BRIDGEVILLE+"
+                },
+                {
+                    "name": "RIO DELL TAP"
+                },
+                {
+                    "name": "RIO OSO-ATLANTIC+"
+                },
+                {
+                    "name": "RIO OSO-BRIGHTON+"
+                },
+                {
+                    "name": "RIO OSO-GOLD HILL+"
+                },
+                {
+                    "name": "RIO OSO-LINCOLN"
+                },
+                {
+                    "name": "RIO OSO-LOCKEFORD+"
+                },
+                {
+                    "name": "RIO OSO-NICOLAUS"
+                },
+                {
+                    "name": "RIO OSO-WEST SACRAMENTO+"
+                },
+                {
+                    "name": "RIO OSO-WOODLAND #1+"
+                },
+                {
+                    "name": "RIO OSO-WOODLAND #2+"
+                },
+                {
+                    "name": "RIPON TAP"
+                },
+                {
+                    "name": "RIVER ROCK TAP"
+                },
+                {
+                    "name": "RIVERBANK JCT SW STA-MANTECA"
+                },
+                {
+                    "name": "ROBERTSON TAP"
+                },
+                {
+                    "name": "ROCK CREEK-POE+"
+                },
+                {
+                    "name": "ROLLINS TAP"
+                },
+                {
+                    "name": "ROSE TAP"
+                },
+                {
+                    "name": "ROSSMOOR #1 TAP"
+                },
+                {
+                    "name": "ROSSMOOR #2 TAP"
+                },
+                {
+                    "name": "ROUGH AND READY TAP"
+                },
+                {
+                    "name": "ROUND MOUNTAIN-COTTONWOOD #2"
+                },
+                {
+                    "name": "ROUND MOUNTAIN-TABLE MOUNTAIN #1"
+                },
+                {
+                    "name": "ROUND MOUNTAIN-TABLE MOUNTAIN #2"
+                },
+                {
+                    "name": "ROUND MTN-COTTONWOOD #3+"
+                },
+                {
+                    "name": "RUSSELL CITY ENERGY CENTER-EASTSHORE #1"
+                },
+                {
+                    "name": "RUSSELL CITY ENERGY CENTER-EASTSHORE #2"
+                },
+                {
+                    "name": "SAFEWAY TAP"
+                },
+                {
+                    "name": "SALADO-NEWMAN #1+"
+                },
+                {
+                    "name": "SALADO-NEWMAN #2+"
+                },
+                {
+                    "name": "SALINAS-FIRESTONE #1+"
+                },
+                {
+                    "name": "SALINAS-FIRESTONE #2+"
+                },
+                {
+                    "name": "SALINAS-FORT ORD #1"
+                },
+                {
+                    "name": "SALINAS-FORT ORD #2"
+                },
+                {
+                    "name": "SALINAS-LAGUNITAS"
+                },
+                {
+                    "name": "SALINAS-LAURELES+"
+                },
+                {
+                    "name": "SALMON CREEK TAP"
+                },
+                {
+                    "name": "SALT SPRINGS-TIGER CREEK"
+                },
+                {
+                    "name": "SAN ANDREAS (CCSF) TAP"
+                },
+                {
+                    "name": "SAN ARDO TAP"
+                },
+                {
+                    "name": "SAN BENITO-HOLLISTER"
+                },
+                {
+                    "name": "SAN BENITO TAP"
+                },
+                {
+                    "name": "SAN BERNARD-TEJON"
+                },
+                {
+                    "name": "SAN BRUNO TAP"
+                },
+                {
+                    "name": "SAN FRANCISCO #2 (IDLE)"
+                },
+                {
+                    "name": "SAN JOAQUIN COGEN TAP"
+                },
+                {
+                    "name": "SAN JOSE A-SAN JOSE B"
+                },
+                {
+                    "name": "SAN JOSE B-STONE-EVERGREEN"
+                },
+                {
+                    "name": "SAN LEANDRO-OAKLAND J #1+"
+                },
+                {
+                    "name": "SAN LUIS #3 TAP+"
+                },
+                {
+                    "name": "SAN LUIS #5 TAP"
+                },
+                {
+                    "name": "SAN LUIS OBISPO-CAYUCOS"
+                },
+                {
+                    "name": "SAN LUIS OBISPO-OCEANO"
+                },
+                {
+                    "name": "SAN LUIS OBISPO-SANTA MARIA"
+                },
+                {
+                    "name": "SAN LUIS OBISPO-SANTA MARIA (IDLE)"
+                },
+                {
+                    "name": "SAN MATEO-BAIR"
+                },
+                {
+                    "name": "SAN MATEO-BAY MEADOWS #1"
+                },
+                {
+                    "name": "SAN MATEO-BAY MEADOWS #2"
+                },
+                {
+                    "name": "SAN MATEO-BELMONT"
+                },
+                {
+                    "name": "SAN MATEO-HILLSDALE JCT"
+                },
+                {
+                    "name": "SAN MATEO-MARTIN #3"
+                },
+                {
+                    "name": "SAN MATEO-MARTIN #4"
+                },
+                {
+                    "name": "SAN MATEO-MARTIN #6"
+                },
+                {
+                    "name": "SAN MIGUEL-PASO ROBLES+"
+                },
+                {
+                    "name": "SAN PABLO #1 TAP"
+                },
+                {
+                    "name": "SAN PABLO #2 TAP"
+                },
+                {
+                    "name": "SAN RAMON-MORAGA+"
+                },
+                {
+                    "name": "SAN RAMON-RADUM+"
+                },
+                {
+                    "name": "SAN RAMON RESEARCH CENTER TAP"
+                },
+                {
+                    "name": "SANDBAR TAP (TRI-DAM)"
+                },
+                {
+                    "name": "SANGER-CALIFORNIA AVE"
+                },
+                {
+                    "name": "SANGER-CALIFORNIA AVE #1"
+                },
+                {
+                    "name": "SANGER-MALAGA"
+                },
+                {
+                    "name": "SANGER-REEDLEY"
+                },
+                {
+                    "name": "SANGER COGEN TAP"
+                },
+                {
+                    "name": "SANTA FE GEOTHERMAL TAP"
+                },
+                {
+                    "name": "SANTA MARIA-SISQUOC"
+                },
+                {
+                    "name": "SANTA MARIA COGEN TAP+"
+                },
+                {
+                    "name": "SANTA PAULA-MILLBRAE"
+                },
+                {
+                    "name": "SANTA ROSA-CORONA+"
+                },
+                {
+                    "name": "SANTA YNEZ TAP"
+                },
+                {
+                    "name": "SARATOGA-VASONA+"
+                },
+                {
+                    "name": "SARGENT SW STA-HOLLISTER (IDLE)"
+                },
+                {
+                    "name": "SCHINDLER-COALINGA #2"
+                },
+                {
+                    "name": "SCHINDLER-HURON-GATES+"
+                },
+                {
+                    "name": "SCHULTE SW STA-KASSON-MANTECA"
+                },
+                {
+                    "name": "SCHULTE SW STA-LAMMERS"
+                },
+                {
+                    "name": "SEBASTIANI TAP"
+                },
+                {
+                    "name": "SEMITROPIC-CHARCA"
+                },
+                {
+                    "name": "SEMITROPIC-MIDWAY #1+"
+                },
+                {
+                    "name": "SEMITROPIC-MIDWAY #2+"
+                },
+                {
+                    "name": "SEMITROPIC-WASCO"
+                },
+                {
+                    "name": "SENTER #1 TAP"
+                },
+                {
+                    "name": "SEQUOIA TAP+ (IDLE)"
+                },
+                {
+                    "name": "SERRAMONTE TAP"
+                },
+                {
+                    "name": "SF AIRPORT-SAN MATEO+"
+                },
+                {
+                    "name": "SHAFTER-RIO BRAVO+"
+                },
+                {
+                    "name": "SHARON PRISON TAP+"
+                },
+                {
+                    "name": "SHILOH II-BIRDS LANDING SW STA"
+                },
+                {
+                    "name": "SHREDDER TAP"
+                },
+                {
+                    "name": "SIERRA #1 (IDLE)"
+                },
+                {
+                    "name": "SIERRA #2 (IDLE)"
+                },
+                {
+                    "name": "SIERRA (PSE) TAP"
+                },
+                {
+                    "name": "SIERRA PACIFIC IND TAP"
+                },
+                {
+                    "name": "SIERRA PINES LIMITED"
+                },
+                {
+                    "name": "SILVERADO-FULTON JCT"
+                },
+                {
+                    "name": "SIMPSON-KORBEL TAP"
+                },
+                {
+                    "name": "SISQUOC-GAREY"
+                },
+                {
+                    "name": "SISQUOC-SANTA YNEZ SW STA"
+                },
+                {
+                    "name": "SKAGGS ISLAND #1 TAP"
+                },
+                {
+                    "name": "SKAGGS ISLAND #2 TAP"
+                },
+                {
+                    "name": "SLAC TAP"
+                },
+                {
+                    "name": "SLAC TAP (WAPA) -NON-PG&E-"
+                },
+                {
+                    "name": "SLY CREEK TAP"
+                },
+                {
+                    "name": "SMARTVILLE-CAMP FAR WEST"
+                },
+                {
+                    "name": "SMARTVILLE-CAMP FAR WEST (IDLE)"
+                },
+                {
+                    "name": "SMARTVILLE-MARYSVILLE"
+                },
+                {
+                    "name": "SMARTVILLE-NICOLAUS #1"
+                },
+                {
+                    "name": "SMARTVILLE-NICOLAUS #2+"
+                },
+                {
+                    "name": "SMARTVILLE TAP+"
+                },
+                {
+                    "name": "SMYRNA-SEMITROPIC-MIDWAY+"
+                },
+                {
+                    "name": "SNEATH LANE-HALF MOON BAY"
+                },
+                {
+                    "name": "SNEATH LANE-PACIFICA"
+                },
+                {
+                    "name": "SOBRANTE-G #1"
+                },
+                {
+                    "name": "SOBRANTE-G #2"
+                },
+                {
+                    "name": "SOBRANTE-GRIZZLY-CLAREMONT #1+"
+                },
+                {
+                    "name": "SOBRANTE-GRIZZLY-CLAREMONT #2+"
+                },
+                {
+                    "name": "SOBRANTE-MORAGA+"
+                },
+                {
+                    "name": "SOBRANTE-R #1+"
+                },
+                {
+                    "name": "SOBRANTE-R #2+"
+                },
+                {
+                    "name": "SOBRANTE-STANDARD OIL SW STA #1"
+                },
+                {
+                    "name": "SOBRANTE-STANDARD OIL SW STA #2"
+                },
+                {
+                    "name": "SOLAR SW STA-CALIENTE SW STA #1"
+                },
+                {
+                    "name": "SOLAR SW STA-CALIENTE SW STA #2"
+                },
+                {
+                    "name": "SOLAR TANNEHILL TAP"
+                },
+                {
+                    "name": "SOLEDAD #1+"
+                },
+                {
+                    "name": "SOLEDAD #2+"
+                },
+                {
+                    "name": "SOLEDAD #3+"
+                },
+                {
+                    "name": "SOLEDAD #4+"
+                },
+                {
+                    "name": "SONOMA-PUEBLO"
+                },
+                {
+                    "name": "SPAULDING-SUMMIT"
+                },
+                {
+                    "name": "SPAULDING #3-SPAULDING #1"
+                },
+                {
+                    "name": "SPI (BURNEY) TAP"
+                },
+                {
+                    "name": "SPRING GAP TAP"
+                },
+                {
+                    "name": "STAGG-COUNTRY CLUB #1"
+                },
+                {
+                    "name": "STAGG-COUNTRY CLUB #2"
+                },
+                {
+                    "name": "STAGG-HAMMER"
+                },
+                {
+                    "name": "STAGG-TESLA+"
+                },
+                {
+                    "name": "STAGG #1+"
+                },
+                {
+                    "name": "STANISLAUS-MANTECA #2"
+                },
+                {
+                    "name": "STANISLAUS-MELONES SW STA-MANTECA #1+"
+                },
+                {
+                    "name": "STANISLAUS-MELONES SW STA-RIVERBANK JCT SW STA"
+                },
+                {
+                    "name": "STANISLAUS-NEWARK #1 (IDLE)"
+                },
+                {
+                    "name": "STANISLAUS-NEWARK #2 (IDLE)"
+                },
+                {
+                    "name": "STANISLAUS RECOVERY TAP"
+                },
+                {
+                    "name": "STAUFFER TAP"
+                },
+                {
+                    "name": "STELLING-MONTA VISTA+"
+                },
+                {
+                    "name": "STELLING-WOLFE+"
+                },
+                {
+                    "name": "STOCKDALE #1 TAP+"
+                },
+                {
+                    "name": "STOCKDALE #2 TAP+"
+                },
+                {
+                    "name": "STOCKTON-NEWARK (IDLE)"
+                },
+                {
+                    "name": "STOCKTON A-LOCKEFORD-BELLOTA #1+"
+                },
+                {
+                    "name": "STOCKTON A-LOCKEFORD-BELLOTA #2+"
+                },
+                {
+                    "name": "STOCKTON A-WEBER #1+"
+                },
+                {
+                    "name": "STOCKTON A-WEBER #2+"
+                },
+                {
+                    "name": "STOCKTON A-WEBER #3+"
+                },
+                {
+                    "name": "STOCKTON A #1+"
+                },
+                {
+                    "name": "STONE-EVERGREEN-METCALF"
+                },
+                {
+                    "name": "STONE CORRAL TAP"
+                },
+                {
+                    "name": "STONY POINT TAP"
+                },
+                {
+                    "name": "STROUD SW STA-SCHINDLER+"
+                },
+                {
+                    "name": "STROUD SW STA-STROUD+"
+                },
+                {
+                    "name": "SUMIDEN WIRE PRODUCTS TAP"
+                },
+                {
+                    "name": "SUNOL TAP"
+                },
+                {
+                    "name": "SURF TAP"
+                },
+                {
+                    "name": "SVP-NORTHERN RECEIVING STA"
+                },
+                {
+                    "name": "SWIFT-METCALF+"
+                },
+                {
+                    "name": "SYCAMORE CREEK-NOTRE DAME-TABLE MTN"
+                },
+                {
+                    "name": "SYCAMORE TAP"
+                },
+                {
+                    "name": "TABLE MOUNTAIN-TESLA"
+                },
+                {
+                    "name": "TABLE MOUNTAIN-VACA"
+                },
+                {
+                    "name": "TABLE MTN-BUTTE #1+"
+                },
+                {
+                    "name": "TABLE MTN-BUTTE #2+"
+                },
+                {
+                    "name": "TABLE MTN-PALERMO+"
+                },
+                {
+                    "name": "TABLE MTN-PEACHTON"
+                },
+                {
+                    "name": "TABLE MTN-RIO OSO"
+                },
+                {
+                    "name": "TAFT-CHALK CLIFF+"
+                },
+                {
+                    "name": "TAFT-CUYAMA #1"
+                },
+                {
+                    "name": "TAFT-CUYAMA #2"
+                },
+                {
+                    "name": "TAFT-ELK HILLS"
+                },
+                {
+                    "name": "TAFT-MARICOPA+"
+                },
+                {
+                    "name": "TASSAJARA-NEWARK+"
+                },
+                {
+                    "name": "TECUYA TAP"
+                },
+                {
+                    "name": "TEICHERT TAP"
+                },
+                {
+                    "name": "TEJON-LEBEC"
+                },
+                {
+                    "name": "TEMBLOR-KERNRIDGE"
+                },
+                {
+                    "name": "TEMBLOR-SAN LUIS OBISPO+"
+                },
+                {
+                    "name": "TEMPLETON-ATASCADERO+"
+                },
+                {
+                    "name": "TEMPLETON-GATES+"
+                },
+                {
+                    "name": "TERMINOUS TAP"
+                },
+                {
+                    "name": "TES TAP+"
+                },
+                {
+                    "name": "TESLA-LOS BANOS #1"
+                },
+                {
+                    "name": "TESLA-METCALF"
+                },
+                {
+                    "name": "TESLA-NEWARK #1"
+                },
+                {
+                    "name": "TESLA-NEWARK #2"
+                },
+                {
+                    "name": "TESLA-RAVENSWOOD+"
+                },
+                {
+                    "name": "TESLA-SALADO-MANTECA+"
+                },
+                {
+                    "name": "TESLA-SALADO #1"
+                },
+                {
+                    "name": "TESLA-SCHULTE SW STA #1"
+                },
+                {
+                    "name": "TESLA-SCHULTE SW STA #2"
+                },
+                {
+                    "name": "TESLA-STOCKTON COGEN JCT+"
+                },
+                {
+                    "name": "TESLA-TRACY"
+                },
+                {
+                    "name": "TESLA-TRACY #1+"
+                },
+                {
+                    "name": "TESLA-TRACY #2+"
+                },
+                {
+                    "name": "TESLA-TRACY 500KV"
+                },
+                {
+                    "name": "TESLA-TRACY+"
+                },
+                {
+                    "name": "TESLA-WESTLEY"
+                },
+                {
+                    "name": "TESORO-SOBRANTE"
+                },
+                {
+                    "name": "TEXACO (LOST HILLS) TAP"
+                },
+                {
+                    "name": "TEXACO BASIC SCHOOL TAP"
+                },
+                {
+                    "name": "TEXACO BUENA VISTA HILLS TAP"
+                },
+                {
+                    "name": "TEXACO TAP"
+                },
+                {
+                    "name": "THERMAL ENERGY TAP"
+                },
+                {
+                    "name": "TIDEWATER-SOBRANTE+"
+                },
+                {
+                    "name": "TIGER CREEK-ELECTRA+"
+                },
+                {
+                    "name": "TIGER CREEK-VALLEY SPRINGS+"
+                },
+                {
+                    "name": "TIVY VALLEY-REEDLEY+"
+                },
+                {
+                    "name": "TOCALOMA TAP"
+                },
+                {
+                    "name": "TORNADO TAP"
+                },
+                {
+                    "name": "TRACY-LOS BANOS"
+                },
+                {
+                    "name": "TRACY-LOS BANOS 500KV"
+                },
+                {
+                    "name": "TRAVIS TAP"
+                },
+                {
+                    "name": "TRIMBLE-SAN JOSE B+"
+                },
+                {
+                    "name": "TRINIDAD TAP"
+                },
+                {
+                    "name": "TRINITY-COTTONWOOD+"
+                },
+                {
+                    "name": "TRINITY-MAPLE CREEK"
+                },
+                {
+                    "name": "TRINITY #1 (TPUD)"
+                },
+                {
+                    "name": "TULE-SPRINGVILLE"
+                },
+                {
+                    "name": "TULLOCH TAP"
+                },
+                {
+                    "name": "TULUCAY-NAPA #1"
+                },
+                {
+                    "name": "TULUCAY-NAPA #2"
+                },
+                {
+                    "name": "TULUCAY-VACA+"
+                },
+                {
+                    "name": "TUPMAN-NORCO TAP+"
+                },
+                {
+                    "name": "UC DAVIS #1 TAP"
+                },
+                {
+                    "name": "UC DAVIS #2 TAP"
+                },
+                {
+                    "name": "UKIAH-HOPLAND-CLOVERDALE+"
+                },
+                {
+                    "name": "ULTRA POWER TAP+"
+                },
+                {
+                    "name": "ULTRAPOWER (Ogle) TAP"
+                },
+                {
+                    "name": "UNION CHEMICAL TAP"
+                },
+                {
+                    "name": "UNION OIL TAP"
+                },
+                {
+                    "name": "UNITED CO-GEN INC TAP"
+                },
+                {
+                    "name": "UNIVERSITY COGEN TAP"
+                },
+                {
+                    "name": "UNKNOWN LINE NAME"
+                },
+                {
+                    "name": "URICH TAP"
+                },
+                {
+                    "name": "US WINDPOWER #3 TAP"
+                },
+                {
+                    "name": "US WINDPOWER TAP"
+                },
+                {
+                    "name": "VACA-BAHIA+"
+                },
+                {
+                    "name": "VACA-LAKEVILLE #1"
+                },
+                {
+                    "name": "VACA-LAMBIE SW STA"
+                },
+                {
+                    "name": "VACA-PARKWAY+"
+                },
+                {
+                    "name": "VACA-PEABODY"
+                },
+                {
+                    "name": "VACA-PLAINFIELD"
+                },
+                {
+                    "name": "VACA-PLAINFIELD JCT+"
+                },
+                {
+                    "name": "VACA-SUISUN-JAMESON+"
+                },
+                {
+                    "name": "VACA-SUISUN+"
+                },
+                {
+                    "name": "VACA-TESLA"
+                },
+                {
+                    "name": "VACA-VACAVILLE-CORDELIA+"
+                },
+                {
+                    "name": "VACA-VACAVILLE-JAMESON-NORTH TOWER+"
+                },
+                {
+                    "name": "VACA DIXON-MORAGA #1 (IDLE)"
+                },
+                {
+                    "name": "VALLEY CHILDRENS HOSPITAL TAP"
+                },
+                {
+                    "name": "VALLEY SPRINGS-BELLOTA+"
+                },
+                {
+                    "name": "VALLEY SPRINGS-CALAVERAS CEMENT"
+                },
+                {
+                    "name": "VALLEY SPRINGS-MARTELL #1+"
+                },
+                {
+                    "name": "VALLEY SPRINGS #1+"
+                },
+                {
+                    "name": "VALLEY SPRINGS #2+"
+                },
+                {
+                    "name": "VALLEY VIEW #1 TAP"
+                },
+                {
+                    "name": "VALLEY VIEW #2 TAP"
+                },
+                {
+                    "name": "VASCO-HERDLYN+"
+                },
+                {
+                    "name": "VASONA-METCALF+"
+                },
+                {
+                    "name": "VEDDER TAP+"
+                },
+                {
+                    "name": "VICTOR TAP"
+                },
+                {
+                    "name": "VIEJO-MONTEREY"
+                },
+                {
+                    "name": "VIERRA-TRACY-KASSON+"
+                },
+                {
+                    "name": "VINEYARD-NEWARK"
+                },
+                {
+                    "name": "VOLTA-DESCHUTES"
+                },
+                {
+                    "name": "VOLTA-SOUTH"
+                },
+                {
+                    "name": "WADHAM TAP"
+                },
+                {
+                    "name": "WARNERVILLE-WILSON"
+                },
+                {
+                    "name": "WASCO-FAMOSO"
+                },
+                {
+                    "name": "WASCO PRISON TAP"
+                },
+                {
+                    "name": "WASHOE TAP"
+                },
+                {
+                    "name": "WATERSHED TAP"
+                },
+                {
+                    "name": "WATSONVILLE-SALINAS+"
+                },
+                {
+                    "name": "WAUKENA SW STA-CORCORAN"
+                },
+                {
+                    "name": "WEBER-MORMON JCT+"
+                },
+                {
+                    "name": "WEBER-TESLA+"
+                },
+                {
+                    "name": "WEBER #1+"
+                },
+                {
+                    "name": "WEEDPATCH-SAN BERNARD"
+                },
+                {
+                    "name": "WEEDPATCH-WELLFIELD"
+                },
+                {
+                    "name": "WEEPATCH TEMP SHOOFLY"
+                },
+                {
+                    "name": "WEIMAR-HALSEY+"
+                },
+                {
+                    "name": "WEIMAR #1+"
+                },
+                {
+                    "name": "WESIX TAP"
+                },
+                {
+                    "name": "WEST FRESNO-CALIFORNIA AVE"
+                },
+                {
+                    "name": "WEST POINT-VALLEY SPRINGS+"
+                },
+                {
+                    "name": "WEST SACRAMENTO-BRIGHTON+"
+                },
+                {
+                    "name": "WEST SACRAMENTO-DAVIS"
+                },
+                {
+                    "name": "WESTINGHOUSE TAP"
+                },
+                {
+                    "name": "WESTLANDS #1 RA PP TAP"
+                },
+                {
+                    "name": "WESTLANDS 18 RA TAP"
+                },
+                {
+                    "name": "WESTLANDS TAP"
+                },
+                {
+                    "name": "WESTPARK-MAGUNDEN"
+                },
+                {
+                    "name": "WHEELER RIDGE-LAKEVIEW"
+                },
+                {
+                    "name": "WHEELER RIDGE-SAN BERNARD"
+                },
+                {
+                    "name": "WHEELER RIDGE-TEJON"
+                },
+                {
+                    "name": "WHEELER RIDGE-WEEDPATCH"
+                },
+                {
+                    "name": "WHEELER RIDGE PUMPING PLANT #1 TAP"
+                },
+                {
+                    "name": "WHEELER RIDGE PUMPING PLANT #2 TAP"
+                },
+                {
+                    "name": "WHIRLWIND-VINCENT"
+                },
+                {
+                    "name": "WHISMAN-MONTA VISTA+"
+                },
+                {
+                    "name": "WHISMAN-MOUNTAIN VIEW+"
+                },
+                {
+                    "name": "WILLOW PASS-CONTRA COSTA+"
+                },
+                {
+                    "name": "WILSON-ATWATER #2"
+                },
+                {
+                    "name": "WILSON-BORDEN"
+                },
+                {
+                    "name": "WILSON-DAIRYLAND (IDLE)"
+                },
+                {
+                    "name": "WILSON-GREGG+"
+                },
+                {
+                    "name": "WILSON-LE GRAND"
+                },
+                {
+                    "name": "WILSON-MERCED #1"
+                },
+                {
+                    "name": "WILSON-MERCED #2"
+                },
+                {
+                    "name": "WILSON-ORO LOMA"
+                },
+                {
+                    "name": "WILSON BANK #1 INTERTIE"
+                },
+                {
+                    "name": "WILSON BANK #2 INTERTIE"
+                },
+                {
+                    "name": "WIND FARMS"
+                },
+                {
+                    "name": "WIND GAP PUMPING PLANT #1 TAP"
+                },
+                {
+                    "name": "WIND GAP PUMPING PLANT #2 TAP"
+                },
+                {
+                    "name": "WINDMASTER TAP"
+                },
+                {
+                    "name": "WINTU TAP"
+                },
+                {
+                    "name": "WISHON-COPPERMINE"
+                },
+                {
+                    "name": "WISHON-SAN JOAQUIN #3"
+                },
+                {
+                    "name": "WITCO (REFINERY) TAP"
+                },
+                {
+                    "name": "WOHLER TAP"
+                },
+                {
+                    "name": "WOODBRIDGE TAP"
+                },
+                {
+                    "name": "WOODLAND-DAVIS"
+                },
+                {
+                    "name": "WOODLAND BIOMASS TAP"
+                },
+                {
+                    "name": "WOODLAND POLY TAP"
+                },
+                {
+                    "name": "WOODLEAF-PALERMO"
+                },
+                {
+                    "name": "WRIGHT TAP"
+                },
+                {
+                    "name": "YANKE (North Fork) TAP"
+                },
+                {
+                    "name": "YUBA CITY COGEN TAP"
+                },
+                {
+                    "name": "ZAMORA TAP"
+                },
+                {
+                    "name": "ZANKER #1 TAP"
+                },
+                {
+                    "name": "ZANKER #2 TAP"
+                },
+                {
+                    "name": "ZOND WIND TAP"
+                }
+            ]
+        },
+        {
+            "layerUrl": "http://rickyr.esri.com:6080/arcgis/rest/services/Tline2/MapServer/1",
+            "label": "Underground",
+            "queryField": "TLINE_NM",
+            "data": [
+                {"name":"TLINE_NM"},
+                {"name":"A-H-W #1+"},
+                {"name":"A-H-W #2+"},
+                {"name":"A-P #1"},
+                {"name":"A-X #1"},
+                {"name":"A-Y #1"},
+                {"name":"A-Y #2"},
+                {"name":"APPLIED MATERIALS-BRITTON+"},
+                {"name":"BORDEN-GLASS"},
+                {"name":"C-L #1"},
+                {"name":"C-X #2"},
+                {"name":"C-X #3"},
+                {"name":"COOLEY LANDING-STANFORD"},
+                {"name":"D-L #1"},
+                {"name":"DEL MAR-ATLANTIC #1"},
+                {"name":"EAST GRAND-SAN MATEO+"},
+                {"name":"EBMUD TAP"},
+                {"name":"FIGARDEN #1 TAP"},
+                {"name":"FIGARDEN #2 TAP"},
+                {"name":"FULTON-LAKEVILLE"},
+                {"name":"FULTON-LAKEVILLE #1A"},
+                {"name":"FULTON-LAKEVILLE #1B"},
+                {"name":"GEYSERS #9-LAKEVILLE+"},
+                {"name":"GEYSERS #9-LAKEVILLE+ #2A"},
+                {"name":"GEYSERS #9-LAKEVILLE+ #2B"},
+                {"name":"H-P #1"},
+                {"name":"H-P #3"},
+                {"name":"H-P #4"},
+                {"name":"H-Y #1"},
+                {"name":"H-Z #1"},
+                {"name":"H-Z #2"},
+                {"name":"JEFFERSON-LAS PULGAS"},
+                {"name":"JEFFERSON-MARTIN"},
+                {"name":"JEFFERSON-STANFORD"},
+                {"name":"K-D #1"},
+                {"name":"K-D #2"},
+                {"name":"KIFER-FMC"},
+                {"name":"LAKEVILLE-SONOMA #1"},
+                {"name":"LONE TREE-CAYETANO"},
+                {"name":"LOS ESTEROS-METCALF"},
+                {"name":"MARTIN-MILLBRAE #1+"},
+                {"name":"MARTIN-SF AIRPORT+"},
+                {"name":"MONTA VISTA-WOLFE+"},
+                {"name":"NEWARK-APPLIED MATERIALS+"},
+                {"name":"NEWARK-LOS ESTEROS"},
+                {"name":"NORTH DUBLIN-CAYETANO"},
+                {"name":"NORTH DUBLIN-VINEYARD"},
+                {"name":"P-X #1"},
+                {"name":"P-X #2"},
+                {"name":"PITTSBURG-LOS MEDANOS #1"},
+                {"name":"PITTSBURG-LOS MEDANOS #2"},
+                {"name":"SAN MATEO-MARTIN #3"},
+                {"name":"SAN MATEO-MARTIN #4"},
+                {"name":"SAN MATEO-MARTIN #6"},
+                {"name":"SAN MATEO-MARTIN CABLE"},
+                {"name":"SOBRANTE-R #1+"},
+                {"name":"SOBRANTE-R #2+"},
+                {"name":"STELLING-MONTA VISTA+"},
+                {"name":"SVP-NORTHERN RECEIVING STA"},
+                {"name":"TRIMBLE-SAN JOSE B+"},
+                {"name":"UNKNOWN LINE NAME"},
+                {"name":"VINEYARD-NEWARK"},
+                {"name":"X-Y #1"}
+            ]
+        }
+    ]
+}
