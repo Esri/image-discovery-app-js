@@ -1,10 +1,31 @@
 {
-    "searchService":{
-        "url": "http://someServer/arcgis/rest/services/Name/MapServer/0"
-    },
-    "queryField": "SomeQueryField",
-    "data":[
-        {"name":"1"},
-        {"name":"2"}
-
-]}
+    "metadataLayers": [
+        {
+            "layerUrl": "http://server:6080/arcgis/rest/services/Service/MapServer/0",
+            "label": "Overhead",
+            "queryField": "TLINE_NM",
+            "data": [
+            
+                {
+                    "name": "1"
+                },
+                {
+                    "name": "2"
+                }
+            ]
+        },
+        {
+            "layerUrl": "http://server:6080/arcgis/rest/services/Service/MapServer/1",
+            "label": "Underground",
+            "queryField": "TLINE_NM",
+            "data": [
+                   {
+                    "name": "1"
+                },
+                {
+                    "name": "2"
+                }
+            ]
+        }
+    ]
+}
