@@ -111,6 +111,9 @@
     "pointUploadWidget": {
         "create": true
     },
+    "zoomInAndOutWidget":{
+        "create": true
+    },
     "drawWidget": {
         "create": true
     },

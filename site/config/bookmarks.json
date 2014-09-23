@@ -1,36 +1,14 @@
 {
-    "yellowstone": {
-        "label": "Yellowstone Fire",
+    "California": {
+        "label": "California",
         "point": {
-            "x": -12312280.328397775,
-            "y": 5568505.813306453,
+            "x": -13510549.35,
+            "y": 4451839.905,
             "spatialReference": {
                 "wkid": 102100
             }
         },
-        "zoomLevel": 10
-    },
-    "florida": {
-        "label": "Florida Keys",
-        "point": {
-            "x": -8971199.589357376,
-            "y": 2889962.3146158117,
-            "spatialReference": {
-                "wkid": 102100
-            }
-        },
-        "zoomLevel": 8
-    },
-    "SantaCruz": {
-        "label": "Santa Cruz,Bolivia",
-        "point": {
-            "x": -6920623.431553749,
-            "y": -1957368.2711104248,
-            "spatialReference": {
-                "wkid": 102100
-            }
-        },
-        "zoomLevel": 5
+        "zoomLevel": 7
     }
 
 }
