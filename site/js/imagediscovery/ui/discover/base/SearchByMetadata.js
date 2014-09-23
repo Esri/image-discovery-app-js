@@ -158,16 +158,16 @@ define([
                     //init the discovery widget symbology
                     this.polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                            new Color([0, 0, 255]), 1), new Color([0, 0, 255, 0]));
+                            new Color([0, 255, 255]), 1), new Color([0, 255, 255, 0]));
                     this.pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_X, 1,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
                             new Color("blue")));
                     this.polylineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                        new Color([0, 0, 255]), 1);
+                        new Color([0, 255, 255]), 1);
 
                     this.envelopeSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
                         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-                            new Color([0, 0, 255]), 1),
+                            new Color([0, 255, 255]), 1),
                         new Color([0, 0, 0, 0]));
                 },
 

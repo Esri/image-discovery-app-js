@@ -1,16 +1,16 @@
 define([
-    "dojo/_base/declare",
-    "dojo/text!./template/DownloadWidgetTemplate.html",
+        "dojo/_base/declare",
+        "dojo/text!./template/DownloadWidgetTemplate.html",
 //    "xstyle/css!./theme/DownloadWidgetTheme.css",
-    "dojo/topic",
-    "dojo/_base/lang",
-    "esriviewer/ui/base/UITemplatedWidget",
-    "../export/ImageryExportWidget",
-    "../export/FootprintsExportWidget",
-    "./model/DownloadViewModel",
-    "../reporting/ReportingWidget",
-    "../portal/PortalWebMapReportWidget"
-],
+        "dojo/topic",
+        "dojo/_base/lang",
+        "esriviewer/ui/base/UITemplatedWidget",
+        "../export/ImageryExportWidget",
+        "../export/FootprintsExportWidget",
+        "./model/DownloadViewModel",
+        "../reporting/ReportingWidget",
+        "../portal/PortalWebMapReportWidget"
+    ],
     //  function (declare, template, theme, topic, lang,  UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
     function (declare, template, topic, lang, UITemplatedWidget, ImageryExportWidget, FootprintsExportWidget, DownloadViewModel, ReportingWidget, PortalWebMapReportWidget) {
         return declare(
@@ -62,12 +62,15 @@ define([
                 },
                 loadViewerConfigurationData: function () {
                     this.inherited(arguments);
-                    var portalConfig = null;
+                    var portalConfig = null, reportingConfig = null;
                     //get the portal configuration to check if we display the web map tab
                     topic.publish(VIEWER_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "portal", function (portalConf) {
                         portalConfig = portalConf;
                     });
-                    if (portalConfig == null || !lang.isObject(portalConfig) || portalConfig.url == null) {
+                    topic.publish(IMAGERY_GLOBALS.EVENTS.CONFIGURATION.GET_ENTRY, "reporting", function (reportingConf) {
+                        reportingConfig = reportingConf;
+                    });
+                    if (portalConfig == null || !lang.isObject(portalConfig) || portalConfig.url == null || (reportingConfig && reportingConfig.disableWebMapReports)) {
                         this.showWebMapCreationTab = false;
                     }
                 },

@@ -86,8 +86,8 @@
         "floatPrecision": 1
     },
     "discoverGeometryUploadTask": {
-        "uploadUrl": "//SERVER_NAME/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/uploads/upload",
-        "geoprocessingTaskUrl": "//SERVER_NAME/arcgis/rest/services/Tasks/DiscoveryViewerTools/GPServer/fileToFeatures",
+        "uploadUrl": "http://rickyr.esri.com:6080/arcgis/rest/services/DiscoveryGeoprocessing/GPServer/uploads/upload",
+        "geoprocessingTaskUrl": "http://rickyr.esri.com:6080/arcgis/rest/services/DiscoveryGeoprocessing/GPServer/fileToFeatures",
         "uploadSHPFileParameterName": "uploadSHPFile",
         "uploadKMLFileParameterName": "uploadKMLFile",
         "uploadKMZFileParameterName": "uploadKMZFile",
@@ -125,6 +125,7 @@
         "url": "config/data/utm/UTMWKIDLookup.json"
     },
     "reporting": {
+        "disableWebMapReports": true,
         "html": {
             "templateURL": "templates/htmlReport.html"
         },

@@ -6,7 +6,8 @@
         <span data-bind="click:showPlotMGRS, css: {selectedTab: plotMGRSVisible}">MGRS</span>
         <span data-bind="visible:statePlaneEnabled, click:showPlotStatePlane, css: {selectedTab: plotStatePlaneVisible}">CGC</span>
     </div>
-    <div data-bind="visible:hasPlottedPoints, click:showPlottedPoints" class="commonIcons16 list showPlottedPointsListIcon"
+    <div data-bind="visible:hasPlottedPoints, click:showPlottedPoints"
+         class="commonIcons16 list showPlottedPointsListIcon"
          title="Show Plotted Points"></div>
     <div data-bind="visible:plotDDVisible" data-dojo-attach-point="plotDDContainer">
     </div>
@@ -29,10 +30,15 @@
 
     </div>
     <div data-bind="visible:plottedPointsVisible" class="plottedPointListContainer">
+        <div style="color:#778899;cursor:pointer;text-decoration:underline;text-align:right"
+             data-bind="click:clearAllPoints">Clear All Points
+        </div>
         <ul data-bind="foreach: plottedPoints" class="plottedPointsList">
             <li>
-                <div class="commonIcons16 deleteSmall removePlottedPointIcon" data-bind="click:$parent.removePoint" title="Remove Point"></div>
-                <div class="commonIcons16 globeGoTo plottedPointGoToIcon" data-bind="click:$parent.zoomToPoint"  title="Go To Point"></div>
+                <div class="commonIcons16 deleteSmall removePlottedPointIcon" data-bind="click:$parent.removePoint"
+                     title="Remove Point"></div>
+                <div class="commonIcons16 globeGoTo plottedPointGoToIcon" data-bind="click:$parent.zoomToPoint"
+                     title="Go To Point"></div>
                 <span class="plottedPointLabel" data-bind="text: $data.label"></span>
             </li>
         </ul>
