@@ -107,8 +107,6 @@ define([
                     }
                 },
                 handleRadioSelectionChanged: function (searchObjectId) {
-                    console.log("handleRadioSelectionChanged");
-                    console.log(searchObjectId);
                     if (this.currentMetadataSearchObject && this.currentMetadataSearchObject._id !== searchObjectId) {
                         domStyle.set(this.currentMetadataSearchObject.searchFilterContainer, "display", "none");
                     }
@@ -148,7 +146,6 @@ define([
                     topic.subscribe(IMAGERY_GLOBALS.EVENTS.QUERY.RESULT.CLEAR, lang.hitch(this, this.handleResultsCleared));
                 },
                 handleResultsCleared: function () {
-                    console.log("handleResultsCleared");
                     if (this.currentMetadataGraphic) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.REMOVE, this.currentMetadataGraphic);
                         this.currentMetadataGraphic = null;
@@ -186,13 +183,23 @@ define([
                     var resultFeature, query = new Query();
                     query.where = this.currentMetadataSearchObject.queryField + " = '" + searchValue + "'";
                     query.outSpatialReference = this.map.extent.spatialReference;
-                    console.log("Where clause: " + query.where);
                     query.returnGeometry = true;
                     this.currentMetadataSearchObject.queryTask.execute(query, lang.hitch(this, function (results) {
                         if (results && results.features && results.features.length > 0) {
                             resultFeature = results.features[0];
                             if (resultFeature.geometry) {
-                                this.map.setExtent(resultFeature.geometry.getExtent());
+                                var extent =  resultFeature.geometry.getExtent();
+                                if(extent) {
+                                    if (Math.abs(extent.xmax - extent.xmin) < 1000){
+                                        extent.xmax += 500;
+                                        extent.xmin -= 500;
+                                    }
+                                    if (Math.abs(extent.ymax - extent.ymin) < 1000){
+                                        extent.ymax += 500;
+                                        extent.ymin -= 500;
+                                    }
+                                    this.map.setExtent(extent);
+                                }
                                 this._onSearchByGeometry(resultFeature.geometry);
                                 if (resultFeature.geometry instanceof Point) {
                                     this.currentMetadataGraphic = new Graphic(resultFeature.geometry, this.pointSymbol);
@@ -211,7 +218,6 @@ define([
                                 }
                                 if (this.currentMetadataGraphic) {
                                     topic.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.ADD, this.currentMetadataGraphic);
-                                    console.log("Adding graphic");
                                 }
                             }
                         }
@@ -221,7 +227,9 @@ define([
                     this.onSearchByGeometry(geometry);
                 },
                 onSearchByGeometry: function (geometry) {
-
                 }
             });
     });
+
+
+
