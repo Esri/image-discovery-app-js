@@ -309,8 +309,6 @@ define([
                     }
                 },
                 _handlePDFExportError: function (err) {
-                    console.log("_handlePDFExportError");
-                    console.dir(err);
                     topic.publish(VIEWER_GLOBALS.EVENTS.MESSAGING.SHOW, "Could not generate PDF report. Web Map export task failed.");
                     VIEWER_UTILS.log("Could not generate PDF report. Web Map export task failed.", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                 },

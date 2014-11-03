@@ -575,10 +575,10 @@ define([
                     else {
                         if (this.viewerConfig.toolsBar && this.viewerConfig.toolsBar.showExtentActionsOnMap && this.viewerConfig.toolsBar.showExtentActions) {
                             if (this.loadingThrobber) {
-                                domStyle.set(this.loadingThrobber.domNode, "left", "175px");
+                                domStyle.set(this.loadingThrobber.domNode, "left", "225px");
                             }
                             if (this.messagingWidget) {
-                                domStyle.set(this.messagingWidget.domNode, "left", "225px");
+                                domStyle.set(this.messagingWidget.domNode, "left", "325px");
                             }
                         }
                     }
