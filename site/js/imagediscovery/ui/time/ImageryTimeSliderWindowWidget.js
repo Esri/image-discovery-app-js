@@ -4,9 +4,10 @@ define([
         "dojo/dom-style",
         "dojo/_base/lang",
         "dojo/window",
+        "./ImageryTimeSlider",
         "esriviewer/ui/window/WindowWidget"
     ],
-    function (declare, topic, domStyle, lang, window, WindowWidget) {
+    function (declare, topic, domStyle, lang, window, ImageryTimeSlider,WindowWidget) {
         return declare(
             [WindowWidget],
             {
@@ -19,15 +20,6 @@ define([
                 windowIconAltText: "Imagery Time Slider",
                 windowIconClass: "commonIcons16 clock",
                 positioningParamName: "imageryTime",
-                constructor: function (params) {
-                    this.firstShowListener = this.on("firstWindowShow", lang.hitch(this, this.handleFirstWindowShow));
-                },
-                handleFirstWindowShow: function () {
-                    require(["imagediscovery/ui/time/ImageryTimeSlider"], lang.hitch(this, function (ImageryTimeSlider) {
-                        this.imageryTimeSlider = new ImageryTimeSlider();
-                        this.setContent(this.imageryTimeSlider.domNode);
-                    }));
-                },
                 initListeners: function () {
                     this.inherited(arguments);
                     this.subscribes.push(topic.subscribe(IMAGERY_GLOBALS.EVENTS.LAYER.TIME.WINDOW.SHOW, lang.hitch(this, this.show)));
@@ -48,6 +40,8 @@ define([
                     }
 
                     this.inherited(arguments);
+                    this.imageryTimeSlider = new ImageryTimeSlider();
+                    this.setContent(this.imageryTimeSlider.domNode);
 
                 },
 
