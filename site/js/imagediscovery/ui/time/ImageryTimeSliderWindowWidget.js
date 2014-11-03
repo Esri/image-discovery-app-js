@@ -1,11 +1,11 @@
 define([
-    "dojo/_base/declare",
-    "dojo/topic",
-    "dojo/dom-style",
-    "dojo/_base/lang",
-    "dojo/window",
-    "esriviewer/ui/window/WindowWidget"
-],
+        "dojo/_base/declare",
+        "dojo/topic",
+        "dojo/dom-style",
+        "dojo/_base/lang",
+        "dojo/window",
+        "esriviewer/ui/window/WindowWidget"
+    ],
     function (declare, topic, domStyle, lang, window, WindowWidget) {
         return declare(
             [WindowWidget],
@@ -15,7 +15,6 @@ define([
                     y: 50
                 },
                 windowWidth: "450px",
-                showOnLoad: true,
                 windowHeaderText: "Imagery Time Slider",
                 windowIconAltText: "Imagery Time Slider",
                 windowIconClass: "commonIcons16 clock",
@@ -27,7 +26,6 @@ define([
                     require(["imagediscovery/ui/time/ImageryTimeSlider"], lang.hitch(this, function (ImageryTimeSlider) {
                         this.imageryTimeSlider = new ImageryTimeSlider();
                         this.setContent(this.imageryTimeSlider.domNode);
-                        this.show();
                     }));
                 },
                 initListeners: function () {
@@ -52,6 +50,7 @@ define([
                     this.inherited(arguments);
 
                 },
+
                 show: function () {
                     this.inherited(arguments);
                     if (this.imageryTimeSlider) {
