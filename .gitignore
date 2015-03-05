@@ -5,6 +5,7 @@
 *.war
 *.ear
 
+.idea/*
 /site/.idea/*
 /site/site.iml
 /site/DiscoveryViewer.iml
