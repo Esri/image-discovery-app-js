@@ -30,7 +30,6 @@ The Image Discovery Application enables users to search, discover, filter, and m
 * ArcGIS Portal Search
 * Measure
 * Legend
-* Social Media
 * Time Slider
 * Weather Conditions
 * Zoom To (USA)
@@ -44,6 +43,8 @@ The Image Discovery Application enables users to search, discover, filter, and m
 * Notepad or HTML editor
 * Experience with HTML/CSS/Javascript
 * Experience with the [ArcGIS Javascript API](http://links.esri.com/javascript)
+* An ArcGIS Server instance Version 10.2+ (for geoprocessing support)
+
 
 ## Instructions
 
@@ -59,8 +60,7 @@ These instructions assume that you have a Web server like [Internet Information 
 2. In IIS, convert the folder to a "Web Application" and add .json (application/json) MIME type
 3. (Optional). If your application edits features in a feature service or generates requests that exceed 2000 characters you may need to setup and use a proxy page. Common situations where you may exceed the URL length are, using complex polygons as input to a task or specifying a spatial reference using well-known text (WKT). View the [Using the proxy page](http://help.arcgis.com/en/webapi/javascript/arcgis/jshelp/#ags_proxy) help topic for details on installing and configuring a proxy page.
 4. Test the page using the following URL: http://localhost/[DiscoveryApplicationPath]/index.html, where [DiscoveryApplicationPath] is as determined in step 1.
-5. For Shapefile/KML/KMZ polygon search support, fileToFeatures.gpk located in geoprocessing\discoveryGeometryUpload\release must be deployed to an ArcGIS Server instance. Upload must be enabled when publishing the geoprocessing service.
-6. For Shapefile/KML/CSV reporting reportGenerator.gpk located in geoprocessing\reporting\release must be deployed to an ArcGIS Server instance.
+5. To take advantage of server side geoprocessing tools (Shapefile/KML/KMZ polygon search and reporting support) deploy DiscoveryGeoprocessing.sd, located in geoprocessing\data\geoprocessing, to an ArcGIS Server instance. Make sure upload is enabled when publishing the geoprocessing service.
 
 #### Configure the application
 
@@ -123,7 +123,7 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
 
 ## Licensing
-Copyright 2013 Esri
+Copyright 2015 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
