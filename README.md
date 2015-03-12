@@ -76,13 +76,13 @@ Now let's configure the application to point to an Search Image Service and set 
     - **gridOptions**: setting hiddenOnDisplay to true will require the user to enable the field for it to be visible in the result grid. canHide to true allows the user to hide the field.
     - **style**: object containing camel case CSS for how to style the field in the result grid
 
-5. If you deployed the fileToFeatures.gpk from step 5 in "Install the web application" set the URL of the GPServer in the "discoverGeometryUploadTask" configuration entry
-    - **uploadUrl**: URL to upload endpoint of the GPServer `http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/uploads/upload`
-    - **geoprocessingTaskUrl**: URL to the GPServer endpoint `http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/FileToFeatures`
+5. If you deployed the DiscoveryGeoprocessing.sd from step 5 in "Install the web application" set the URL of the GPServer in the "discoverGeometryUploadTask" configuration entry
+    - **uploadUrl**: URL to upload endpoint of the GPServer `http://YOUR_SERVER/arcgis/rest/services/DiscoveryGeoprocessing/GPServer/uploads/upload`
+    - **geoprocessingTaskUrl**: URL to the GPServer endpoint `http://YOUR_SERVER/arcgis/rest/services/DiscoveryGeoprocessing/GPServer/fileToFeatures`
 
 
-6. If you deployed the reportGenerator.gpk from step 6 in "Install the web application" set the URL of the GPServer in the "footprints" configuration entry
-    - **url**: URL to the GPServer endpoint `http://YOUR_SERVER/arcgis/rest/services/DiscoveryViewerTools/GPServer/reportGenerator`
+6. If you deployed the DiscoveryGeoprocessing.sd from step 5 in "Install the web application" set the URL of the GPServer in the "footprints" configuration entry
+    - **url**: URL to the GPServer endpoint `http://YOUR_SERVER/arcgis/rest/services/DiscoveryGeoprocessing/GPServer/reportGenerator`
 
 
 
@@ -92,10 +92,10 @@ Now let's configure the application to point to an Search Image Service and set 
 
 You can personalize the Image Discovery Application by adding/removing widgets, setting operational layers, and customizing the map.
 
-1. Open `web\config\imagery\imageryConfig.json` in a text editor
+1. Open `site\config\imagery\imageryConfig.json` in a text editor
 2. All widgets have a "create" entry. Set "create" to true to enable the widget in the Image Discovery Application.
 
-The weather widget requires an API key. You can get an API key at: [Weather Underground](http://www.wunderground.com/weather/api/d/docs). Set your API key in `web\config\widgets\WeatherWidgetConfig.json`.
+The weather widget requires an API key. You can get an API key at: [Weather Underground](http://www.wunderground.com/weather/api/d/docs). Set your API key in `site\config\widgets\WeatherWidgetConfig.json`.
 
 3. the "map" entry allows you to customize how the map is loaded. 
    - **initializationParameters**: This entry allows you to forward all the options supported by esri.Map to the map creation logic.
