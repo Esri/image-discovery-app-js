@@ -1,25 +1,25 @@
 define([
-    "dojo/_base/declare",
-    "dojo/text!./template/ImageryExportTemplate.html",
- //   "xstyle/css!./theme/ImageryExportTheme.css",
-    "dojo/topic",
-    "dojo/_base/json",
-    "dojo/_base/array",
-    "dojo/_base/lang",
-    "dojo/_base/Color",
-    "esriviewer/base/DataLoaderSupport",
-    "esriviewer/ui/base/UITemplatedWidget",
-    "esriviewer/ui/draw/base/MapDrawSupport",
-    "./ImageryExportDownloadWindow",
-    "./model/ImageryExportViewModel",
-    "dijit/form/Button",
-    "esri/symbols/SimpleFillSymbol",
-    "esri/symbols/SimpleLineSymbol"
-],
-  //  function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
-    function (declare, template,  topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageryExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+        "dojo/_base/declare",
+        "dojo/text!./template/ImageryExportTemplate.html",
+        //   "xstyle/css!./theme/ImageryExportTheme.css",
+        "dojo/topic",
+        "dojo/_base/json",
+        "dojo/_base/array",
+        "dojo/_base/lang",
+        "dojo/_base/Color",
+        "esriviewer/base/DataLoaderSupport",
+        "esriviewer/ui/base/UITemplatedWidget",
+        "esriviewer/ui/draw/base/MapDrawSupport",
+        "./ImageryExportDownloadWindow",
+        "./model/ImageryExportViewModel",
+        "dijit/form/Button",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/symbols/SimpleLineSymbol"
+    ],
+    //  function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+    function (declare, template, topic, json, array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageryExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
         return declare(
-            [ UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
+            [UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
             {
                 downloadLimitExceedServerDetailString: "The requested number of download images exceeds the limit.",
                 bytesInMB: 1048576,
@@ -161,9 +161,9 @@ define([
                     }
                 },
                 _imageryDownloadErrorCallback: function (error) {
-                    var errString  = "An error was encountered during export.";
-                    if(error && lang.isArray(error.details) && error.details.length > 0){
-                        if(array.indexOf(error.details,this.downloadLimitExceedServerDetailString) > -1){
+                    var errString = "An error was encountered during export.";
+                    if (error && lang.isArray(error.details) && error.details.length > 0) {
+                        if (array.indexOf(error.details, this.downloadLimitExceedServerDetailString) > -1) {
                             errString = "Cannot export imagery. Download limit exceeded on server."
                         }
                     }
@@ -210,7 +210,7 @@ define([
                     var filesAddedCounter = 1;
                     var currentDownloadResponseObject;
                     var currentResponse;
-                    //loop through download repsonses and format all download URLs and finally add to the download items array
+                    //loop through download responses and format all download URLs and finally add to the download items array
                     for (var i = 0; i < this.currentDownloadResponses.length; i++) {
                         currentDownloadResponseObject = this.currentDownloadResponses[i];
                         if (currentDownloadResponseObject.layer == null || currentDownloadResponseObject.response == null) {
@@ -225,16 +225,24 @@ define([
                                 currentRasterFile.rasterIds.length == 0) {
                                 continue;
                             }
-                            var fileName = VIEWER_UTILS.getFileNameFromAtEndOfPath(currentRasterFile.id);
+                            var fileName;
+                            console.log("TEST DHS");
+                            console.log(currentRasterFile.id);
+                            if (currentRasterFile.id.indexOf("://") > -1) {
+                                fileName = currentRasterFile.id.substring(currentRasterFile.id.lastIndexOf("/") + 1, currentRasterFile.id.length);
+                            }
+                            else {
+                                fileName = VIEWER_UTILS.getFileNameFromAtEndOfPath(currentRasterFile.id);
+                            }
                             if (fileName == null || fileName == "") {
                                 fileName = currentRasterFile.id ? currentRasterFile.id : ("File " + filesAddedCounter);
                             }
-                            var serviceUrl =  currentDownloadResponseObject.layer.url;
+                            var serviceUrl = currentDownloadResponseObject.layer.url;
                             var downloadUrl = VIEWER_UTILS.joinUrl(serviceUrl, ("file?id=" + currentRasterFile.id));
                             if (currentRasterFile.rasterIds.length == 1) {
                                 currrentRasterFileRasterId = currentRasterFile.rasterIds[0];
                                 var addDownloadItem = {
-                                    id: currentRasterFile.id,
+                                    id: VIEWER_UTILS.generateUUID(),
                                     url: (downloadUrl + "&rasterId=" + currrentRasterFileRasterId),
                                     label: fileName,
                                     serviceName: REG_EXP_UTILS.getServiceNameFromUrl(serviceUrl)
@@ -251,7 +259,5 @@ define([
                     }
                     this.imageryExportDownloadWindow.show(downloadServiceItems);
                 }
-
             });
-
     });
