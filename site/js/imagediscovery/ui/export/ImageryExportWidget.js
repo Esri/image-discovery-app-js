@@ -226,8 +226,6 @@ define([
                                 continue;
                             }
                             var fileName;
-                            console.log("TEST DHS");
-                            console.log(currentRasterFile.id);
                             if (currentRasterFile.id.indexOf("://") > -1) {
                                 fileName = currentRasterFile.id.substring(currentRasterFile.id.lastIndexOf("/") + 1, currentRasterFile.id.length);
                             }
