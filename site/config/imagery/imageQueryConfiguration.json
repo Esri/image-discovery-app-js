@@ -68,8 +68,8 @@
     ],
     "imageQueryMetadataConfiguration": {
         "url": "config/data/metadata/discoveryMetadata.json",
-        "enabled": true,
-        "metadataDetailsLabel": "Search by T-Line"
+        "enabled": false,
+        "metadataDetailsLabel": ""
     },
     "popupConfiguration": {
         "displayFields": [

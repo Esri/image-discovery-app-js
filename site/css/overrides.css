@@ -1,4 +1,4 @@
-.map{
+.map {
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -8,4 +8,9 @@
 
 .commonIcons16.blank {
     background: none;
+}
+
+.configureButtonIcon, .searchButtonIcon {
+    height: 17px !important;
+    margin-top: 0 !important;
 }
