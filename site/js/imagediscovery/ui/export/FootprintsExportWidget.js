@@ -1,21 +1,21 @@
 define([
-    "dojo/_base/declare",
-    "dojo/text!./template/FootprintsExportTemplate.html",
-    "dojo/topic",
-    "dojo/date/locale",
-    "dojo/_base/lang",
-    "dojo/_base/json",
-    "dojo/_base/Color",
-    "esriviewer/ui/base/UITemplatedWidget",
-    "esriviewer/ui/draw/base/MapDrawSupport",
-    "./model/FootprintsDownloadViewModel",
-    "dijit/form/Button",
-    "esri/symbols/SimpleFillSymbol",
-    "esri/symbols/SimpleLineSymbol",
-    "esri/tasks/QueryTask",
-    "esri/tasks/query",
-    "esri/tasks/Geoprocessor"
-],
+        "dojo/_base/declare",
+        "dojo/text!./template/FootprintsExportTemplate.html",
+        "dojo/topic",
+        "dojo/date/locale",
+        "dojo/_base/lang",
+        "dojo/_base/json",
+        "dojo/_base/Color",
+        "esriviewer/ui/base/UITemplatedWidget",
+        "esriviewer/ui/draw/base/MapDrawSupport",
+        "./model/FootprintsDownloadViewModel",
+        "dijit/form/Button",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/tasks/QueryTask",
+        "esri/tasks/query",
+        "esri/tasks/Geoprocessor"
+    ],
     function (declare, template, topic, locale, lang, json, Color, UITemplatedWidget, MapDrawSupport, FootprintsDownloadViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, QueryTask, Query, Geoprocessor) {
         return declare(
             [UITemplatedWidget, MapDrawSupport],
@@ -45,7 +45,10 @@ define([
                         this.resultFieldsArray = [];
                         if (this.resultFields != null && lang.isArray(this.resultFields)) {
                             for (var i = 0; i < this.resultFields.length; i++) {
-                                this.resultFieldsArray.push({field: this.resultFields[i].field, label: this.resultFields[i].label });
+                                this.resultFieldsArray.push({
+                                    field: this.resultFields[i].field,
+                                    label: this.resultFields[i].label
+                                });
                                 this.resultFieldsLabelLookup[this.resultFields[i].field] = this.sanitizeFieldName(this.resultFields[i].label);
                             }
                         }
@@ -295,7 +298,7 @@ define([
                                 var attributeKeysArray = [];
                                 for (var key in currentAttributes) {
                                     //don't mess with object id field
-                                    if (key ===  currentLayer.objectIdField) {
+                                    if (key === currentLayer.objectIdField) {
                                         continue;
                                     }
                                     attributeKeysArray.push(key);
@@ -321,7 +324,10 @@ define([
                                     }
                                 }
                             }
-                            this.serviceQueryResponseFeatures.push({response: queryResponseJson, layer: queryLayerController.layer});
+                            this.serviceQueryResponseFeatures.push({
+                                response: queryResponseJson,
+                                layer: queryLayerController.layer
+                            });
                         }
                     }
                     if (--this.pendingServiceQueries < 1) {
@@ -461,16 +467,18 @@ define([
                 getDownloadObjectIds: function () {
                     alert("must extend getDownloadObjectIds to get query layer controllers and object ids ")
                 },
-                getFormattedDate: function (value) {
+                getFormattedDate: function (value, isUTC) {
                     try {
                         var date = new Date(value);
-                        var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDisplayFormats.date;
+                        if (isUTC) {
+                            date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                        }
+                        var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }
                     catch (err) {
-                        return value;
+                        return null;
                     }
-
                 }
             });
     })

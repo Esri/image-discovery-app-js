@@ -5,6 +5,13 @@ define([
         return declare(
             [], {
                 EVENTS: {
+                    UPLOADER:{
+                        WINDOW: {
+                            SHOW: "upldrWindow:show",
+                            HIDE: "upldrWindow:hide",
+                            TOGGLE: "upldrWindow:toggle"
+                        }
+                    },
                     IDENTIFY: {
                         //performs a server side identify on all query layer controllers that were used in the current search
                         BY_POINT: "identifyqueryLyr:byPoint",
@@ -227,6 +234,7 @@ define([
                         CATALOGS: "localStorageCatalogs"
                     }
                 }
+
             });
     });
 

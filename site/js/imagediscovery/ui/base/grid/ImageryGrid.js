@@ -38,6 +38,7 @@ define([
                 storeIdField: "_storeId",
                 constructor: function (params) {
                     lang.mixin(this, params || {});
+                    this.utcDateFormatterScoped = lang.hitch(this, this.utcDateFormatter);
                     this.dateFormatterScoped = lang.hitch(this, this.dateFormatter);
                     this.fieldsFormattersByQueryControllerId = {};
                 },
@@ -230,7 +231,7 @@ define([
                                     currentFormatter = null;
                                     currentField = currentLayer.fields[j];
                                     if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DATE) {
-                                        currentFormatter = this.dateFormatterScoped;
+                                        currentFormatter  = currentQueryCont.serviceConfiguration.isUTCDate ? this.utcDateFormatterScoped : this.dateFormatterScoped;
                                     }
                                     else if (currentField.type === VIEWER_GLOBALS.ESRI_FIELD_TYPES.DOUBLE && this.floatPrecision != null) {
                                         //TODO: double formatting has been disabled. need to format on a column level and not a grid level

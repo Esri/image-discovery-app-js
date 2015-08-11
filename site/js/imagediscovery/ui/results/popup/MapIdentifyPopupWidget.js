@@ -1,17 +1,17 @@
 define([
-    "dojo/_base/declare",
-    "dojo/text!./template/MapIdentifyPopupWidgetTemplate.html",
-    "xstyle/css!./theme/MapIdentifyPopupWidgetTheme.css",
-    "dojo/topic",
-    "dojo/date/locale",
-    "dojo/_base/lang",
-    "dojo/dom-construct",
-    "dojo/dom-style",
-    "dojo/dom-class",
-    "dojo/_base/array",
-    "esriviewer/ui/base/UITemplatedWidget",
-    "dojo/on"
-],
+        "dojo/_base/declare",
+        "dojo/text!./template/MapIdentifyPopupWidgetTemplate.html",
+        "xstyle/css!./theme/MapIdentifyPopupWidgetTheme.css",
+        "dojo/topic",
+        "dojo/date/locale",
+        "dojo/_base/lang",
+        "dojo/dom-construct",
+        "dojo/dom-style",
+        "dojo/dom-class",
+        "dojo/_base/array",
+        "esriviewer/ui/base/UITemplatedWidget",
+        "dojo/on"
+    ],
     function (declare, template, cssTheme, topic, locale, lang, domConstruct, domStyle, domClass, array, UITemplatedWidget, on) {
         return declare(
             [UITemplatedWidget],
@@ -111,9 +111,14 @@ define([
                     this.currentIdentifyId = null;
                     this.currentIdentifyResultCount = 0;
                 },
-                getFormattedDate: function (value) {
+
+
+                getFormattedDate: function (value, isUTC) {
                     try {
                         var date = new Date(value);
+                        if (isUTC) {
+                            date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                        }
                         var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }
@@ -126,12 +131,12 @@ define([
                     var resultNode = domConstruct.create("div");
                     var resultEntries = domConstruct.create("div", {style: {display: (expanded ? "block" : "none")}});
                     var header = domConstruct.create("div", {className: "windowHeader mapIdentifyResultHeader threePixelBorderRadius"});
-                    var headerLbl = domConstruct.create("span", { innerHTML: response.queryLayerController.label});
+                    var headerLbl = domConstruct.create("span", {innerHTML: response.queryLayerController.label});
                     var toggleIcon = "up";
                     if (expanded) {
                         toggleIcon = "down";
                     }
-                    var headerToggler = domConstruct.create("div", { className: "commonIcons16 mapIdentifyResultToggler " + toggleIcon});
+                    var headerToggler = domConstruct.create("div", {className: "commonIcons16 mapIdentifyResultToggler " + toggleIcon});
                     on(header, "click", lang.hitch(this, this._toggleResultContent, headerToggler, resultEntries));
                     domConstruct.place(headerLbl, header);
                     domConstruct.place(headerToggler, header);
@@ -164,23 +169,30 @@ define([
 
                     domConstruct.place(actionsContainer, featureContainer);
 
-                             /*
-                    if (queryLayerController.supportsThumbnail()) {
-                        var showThumb = domConstruct.create("div", {className: "commonIcons16 binoculars"});
-                        on(showThumb, "mouseover", lang.hitch(this, this.handleLayerMouseOver,feature,queryLayerController));
-                        on(showThumb, "mouseout", lang.hitch(this, this.handleLayerMouseOut));
-                        domConstruct.place(showThumb, actionsContainer);
-                    }
-                    */
+                    /*
+                     if (queryLayerController.supportsThumbnail()) {
+                     var showThumb = domConstruct.create("div", {className: "commonIcons16 binoculars"});
+                     on(showThumb, "mouseover", lang.hitch(this, this.handleLayerMouseOver,feature,queryLayerController));
+                     on(showThumb, "mouseout", lang.hitch(this, this.handleLayerMouseOut));
+                     domConstruct.place(showThumb, actionsContainer);
+                     }
+                     */
 
-                    var toggleImage = domConstruct.create("div", {className: "showImageHeaderIcon", title: "Toggle Image"});
+                    var toggleImage = domConstruct.create("div", {
+                        className: "showImageHeaderIcon",
+                        title: "Toggle Image"
+                    });
                     on(toggleImage, "click", lang.hitch(this, this.handleToggleShowImage, queryLayerController, feature));
                     domConstruct.place(toggleImage, actionsContainer);
 
 
                     //shoppingCartAdded
                     var cartClass = inCart ? "shoppingCartAdded" : "shoppingCartEmpty";
-                    var toggleCart = domConstruct.create("div", {className: "commonIcons16 shoppingCartHeaderIcon " + cartClass, title: "Toggle Cart", style: {marginRight: "10px"}});
+                    var toggleCart = domConstruct.create("div", {
+                        className: "commonIcons16 shoppingCartHeaderIcon " + cartClass,
+                        title: "Toggle Cart",
+                        style: {marginRight: "10px"}
+                    });
                     on(toggleCart, "click", lang.hitch(this, this.handleToggleToCart, queryLayerController, feature));
                     domConstruct.place(toggleCart, actionsContainer);
 
@@ -195,7 +207,10 @@ define([
                         var featureLiEntry = domConstruct.create("li", {className: "imagePopupEntry"});
                         var configuredFieldName = fieldAliasLookup[key] == null ? key : fieldAliasLookup[key];
                         var displayFieldName = this.displayFieldsLookup[configuredFieldName] == null ? configuredFieldName : this.displayFieldsLookup[configuredFieldName];
-                        var featureEntryLbl = domConstruct.create("span", {className: "imagePopupLabel", innerHTML: displayFieldName + ": "});
+                        var featureEntryLbl = domConstruct.create("span", {
+                            className: "imagePopupLabel",
+                            innerHTML: displayFieldName + ": "
+                        });
                         var displayValue;
                         if (attributes[key] == null || attributes[key] === "") {
                             displayValue = "*Empty*";
@@ -203,8 +218,7 @@ define([
                         else {
                             //check if we need to format an attribute entry
                             if (fieldTypeLookup.dateLookup[configuredFieldName] != null) {
-                                displayValue = this.getFormattedDate(attributes[key]);
-
+                                displayValue = this.getFormattedDate(attributes[key], queryLayerController.serviceConfiguration.isUTCDate)
                             }
                             else if (fieldTypeLookup.doubleLookup[configuredFieldName] != null) {
                                 if (this.displayFormats && this.displayFormats.floatPrecision != null) {
@@ -219,14 +233,17 @@ define([
                             }
                         }
 
-                        var featureEntryValue = domConstruct.create("span", {className: "imagePopupValue", innerHTML: displayValue});
+                        var featureEntryValue = domConstruct.create("span", {
+                            className: "imagePopupValue",
+                            innerHTML: displayValue
+                        });
                         domConstruct.place(featureEntryLbl, featureLiEntry);
                         domConstruct.place(featureEntryValue, featureLiEntry);
                         domConstruct.place(featureLiEntry, featureUL);
                     }
                     return {container: featureContainer, cartIcon: toggleCart};
                 },
-                handleLayerMouseOver: function (featureAttributes,queryLayerController) {
+                handleLayerMouseOver: function (featureAttributes, queryLayerController) {
                     queryLayerController.showThumbnail(featureAttributes);
                 },
                 handleLayerMouseOut: function () {
@@ -273,8 +290,6 @@ define([
                         domClass.add(cartIcon, "shoppingCartEmpty");
                     }
                 }
-
-
 
 
             });

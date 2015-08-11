@@ -5,21 +5,22 @@
  * @extends {esriviewer/loader/ViewerLoader}
  */
 define([
-    "dojo/_base/declare",
-    "xstyle/css!../theme/ImageryViewerTheme.css",
-    //"xstyle/css!../ui/base/theme/imagerySpriteTheme.css",
-    "dojo/has",
-    "dojo/topic",
-    "esriviewer/loader/ViewerLoader",
-    "../base/ImageryGlobals",
-    "../utils/ImageryUtils",
-    "dojo/_base/lang",
-    "./base/ImageryViewerPlacementWindow",
-    "../manager/ImageryViewerManagerWindow",
-    "xstyle/css"
-],
-   // function (declare, cssTheme, spriteTheme, has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
-        function (declare, cssTheme,  has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
+        "dojo/_base/declare",
+        "xstyle/css!../theme/ImageryViewerTheme.css",
+        //"xstyle/css!../ui/base/theme/imagerySpriteTheme.css",
+        "dojo/has",
+        "dojo/topic",
+        "esriviewer/loader/ViewerLoader",
+        "../base/ImageryGlobals",
+        "../utils/ImageryUtils",
+        "dojo/_base/lang",
+        "./base/ImageryViewerPlacementWindow",
+        "../manager/ImageryViewerManagerWindow",
+        "xstyle/css"
+
+    ],
+    // function (declare, cssTheme, spriteTheme, has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
+    function (declare, cssTheme, has, topic, ViewerLoader, ImageryGlobals, ImageryUtils, lang, ImageryViewerPlacementWindow, ImageryViewerManagerWindow, Css) {
         return declare(
             [ViewerLoader],
             {
@@ -27,6 +28,8 @@ define([
                  *  kicks off everything for the discovery viewer
                  */
                 constructor: function () {
+
+
                     //load ie7 theme if necessary for css hacks
                     if (has("ie") == 7) {
                         this._listenForLoadIE7Theme();

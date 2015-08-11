@@ -14,10 +14,11 @@ define([
         "./model/ImageryExportViewModel",
         "dijit/form/Button",
         "esri/symbols/SimpleFillSymbol",
-        "esri/symbols/SimpleLineSymbol"
+        "esri/symbols/SimpleLineSymbol",
+        "esri/IdentityManager"
     ],
     //  function (declare, template, theme, topic, json,array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
-    function (declare, template, topic, json, array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageryExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol) {
+    function (declare, template, topic, json, array, lang, Color, DataLoaderSupport, UITemplatedWidget, MapDrawSupport, ImageryExportDownloadWindow, ImageryExportViewModel, Button, SimpleFillSymbol, SimpleLineSymbol, IdentityManager) {
         return declare(
             [UITemplatedWidget, MapDrawSupport, DataLoaderSupport],
             {
@@ -90,7 +91,7 @@ define([
                         return;
                     }
                     //get the map extent
-                    var extent;
+                    var extent = null;
                     if (this.viewModel.selectedExtractMode() === this.viewModel.viewerExtent) {
                         topic.publish(VIEWER_GLOBALS.EVENTS.MAP.EXTENT.GET_EXTENT, function (ext) {
                             extent = ext;
@@ -119,11 +120,11 @@ define([
                         VIEWER_UTILS.log("Unknown Extract Mode", VIEWER_GLOBALS.LOG_TYPE.ERROR);
                         return;
                     }
-                    var currentQueryLayer;
-                    var currentSelectedObject;
-                    var currentQueryLayerController;
-                    var downloadRequests = [];
-                    var i;
+                    var cred, currentQueryLayer,
+                        currentSelectedObject,
+                        currentQueryLayerController,
+                        downloadRequests = [],
+                        i;
                     for (i = 0; i < selectedObjectIds.length; i++) {
                         currentSelectedObject = selectedObjectIds[i];
                         currentQueryLayerController = currentSelectedObject.queryController ? currentSelectedObject.queryController : null;
@@ -141,6 +142,10 @@ define([
                             if (extent != null) {
                                 downloadParams.geometry = json.toJson(extent.toJson());
                                 downloadParams.geometryType = VIEWER_GLOBALS.ESRI_GEOMETRY_TYPES.ENVELOPE;
+                            }
+                            cred = IdentityManager.findCredential(currentQueryLayer.url);
+                            if (cred && cred.token) {
+                                downloadParams.token = cred.token;
                             }
                             downloadRequests.push({layer: currentQueryLayer, downloadParameters: downloadParams});
                         }
@@ -204,14 +209,9 @@ define([
                             windowIconAltText: this.imageryExportDownloadWindowTitle
                         });
                     }
-                    var downloadServiceItems = {};
-                    var currentRasterFile;
-                    var currrentRasterFileRasterId;
-                    var filesAddedCounter = 1;
-                    var currentDownloadResponseObject;
-                    var currentResponse;
+                    var i, j, cred, fileName, downloadServiceItems = {}, currentRasterFile, currrentRasterFileRasterId, filesAddedCounter = 1, currentDownloadResponseObject, currentResponse, downloadUrl, serviceUrl;
                     //loop through download responses and format all download URLs and finally add to the download items array
-                    for (var i = 0; i < this.currentDownloadResponses.length; i++) {
+                    for (i = 0; i < this.currentDownloadResponses.length; i++) {
                         currentDownloadResponseObject = this.currentDownloadResponses[i];
                         if (currentDownloadResponseObject.layer == null || currentDownloadResponseObject.response == null) {
                             continue;
@@ -219,29 +219,36 @@ define([
                         var downloadItems = [];
                         downloadServiceItems[currentDownloadResponseObject.layer.name] = downloadItems;
                         currentResponse = currentDownloadResponseObject.response;
-                        for (var j = 0; j < currentResponse.rasterFiles.length; j++) {
+                        for (j = 0; j < currentResponse.rasterFiles.length; j++) {
                             currentRasterFile = currentResponse.rasterFiles[j];
                             if (currentRasterFile == null || currentRasterFile.id == null || currentRasterFile.rasterIds == null ||
                                 currentRasterFile.rasterIds.length == 0) {
                                 continue;
                             }
-                            var fileName;
+                            serviceUrl = currentDownloadResponseObject.layer.url;
                             if (currentRasterFile.id.indexOf("://") > -1) {
-                                fileName = currentRasterFile.id.substring(currentRasterFile.id.lastIndexOf("/") + 1, currentRasterFile.id.length);
+                                downloadUrl = currentRasterFile.id.replace(/\\/g, "/");
+                                fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1, downloadUrl.length);
                             }
                             else {
                                 fileName = VIEWER_UTILS.getFileNameFromAtEndOfPath(currentRasterFile.id);
+                                currrentRasterFileRasterId = currentRasterFile.rasterIds[0];
+                                downloadUrl = VIEWER_UTILS.joinUrl(serviceUrl, ("file?id=" + currentRasterFile.id));
+                                downloadUrl += "&rasterId=" + currrentRasterFileRasterId;
+                                cred = IdentityManager.findCredential(serviceUrl);
+                                if (cred && cred.token) {
+                                    downloadUrl += "&token=" + cred.token;
+                                }
+
                             }
                             if (fileName == null || fileName == "") {
                                 fileName = currentRasterFile.id ? currentRasterFile.id : ("File " + filesAddedCounter);
                             }
-                            var serviceUrl = currentDownloadResponseObject.layer.url;
-                            var downloadUrl = VIEWER_UTILS.joinUrl(serviceUrl, ("file?id=" + currentRasterFile.id));
                             if (currentRasterFile.rasterIds.length == 1) {
                                 currrentRasterFileRasterId = currentRasterFile.rasterIds[0];
                                 var addDownloadItem = {
                                     id: VIEWER_UTILS.generateUUID(),
-                                    url: (downloadUrl + "&rasterId=" + currrentRasterFileRasterId),
+                                    url: downloadUrl,
                                     label: fileName,
                                     serviceName: REG_EXP_UTILS.getServiceNameFromUrl(serviceUrl)
                                 };

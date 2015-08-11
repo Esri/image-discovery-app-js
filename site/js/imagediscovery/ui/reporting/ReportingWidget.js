@@ -449,7 +449,7 @@ define([
                                     //check for value formatter
                                     if (fieldTypeLookup.dates[convertFieldName] != null) {
                                         //convert the date
-                                        currentValue = this.getFormattedDate(currentValue);
+                                        currentValue = this.getFormattedDate(currentValue,queryLayerController.serviceConfiguration.isUTCDate);
                                     }
                                     else if (fieldTypeLookup.domains[convertFieldName] != null) {
                                         currentValue = fieldTypeLookup.domains[convertFieldName][currentValue];
@@ -567,16 +567,18 @@ define([
                         displayData: displayData
                     }
                 },
-                getFormattedDate: function (value) {
+                getFormattedDate: function (value, isUTC) {
                     try {
                         var date = new Date(value);
-                        var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDisplayFormats.date;
+                        if (isUTC) {
+                            date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                        }
+                        var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }
                     catch (err) {
-                        return value;
+                        return null;
                     }
-
                 }
             });
     });

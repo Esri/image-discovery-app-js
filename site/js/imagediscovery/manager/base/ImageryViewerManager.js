@@ -75,7 +75,10 @@ define([
                 displayCatalogLoading: function () {
                     //loading services throbber when the page loads
                     this.serviceLoadingContainer = domConstruct.create("div", {className: "defaultBackground fivePixelBorderRadius defaultBoxShadow loadingImageServiceMessageContainer"});
-                    this.serviceLoadingMessage = domConstruct.create("span", {innerHTML: "Loading Catalog Service...", className: "loadingImageServiceText"});
+                    this.serviceLoadingMessage = domConstruct.create("span", {
+                        innerHTML: "Loading Catalog Service...",
+                        className: "loadingImageServiceText"
+                    });
                     this.serviceLoadingThrobber = domConstruct.create("div", {className: "loadingImageServiceThrobber loadingSpinnerThrobber"});
                     domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
                     domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
@@ -241,7 +244,10 @@ define([
                                     imageServiceQueryLayer.queryWhereClauseAppend = currentImageServiceObj.queryWhereClauseAppend;
                                 }
                                 imageServiceQueryLayer.searchServiceLabel = currentImageServiceObj.label ? currentImageServiceObj.label : "Search Service " + i;
-                                topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD, imageServiceQueryLayer, {canRemove: false, isOperationalLayer: false}, lang.hitch(this, this.handleImageServiceLoaded, currentImageServiceObj), lang.hitch(this, this.handleImageServiceLoadError));
+                                topic.publish(VIEWER_GLOBALS.EVENTS.MAP.LAYERS.ADD, imageServiceQueryLayer, {
+                                    canRemove: false,
+                                    isOperationalLayer: false
+                                }, lang.hitch(this, this.handleImageServiceLoaded, currentImageServiceObj), lang.hitch(this, this.handleImageServiceLoadError));
                             }
                         }
                     }
@@ -516,8 +522,17 @@ define([
                  * @private
                  */
                 _loadImageryUIAddons: function () {
-                    //create the swipe widget
+                    this._createUploaderWidget();
                     this._createSwipeWidget();
+                },
+                /**
+                 * reads configuration to see if the uploader widget should be created
+                 * @private
+                 */
+                _createUploaderWidget: function () {
+                    if (this.viewerConfig.uploaderWidget != null && lang.isObject(this.viewerConfig.uploaderWidget) && this.viewerConfig.uploaderWidget.create) {
+                        this.createUploaderWidget();
+                    }
                 },
                 /**
                  * reads configuration to see if the swipe widget should be created

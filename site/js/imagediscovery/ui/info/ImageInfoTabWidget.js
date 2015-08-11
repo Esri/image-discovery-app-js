@@ -71,9 +71,12 @@ define([
                     }
                 },
 
-                getFormattedDate: function (value) {
+                getFormattedDate: function (value, isUTC) {
                     try {
                         var date = new Date(value);
+                        if (isUTC) {
+                            date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                        }
                         var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }
@@ -150,7 +153,7 @@ define([
                             else {
                                 //check if we need to format an attribute entry
                                 if (fieldTypeLookup.dateLookup[key] != null) {
-                                    displayValue = this.getFormattedDate(imageInfo[key]);
+                                    displayValue = this.getFormattedDate(imageInfo[key],queryLayerController.serviceConfiguration.isUTCDate);
 
                                 }
                                 else if (fieldTypeLookup.doubleLookup[key] != null) {

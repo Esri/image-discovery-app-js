@@ -1,17 +1,17 @@
 define([
-    "dojo/_base/declare",
-    "dijit/TooltipDialog",
-    "dojo/_base/lang",
-    "dojo/date/locale",
-    "dojo/topic",
-    "dijit/popup",
-    "dojo/dom-construct",
-    "dojo/dom-class",
-    "dojo/on",
-    "dojo/_base/window",
-    "dojo/_base/array",
-    "esri/geometry/screenUtils"
-],
+        "dojo/_base/declare",
+        "dijit/TooltipDialog",
+        "dojo/_base/lang",
+        "dojo/date/locale",
+        "dojo/topic",
+        "dijit/popup",
+        "dojo/dom-construct",
+        "dojo/dom-class",
+        "dojo/on",
+        "dojo/_base/window",
+        "dojo/_base/array",
+        "esri/geometry/screenUtils"
+    ],
     function (declare, TooltipDialog, lang, locale, topic, popup, domConstruct, domClass, on, dojoWindow, array, screenUtils) {
         return declare(
             [],
@@ -126,7 +126,15 @@ define([
                 },
                 show: function (itemInfo, displayPoint) {
                     this.hidePopup();
-                    this.anchorDiv = domConstruct.create("div", {style: {height: "1px", width: "1px", position: "absolute", left: displayPoint.x + "px", top: displayPoint.y + "px"}});
+                    this.anchorDiv = domConstruct.create("div", {
+                        style: {
+                            height: "1px",
+                            width: "1px",
+                            position: "absolute",
+                            left: displayPoint.x + "px",
+                            top: displayPoint.y + "px"
+                        }
+                    });
                     domConstruct.place(this.anchorDiv, dojoWindow.body());
                     this.currentImageInfoPopupObject = this.processImageInfo(itemInfo);
                     if (this.currentImageInfoPopupObject && this.currentImageInfoPopupObject.imageInfoAndLayer) {
@@ -146,34 +154,47 @@ define([
                     on(closePopup, "click", lang.hitch(this, this.hidePopup));
 
                     domConstruct.place(closePopup, actionsContainer);
-                    var toggleImage = domConstruct.create("div", {className: "showImageHeaderIcon", title: "Toggle Image"});
+                    var toggleImage = domConstruct.create("div", {
+                        className: "showImageHeaderIcon",
+                        title: "Toggle Image"
+                    });
                     on(toggleImage, "click", lang.hitch(this, this.handleToggleShowImage));
                     domConstruct.place(toggleImage, actionsContainer);
 
                     //shoppingCartAdded
                     var cartClass = currentImageInfoPopupObject.imageInfoAndLayer.imageInfo.addedToCart ? "shoppingCartAdded" : "shoppingCartEmpty";
-                    var toggleCart = domConstruct.create("div", {className: "commonIcons16 shoppingCartHeaderIcon " + cartClass, title: "Toggle Cart", style: {marginRight: "10px"}});
+                    var toggleCart = domConstruct.create("div", {
+                        className: "commonIcons16 shoppingCartHeaderIcon " + cartClass,
+                        title: "Toggle Cart",
+                        style: {marginRight: "10px"}
+                    });
                     this.currentToggleCartIcon = toggleCart;
                     on(toggleCart, "click", lang.hitch(this, this.handleToggleAddToCart));
                     domConstruct.place(toggleCart, actionsContainer);
 
 
                     /*
-                    if (currentImageInfoPopupObject.imageInfoAndLayer.queryLayerController.supportsThumbnail()) {
+                     if (currentImageInfoPopupObject.imageInfoAndLayer.queryLayerController.supportsThumbnail()) {
 
-                        var showThumb = domConstruct.create("div", {className: "commonIcons16 binoculars"});
-                        on(showThumb, "mouseover", lang.hitch(this, this.handleLayerMouseOver));
-                        on(showThumb, "mouseout", lang.hitch(this, this.handleLayerMouseOut));
-                        domConstruct.place(showThumb, actionsContainer);
-                    }
-                    */
+                     var showThumb = domConstruct.create("div", {className: "commonIcons16 binoculars"});
+                     on(showThumb, "mouseover", lang.hitch(this, this.handleLayerMouseOver));
+                     on(showThumb, "mouseout", lang.hitch(this, this.handleLayerMouseOut));
+                     domConstruct.place(showThumb, actionsContainer);
+                     }
+                     */
 
                     var currentAttributeObj;
                     for (var i = 0; i < currentImageInfoPopupObject.attributes.length; i++) {
                         currentAttributeObj = currentImageInfoPopupObject.attributes[i];
                         var entry = domConstruct.create("div", {className: "imagePopupEntry"});
-                        var lbl = domConstruct.create("span", {className: "imagePopupLabel", innerHTML: currentAttributeObj.name + ": "});
-                        var value = domConstruct.create("span", {className: "imagePopupValue", innerHTML: currentAttributeObj.value});
+                        var lbl = domConstruct.create("span", {
+                            className: "imagePopupLabel",
+                            innerHTML: currentAttributeObj.name + ": "
+                        });
+                        var value = domConstruct.create("span", {
+                            className: "imagePopupValue",
+                            innerHTML: currentAttributeObj.value
+                        });
                         domConstruct.place(lbl, entry);
                         domConstruct.place(value, entry);
                         domConstruct.place(entry, container);
@@ -212,7 +233,7 @@ define([
                         else {
                             //check if we need to format an attribute entry
                             if (fieldTypeLookup.dateLookup[key] != null) {
-                                displayValue = this.getFormattedDate(imageInfo[key]);
+                                displayValue = this.getFormattedDate(imageInfo[key], queryLayerController.serviceConfiguration.isUTCDate);
 
                             }
                             else if (fieldTypeLookup.doubleLookup[key] != null) {
@@ -233,13 +254,22 @@ define([
                     } //end for loop of attributes in imageInfo object
 
 
-                    return {attributes: attributesNVPArray, imageInfoAndLayer: {imageInfo: imageInfo, layer: layer, queryLayerController: queryLayerController}};
+                    return {
+                        attributes: attributesNVPArray,
+                        imageInfoAndLayer: {
+                            imageInfo: imageInfo,
+                            layer: layer,
+                            queryLayerController: queryLayerController
+                        }
+                    };
 
                 },
-
-                getFormattedDate: function (value) {
+                getFormattedDate: function (value, isUTC) {
                     try {
                         var date = new Date(value);
+                        if (isUTC) {
+                            date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                        }
                         var formatter = (this.displayFormats != null && this.displayFormats.date != null) ? this.displayFormats.date : this.__defaultDateFormat;
                         return locale.format(date, {selector: "date", datePattern: formatter});
                     }

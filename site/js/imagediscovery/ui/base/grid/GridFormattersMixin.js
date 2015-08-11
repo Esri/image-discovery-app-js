@@ -66,6 +66,26 @@ define([
                      }
                      */
                 },
+                /**
+                 * formats date rows in the result grid
+                 * @param value
+                 * @return {*}
+                 */
+                utcDateFormatter: function (value) {
+                    try {
+                        if (value == "" || value == null) {
+                            return null;
+                        }
+                        var date = new Date(value);
+                        date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                        var formatter = this.displayFormats.date != null ? this.displayFormats.date : this.__defaultDisplayFormats.date;
+                        return locale.format(date, {selector: "date", datePattern: formatter});
+                    }
+                    catch (err) {
+                        return null;
+                    }
+                },
+
 
                 /**
                  * formats date rows in the result grid
