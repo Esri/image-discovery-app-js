@@ -241,6 +241,23 @@ define([
                         domConstruct.place(featureEntryValue, featureLiEntry);
                         domConstruct.place(featureLiEntry, featureUL);
                     }
+
+                    //create the service link
+                    featureLiEntry =  domConstruct.create("li", {className: "imagePopupEntry"});
+                    featureEntryLbl = domConstruct.create("span", {
+                        className: "imagePopupLabel",
+                        innerHTML:  "Service: "
+                    });
+                    featureEntryValue = domConstruct.create("a", {
+                        className: "imagePopupValue",
+                        innerHTML: queryLayerController.label,
+                        href: queryLayerController.layer.url,
+                        target: "_blank"
+                    });
+                    domConstruct.place(featureEntryLbl, featureLiEntry);
+                    domConstruct.place(featureEntryValue, featureLiEntry);
+                    domConstruct.place(featureLiEntry, featureUL);
+
                     return {container: featureContainer, cartIcon: toggleCart};
                 },
                 handleLayerMouseOver: function (featureAttributes, queryLayerController) {

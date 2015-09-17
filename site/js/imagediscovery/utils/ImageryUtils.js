@@ -108,7 +108,9 @@ define([
                     if (layer.credential && layer.credential.token != null) {
                         requestQuery += "&token=" + layer.credential.token;
                     }
-                    this.loadProxiedJson(layer.url + "/keyProperties" + requestQuery, wrappedCallback, wrappedErrback);
+                    //RICHARD RIVERA NO PROXY
+                    wrappedErrback(null);
+                   // this.loadProxiedJson(layer.url + "/keyProperties" + requestQuery, wrappedCallback, wrappedErrback);
 
                 },
                 /**

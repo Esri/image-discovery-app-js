@@ -105,6 +105,10 @@ define([
                         return null;
                     }
                 },
+                renderServiceLinkCell: function(object, value, node, option){
+                   var  formattedValue = "<a target='_blank' href='" + object._url + "'>" + value + "</a>";
+                    domAttr.set(node, "innerHTML", formattedValue);
+                },
                 /**
                  * formats a field
                  * @param fieldName
@@ -122,18 +126,18 @@ define([
                     if (formatters && (formatter = formatters[fieldName]) != null && lang.isFunction(formatters[fieldName])) {
                         formattedValue = formatter(value);
                     }
-                    var treatAsLink = false;
-                    if (nodeRendering) {
-                        if (nodeRendering.style) {
-                            domStyle.set(node, nodeRendering.style);
+                        var treatAsLink = false;
+                        if (nodeRendering) {
+                            if (nodeRendering.style) {
+                                domStyle.set(node, nodeRendering.style);
+                            }
+                            if (nodeRendering.processing) {
+                                treatAsLink = (nodeRendering.processing.treatAsLink != null) ? nodeRendering.processing.treatAsLink : false;
+                            }
                         }
-                        if (nodeRendering.processing) {
-                            treatAsLink = (nodeRendering.processing.treatAsLink != null) ? nodeRendering.processing.treatAsLink : false;
+                        if (treatAsLink) {
+                            formattedValue = "<a href='" + formattedValue + "'>" + formattedValue + "</a>";
                         }
-                    }
-                    if(treatAsLink){
-                        formattedValue = "<a href='" + formattedValue + "'>" + formattedValue + "</a>";
-                    }
                     domAttr.set(node, "innerHTML", formattedValue);
 
                 },

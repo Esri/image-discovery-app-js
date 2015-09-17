@@ -5,6 +5,9 @@ define([
         return declare(
             [], {
                 EVENTS: {
+                    USER:{
+                      GET_APP_USER: "usr:getAppUsr"
+                    },
                     UPLOADER:{
                         WINDOW: {
                             SHOW: "upldrWindow:show",

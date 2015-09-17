@@ -52,9 +52,9 @@ define([
                             singleSourceMode = false;
                         }
                     });
-                    if (singleSourceMode) {
-                        this.addSourceColumn = false;
-                    }
+                  //  if (singleSourceMode) {
+                //        this.addSourceColumn = false;
+                  //  }
                     this.createGrid();
                 },
                 /**
@@ -263,9 +263,10 @@ define([
                     if (this.addSourceColumn) {
                         var sourceColumn = {
                             field: "__serviceLabel",
-                            label: "Source",
+                            label: "Service",
                             sortable: true
                         };
+                        sourceColumn.renderCell = lang.hitch(this, this.renderServiceLinkCell);
                         layerColumns.push(sourceColumn);
                     }
                     var gridOptions;

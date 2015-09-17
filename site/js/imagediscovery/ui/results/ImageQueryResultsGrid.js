@@ -410,7 +410,8 @@ define([
                                 isGrayedOut: false,
                                 isFiltered: false,
                                 showThumbNail: false,
-                                showFootprint: false
+                                showFootprint: false,
+                                _url: queryLayerController.layer.url
                             };
                             newItemMixin[this.storeIdField] = VIEWER_UTILS.generateUUID();
                             currentAttributes = results.features[j].attributes;

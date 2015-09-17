@@ -3,6 +3,7 @@ define([
         "dojo/dom-style",
         "dojo/topic",
         "dojo/on",
+        "dojo/Deferred",
         "dojo/_base/window",
         "dojo/_base/connect",
         "dojo/_base/lang",
@@ -20,13 +21,16 @@ define([
         "../../ui/results/popup/ResultPopup",
         "esriviewer/ui/toolbar/base/button/Button",
         "../../ui/results/popup/MapIdentifyPopupTooltip",
-        "esri/geometry/screenUtils"
+        "esri/geometry/screenUtils",
+        "esri/IdentityManager"
 
     ],
-    function (declare, domStyle, topic, on, window, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ShadedThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils) {
+    function (declare, domStyle, topic, on, Deferred, dojoWindow, con, lang, domConstruct, domClass, ViewerManager, ImageQueryResultsWidget, ImageDiscoveryWidget, ImageQueryController, ImageQueryLayerController, ArcGISImageServiceLayer, ImageryWebMapTemplateConfigurationUtil, ToggleButton, ShadedThumbnailManager, ResultPopup, Button, MapIdentifyPopupTooltip, screenUtils, IdentityManager) {
         return declare(
             [ViewerManager],
             {
+                loginAttempts: 0,
+                maxLoginAttempts: 5,
                 applicationDrawInProgress: false,
                 identifyEnabledZoomLevel: 1,
                 //base configuration url
@@ -83,7 +87,7 @@ define([
                     domConstruct.place(this.serviceLoadingThrobber, this.serviceLoadingContainer);
                     domConstruct.place(this.serviceLoadingMessage, this.serviceLoadingContainer);
                     //add to the dom
-                    domConstruct.place(this.serviceLoadingContainer, window.body());
+                    domConstruct.place(this.serviceLoadingContainer, dojoWindow.body());
                 },
                 initListeners: function () {
                     this.inherited(arguments);
@@ -109,6 +113,14 @@ define([
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_COMPLETE, lang.hitch(this, this.handleApplicationDrawEnd));
                     topic.subscribe(VIEWER_GLOBALS.EVENTS.DRAW.DRAW_CANCELLED, lang.hitch(this, this.handleApplicationDrawEnd));
 
+
+                    topic.subscribe(IMAGERY_GLOBALS.EVENTS.USER.GET_APP_USER,lang.hitch(this,this.getApplicationUser));
+
+                },
+                getApplicationUser: function(callback){
+                    if(callback && lang.isFunction(callback)){
+                        callback(this.userLoginInfo);
+                    }
                 },
                 handleApplicationDrawStart: function () {
                     this.applicationDrawInProgress = true;
@@ -402,31 +414,122 @@ define([
                  * @param queryConfig  configuration object for the discovery application
                  */
                 handleQueryWidgetConfigurationLoaded: function (queryConfig) {
+
+                    var def;
                     //set the query config on the class instance
                     this.queryConfig = queryConfig;
-                    //check configuration for manually adding catalog services. configured services in json are ignored if this flag is true
-                    this.resultFieldNameToLabelLookup = {};
-                    for (var i = 0; i < this.queryConfig.imageQueryResultDisplayFields.length; i++) {
-                        this.resultFieldNameToLabelLookup[this.queryConfig.imageQueryResultDisplayFields[i].field] = this.queryConfig.imageQueryResultDisplayFields[i].label;
-                    }
-                    if (this.queryConfig.identify != null) {
-                        if (this.queryConfig.identify.enabledZoomLevel != null) {
-                            try {
-                                this.identifyEnabledZoomLevel = parseInt(this.queryConfig.identify.enabledZoomLevel, 10);
-                            }
-                            catch (err) {
-
-                            }
-                        }
-
-                    }
-                    if (this.queryConfig.userAddCatalogMode === true) {
-                        this.initUserAddCatalogMode();
+                    if (this.queryConfig.userLoginOnLoad && this.queryConfig.userLoginOnLoad.enabled) {
+                        def = this._getUserCredentials();
                     }
                     else {
-                        //start up the viewer
-                        this.startupViewer();
+                        def = new Deferred();
+                        def.resolve({noAuth: true});
                     }
+                    def.then(lang.hitch(this, function (signInResponse) {
+                        this.userLoginInfo = signInResponse;
+                        //check configuration for manually adding catalog services. configured services in json are ignored if this flag is true
+                        this.resultFieldNameToLabelLookup = {};
+                        for (var i = 0; i < this.queryConfig.imageQueryResultDisplayFields.length; i++) {
+                            this.resultFieldNameToLabelLookup[this.queryConfig.imageQueryResultDisplayFields[i].field] = this.queryConfig.imageQueryResultDisplayFields[i].label;
+                        }
+                        if (this.queryConfig.identify != null) {
+                            if (this.queryConfig.identify.enabledZoomLevel != null) {
+                                try {
+                                    this.identifyEnabledZoomLevel = parseInt(this.queryConfig.identify.enabledZoomLevel, 10);
+                                }
+                                catch (err) {
+
+                                }
+                            }
+
+                        }
+                        if (this.queryConfig.userAddCatalogMode === true) {
+                            this.initUserAddCatalogMode();
+                        }
+                        else {
+                            //start up the viewer
+                            this.startupViewer();
+                        }
+                    }), lang.hitch(this, function (msg) {
+                        this.loginAttempts++;
+                        if(this.loginAttempts >= this.maxLoginAttempts){
+                            alert(msg ? msg : "Max login attempts exceeded");
+
+                        }
+                        else {
+                            this.handleQueryWidgetConfigurationLoaded(queryConfig);
+                        }
+                    }));
+                },
+                _getUserCredentials: function () {
+                    IdentityManager.destroyCredentials();
+                    var def = new Deferred();
+                    var layer = new ArcGISImageServiceLayer(this.queryConfig.userLoginOnLoad.authenticationServiceUrl);
+                    layer.on("load",lang.hitch(this,function(evt){
+                        var cred = IdentityManager.findCredential(evt.layer.url);
+                        if (cred && cred.server) {
+                            this.loadJsonP(VIEWER_UTILS.joinUrl(cred.server, "arcgis/rest/self"), {
+                                f: "json",
+                                token: cred.token
+                            }, lang.hitch(this, function (res) {
+                                if (res && res.user && res.user.roles) {
+                                    console.dir(IdentityManager);
+                                    def.resolve({credential: cred, userSelf: res});
+                                }
+                                else {
+                                    def.resolve({credential: cred});
+                                }
+                            }));
+                        }
+                        else {
+                            def.reject("Cannot authenticate application through non-secure service");
+                        }
+
+                    }));
+                    layer.on("error",lang.hitch(this,function(evt){
+                        console.dir(evt);
+                        if(evt.error && evt.error.httpCode === 403){
+                            alert("Your user does not have permission to access this application.");
+                        }
+                        def.reject();
+                    }));
+
+                    /*
+                    if (!this.queryConfig.userLoginOnLoad.serverLoginInfo || !this.queryConfig.userLoginOnLoad.serverLoginInfo.server) {
+                        def.reject();
+                    }
+                    else {
+
+                        this.dialogCancelListener = IdentityManager.on("dialog-cancel", lang.hitch(this, function () {
+                            this.dialogCancelListener.remove();
+                            def.reject();
+                        }));
+                        //we want a long lived token
+                        IdentityManager.signIn(this.queryConfig.userLoginOnLoad.serverLoginInfo.server,
+                            this.queryConfig.userLoginOnLoad.serverLoginInfo).then(lang.hitch(this, function (cred) {
+                                console.dir(cred);
+                                IdentityManager.registerToken(cred);
+                                if (cred && cred.server) {
+                                    this.loadJsonP(VIEWER_UTILS.joinUrl(cred.server, "arcgis/rest/self"), {
+                                        f: "json",
+                                        token: cred.token
+                                    }, lang.hitch(this, function (res) {
+                                        if (res && res.user && res.user.roles) {
+                                            console.dir(IdentityManager);
+                                            def.resolve({credential: cred, userSelf: res});
+                                        }
+                                        else {
+                                            def.resolve({credential: cred});
+                                        }
+                                    }));
+                                }
+                                else {
+                                    def.reject();
+                                }
+                            }));
+                    }
+                    */
+                    return def;
                 },
                 /**
                  * starts up the base viewer and displays catalog loading element
