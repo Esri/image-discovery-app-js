@@ -1,5 +1,7 @@
 # image-discovery-app-js
 
+ ___This repository is no longer maintained. You may be interested in the [Web AppBuilder for Image Services 2.0](https://github.com/Esri/WAB-Image-Services-Widgets) repo.___
+
 The Image Discovery Application enables users to search, discover, filter, and manipulate imagery through an easy to use web application. Multiple ArcGIS Server Image Services can be added to the Image Discovery Application for quick search and discovery. The Image Discovery Application supports full configuration of result fields, result styling, map display, operational layers, and reference layers.
 
 
