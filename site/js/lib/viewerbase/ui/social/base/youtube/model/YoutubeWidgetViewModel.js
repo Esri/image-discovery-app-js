@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/social/base/youtube/model/YoutubeWidgetViewModel",["dojo/_base/declare","../../socialmediabase/model/BaseSocialMediaSearchWidgetViewModel"],function(_1,_2){return _1([_2],{dateEntries:ko.observableArray([{label:"Today",value:"today"},{label:"This Week",value:"this_week"},{label:"This Month",value:"this_month"},{label:"All Time",value:"all_time"}]),constructor:function(){this.selectedDateEntry=ko.observable("");}});});

@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/identify/model/IdentifyResultsContentsViewModel",["dojo/_base/declare","dojo/Evented","dojo/_base/lang","dojo/topic"],function(_1,_2,_3,_4){return _1([_2],{constructor:function(){this.addedResults=ko.observableArray();var _5=this;this.hasResults=ko.computed(function(){return _5.addedResults().length>0;});this.handleZoomToResult=_3.hitch(this,function(_6){if(_6&&_6.graphic){_4.publish(VIEWER_GLOBALS.EVENTS.MAP.GRAPHICS.CENTER_AND_FLASH,_6.graphic);}});},addResult:function(_7){this.addedResults.push(_7);}});});

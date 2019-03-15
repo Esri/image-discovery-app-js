@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/base/UITemplatedWidget",["dojo/_base/declare","dijit/_TemplatedMixin","dijit/_WidgetsInTemplateMixin","./UIWidget"],function(_1,_2,_3,_4){return _1([_4,_2,_3],{widgetsInTemplate:true});});

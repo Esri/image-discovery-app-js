@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/messaging/model/MessagingWidgetViewModel",["dojo/_base/declare"],function(_1){return _1([],{constructor:function(){this.message=ko.observable("");this.visible=ko.observable(false);},showMessage:function(_2){if(_2!=null&&_2!=""){this.visible(true);this.message(_2);}},hideMessage:function(){this.visible(false);}});});

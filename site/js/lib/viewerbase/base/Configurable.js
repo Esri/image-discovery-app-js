@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/base/Configurable",["dojo/_base/declare","dojo/_base/xhr","dojo/_base/lang","./DataLoaderSupport"],function(_1,_2,_3,_4){return _1([_4],{configUrl:"",loadConfig:function(){_2.get({url:this.configUrl,handleAs:"json",load:_3.hitch(this,this.handleConfigLoaded),error:_3.hitch(this,this.handleConfigLoadError)});},loadProxiedConfig:function(){this.loadProxiedJson(this.configUrl,_3.hitch(this,this.handleConfigLoaded),_3.hitch(this,this.handleConfigLoadError));},handleConfigLoaded:function(_5){},handleConfigLoadError:function(_6){}});});

@@ -1,9 +1,0 @@
-<div data-bind="visible: visible" class="basemapsToolbarDropdown toolbarDropdownContent">
-    <div data-bind="foreach:basemaps">
-        <div class="basemapToolbarEntry">
-            <div class="basemapToolbarEntryLabel" data-bind="text: $data.label"></div>
-            <img class="basemapToolbarThumb"
-                 data-bind="click:$parent.handleBasemapClick, css:{basemapThumbSelected: $data.selected},attr:{src:$data.thumbnail, title: $data.label}">
-        </div>
-    </div>
-</div>

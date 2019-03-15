@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/plotting/base/BasePlottingWidget",["dojo/_base/declare","dojo/dom-style","dojo/Deferred","../../base/UITemplatedWidget"],function(_1,_2,_3,_4){return _1([_4],{defaultWKID:4326,boundsNumberBoxWidth:"7em",onValuesChanged:function(_5){},isValid:function(){return true;},show:function(){_2.set(this.domNode,"display","block");},hide:function(){_2.set(this.domNode,"display","none");},getPoint:function(){var _6=new _3();_6.resolve(null);return _6.promise;},getPlotLabel:function(){return VIEWER_UTILS.getTimeStamp()+" Point";}});});

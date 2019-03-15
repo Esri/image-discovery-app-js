@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/map/base/MinMaxQueryParameters",["dojo/_base/declare","dojo/_base/lang"],function(_1,_2){return _1([],{minFieldName:null,maxFieldName:null,callback:null,constructor:function(_3){this.layer=null;this.layerId=null;this.minFieldName=null;this.maxFieldName=null;this.callback=null;this.errback=null;_2.mixin(this,_3||{});if(this.maxFieldName==null||this.maxFieldName==""){this.maxFieldName=this.minFieldName;}}});});

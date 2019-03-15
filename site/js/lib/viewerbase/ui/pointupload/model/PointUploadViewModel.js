@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/pointupload/model/PointUploadViewModel",["dojo/_base/declare"],function(_1){return _1([],{constructor:function(){this.validLatFields=ko.observable();this.validLonFields=ko.observable();}});});

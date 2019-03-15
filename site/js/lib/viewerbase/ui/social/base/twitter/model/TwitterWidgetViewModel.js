@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/social/base/twitter/model/TwitterWidgetViewModel",["dojo/_base/declare","../../socialmediabase/model/BaseSocialMediaSearchWidgetViewModel"],function(_1,_2){return _1([_2],{dateEntries:ko.observableArray([{label:"1 Day",value:1},{label:"2 Days",value:2},{label:"3 Days",value:3},{label:"4 Days",value:4},{label:"5 Days",value:5}]),constructor:function(){this.selectedDateEntry=ko.observable("");}});});

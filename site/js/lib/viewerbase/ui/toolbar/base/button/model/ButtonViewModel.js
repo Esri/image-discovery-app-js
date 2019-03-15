@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/ui/toolbar/base/button/model/ButtonViewModel",["dojo/_base/declare","dojo/Evented"],function(_1,_2){return _1([_2],{CLICK:"click",constructor:function(){this.buttonIconClass=ko.observable("");this.buttonText=ko.observable("");},handleButtonClick:function(){this.emit(this.CLICK);},setIconClass:function(_3){this.buttonIconClass("toolbarButtonIcon "+_3);}});});

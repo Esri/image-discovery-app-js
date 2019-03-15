@@ -1,2 +1,0 @@
-//>>built
-define("esriviewer/loader/esrirequires/EsriRequires",["dojo/_base/declare","esri/arcgis/utils","esri/layers/FeatureLayer","esri/layers/KMLLayer","esri/layers/WMSLayer"],function(_1){return _1([],{});});
